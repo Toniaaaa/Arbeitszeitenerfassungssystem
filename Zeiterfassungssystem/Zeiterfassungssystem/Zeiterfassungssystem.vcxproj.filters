@@ -18,9 +18,27 @@
     <ClInclude Include="Angestellter.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Abteilung.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Unternehmen.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Ereignis.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Angestellter.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Abteilung.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Unternehmen.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Ereignis.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
