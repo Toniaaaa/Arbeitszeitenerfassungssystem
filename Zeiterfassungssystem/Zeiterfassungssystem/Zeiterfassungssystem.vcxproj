@@ -130,6 +130,7 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Mitarbeiter.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Vorgesetzter.h" />
     <ClInclude Include="Ereignis.h" />
     <ClInclude Include="Unternehmen.h" />
@@ -154,6 +155,23 @@
     <EmbeddedResource Include="LogInFenster.resx">
       <DependentUpon>LogInFenster.h</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Zeiterfassungssystem.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\addIcon.jpg" />
+    <Image Include="Images\gehenIcon.jpg" />
+    <Image Include="Images\iconDarthVader.ico" />
+    <Image Include="Images\imperiumSchriftzug2.jpg" />
+    <Image Include="Images\kalenderIcon.jpg" />
+    <Image Include="Images\kommenIcon.jpg" />
+    <Image Include="Images\pauseIcon.jpg" />
+    <Image Include="Images\pauseIcon2.jpg" />
+    <Image Include="Images\pauseIcon3.jpg" />
+    <Image Include="Images\PersonalIcon2.jpg" />
+    <Image Include="Images\statistikIcon.jpg" />
+    <Image Include="Images\urlaubIcon2.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

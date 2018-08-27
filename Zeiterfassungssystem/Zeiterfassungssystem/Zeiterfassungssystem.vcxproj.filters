@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Quelldateien\Icons">
+      <UniqueIdentifier>{3cf10c63-ee1e-4079-8d31-5012f2c38dc5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Angestellter.h">
@@ -34,6 +37,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="LogInFenster.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -59,5 +65,48 @@
     <ClCompile Include="LogInFenster.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Zeiterfassungssystem.rc">
+      <Filter>Ressourcendateien</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\iconDarthVader.ico">
+      <Filter>Quelldateien\Icons</Filter>
+    </Image>
+    <Image Include="Images\addIcon.jpg">
+      <Filter>Quelldateien\Icons</Filter>
+    </Image>
+    <Image Include="Images\gehenIcon.jpg">
+      <Filter>Quelldateien\Icons</Filter>
+    </Image>
+    <Image Include="Images\imperiumSchriftzug2.jpg">
+      <Filter>Quelldateien\Icons</Filter>
+    </Image>
+    <Image Include="Images\kalenderIcon.jpg">
+      <Filter>Quelldateien\Icons</Filter>
+    </Image>
+    <Image Include="Images\kommenIcon.jpg">
+      <Filter>Quelldateien\Icons</Filter>
+    </Image>
+    <Image Include="Images\pauseIcon.jpg">
+      <Filter>Quelldateien\Icons</Filter>
+    </Image>
+    <Image Include="Images\pauseIcon2.jpg">
+      <Filter>Quelldateien\Icons</Filter>
+    </Image>
+    <Image Include="Images\pauseIcon3.jpg">
+      <Filter>Quelldateien\Icons</Filter>
+    </Image>
+    <Image Include="Images\PersonalIcon2.jpg">
+      <Filter>Quelldateien\Icons</Filter>
+    </Image>
+    <Image Include="Images\statistikIcon.jpg">
+      <Filter>Quelldateien\Icons</Filter>
+    </Image>
+    <Image Include="Images\urlaubIcon2.jpg">
+      <Filter>Quelldateien\Icons</Filter>
+    </Image>
   </ItemGroup>
 </Project>
