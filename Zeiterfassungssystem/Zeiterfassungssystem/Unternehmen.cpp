@@ -29,10 +29,12 @@ List<Angestellter^>^ Unternehmen::getAlleAngestellte()
 {
 	List<Angestellter^>^ angestellte = gcnew List<Angestellter^>;
 	
-
 	for (int i = 0; i < getAnzahlAbteilungen(); i++) {
 		Abteilung^ abteilung = getAbteilung(i);
 		angestellte->Add(abteilung->getVorgesetzter());
+		for (int j = 0; j < abteilung->getAnzahlMitarbeiter(); j++) {
+			angestellte->Add(abteilung->getMitarbeiter(j));
+		}
 	}
 
 	return angestellte;
