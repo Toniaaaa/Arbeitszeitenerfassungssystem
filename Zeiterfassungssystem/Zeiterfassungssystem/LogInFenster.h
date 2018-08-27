@@ -204,8 +204,6 @@ namespace Zeiterfassungssystem {
 		sound->SoundLocation = "Sounds/soundImperialMarch.wav";
 		sound->Load();
 		sound->Play();
-
 	}
-
 	};
 }

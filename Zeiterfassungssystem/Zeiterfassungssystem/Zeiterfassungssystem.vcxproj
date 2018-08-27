@@ -133,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="Mitarbeiter.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="StartseiteMitarbeiter.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Vorgesetzter.h" />
     <ClInclude Include="Ereignis.h" />
     <ClInclude Include="Unternehmen.h" />
@@ -142,6 +145,7 @@
     <ClCompile Include="Angestellter.cpp" />
     <ClCompile Include="LogInFenster.cpp" />
     <ClCompile Include="Mitarbeiter.cpp" />
+    <ClCompile Include="StartseiteMitarbeiter.cpp" />
     <ClCompile Include="Vorgesetzter.cpp" />
     <ClCompile Include="Ereignis.cpp" />
     <ClCompile Include="Unternehmen.cpp" />
@@ -156,6 +160,9 @@
   <ItemGroup>
     <EmbeddedResource Include="LogInFenster.resx">
       <DependentUpon>LogInFenster.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StartseiteMitarbeiter.resx">
+      <DependentUpon>StartseiteMitarbeiter.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
