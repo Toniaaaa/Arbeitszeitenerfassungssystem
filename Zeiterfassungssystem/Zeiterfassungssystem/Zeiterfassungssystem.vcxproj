@@ -126,12 +126,16 @@
   <ItemGroup>
     <ClInclude Include="Abteilung.h" />
     <ClInclude Include="Angestellter.h" />
+    <ClInclude Include="Mitarbeiter.h" />
+    <ClInclude Include="Vorgesetzter.h" />
     <ClInclude Include="Ereignis.h" />
     <ClInclude Include="Unternehmen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Abteilung.cpp" />
     <ClCompile Include="Angestellter.cpp" />
+    <ClCompile Include="Mitarbeiter.cpp" />
+    <ClCompile Include="Vorgesetzter.cpp" />
     <ClCompile Include="Ereignis.cpp" />
     <ClCompile Include="Unternehmen.cpp" />
   </ItemGroup>
