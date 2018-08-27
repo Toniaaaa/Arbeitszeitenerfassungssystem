@@ -1,7 +1,26 @@
 #pragma once
+
+#include <ctime>
+
+using namespace System;
+
+enum EreignisTyp {
+	ARBEIT_START,
+	ARBEIT_ENDE,
+	PAUSE_START,
+	PAUSE_ENDE,
+};
+
 ref class Ereignis
 {
+private:
+	EreignisTyp typ;
+	DateTime^ timestamp;
+
 public:
-	Ereignis();
+	Ereignis(EreignisTyp typ, DateTime^ timestamp);
+
+	EreignisTyp getTyp();
+	DateTime^ getTimestamp();
 };
 
