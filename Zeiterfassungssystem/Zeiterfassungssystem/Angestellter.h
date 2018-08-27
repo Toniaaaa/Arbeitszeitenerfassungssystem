@@ -16,7 +16,7 @@ private:
 	String^ personalnummer;
 	String^ passwort;
 	Int32 monatsstunden;
-	List <Ereignis^>^ listeEvents;
+	List<Ereignis^>^ listeEvents;
 
 public:
 	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 monatsstunden);

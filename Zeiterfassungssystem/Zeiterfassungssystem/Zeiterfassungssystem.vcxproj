@@ -126,6 +126,9 @@
   <ItemGroup>
     <ClInclude Include="Abteilung.h" />
     <ClInclude Include="Angestellter.h" />
+    <ClInclude Include="LogInFenster.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Mitarbeiter.h" />
     <ClInclude Include="Vorgesetzter.h" />
     <ClInclude Include="Ereignis.h" />
@@ -134,10 +137,23 @@
   <ItemGroup>
     <ClCompile Include="Abteilung.cpp" />
     <ClCompile Include="Angestellter.cpp" />
+    <ClCompile Include="LogInFenster.cpp" />
     <ClCompile Include="Mitarbeiter.cpp" />
     <ClCompile Include="Vorgesetzter.cpp" />
     <ClCompile Include="Ereignis.cpp" />
     <ClCompile Include="Unternehmen.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="LogInFenster.resx">
+      <DependentUpon>LogInFenster.h</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
