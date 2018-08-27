@@ -1,5 +1,6 @@
 #pragma once
 #include "Unternehmen.h"
+#include "StartseiteMitarbeiter.h"
 
 
 namespace Zeiterfassungssystem {
@@ -24,6 +25,7 @@ namespace Zeiterfassungssystem {
 	private:
 		SoundPlayer^ sound;
 		Unternehmen^ todesstern;
+		StartseiteMitarbeiter^ startseitemitarbeiter;
 		
 	public:
 		loginFenster(void)
@@ -31,6 +33,7 @@ namespace Zeiterfassungssystem {
 			InitializeComponent();
 			sound = gcnew SoundPlayer();
 			todesstern = gcnew Unternehmen("Rebillion.txt");
+			startseitemitarbeiter = gcnew StartseiteMitarbeiter;
 			
 		}
 
@@ -218,6 +221,7 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void logInButton_Click(System::Object^  sender, System::EventArgs^  e) {
+		System::Windows::Forms::DialogResult result = startseitemitarbeiter->ShowDialog(this);
 	}
 
 	private: System::Void passwortvergessenButton_Click(System::Object^  sender, System::EventArgs^  e) {
