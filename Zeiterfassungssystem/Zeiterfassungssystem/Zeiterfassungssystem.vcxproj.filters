@@ -18,9 +18,21 @@
     <ClInclude Include="Angestellter.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Vorgesetzter.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Mitarbeiter.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Angestellter.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Vorgesetzter.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Mitarbeiter.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
