@@ -1,4 +1,6 @@
 #pragma once
+#include "Unternehmen.h"
+
 
 namespace Zeiterfassungssystem {
 
@@ -21,12 +23,15 @@ namespace Zeiterfassungssystem {
 	{
 	private:
 		SoundPlayer^ sound;
-
+		Unternehmen^ todesstern;
+		
 	public:
 		loginFenster(void)
 		{
 			InitializeComponent();
 			sound = gcnew SoundPlayer();
+			todesstern = gcnew Unternehmen("Rebillion.txt");
+			
 		}
 
 	protected:
@@ -86,6 +91,7 @@ namespace Zeiterfassungssystem {
 			this->logInButton->TabIndex = 2;
 			this->logInButton->Text = L"Einloggen";
 			this->logInButton->UseVisualStyleBackColor = false;
+			this->logInButton->Click += gcnew System::EventHandler(this, &loginFenster::logInButton_Click);
 			// 
 			// BenutzernameLabel
 			// 
@@ -126,6 +132,7 @@ namespace Zeiterfassungssystem {
 			this->passwortvergessenButton->TabIndex = 3;
 			this->passwortvergessenButton->Text = L"Passwort vergessen\?";
 			this->passwortvergessenButton->UseVisualStyleBackColor = true;
+			this->passwortvergessenButton->Click += gcnew System::EventHandler(this, &loginFenster::passwortvergessenButton_Click);
 			// 
 			// txt_Benutzername
 			// 
@@ -150,6 +157,7 @@ namespace Zeiterfassungssystem {
 			this->btn_passwortAendern->TabIndex = 4;
 			this->btn_passwortAendern->Text = L"Passwort ändern";
 			this->btn_passwortAendern->UseVisualStyleBackColor = true;
+			this->btn_passwortAendern->Click += gcnew System::EventHandler(this, &loginFenster::btn_passwortAendern_Click);
 			// 
 			// loginFenster
 			// 
@@ -204,8 +212,20 @@ namespace Zeiterfassungssystem {
 		sound->SoundLocation = "Sounds/soundImperialMarch.wav";
 		sound->Load();
 		sound->Play();
+		todesstern->speichern();
+		todesstern->laden(todesstern);
 
 	}
 
-	};
+	private: System::Void logInButton_Click(System::Object^  sender, System::EventArgs^  e) {
+	}
+
+	private: System::Void passwortvergessenButton_Click(System::Object^  sender, System::EventArgs^  e) {
+		MessageBox::Show("Bitte melden Sie sich bei Ihrem Arbeitgeber für ein neues Passwort!", "Passwort vergessen?!",
+		MessageBoxButtons::OK, MessageBoxIcon::Information);
+	}
+	private: System::Void btn_passwortAendern_Click(System::Object^  sender, System::EventArgs^  e) {
+	
+	}
+};
 }

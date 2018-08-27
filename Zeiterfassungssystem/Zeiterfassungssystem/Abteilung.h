@@ -6,7 +6,7 @@
 using namespace System;
 using namespace System::Collections;
 using namespace System::Collections::Generic;
-
+[Serializable]
 ref class Abteilung
 {
 private:
