@@ -25,9 +25,9 @@ public:
 	inline String^ getVorname() {return vorname;}
 	inline String^ getNachname() {return nachname;}
 	Abteilung^ getAbteilung();
-	inline String^ personalnummer() { return personalnummer; }
-	inline String^ passwort() { return passwort; };
-	inline Int32 monatsstunden() { return monatsstunden; }
+	inline String^ getPersonalnummer() { return personalnummer; }
+	inline String^ getPpasswort() { return passwort; };
+	inline Int32 getPmonatsstunden() { return monatsstunden; }
 
 	//Setter
 	inline void setVorname(String^ vorname) { this->vorname = vorname; }

@@ -2,7 +2,7 @@
 
 Abteilung::Abteilung(String ^ abteilungsnummer, Vorgesetzter ^ vorgesetzer)
 {
-	this->abteilungsNummer = abteilungsNummer;
+	this->abteilungsNummer = abteilungsnummer;
 	this->vorgesetzter = vorgesetzer;
 	mitarbeiter = gcnew List<Mitarbeiter^>;
 }
