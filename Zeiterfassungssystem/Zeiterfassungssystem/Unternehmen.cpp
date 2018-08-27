@@ -3,6 +3,11 @@
 using namespace System::Runtime::Serialization::Formatters::Binary;
 using namespace System::IO;
 
+Unternehmen::Unternehmen()
+{
+	
+}
+
 Unternehmen::Unternehmen(String^ file)
 {
 	abteilungen = gcnew List<Abteilung^>;

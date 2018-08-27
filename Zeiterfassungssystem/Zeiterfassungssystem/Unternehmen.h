@@ -3,6 +3,7 @@
 
 using namespace System;
 using namespace System::Collections::Generic;
+[Serializable]
 ref class Unternehmen
 {
 private:
@@ -10,6 +11,7 @@ private:
 	String^ file;
 
 public:
+	Unternehmen();
 	Unternehmen(String^ file);
 	Int32 getAnzahlAbteilungen();
 	Abteilung^ getAbteilung(Int32 index);
