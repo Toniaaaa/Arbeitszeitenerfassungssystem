@@ -44,7 +44,7 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Label^  resturlaubLbl;
 	private: System::Windows::Forms::CheckBox^  pauseCbox;
 	private: System::Windows::Forms::Timer^  timerPause;
-	private: System::Windows::Forms::Button^  logOutBtn;
+
 			 System::Windows::Forms::Label^  uhrzeitLbl;
 
 	public:
@@ -109,7 +109,6 @@ namespace Zeiterfassungssystem {
 			this->resturlaubLbl = (gcnew System::Windows::Forms::Label());
 			this->pauseCbox = (gcnew System::Windows::Forms::CheckBox());
 			this->timerPause = (gcnew System::Windows::Forms::Timer(this->components));
-			this->logOutBtn = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// kommenBtn
@@ -375,15 +374,6 @@ namespace Zeiterfassungssystem {
 			// 
 			this->timerPause->Interval = 1000;
 			// 
-			// logOutBtn
-			// 
-			this->logOutBtn->Location = System::Drawing::Point(31, 23);
-			this->logOutBtn->Margin = System::Windows::Forms::Padding(4);
-			this->logOutBtn->Name = L"logOutBtn";
-			this->logOutBtn->Size = System::Drawing::Size(163, 54);
-			this->logOutBtn->TabIndex = 22;
-			this->logOutBtn->UseVisualStyleBackColor = true;
-			// 
 			// StartseiteMitarbeiter
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
@@ -391,7 +381,6 @@ namespace Zeiterfassungssystem {
 			this->AutoScroll = true;
 			this->BackColor = System::Drawing::SystemColors::MenuHighlight;
 			this->ClientSize = System::Drawing::Size(1092, 874);
-			this->Controls->Add(this->logOutBtn);
 			this->Controls->Add(this->pauseCbox);
 			this->Controls->Add(this->resturlaubLbl);
 			this->Controls->Add(this->pauseLbl);
