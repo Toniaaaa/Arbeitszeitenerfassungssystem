@@ -403,6 +403,7 @@ namespace Zeiterfassungssystem {
 			this->Name = L"StartseiteMitarbeiter";
 			this->Text = L"Zeiterfassung Imperium Startseite";
 			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &StartseiteMitarbeiter::StartseiteMitarbeiter_FormClosed);
+			this->Load += gcnew System::EventHandler(this, &StartseiteMitarbeiter::StartseiteMitarbeiter_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -484,5 +485,8 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
+	private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
+		nameLbl->Text = angestellter->getVorname() + " " + angestellter->getNachname();
+	}
 };
 }
