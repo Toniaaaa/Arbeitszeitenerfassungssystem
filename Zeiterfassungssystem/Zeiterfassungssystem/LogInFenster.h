@@ -26,6 +26,7 @@ namespace Zeiterfassungssystem {
 		SoundPlayer^ sound;
 		Unternehmen^ todesstern;
 		StartseiteMitarbeiter^ startseitemitarbeiter;
+		bool loginPressed = false;
 		
 	public:
 		LoginFenster(void)
@@ -34,7 +35,6 @@ namespace Zeiterfassungssystem {
 			sound = gcnew SoundPlayer();
 			todesstern = Unternehmen::ladeUnternehmen(Unternehmen::SPEICHERORT);
 			startseitemitarbeiter = gcnew StartseiteMitarbeiter;
-			
 		}
 
 	protected:
@@ -162,7 +162,7 @@ namespace Zeiterfassungssystem {
 			this->btn_passwortAendern->UseVisualStyleBackColor = true;
 			this->btn_passwortAendern->Click += gcnew System::EventHandler(this, &LoginFenster::btn_passwortAendern_Click);
 			// 
-			// loginFenster
+			// LoginFenster
 			// 
 			this->AllowDrop = true;
 			this->AutoScaleDimensions = System::Drawing::SizeF(7, 16);
@@ -183,8 +183,9 @@ namespace Zeiterfassungssystem {
 				static_cast<System::Byte>(0)));
 			this->ForeColor = System::Drawing::SystemColors::MenuText;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
-			this->Name = L"loginFenster";
+			this->Name = L"LoginFenster";
 			this->Text = L"Imperium Login";
+			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &LoginFenster::LoginFenster_FormClosed);
 			this->Load += gcnew System::EventHandler(this, &LoginFenster::loginFenster_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
 			this->ResumeLayout(false);
@@ -219,7 +220,12 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void logInButton_Click(System::Object^  sender, System::EventArgs^  e) {
 		//System::Windows::Forms::DialogResult result = startseitemitarbeiter->ShowDialog(this);
+		String^ passwort = getKennwort();
+		String^ personalnummer = getBenutzername();
+
+		loginPressed = true;
 		startseitemitarbeiter->Show();
+		Close();
 		
 	}
 
@@ -229,6 +235,11 @@ namespace Zeiterfassungssystem {
 	}
 	private: System::Void btn_passwortAendern_Click(System::Object^  sender, System::EventArgs^  e) {
 	
+	}
+	private: System::Void LoginFenster_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {
+		if (!loginPressed) {
+			Application::Exit();
+		}
 	}
 };
 }

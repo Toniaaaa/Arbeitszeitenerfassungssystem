@@ -8,5 +8,6 @@ void Main(array<String^>^ args) {
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
 	Zeiterfassungssystem::LoginFenster form;
-	Application::Run(%form);
+	form.Show();
+	Application::Run();
 }

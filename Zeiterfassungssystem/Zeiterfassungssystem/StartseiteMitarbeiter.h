@@ -394,7 +394,7 @@ namespace Zeiterfassungssystem {
 			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"StartseiteMitarbeiter";
 			this->Text = L"Zeiterfassung Imperium Startseite";
-			this->Load += gcnew System::EventHandler(this, &StartseiteMitarbeiter::StartseiteMitarbeiter_Load);
+			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &StartseiteMitarbeiter::StartseiteMitarbeiter_FormClosed);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -402,14 +402,14 @@ namespace Zeiterfassungssystem {
 
 		
 #pragma endregion
-
+		
 		private: System::Void timerUhr_Tick(System::Object^  sender, System::EventArgs^  e) {
 			timerUhr->Start();
 			uhrzeitLbl->Text = DateTime::Now.ToString("HH:mm:ss");
 			datumLbl->Text = DateTime::Now.ToString("dddd, dd. MMMM yyyy");
 		}
-		private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
-			
-		}
-	};
+	private: System::Void StartseiteMitarbeiter_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {
+		Application::Exit();
+	}
+};
 }
