@@ -421,6 +421,7 @@ namespace Zeiterfassungssystem {
 			datumLbl->Text = DateTime::Now.ToString("dddd, dd. MMMM yyyy");
 		}
 	private: System::Void StartseiteMitarbeiter_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {
+		unternehmen->speichern();
 		Application::Exit();
 	}
 };
