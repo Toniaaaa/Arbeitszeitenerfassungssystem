@@ -13,6 +13,8 @@ Unternehmen::Unternehmen()
 	Abteilung^ administration;
 	Vorgesetzter^ admin = gcnew Vorgesetzter("Admin", "istrator", administration, "1", "1234", 169);
 	administration = gcnew Abteilung("1", admin);
+	admin->setAbteilung(administration);
+	abteilungen->Add(administration);
 }
 
 Unternehmen^ Unternehmen::ladeUnternehmen(String^ file) {

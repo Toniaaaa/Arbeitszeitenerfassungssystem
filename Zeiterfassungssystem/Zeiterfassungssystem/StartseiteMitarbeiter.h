@@ -1,4 +1,6 @@
 #pragma once
+#include "Angestellter.h"
+#include "Unternehmen.h"
 
 #include <ctime>
 
@@ -16,7 +18,9 @@ namespace Zeiterfassungssystem {
 	/// </summary>
 	public ref class StartseiteMitarbeiter : public System::Windows::Forms::Form
 	{
-	
+	private: 
+		Angestellter^ angestellter;
+		Unternehmen^ unternehmen;
 	private: System::Windows::Forms::Timer^  timerUhr;
 	private: System::Windows::Forms::Label^  datumLbl;
 	private: System::Windows::Forms::Label^  arbeitszeitSchriftLbl;
@@ -402,7 +406,15 @@ namespace Zeiterfassungssystem {
 
 		
 #pragma endregion
-		
+		public: void setUnternehmen(Unternehmen^ unternehmen)
+		{
+			this->unternehmen = unternehmen;
+		}
+
+		public: void  setAngemeldeterAngestelter(Angestellter^ angestellter) {
+			this->angestellter = angestellter;
+		}
+
 		private: System::Void timerUhr_Tick(System::Object^  sender, System::EventArgs^  e) {
 			timerUhr->Start();
 			uhrzeitLbl->Text = DateTime::Now.ToString("HH:mm:ss");

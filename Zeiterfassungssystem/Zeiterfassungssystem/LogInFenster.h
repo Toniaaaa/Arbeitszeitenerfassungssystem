@@ -24,8 +24,9 @@ namespace Zeiterfassungssystem {
 	{
 	private:
 		SoundPlayer^ sound;
-		Unternehmen^ todesstern;
+		Unternehmen^ unternehmen;
 		StartseiteMitarbeiter^ startseitemitarbeiter;
+		Angestellter^ angestellter;
 		bool loginPressed = false;
 		
 	public:
@@ -33,7 +34,7 @@ namespace Zeiterfassungssystem {
 		{
 			InitializeComponent();
 			sound = gcnew SoundPlayer();
-			todesstern = Unternehmen::ladeUnternehmen(Unternehmen::SPEICHERORT);
+			unternehmen = Unternehmen::ladeUnternehmen(Unternehmen::SPEICHERORT);
 			startseitemitarbeiter = gcnew StartseiteMitarbeiter;
 		}
 
@@ -210,7 +211,6 @@ namespace Zeiterfassungssystem {
 			this->txt_Kennwort->Text = "";
 		}
 
-
 			 //Beim Laden des Fensters wird eine Sound Datei abgespielt
 	private: System::Void loginFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		sound->SoundLocation = "Sounds/soundImperialMarch.wav";
@@ -222,10 +222,18 @@ namespace Zeiterfassungssystem {
 		//System::Windows::Forms::DialogResult result = startseitemitarbeiter->ShowDialog(this);
 		String^ passwort = getKennwort();
 		String^ personalnummer = getBenutzername();
-
-		loginPressed = true;
-		startseitemitarbeiter->Show();
-		Close();
+	    angestellter = unternehmen->loginaccept(personalnummer, passwort);
+		if (angestellter != nullptr) {
+			loginPressed = true;
+			startseitemitarbeiter->setAngemeldeterAngestelter(angestellter);
+			startseitemitarbeiter->setUnternehmen(unternehmen);
+			startseitemitarbeiter->Show();
+			Close();
+		}
+		else {
+			MessageBox::Show("Personalnummer oder Passwort falsch", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			clear();
+		}
 		
 	}
 
