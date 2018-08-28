@@ -27,7 +27,7 @@ namespace Zeiterfassungssystem {
 		Unternehmen^ unternehmen;
 		StartseiteMitarbeiter^ startseitemitarbeiter;
 		Angestellter^ angestellter;
-		bool loginPressed = false;
+		bool loginGedrueckt = false;
 		
 	public:
 		LoginFenster(void)
@@ -224,7 +224,7 @@ namespace Zeiterfassungssystem {
 		String^ personalnummer = getBenutzername();
 	    angestellter = unternehmen->loginaccept(personalnummer, passwort);
 		if (angestellter != nullptr) {
-			loginPressed = true;
+			loginGedrueckt = true;
 			startseitemitarbeiter->setAngemeldeterAngestelter(angestellter);
 			startseitemitarbeiter->setUnternehmen(unternehmen);
 			startseitemitarbeiter->Show();
@@ -245,7 +245,7 @@ namespace Zeiterfassungssystem {
 	
 	}
 	private: System::Void LoginFenster_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {
-		if (!loginPressed) {
+		if (!loginGedrueckt) {
 			Application::Exit();
 		}
 	}

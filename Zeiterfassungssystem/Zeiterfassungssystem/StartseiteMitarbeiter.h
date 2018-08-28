@@ -1,6 +1,7 @@
 #pragma once
 #include "Angestellter.h"
 #include "Unternehmen.h"
+#include "Ereignis.h"
 
 #include <ctime>
 
@@ -21,6 +22,7 @@ namespace Zeiterfassungssystem {
 	private: 
 		Angestellter^ angestellter;
 		Unternehmen^ unternehmen;
+		Ereignis^ ereignis;
 	private: System::Windows::Forms::Timer^  timerUhr;
 	private: System::Windows::Forms::Label^  datumLbl;
 	private: System::Windows::Forms::Label^  arbeitszeitSchriftLbl;
@@ -42,6 +44,7 @@ namespace Zeiterfassungssystem {
 		StartseiteMitarbeiter(void)
 		{
 			InitializeComponent();	
+			
 		}
 
 	protected:
@@ -112,6 +115,7 @@ namespace Zeiterfassungssystem {
 			this->kommenBtn->Size = System::Drawing::Size(267, 160);
 			this->kommenBtn->TabIndex = 0;
 			this->kommenBtn->UseVisualStyleBackColor = true;
+			this->kommenBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::kommenBtn_Click);
 			// 
 			// gehenBtn
 			// 
@@ -123,6 +127,7 @@ namespace Zeiterfassungssystem {
 			this->gehenBtn->Size = System::Drawing::Size(267, 160);
 			this->gehenBtn->TabIndex = 1;
 			this->gehenBtn->UseVisualStyleBackColor = true;
+			this->gehenBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::gehenBtn_Click);
 			// 
 			// halloLbl
 			// 
@@ -155,6 +160,7 @@ namespace Zeiterfassungssystem {
 			// timerArbeitszeit
 			// 
 			this->timerArbeitszeit->Interval = 1000;
+			this->timerArbeitszeit->Tick += gcnew System::EventHandler(this, &StartseiteMitarbeiter::timerArbeitszeit_Tick);
 			// 
 			// arbeitszeitLbl
 			// 
@@ -355,6 +361,7 @@ namespace Zeiterfassungssystem {
 			this->pauseCbox->Size = System::Drawing::Size(320, 98);
 			this->pauseCbox->TabIndex = 18;
 			this->pauseCbox->UseVisualStyleBackColor = true;
+			this->pauseCbox->CheckedChanged += gcnew System::EventHandler(this, &StartseiteMitarbeiter::pauseCbox_CheckedChanged);
 			// 
 			// timerPause
 			// 
@@ -424,5 +431,19 @@ namespace Zeiterfassungssystem {
 		unternehmen->speichern();
 		Application::Exit();
 	}
+	private: System::Void kommenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		ereignis = gcnew Ereignis(ARBEIT_START, DateTime::Now);
+		//angestellter->fuegeEreignisHinzu(ereignis);
+		timerArbeitszeit->Start();
+		
+	}
+	private: System::Void gehenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		ereignis = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
+		angestellter->fuegeEreignisHinzu(ereignis);
+	}
+private: System::Void pauseCbox_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void timerArbeitszeit_Tick(System::Object^  sender, System::EventArgs^  e) {
+}
 };
 }

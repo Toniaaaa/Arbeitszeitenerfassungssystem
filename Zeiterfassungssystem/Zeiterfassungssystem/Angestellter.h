@@ -17,7 +17,7 @@ private:
 	String^ personalnummer;
 	String^ passwort;
 	Int32 monatsstunden;
-	List<Ereignis^>^ listeEvents;
+	List<Ereignis^>^ listeEreignisse;//gettter und setter
 
 public:
 	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 monatsstunden);
@@ -29,6 +29,9 @@ public:
 	inline String^ getPersonalnummer() { return personalnummer; }
 	inline String^ getPasswort() { return passwort; };
 	inline Int32 getMonatsstunden() { return monatsstunden; }
+	List<Ereignis^>^ getAlleEreignisse();
+	Ereignis^ getEreignis(Int32 index);
+	Int32^ getAnzahlEreignisse();
 
 	//Setter
 	inline void setVorname(String^ vorname) { this->vorname = vorname; }
@@ -38,4 +41,7 @@ public:
 	inline void setPasswort(String^ passwort) { this->passwort = passwort; }
 	inline void setMonatsstunden(Int32 monatstunden) { this->monatsstunden = monatsstunden; }
 	virtual bool istVorgesetzter() = 0;
+	void fuegeEreignisHinzu(Ereignis^ ereignis);
+	void removeEreignis(Int32 index);
+
 };
