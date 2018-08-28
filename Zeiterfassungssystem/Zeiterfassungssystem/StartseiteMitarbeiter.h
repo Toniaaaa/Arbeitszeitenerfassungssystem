@@ -22,7 +22,14 @@ namespace Zeiterfassungssystem {
 	private: 
 		Angestellter^ angestellter;
 		Unternehmen^ unternehmen;
-		Ereignis^ ereignis;
+		Ereignis^ arbeitsanfang; 
+		Ereignis ^ arbeitsende;
+		Ereignis^ pausenanfang;
+		Ereignis^ pausenende;
+
+		bool gekommen = false;
+		bool gegangen = false;
+
 	private: System::Windows::Forms::Timer^  timerUhr;
 	private: System::Windows::Forms::Label^  datumLbl;
 	private: System::Windows::Forms::Label^  arbeitszeitSchriftLbl;
@@ -362,6 +369,7 @@ namespace Zeiterfassungssystem {
 			this->pauseCbox->TabIndex = 18;
 			this->pauseCbox->UseVisualStyleBackColor = true;
 			this->pauseCbox->CheckedChanged += gcnew System::EventHandler(this, &StartseiteMitarbeiter::pauseCbox_CheckedChanged);
+			this->pauseCbox->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::pauseCbox_Click);
 			// 
 			// timerPause
 			// 
@@ -427,23 +435,65 @@ namespace Zeiterfassungssystem {
 			uhrzeitLbl->Text = DateTime::Now.ToString("HH:mm:ss");
 			datumLbl->Text = DateTime::Now.ToString("dddd, dd. MMMM yyyy");
 		}
+
+	//Wenn das Fenster geschlossen wird dann wird das unternehmen gespeichert
 	private: System::Void StartseiteMitarbeiter_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {
 		unternehmen->speichern();
 		Application::Exit();
 	}
+
+	//Beim kommen wird ein neues Ereignis mit Zeitstempel erstellt und zu der Liste des Angestellten hinzugefügt
 	private: System::Void kommenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		ereignis = gcnew Ereignis(ARBEIT_START, DateTime::Now);
-		//angestellter->fuegeEreignisHinzu(ereignis);
+		arbeitsanfang = gcnew Ereignis(ARBEIT_START, DateTime::Now);
+		angestellter->fuegeEreignisHinzu(arbeitsanfang);
 		timerArbeitszeit->Start();
-		
+		gekommen = true;
 	}
+
+	//Beim gehen wird ein neues Ereignis mit Zeitstempel erstellt und zu der Liste des Angestellten hinzugefügt
 	private: System::Void gehenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		ereignis = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
-		angestellter->fuegeEreignisHinzu(ereignis);
+		arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
+		angestellter->fuegeEreignisHinzu(arbeitsende);
+		timerArbeitszeit->Stop();
+		gegangen = true;
 	}
-private: System::Void pauseCbox_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-}
-private: System::Void timerArbeitszeit_Tick(System::Object^  sender, System::EventArgs^  e) {
-}
+
+	private: System::Void pauseCbox_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+	}
+	private: System::Void timerArbeitszeit_Tick(System::Object^  sender, System::EventArgs^  e) {
+	}
+	
+	//Wenn Button geklickt werden ereignisse erstellt und dem angestellten hinzugefügt
+	private: System::Void pauseCbox_Click(System::Object^  sender, System::EventArgs^  e) {
+		if (gekommen && !gegangen) {
+			if (timerArbeitszeit->Enabled) {
+				timerArbeitszeit->Stop();
+				timerPause->Start();
+				pausenanfang = gcnew Ereignis(PAUSE_START, DateTime::Now);
+				angestellter->fuegeEreignisHinzu(pausenanfang);
+				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon3.jpg");
+				this->pauseLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+				this->arbeitszeitLbl->ForeColor = System::Drawing::Color::Gray;
+			}
+			else {
+				timerArbeitszeit->Start();
+				timerPause->Stop();
+				pausenende = gcnew Ereignis(PAUSE_ENDE, DateTime::Now);
+				angestellter->fuegeEreignisHinzu(pausenende);
+				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon.jpg");
+				this->pauseLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+				this->arbeitszeitLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+			}
+		}
+		else if (gekommen && gegangen) {
+			MessageBox::Show("Sie haben Ihren Arbeitstag bereits beendet!", "Keine Pause möglich",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+		else {
+			MessageBox::Show("Bitte beginnen Sie zuerst Ihre Arbeitszeit, bevor Sie eine Pause starten!", "Keine Pause möglich",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+	}
+
 };
 }

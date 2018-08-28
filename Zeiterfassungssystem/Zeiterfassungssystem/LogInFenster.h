@@ -2,6 +2,7 @@
 #include "Unternehmen.h"
 #include "StartseiteMitarbeiter.h"
 #include "Angestellter.h"
+#include "PasswortAendernFenster.h"
 
 namespace Zeiterfassungssystem {
 
@@ -16,7 +17,7 @@ namespace Zeiterfassungssystem {
 	//Namespace zum lesen und schreiben
 	using namespace System::Runtime::Serialization::Formatters::Binary;
 	using namespace System::IO;
-
+	
 	/// <summary>
 	/// Zusammenfassung für loginFenster
 	/// </summary>
@@ -26,6 +27,7 @@ namespace Zeiterfassungssystem {
 		SoundPlayer^ sound;
 		Unternehmen^ unternehmen;
 		StartseiteMitarbeiter^ startseitemitarbeiter;
+		PasswortAendernFenster^ passwortaendernseite;
 		Angestellter^ angestellter;
 		bool loginGedrueckt = false;
 		
@@ -36,6 +38,7 @@ namespace Zeiterfassungssystem {
 			sound = gcnew SoundPlayer();
 			unternehmen = Unternehmen::ladeUnternehmen(Unternehmen::SPEICHERORT);
 			startseitemitarbeiter = gcnew StartseiteMitarbeiter;
+			passwortaendernseite = gcnew PasswortAendernFenster();
 		}
 
 	protected:
@@ -242,7 +245,8 @@ namespace Zeiterfassungssystem {
 		MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
 	private: System::Void btn_passwortAendern_Click(System::Object^  sender, System::EventArgs^  e) {
-	
+		passwortaendernseite->setUnternehmen(unternehmen);
+		passwortaendernseite->Show();
 	}
 	private: System::Void LoginFenster_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {
 		if (!loginGedrueckt) {
