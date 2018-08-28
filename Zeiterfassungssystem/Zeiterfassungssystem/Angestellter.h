@@ -1,12 +1,13 @@
 #pragma once
-#include "Ereignis.h"
 
 using namespace System;
 using namespace System::Collections;
 using namespace System::Collections::Generic;
 
 ref class Abteilung;
+ref class Ereignis;
 
+[Serializable]
 ref class Angestellter 
 {
 private:
@@ -26,8 +27,8 @@ public:
 	inline String^ getNachname() {return nachname;}
 	Abteilung^ getAbteilung();
 	inline String^ getPersonalnummer() { return personalnummer; }
-	inline String^ getPpasswort() { return passwort; };
-	inline Int32 getPmonatsstunden() { return monatsstunden; }
+	inline String^ getPasswort() { return passwort; };
+	inline Int32 getMonatsstunden() { return monatsstunden; }
 
 	//Setter
 	inline void setVorname(String^ vorname) { this->vorname = vorname; }
@@ -36,6 +37,5 @@ public:
 	inline void setPersonalnummer(String^ personalnummer) { this->personalnummer = personalnummer; }
 	inline void setPasswort(String^ passwort) { this->passwort = passwort; }
 	inline void setMonatsstunden(Int32 monatstunden) { this->monatsstunden = monatsstunden; }
-
 	virtual bool istVorgesetzter() = 0;
 };

@@ -11,6 +11,7 @@ enum EreignisTyp {
 	PAUSE_ENDE,
 };
 
+[Serializable]
 ref class Ereignis
 {
 private:

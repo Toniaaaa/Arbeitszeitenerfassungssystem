@@ -1,8 +1,11 @@
 #pragma once
-#include "Abteilung.h"
 
 using namespace System;
 using namespace System::Collections::Generic;
+
+ref class Abteilung;
+ref class Angestellter;
+
 [Serializable]
 ref class Unternehmen
 {
@@ -10,17 +13,19 @@ private:
 	List<Abteilung^>^ abteilungen;
 	String^ file;
 
-public:
 	Unternehmen();
-	Unternehmen(String^ file);
+
+public:
+	static String^ SPEICHERORT = "Rebillion.txt";
+
+	static Unternehmen^ ladeUnternehmen(String^ file);
+	void speichern();
+
 	Int32 getAnzahlAbteilungen();
 	Abteilung^ getAbteilung(Int32 index);
 	void removeAbteilung(Int32 index);
 	void addAbteilung(Abteilung^ abteilung);
 	List<Angestellter^>^ getAlleAngestellte();
-	void speichern();
-	void laden(Unternehmen^ unternehmen);
-	String^ getFile();
-	void setFile(String^ file);
-};
+	Angestellter^ loginaccept(String^ personalnummer, String^ passwort);
 
+};

@@ -1,5 +1,6 @@
 #pragma once
 #include "Angestellter.h"
+#include "Abteilung.h"
 
 using namespace System;
 using namespace System::Collections;
@@ -13,4 +14,3 @@ public:
 
 	bool istVorgesetzter() override;
 };
-

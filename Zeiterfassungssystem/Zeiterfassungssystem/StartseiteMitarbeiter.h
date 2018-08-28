@@ -1,5 +1,7 @@
 #pragma once
+
 #include <ctime>
+
 namespace Zeiterfassungssystem {
 
 	using namespace System;
@@ -35,9 +37,7 @@ namespace Zeiterfassungssystem {
 	public:
 		StartseiteMitarbeiter(void)
 		{
-			InitializeComponent();
-
-			
+			InitializeComponent();	
 		}
 
 	protected:
@@ -199,7 +199,6 @@ namespace Zeiterfassungssystem {
 			this->datumLbl->TabIndex = 7;
 			this->datumLbl->Text = L"1. Januar 1900";
 			this->datumLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
-			
 			// 
 			// arbeitszeitSchriftLbl
 			// 
@@ -395,6 +394,7 @@ namespace Zeiterfassungssystem {
 			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"StartseiteMitarbeiter";
 			this->Text = L"Zeiterfassung Imperium Startseite";
+			this->Load += gcnew System::EventHandler(this, &StartseiteMitarbeiter::StartseiteMitarbeiter_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -402,12 +402,14 @@ namespace Zeiterfassungssystem {
 
 		
 #pragma endregion
-	
 
-private: System::Void timerUhr_Tick(System::Object^  sender, System::EventArgs^  e) {
-	timerUhr->Start();
-	uhrzeitLbl->Text = DateTime::Now.ToString("HH:mm:ss");
-	datumLbl->Text = DateTime::Now.ToString("dddd, dd. MMMM yyyy");
-}
-};
+		private: System::Void timerUhr_Tick(System::Object^  sender, System::EventArgs^  e) {
+			timerUhr->Start();
+			uhrzeitLbl->Text = DateTime::Now.ToString("HH:mm:ss");
+			datumLbl->Text = DateTime::Now.ToString("dddd, dd. MMMM yyyy");
+		}
+		private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
+			
+		}
+	};
 }

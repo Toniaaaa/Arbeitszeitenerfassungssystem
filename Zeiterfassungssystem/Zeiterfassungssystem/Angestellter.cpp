@@ -1,6 +1,4 @@
-	#include "Angestellter.h"
-
-
+#include "Angestellter.h"
 
 Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32 monatsstunden)
 {
@@ -17,5 +15,3 @@ Abteilung ^ Angestellter::getAbteilung()
 {
 	return abteilung;
 }
-
-
