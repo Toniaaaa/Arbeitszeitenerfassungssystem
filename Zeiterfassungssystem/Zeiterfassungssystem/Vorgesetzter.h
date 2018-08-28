@@ -1,10 +1,12 @@
 #pragma once
 #include "Angestellter.h"
+#include "Abteilung.h"
 
 using namespace System;
 using namespace System::Collections;
 using namespace System::Collections::Generic;
 
+[Serializable]
 ref class Vorgesetzter : 
 	public Angestellter
 {
@@ -13,4 +15,3 @@ public:
 
 	bool istVorgesetzter() override;
 };
-

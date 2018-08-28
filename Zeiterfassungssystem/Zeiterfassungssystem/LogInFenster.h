@@ -1,6 +1,7 @@
 #pragma once
 #include "Unternehmen.h"
-
+#include "StartseiteMitarbeiter.h"
+#include "Angestellter.h"
 
 namespace Zeiterfassungssystem {
 
@@ -19,26 +20,29 @@ namespace Zeiterfassungssystem {
 	/// <summary>
 	/// Zusammenfassung für loginFenster
 	/// </summary>
-	public ref class loginFenster : public System::Windows::Forms::Form
+	public ref class LoginFenster : public System::Windows::Forms::Form
 	{
 	private:
 		SoundPlayer^ sound;
-		Unternehmen^ todesstern;
+		Unternehmen^ unternehmen;
+		StartseiteMitarbeiter^ startseitemitarbeiter;
+		Angestellter^ angestellter;
+		bool loginGedrueckt = false;
 		
 	public:
-		loginFenster(void)
+		LoginFenster(void)
 		{
 			InitializeComponent();
 			sound = gcnew SoundPlayer();
-			todesstern = gcnew Unternehmen("Rebillion.txt");
-			
+			unternehmen = Unternehmen::ladeUnternehmen(Unternehmen::SPEICHERORT);
+			startseitemitarbeiter = gcnew StartseiteMitarbeiter;
 		}
 
 	protected:
 		/// <summary>
 		/// Verwendete Ressourcen bereinigen.
 		/// </summary>
-		~loginFenster()
+		~LoginFenster()
 		{
 			if (components)
 			{
@@ -67,7 +71,7 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(loginFenster::typeid));
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(LoginFenster::typeid));
 			this->logInButton = (gcnew System::Windows::Forms::Button());
 			this->BenutzernameLabel = (gcnew System::Windows::Forms::Label());
 			this->KennwortLabel = (gcnew System::Windows::Forms::Label());
@@ -91,7 +95,7 @@ namespace Zeiterfassungssystem {
 			this->logInButton->TabIndex = 2;
 			this->logInButton->Text = L"Einloggen";
 			this->logInButton->UseVisualStyleBackColor = false;
-			this->logInButton->Click += gcnew System::EventHandler(this, &loginFenster::logInButton_Click);
+			this->logInButton->Click += gcnew System::EventHandler(this, &LoginFenster::logInButton_Click);
 			// 
 			// BenutzernameLabel
 			// 
@@ -132,7 +136,7 @@ namespace Zeiterfassungssystem {
 			this->passwortvergessenButton->TabIndex = 3;
 			this->passwortvergessenButton->Text = L"Passwort vergessen\?";
 			this->passwortvergessenButton->UseVisualStyleBackColor = true;
-			this->passwortvergessenButton->Click += gcnew System::EventHandler(this, &loginFenster::passwortvergessenButton_Click);
+			this->passwortvergessenButton->Click += gcnew System::EventHandler(this, &LoginFenster::passwortvergessenButton_Click);
 			// 
 			// txt_Benutzername
 			// 
@@ -157,9 +161,9 @@ namespace Zeiterfassungssystem {
 			this->btn_passwortAendern->TabIndex = 4;
 			this->btn_passwortAendern->Text = L"Passwort ändern";
 			this->btn_passwortAendern->UseVisualStyleBackColor = true;
-			this->btn_passwortAendern->Click += gcnew System::EventHandler(this, &loginFenster::btn_passwortAendern_Click);
+			this->btn_passwortAendern->Click += gcnew System::EventHandler(this, &LoginFenster::btn_passwortAendern_Click);
 			// 
-			// loginFenster
+			// LoginFenster
 			// 
 			this->AllowDrop = true;
 			this->AutoScaleDimensions = System::Drawing::SizeF(7, 16);
@@ -180,9 +184,10 @@ namespace Zeiterfassungssystem {
 				static_cast<System::Byte>(0)));
 			this->ForeColor = System::Drawing::SystemColors::MenuText;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
-			this->Name = L"loginFenster";
+			this->Name = L"LoginFenster";
 			this->Text = L"Imperium Login";
-			this->Load += gcnew System::EventHandler(this, &loginFenster::loginFenster_Load);
+			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &LoginFenster::LoginFenster_FormClosed);
+			this->Load += gcnew System::EventHandler(this, &LoginFenster::loginFenster_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -206,18 +211,30 @@ namespace Zeiterfassungssystem {
 			this->txt_Kennwort->Text = "";
 		}
 
-
 			 //Beim Laden des Fensters wird eine Sound Datei abgespielt
 	private: System::Void loginFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		sound->SoundLocation = "Sounds/soundImperialMarch.wav";
 		sound->Load();
 		sound->Play();
-		todesstern->speichern();
-		todesstern->laden(todesstern);
-
 	}
 
 	private: System::Void logInButton_Click(System::Object^  sender, System::EventArgs^  e) {
+		//System::Windows::Forms::DialogResult result = startseitemitarbeiter->ShowDialog(this);
+		String^ passwort = getKennwort();
+		String^ personalnummer = getBenutzername();
+	    angestellter = unternehmen->loginaccept(personalnummer, passwort);
+		if (angestellter != nullptr) {
+			loginGedrueckt = true;
+			startseitemitarbeiter->setAngemeldeterAngestelter(angestellter);
+			startseitemitarbeiter->setUnternehmen(unternehmen);
+			startseitemitarbeiter->Show();
+			Close();
+		}
+		else {
+			MessageBox::Show("Personalnummer oder Passwort falsch", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			clear();
+		}
+		
 	}
 
 	private: System::Void passwortvergessenButton_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -226,6 +243,11 @@ namespace Zeiterfassungssystem {
 	}
 	private: System::Void btn_passwortAendern_Click(System::Object^  sender, System::EventArgs^  e) {
 	
+	}
+	private: System::Void LoginFenster_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {
+		if (!loginGedrueckt) {
+			Application::Exit();
+		}
 	}
 };
 }

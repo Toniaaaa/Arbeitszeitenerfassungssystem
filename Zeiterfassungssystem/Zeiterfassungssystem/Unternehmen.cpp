@@ -1,23 +1,45 @@
 #include "Unternehmen.h"
+#include "Angestellter.h"
+#include "Abteilung.h"
+#include "Vorgesetzter.h"
+#include "Mitarbeiter.h"
 
 using namespace System::Runtime::Serialization::Formatters::Binary;
 using namespace System::IO;
 
 Unternehmen::Unternehmen()
 {
-	
-}
-
-Unternehmen::Unternehmen(String^ file)
-{
 	abteilungen = gcnew List<Abteilung^>;
 	Abteilung^ administration;
 	Vorgesetzter^ admin = gcnew Vorgesetzter("Admin", "istrator", administration, "1", "1234", 169);
 	administration = gcnew Abteilung("1", admin);
-	this->file = file;
+	admin->setAbteilung(administration);
+	abteilungen->Add(administration);
 }
-	
-	
+
+Unternehmen^ Unternehmen::ladeUnternehmen(String^ file) {
+	Unternehmen^ result;
+	if (File::Exists(file)) {
+		FileStream^ filestream = File::OpenRead(file);
+		BinaryFormatter^ binary = gcnew BinaryFormatter();
+		result = (Unternehmen^)binary->Deserialize(filestream);
+		filestream->Close();
+	}
+	else {
+		result = gcnew Unternehmen();
+	}
+	result->file = file;
+
+	return result;
+}
+
+void Unternehmen::speichern()
+{
+	FileStream^ filestream = File::Create(file);
+	BinaryFormatter^ binary = gcnew BinaryFormatter();
+	binary->Serialize(filestream, this);
+	filestream->Close();
+}
 
 Int32 Unternehmen::getAnzahlAbteilungen()
 {
@@ -54,28 +76,22 @@ List<Angestellter^>^ Unternehmen::getAlleAngestellte()
 	return angestellte;
 }
 
-void Unternehmen::speichern()
+Angestellter ^ Unternehmen::loginaccept(String ^ personalnummer, String ^ passwort)
 {
-	FileStream^ filestream = File::Create(file);
-	BinaryFormatter^ binary = gcnew BinaryFormatter();
-	binary->Serialize(filestream, this);
-	filestream->Close();
-}
+	List<Angestellter^>^ angestellte = getAlleAngestellte();
+	Angestellter^ result = nullptr;
 
-void Unternehmen::laden(Unternehmen^ unternehmen)
-{
-	FileStream^ filestream = File::OpenRead(file);
-	BinaryFormatter^ binary = gcnew BinaryFormatter();
-	unternehmen = (Unternehmen^)binary->Deserialize(filestream);
-	filestream->Close();
-}
+	bool gefunden = false;
+	for (int i = 0; i < angestellte->Count && !gefunden; i++) {
+		Angestellter^ angestellter = angestellte[i];
 
-String ^ Unternehmen::getFile()
-{
-	return file;
-}
+		if (angestellter->getPersonalnummer()->Equals(personalnummer)) {
+			gefunden = true;
 
-void Unternehmen::setFile(String ^ file)
-{
-	this->file = file;
+			if (angestellter->getPasswort()->Equals(passwort)) {
+				result = angestellter;
+			}
+		}
+	} 
+	return result;
 }

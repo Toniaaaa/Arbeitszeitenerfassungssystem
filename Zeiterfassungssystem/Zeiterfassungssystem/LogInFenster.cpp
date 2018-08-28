@@ -7,6 +7,7 @@ using namespace System::Windows::Forms;
 void Main(array<String^>^ args) {
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
-	Zeiterfassungssystem::loginFenster form;
-	Application::Run(%form);
+	Zeiterfassungssystem::LoginFenster form;
+	form.Show();
+	Application::Run();
 }

@@ -1,11 +1,13 @@
 #pragma once
-#include "Vorgesetzter.h"
-#include "Angestellter.h"
-#include "Mitarbeiter.h"
 
 using namespace System;
 using namespace System::Collections;
 using namespace System::Collections::Generic;
+
+ref class Vorgesetzter;
+ref class Angestellter;
+ref class Mitarbeiter;
+
 [Serializable]
 ref class Abteilung
 {
@@ -25,7 +27,4 @@ public:
 	Int32 getAnzahlMitarbeiter();
 	void removeMitarbeiter(Int32 index);
 
-
-
 };
-
