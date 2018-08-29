@@ -487,6 +487,7 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
 		nameLbl->Text = angestellter->getVorname() + " " + angestellter->getNachname();
+		//resturlaubLbl->Text = angestellter->getUrlaubstage()->ToString();
 	}
 };
 }

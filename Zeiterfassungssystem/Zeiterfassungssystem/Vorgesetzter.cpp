@@ -1,7 +1,7 @@
 #include "Vorgesetzter.h"
 
-Vorgesetzter::Vorgesetzter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32 monatsstunden) :
-	Angestellter(vorname, nachname, abteilung, personalnummer, passwort, monatsstunden)
+Vorgesetzter::Vorgesetzter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32^ wochenstunden, Int32^ urlaubstage) :
+	Angestellter(vorname, nachname, abteilung, personalnummer, passwort, wochenstunden, urlaubstage)
 {
 	
 }

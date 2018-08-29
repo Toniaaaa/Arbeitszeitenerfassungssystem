@@ -21,7 +21,7 @@ private:
 	List<Ereignis^>^ listeEreignisse;
 
 public:
-	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32^ wochenstunden);
+	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32^ wochenstunden, Int32^ urlaubstage);
 
 	//Getter
 	inline String^ getVorname() {return vorname;}

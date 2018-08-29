@@ -10,7 +10,7 @@ ref class Mitarbeiter :
 	public Angestellter
 {
 public:
-	Mitarbeiter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 monatsstunden);
+	Mitarbeiter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32^ wochenstunden, Int32^ urlaubstage);
 
 	bool istVorgesetzter() override;
 };

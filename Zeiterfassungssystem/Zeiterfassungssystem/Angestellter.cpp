@@ -1,14 +1,15 @@
 #include "Angestellter.h"
 #include "Ereignis.h"
 
-Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32 monatsstunden)
+Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32^ wochenstunden, Int32^ urlaubstage)
 {
 	this->vorname = vorname;
 	this->nachname = nachname;
 	this->abteilung = abteilung;
 	this->personalnummer = personalnummer;
 	this->passwort = passwort;
-	this->monatsstunden = monatsstunden;
+	this->wochenstunden = wochenstunden;
+	this->urlaubstage = urlaubstage;
 	listeEreignisse = gcnew List<Ereignis^>;
 }
 
