@@ -2,6 +2,7 @@
 #include "Angestellter.h"
 #include "Unternehmen.h"
 #include "Ereignis.h"
+#include "StatistikFenster.h"
 
 #include <ctime>
 
@@ -26,6 +27,7 @@ namespace Zeiterfassungssystem {
 		Ereignis ^ arbeitsende;
 		Ereignis^ pausenanfang;
 		Ereignis^ pausenende;
+		StatistikFenster^ statistikfenster;
 
 		bool gekommen = false;
 		bool gegangen = false;
@@ -51,7 +53,7 @@ namespace Zeiterfassungssystem {
 		StartseiteMitarbeiter(void)
 		{
 			InitializeComponent();	
-			
+			statistikfenster = gcnew StatistikFenster();
 		}
 
 	protected:
@@ -285,6 +287,7 @@ namespace Zeiterfassungssystem {
 			this->statistikBtn->Size = System::Drawing::Size(313, 94);
 			this->statistikBtn->TabIndex = 12;
 			this->statistikBtn->UseVisualStyleBackColor = false;
+			this->statistikBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::statistikBtn_Click);
 			// 
 			// urlaubBtn
 			// 
@@ -489,5 +492,8 @@ namespace Zeiterfassungssystem {
 		nameLbl->Text = angestellter->getVorname() + " " + angestellter->getNachname();
 		//resturlaubLbl->Text = angestellter->getUrlaubstage()->ToString();
 	}
+private: System::Void statistikBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+	statistikfenster->Show();
+}
 };
 }
