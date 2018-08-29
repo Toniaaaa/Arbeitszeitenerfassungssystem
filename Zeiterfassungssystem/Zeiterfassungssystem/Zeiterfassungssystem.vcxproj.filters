@@ -45,6 +45,9 @@
     <ClInclude Include="PasswortAendernFenster.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="StatistikFenster.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Angestellter.cpp">
@@ -72,6 +75,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="PasswortAendernFenster.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="StatistikFenster.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
