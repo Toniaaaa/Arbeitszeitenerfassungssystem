@@ -41,8 +41,8 @@ public:
 	inline void setAbteilung(Abteilung^ abteilung) { this->abteilung = abteilung; }
 	inline void setPersonalnummer(String^ personalnummer) { this->personalnummer = personalnummer; }
 	inline void setPasswort(String^ passwort) { this->passwort = passwort; }
-	inline void setWochenstunden(Int32^ wochenstunden) { this->wochenstunden = wochenstunden; }
-	inline void setUrlaubstage(Int32^ urlaubstage) { this->urlaubstage = urlaubstage; }
+	inline void setWochenstunden(Int32 wochenstunden) { this->wochenstunden = wochenstunden; }
+	inline void setUrlaubstage(Int32 urlaubstage) { this->urlaubstage = urlaubstage; }
 	virtual bool istVorgesetzter() = 0;
 	void fuegeEreignisHinzu(Ereignis^ ereignis);
 	void removeEreignis(Int32 index);
