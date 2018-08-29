@@ -33,7 +33,7 @@ Int32^ Angestellter::getAnzahlEreignisse()
 	return listeEreignisse->Count;
 }
 
-void Angestellter::fuegeEreignisHinzu(Ereignis ^ ereignis)
+void Angestellter::fuegeEreignisHinzu(Ereignis^ ereignis)
 {
 	listeEreignisse->Add(ereignis);
 }

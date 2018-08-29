@@ -21,7 +21,7 @@ namespace Zeiterfassungssystem {
 	public ref class StartseiteMitarbeiter : public System::Windows::Forms::Form
 	{
 	private: 
-		Angestellter^ angestellter;
+		Angestellter^ angestellterAkt;
 		Unternehmen^ unternehmen;
 		Ereignis^ arbeitsanfang; 
 		Ereignis ^ arbeitsende;
@@ -420,7 +420,7 @@ namespace Zeiterfassungssystem {
 		}
 
 		public: void  setAngemeldeterAngestelter(Angestellter^ angestellter) {
-			this->angestellter = angestellter;
+			this->angestellterAkt = angestellter;
 		}
 
 		private: System::Void timerUhr_Tick(System::Object^  sender, System::EventArgs^  e) {
@@ -438,7 +438,7 @@ namespace Zeiterfassungssystem {
 	//Beim kommen wird ein neues Ereignis mit Zeitstempel erstellt und zu der Liste des Angestellten hinzugefügt
 	private: System::Void kommenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		arbeitsanfang = gcnew Ereignis(ARBEIT_START, DateTime::Now);
-		angestellter->fuegeEreignisHinzu(arbeitsanfang);
+		angestellterAkt->fuegeEreignisHinzu(arbeitsanfang);
 		timerArbeitszeit->Start();
 		gekommen = true;
 	}
@@ -446,7 +446,7 @@ namespace Zeiterfassungssystem {
 	//Beim gehen wird ein neues Ereignis mit Zeitstempel erstellt und zu der Liste des Angestellten hinzugefügt
 	private: System::Void gehenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
-		angestellter->fuegeEreignisHinzu(arbeitsende);
+		angestellterAkt->fuegeEreignisHinzu(arbeitsende);
 		timerArbeitszeit->Stop();
 		gegangen = true;
 	}
@@ -463,7 +463,7 @@ namespace Zeiterfassungssystem {
 				timerArbeitszeit->Stop();
 				timerPause->Start();
 				pausenanfang = gcnew Ereignis(PAUSE_START, DateTime::Now);
-				angestellter->fuegeEreignisHinzu(pausenanfang);
+				angestellterAkt->fuegeEreignisHinzu(pausenanfang);
 				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon3.jpg");
 				this->pauseLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 				this->arbeitszeitLbl->ForeColor = System::Drawing::Color::Gray;
@@ -472,7 +472,7 @@ namespace Zeiterfassungssystem {
 				timerArbeitszeit->Start();
 				timerPause->Stop();
 				pausenende = gcnew Ereignis(PAUSE_ENDE, DateTime::Now);
-				angestellter->fuegeEreignisHinzu(pausenende);
+				angestellterAkt->fuegeEreignisHinzu(pausenende);
 				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon.jpg");
 				this->pauseLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 				this->arbeitszeitLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
@@ -489,8 +489,8 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
-		nameLbl->Text = angestellter->getVorname() + " " + angestellter->getNachname();
-		resturlaubLbl->Text = angestellter->getUrlaubstage()->ToString();
+		nameLbl->Text = angestellterAkt->getVorname() + " " + angestellterAkt->getNachname();
+		//resturlaubLbl->Text = angestellter->getUrlaubstage()->ToString();
 	}
 private: System::Void statistikBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 	statistikfenster->Show();

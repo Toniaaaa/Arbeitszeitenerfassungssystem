@@ -245,11 +245,11 @@ namespace Zeiterfassungssystem {
 		LoginFenster^ loginfenster;
 		setUnternehmen(unternehmen);
 		angestellter = unternehmen->loginaccept(personalnummer, passwort);
-		if (angestellter = nullptr) {
+		if (angestellter == nullptr) {
 			MessageBox::Show("Personalnummer oder Passwort falsch", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			clear();
 		}
-		if (neuespasswort->Equals(passwortwiederholen) && neuespasswort != "") {
+		else if (neuespasswort->Equals(passwortwiederholen) && neuespasswort != "") {
 			angestellter->setPasswort(neuespasswort);
 			this->clear();
 			this->Close();
