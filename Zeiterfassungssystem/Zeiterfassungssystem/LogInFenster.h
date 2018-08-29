@@ -57,7 +57,7 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Button^  logInButton;
 	private: System::Windows::Forms::Label^  BenutzernameLabel;
 	private: System::Windows::Forms::Label^  KennwortLabel;
-	private: System::Windows::Forms::PictureBox^  pictureBox2;
+
 	private: System::Windows::Forms::Button^  passwortvergessenButton;
 	private: System::Windows::Forms::TextBox^  txt_Benutzername;
 
@@ -74,16 +74,13 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(LoginFenster::typeid));
 			this->logInButton = (gcnew System::Windows::Forms::Button());
 			this->BenutzernameLabel = (gcnew System::Windows::Forms::Label());
 			this->KennwortLabel = (gcnew System::Windows::Forms::Label());
-			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
 			this->passwortvergessenButton = (gcnew System::Windows::Forms::Button());
 			this->txt_Benutzername = (gcnew System::Windows::Forms::TextBox());
 			this->txt_Kennwort = (gcnew System::Windows::Forms::TextBox());
 			this->btn_passwortAendern = (gcnew System::Windows::Forms::Button());
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// logInButton
@@ -121,15 +118,6 @@ namespace Zeiterfassungssystem {
 			this->KennwortLabel->Size = System::Drawing::Size(76, 16);
 			this->KennwortLabel->TabIndex = 3;
 			this->KennwortLabel->Text = L"Kennwort";
-			// 
-			// pictureBox2
-			// 
-			this->pictureBox2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox2.Image")));
-			this->pictureBox2->Location = System::Drawing::Point(-1, 249);
-			this->pictureBox2->Name = L"pictureBox2";
-			this->pictureBox2->Size = System::Drawing::Size(522, 172);
-			this->pictureBox2->TabIndex = 5;
-			this->pictureBox2->TabStop = false;
 			// 
 			// passwortvergessenButton
 			// 
@@ -179,19 +167,16 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->txt_Kennwort);
 			this->Controls->Add(this->txt_Benutzername);
 			this->Controls->Add(this->passwortvergessenButton);
-			this->Controls->Add(this->pictureBox2);
 			this->Controls->Add(this->KennwortLabel);
 			this->Controls->Add(this->BenutzernameLabel);
 			this->Controls->Add(this->logInButton);
 			this->Font = (gcnew System::Drawing::Font(L"Arial", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->ForeColor = System::Drawing::SystemColors::MenuText;
-			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"LoginFenster";
-			this->Text = L"Imperium Login";
+			this->Text = L"Login";
 			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &LoginFenster::LoginFenster_FormClosed);
 			this->Load += gcnew System::EventHandler(this, &LoginFenster::loginFenster_Load);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -216,9 +201,9 @@ namespace Zeiterfassungssystem {
 
 			 //Beim Laden des Fensters wird eine Sound Datei abgespielt
 	private: System::Void loginFenster_Load(System::Object^  sender, System::EventArgs^  e) {
-		sound->SoundLocation = "Sounds/soundImperialMarch.wav";
-		sound->Load();
-		sound->Play();
+		//sound->SoundLocation = "";
+		//sound->Load();
+		//sound->Play();
 	}
 
 	private: System::Void logInButton_Click(System::Object^  sender, System::EventArgs^  e) {

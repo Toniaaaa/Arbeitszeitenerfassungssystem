@@ -404,7 +404,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->kommenBtn);
 			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"StartseiteMitarbeiter";
-			this->Text = L"Zeiterfassung Imperium Startseite";
+			this->Text = L"Zeiterfassung Startseite";
 			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &StartseiteMitarbeiter::StartseiteMitarbeiter_FormClosed);
 			this->Load += gcnew System::EventHandler(this, &StartseiteMitarbeiter::StartseiteMitarbeiter_Load);
 			this->ResumeLayout(false);
