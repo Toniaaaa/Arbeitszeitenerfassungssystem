@@ -16,11 +16,12 @@ private:
 	Abteilung^ abteilung;
 	String^ personalnummer;
 	String^ passwort;
-	Int32 monatsstunden;
-	List<Ereignis^>^ listeEreignisse;//gettter und setter
+	Int32^ wochenstunden;
+	Int32^ urlaubstage;
+	List<Ereignis^>^ listeEreignisse;
 
 public:
-	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 monatsstunden);
+	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32^ wochenstunden);
 
 	//Getter
 	inline String^ getVorname() {return vorname;}
@@ -28,7 +29,8 @@ public:
 	Abteilung^ getAbteilung();
 	inline String^ getPersonalnummer() { return personalnummer; }
 	inline String^ getPasswort() { return passwort; };
-	inline Int32 getMonatsstunden() { return monatsstunden; }
+	inline Int32^ getWochensstunden() { return wochenstunden; }
+	inline Int32^ getUrlaubstage() { return urlaubstage;  }
 	List<Ereignis^>^ getAlleEreignisse();
 	Ereignis^ getEreignis(Int32 index);
 	Int32^ getAnzahlEreignisse();
@@ -39,7 +41,8 @@ public:
 	inline void setAbteilung(Abteilung^ abteilung) { this->abteilung = abteilung; }
 	inline void setPersonalnummer(String^ personalnummer) { this->personalnummer = personalnummer; }
 	inline void setPasswort(String^ passwort) { this->passwort = passwort; }
-	inline void setMonatsstunden(Int32 monatstunden) { this->monatsstunden = monatsstunden; }
+	inline void setWochenstunden(Int32^ wochenstunden) { this->wochenstunden = wochenstunden; }
+	inline void setUrlaubstage(Int32^ urlaubstage) { this->urlaubstage = urlaubstage; }
 	virtual bool istVorgesetzter() = 0;
 	void fuegeEreignisHinzu(Ereignis^ ereignis);
 	void removeEreignis(Int32 index);
