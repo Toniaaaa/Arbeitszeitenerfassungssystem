@@ -492,7 +492,7 @@ namespace Zeiterfassungssystem {
 	private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
 		resturlaub = angestellterAkt->getUrlaubstage();
 		nameLbl->Text = angestellterAkt->getVorname() + " " + angestellterAkt->getNachname();
-		resturlaubLbl->Text = angestellterAkt->getAbteilung() + " Tage";
+		resturlaubLbl->Text = angestellterAkt->getUrlaubstage() + " Tage";
 	}
 private: System::Void statistikBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 	statistikfenster->Show();
