@@ -10,8 +10,9 @@ using namespace System::Collections::Generic;
 ref class Vorgesetzter : 
 	public Angestellter
 {
+
 public:
-	Vorgesetzter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32^ wochenstunden, Int32^ urlaubstage);
+	Vorgesetzter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage);
 
 	bool istVorgesetzter() override;
 };

@@ -1,7 +1,7 @@
 #include "Angestellter.h"
 #include "Ereignis.h"
 
-Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32^ wochenstunden, Int32^ urlaubstage)
+Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32 wochenstunden, Int32 urlaubstage)
 {
 	this->vorname = vorname;
 	this->nachname = nachname;
@@ -28,12 +28,12 @@ Ereignis ^ Angestellter::getEreignis(Int32 index)
 	return listeEreignisse[index];
 }
 
-Int32^ Angestellter::getAnzahlEreignisse()
+Int32 Angestellter::getAnzahlEreignisse()
 {
 	return listeEreignisse->Count;
 }
 
-void Angestellter::fuegeEreignisHinzu(Ereignis ^ ereignis)
+void Angestellter::fuegeEreignisHinzu(Ereignis^ ereignis)
 {
 	listeEreignisse->Add(ereignis);
 }
