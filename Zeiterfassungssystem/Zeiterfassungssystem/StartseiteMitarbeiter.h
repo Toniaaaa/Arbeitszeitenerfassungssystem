@@ -31,6 +31,7 @@ namespace Zeiterfassungssystem {
 
 		bool gekommen = false;
 		bool gegangen = false;
+		Int32 resturlaub;
 
 	private: System::Windows::Forms::Timer^  timerUhr;
 	private: System::Windows::Forms::Label^  datumLbl;
@@ -489,8 +490,9 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
+		resturlaub = angestellterAkt->getUrlaubstage();
 		nameLbl->Text = angestellterAkt->getVorname() + " " + angestellterAkt->getNachname();
-		//resturlaubLbl->Text = angestellter->getUrlaubstage()->ToString();
+		resturlaubLbl->Text = angestellterAkt->getAbteilung() + " Tage";
 	}
 private: System::Void statistikBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 	statistikfenster->Show();
