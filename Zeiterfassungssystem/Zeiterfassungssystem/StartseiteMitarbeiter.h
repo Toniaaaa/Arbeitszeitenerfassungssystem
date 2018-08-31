@@ -495,7 +495,7 @@ namespace Zeiterfassungssystem {
 		resturlaubLbl->Text = angestellterAkt->getUrlaubstage() + " Tage";
 	}
 private: System::Void statistikBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-	statistikfenster->Show();
+	statistikfenster->ShowDialog(this);
 }
 };
 }
