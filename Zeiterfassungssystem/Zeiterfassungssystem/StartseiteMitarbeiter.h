@@ -450,6 +450,12 @@ namespace Zeiterfassungssystem {
 		angestellterAkt->fuegeEreignisHinzu(arbeitsende);
 		timerArbeitszeit->Stop();
 		gegangen = true;
+		Int32 zeitstunden = angestellterAkt->berechneZeitstunden();
+		angestellterAkt->fuegeArbeitszeitHinzu(zeitstunden);
+		for (int i = 0; i < angestellterAkt->getAnzahlEreignisse(); i++) {
+			angestellterAkt->removeEreignis(i);
+
+		}
 	}
 
 	private: System::Void pauseCbox_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
@@ -492,7 +498,7 @@ namespace Zeiterfassungssystem {
 	private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
 		resturlaub = angestellterAkt->getUrlaubstage();
 		nameLbl->Text = angestellterAkt->getVorname() + " " + angestellterAkt->getNachname();
-		resturlaubLbl->Text = angestellterAkt->getUrlaubstage() + " Tage";
+		resturlaubLbl->Text = angestellterAkt->getAnzahlArbeitstage() + " Tage";
 	}
 private: System::Void statistikBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 	statistikfenster->ShowDialog(this);

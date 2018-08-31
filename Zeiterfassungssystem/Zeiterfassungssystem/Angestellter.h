@@ -19,6 +19,7 @@ private:
 	Int32 wochenstunden;
 	Int32 urlaubstage;
 	List<Ereignis^>^ listeEreignisse;
+	List<Int32> arbeitszeitenliste;
 
 public:
 	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage);
@@ -34,6 +35,8 @@ public:
 	List<Ereignis^>^ getAlleEreignisse();
 	Ereignis^ getEreignis(Int32 index);
 	Int32 getAnzahlEreignisse();
+	void fuegeArbeitszeitHinzu(Int32 arbeitszeit);
+	Int32 getAnzahlArbeitstage();
 
 	//Setter
 	inline void setVorname(String^ vorname) {this->vorname = vorname;}
@@ -46,5 +49,7 @@ public:
 	virtual bool istVorgesetzter() = 0;
 	void fuegeEreignisHinzu(Ereignis^ ereignis);
 	void removeEreignis(Int32 index);
+	Int32 berechneZeitstunden();
+	
 
 };
