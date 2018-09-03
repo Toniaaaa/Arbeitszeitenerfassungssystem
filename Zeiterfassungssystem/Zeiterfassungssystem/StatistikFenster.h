@@ -1,4 +1,6 @@
 #pragma once
+#include "Aenderungsantrag.h"
+#include "AenderungsantragsFenster.h"
 
 namespace Zeiterfassungssystem {
 
@@ -14,10 +16,13 @@ namespace Zeiterfassungssystem {
 	/// </summary>
 	public ref class StatistikFenster : public System::Windows::Forms::Form
 	{
+	private: 
+		AenderungsantragsFenster ^ aenderungsantrag;
 	public:
 		StatistikFenster(void)
 		{
 			InitializeComponent();
+			aenderungsantrag = gcnew AenderungsantragsFenster;
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
@@ -84,6 +89,7 @@ namespace Zeiterfassungssystem {
 			this->btn_aenderungsanfrage->TabIndex = 1;
 			this->btn_aenderungsanfrage->Text = L"Änderungsanfrage";
 			this->btn_aenderungsanfrage->UseVisualStyleBackColor = true;
+			this->btn_aenderungsanfrage->Click += gcnew System::EventHandler(this, &StatistikFenster::btn_aenderungsanfrage_Click);
 			// 
 			// StatistikFenster
 			// 
@@ -102,6 +108,9 @@ namespace Zeiterfassungssystem {
 #pragma endregion
 	private: System::Void StatistikFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		this->chart1->Series["Arbeitsstunden"]->Points->AddXY("Tag", 8);
+	}
+	private: System::Void btn_aenderungsanfrage_Click(System::Object^  sender, System::EventArgs^  e) {
+		aenderungsantrag->Show();
 	}
 	};
 }

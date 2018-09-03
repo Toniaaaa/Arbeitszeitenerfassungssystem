@@ -3,6 +3,7 @@
 #include "StartseiteMitarbeiter.h"
 #include "Angestellter.h"
 #include "PasswortAendernFenster.h"
+#include "StartseiteVorgesetzte.h"
 
 namespace Zeiterfassungssystem {
 
@@ -27,8 +28,10 @@ namespace Zeiterfassungssystem {
 		SoundPlayer^ sound;
 		Unternehmen^ unternehmen;
 		StartseiteMitarbeiter^ startseitemitarbeiter;
+		StartseiteVorgesetzte^ startseitevorgesetzte;
 		PasswortAendernFenster^ passwortaendernseite;
 		Angestellter^ angestellter;
+		Vorgesetzter^ vorgesetzter;
 		bool loginGedrueckt = false;
 		
 	public:
@@ -37,7 +40,8 @@ namespace Zeiterfassungssystem {
 			InitializeComponent();
 			sound = gcnew SoundPlayer();
 			unternehmen = Unternehmen::ladeUnternehmen(Unternehmen::SPEICHERORT);
-			startseitemitarbeiter = gcnew StartseiteMitarbeiter;
+			startseitemitarbeiter = gcnew StartseiteMitarbeiter();
+			startseitevorgesetzte = gcnew StartseiteVorgesetzte();
 			passwortaendernseite = gcnew PasswortAendernFenster();
 		}
 
@@ -207,15 +211,21 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void logInButton_Click(System::Object^  sender, System::EventArgs^  e) {
-		//System::Windows::Forms::DialogResult result = startseitemitarbeiter->ShowDialog(this);
 		String^ passwort = getKennwort();
 		String^ personalnummer = getBenutzername();
 	    angestellter = unternehmen->loginaccept(personalnummer, passwort);
-		if (angestellter != nullptr) {
+		if (angestellter != nullptr && angestellter->istVorgesetzter() == false) {
 			loginGedrueckt = true;
 			startseitemitarbeiter->setAngemeldeterAngestelter(angestellter);
 			startseitemitarbeiter->setUnternehmen(unternehmen);
 			startseitemitarbeiter->Show();
+			Close();
+		}
+		else if (angestellter != nullptr && angestellter->istVorgesetzter() == true) {
+			loginGedrueckt = true;
+			startseitevorgesetzte->setAngemeldeterAngestellter(angestellter);
+			startseitevorgesetzte->setUnternehmen(unternehmen);
+		startseitevorgesetzte->Show();
 			Close();
 		}
 		else {
