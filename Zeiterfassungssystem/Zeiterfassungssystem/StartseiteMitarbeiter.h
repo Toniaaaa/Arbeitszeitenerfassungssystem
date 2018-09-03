@@ -3,8 +3,8 @@
 #include "Unternehmen.h"
 #include "Ereignis.h"
 #include "StatistikFenster.h"
-
 #include <ctime>
+#include "UrlaubsFenster.h"
 
 namespace Zeiterfassungssystem {
 
@@ -28,6 +28,7 @@ namespace Zeiterfassungssystem {
 		Ereignis^ pausenanfang;
 		Ereignis^ pausenende;
 		StatistikFenster^ statistikfenster;
+		Urlaubfenster^ urlaubsfenster;
 
 		bool gekommen = false;
 		bool gegangen = false;
@@ -62,6 +63,7 @@ namespace Zeiterfassungssystem {
 		{
 			InitializeComponent();	
 			statistikfenster = gcnew StatistikFenster();
+			urlaubsfenster = gcnew Urlaubfenster;
 		}
 
 	protected:
@@ -310,6 +312,7 @@ namespace Zeiterfassungssystem {
 			this->urlaubBtn->Size = System::Drawing::Size(313, 94);
 			this->urlaubBtn->TabIndex = 13;
 			this->urlaubBtn->UseVisualStyleBackColor = false;
+			this->urlaubBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::urlaubBtn_Click);
 			// 
 			// kalenderBtn
 			// 
@@ -431,6 +434,8 @@ namespace Zeiterfassungssystem {
 			this->angestellterAkt = angestellter;
 		}
 
+
+
 	private: System::Void timerUhr_Tick(System::Object^  sender, System::EventArgs^  e) {
 		timerUhr->Start();
 		uhrzeitLbl->Text = DateTime::Now.ToString("HH:mm:ss");
@@ -540,6 +545,9 @@ namespace Zeiterfassungssystem {
 		pauseStd = "0" + Convert::ToString(pauseStunde);
 		pauseLbl->Text = pauseStd + ":" + pauseMin + ":" + pauseSek + " Stunden";
 		
+	}
+	private: System::Void urlaubBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		urlaubsfenster->ShowDialog(this);
 	}
 };
 }

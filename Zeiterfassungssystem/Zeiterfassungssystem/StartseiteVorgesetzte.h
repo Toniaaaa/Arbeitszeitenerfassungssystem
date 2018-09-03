@@ -6,6 +6,7 @@
 #include "Unternehmen.h"
 #include "RegistrierungsFenster.h"
 #include "Ereignis.h"
+#include "UrlaubsbearbeitungsFenster.h"
 
 
 
@@ -38,9 +39,11 @@ namespace Zeiterfassungssystem {
 		Ereignis^ pausenanfang;
 		Ereignis^ pausenende;
 		StatistikFenster^ statistikfenster;
+		UrlaubsanfragenbearbeitungsFenster^ urlaubsbearbeitungsfenster;
 
 		bool gekommen = false;
 		bool gegangen = false;
+		bool anfrage = false;
 		Int32 resturlaub;
 
 
@@ -70,6 +73,7 @@ namespace Zeiterfassungssystem {
 			InitializeComponent();
 			registrierungsfenster = gcnew RegistrierungsFenster;
 			statistikfenster = gcnew StatistikFenster;
+			urlaubsbearbeitungsfenster = gcnew UrlaubsanfragenbearbeitungsFenster;
 			
 		}
 
@@ -495,6 +499,9 @@ namespace Zeiterfassungssystem {
 		public: Angestellter ^ getVorgesetzter() {
 			return angestellterAkt;
 		}
+		public: void hatNeueAnfrage(bool anfrage) {
+			this->anfrage = anfrage;
+		}
 	//KOMMEN
 	private: System::Void kommenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		arbeitsanfang = gcnew Ereignis(ARBEIT_START, DateTime::Now);
@@ -556,6 +563,13 @@ namespace Zeiterfassungssystem {
 	private: System::Void kalenderBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 	}
 	private: System::Void urlaubBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		if (anfrage == false) {
+			MessageBox::Show("Keine neue Urlaubsanfrage!", "Information",
+				MessageBoxButtons::OK, MessageBoxIcon::Information);
+		}
+		else {
+			urlaubsbearbeitungsfenster->Show();
+		}
 	}
 	//REGISTRIERUNGSFENSTER
 	private: System::Void addBtn_Click(System::Object^  sender, System::EventArgs^  e) {

@@ -154,6 +154,13 @@
     <ClInclude Include="StatistikFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Urlaubsantrag.h" />
+    <ClInclude Include="UrlaubsbearbeitungsFenster.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="UrlaubsFenster.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Vorgesetzter.h" />
     <ClInclude Include="Ereignis.h" />
     <ClInclude Include="Unternehmen.h" />
@@ -170,6 +177,9 @@
     <ClCompile Include="StartseiteMitarbeiter.cpp" />
     <ClCompile Include="StartseiteVorgesetzte.cpp" />
     <ClCompile Include="StatistikFenster.cpp" />
+    <ClCompile Include="Urlaubsantrag.cpp" />
+    <ClCompile Include="UrlaubsbearbeitungsFenster.cpp" />
+    <ClCompile Include="UrlaubsFenster.cpp" />
     <ClCompile Include="Vorgesetzter.cpp" />
     <ClCompile Include="Ereignis.cpp" />
     <ClCompile Include="Unternehmen.cpp" />
