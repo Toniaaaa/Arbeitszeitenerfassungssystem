@@ -208,18 +208,8 @@ namespace Zeiterfassungssystem {
 
 		}
 #pragma endregion
-	public: void hatNeueAnfrage(bool anfrage) {
-		this->anfrage = anfrage;
-	}
 
 	private: System::Void AenderungsbearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
-		if (anfrage == false) {
-			MessageBox::Show("Keine neue Urlaubsanfrage!", "Information",
-				MessageBoxButtons::OK, MessageBoxIcon::Information);
-		} 
-		else {
-			this->Show();
-		}
 	}
 	};
 }

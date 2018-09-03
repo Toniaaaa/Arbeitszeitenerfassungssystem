@@ -3,6 +3,7 @@
 #include "Vorgesetzter.h"
 #include "Angestellter.h"
 #include "UrlaubsbearbeitungsFenster.h"
+#include "StartseiteVorgesetzte.h"
 
 namespace Zeiterfassungssystem {
 
@@ -26,7 +27,7 @@ namespace Zeiterfassungssystem {
 		Int32 vergleichMitHeute;
 		Angestellter^ angestellter;
 		Int32 restUrlaub;
-		UrlaubsanfragenbearbeitungsFenster^ urlaubsbearbeitungsfenster;
+		StartseiteVorgesetzte^ startseitevorgesetzter;
 		SoundPlayer^ sound;
 
 	public:
@@ -232,6 +233,13 @@ namespace Zeiterfassungssystem {
 			}
 		}
 
+	//NEU: Angestellter wird gesetzt:
+	public: void setAngestellter(Angestellter^ angestellterUebergabe)
+	{
+		Angestellter^ angestellter = angestellterUebergabe;
+		restUrlaub = angestellter->getUrlaubstage();
+	}
+
 		//Eingaben werden zurückgesetzt
 		void clear()
 		{
@@ -240,11 +248,12 @@ namespace Zeiterfassungssystem {
 			this->tageTxt->Text = "";
 		}
 
-		//Beim Klick auf "Einreichen" wird das Fenster geschlossen und OK gesendet, falls: Die Tage eingetragen wurden und die Zahl positiv ist,
-		//der Beginn nicht nach dem Ende liegt und der Beginn nicht in der Vergangenheit liegt.
+	//Beim Klick auf "Einreichen" wird das Fenster geschlossen und OK gesendet, falls: Die Tage eingetragen wurden und die Zahl positiv ist,
+	//der Beginn nicht nach dem Ende liegt und der Beginn nicht in der Vergangenheit liegt.
 	private: System::Void Einreichen_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		urlaubsbearbeitungsfenster->hatNeueAnfrage(true);
+		//Wenn Einreichen geklickt dann hinterlege dies als benachrichtigung bei vorgesetzten
+		startseitevorgesetzter->hatNeueAnfrage(true);
 		//Vergleich der Daten wird in Integern gespeichert
 		vergleichDaten = DateTime::Compare(p_Anfang, p_Ende);
 		vergleichMitHeute = DateTime::Compare(DateTime::Today.Date, p_Anfang);
@@ -280,25 +289,19 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
+	//Wenn abbrechen gedrueckt schliesse Fenster
 	private: System::Void abbrechenBtn_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		this->DialogResult = System::Windows::Forms::DialogResult::Cancel;
 	}
 
+	//Waehrend Fenster laed spiele Musik
 	private: System::Void Urlaubfenster_Load(System::Object^  sender, System::EventArgs^  e)
 	{
 		sound->SoundLocation = "Sounds/lacucarachaKurz.wav";
 		sound->Load();
 		sound->Play();
 	}
-
-			 //NEU: Angestellter wird gesetzt:
-	public: void setAngestellter(Angestellter^ angestellterUebergabe)
-	{
-		Angestellter^ angestellter = angestellterUebergabe;
-		restUrlaub = angestellter->getUrlaubstage();
-	}
-
 	};
 }
 

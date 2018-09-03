@@ -186,9 +186,6 @@ namespace Zeiterfassungssystem {
 
 		}
 #pragma endregion
-
-
-
 	public:
 		String ^ getBenutzername() {
 			return this->txt_Benutzername->Text;
@@ -239,10 +236,12 @@ namespace Zeiterfassungssystem {
 		MessageBox::Show("Bitte melden Sie sich bei Ihrem Arbeitgeber für ein neues Passwort!", "Passwort vergessen?!",
 		MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
+
 	private: System::Void btn_passwortAendern_Click(System::Object^  sender, System::EventArgs^  e) {
 		passwortaendernseite->setUnternehmen(unternehmen);
 		passwortaendernseite->Show();
 	}
+
 	private: System::Void LoginFenster_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {
 		if (!loginGedrueckt) {
 			Application::Exit();

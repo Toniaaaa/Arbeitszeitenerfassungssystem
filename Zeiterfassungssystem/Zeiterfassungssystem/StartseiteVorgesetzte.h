@@ -502,6 +502,7 @@ namespace Zeiterfassungssystem {
 		public: void hatNeueAnfrage(bool anfrage) {
 			this->anfrage = anfrage;
 		}
+
 	//KOMMEN
 	private: System::Void kommenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		arbeitsanfang = gcnew Ereignis(ARBEIT_START, DateTime::Now);
@@ -509,6 +510,7 @@ namespace Zeiterfassungssystem {
 		timerArbeitszeit->Start();
 		gekommen = true;
 	}
+
 	//PAUSE
 	private: System::Void pauseCbox_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
 		if (gekommen && !gegangen) {
@@ -540,6 +542,7 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
+
 	//GEHEN
 	private: System::Void gehenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		//Timer stoppen
@@ -556,12 +559,17 @@ namespace Zeiterfassungssystem {
 
 		}
 	}
+
 	//STATISTIKFENSTER
 	private: System::Void statistikBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		statistikfenster->ShowDialog(this);
 	}
+
+	//KALENDERFENSTER
 	private: System::Void kalenderBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 	}
+
+	//URLAUBSFENSTER
 	private: System::Void urlaubBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		if (anfrage == false) {
 			MessageBox::Show("Keine neue Urlaubsanfrage!", "Information",
@@ -571,6 +579,7 @@ namespace Zeiterfassungssystem {
 			urlaubsbearbeitungsfenster->Show();
 		}
 	}
+
 	//REGISTRIERUNGSFENSTER
 	private: System::Void addBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		System::Windows::Forms::DialogResult result = registrierungsfenster->ShowDialog(this);
@@ -591,10 +600,16 @@ namespace Zeiterfassungssystem {
 		unternehmen->speichern();
 		Application::Exit();
 	}
+
+	//TIMER ARBEITSZEIT
 	private: System::Void timerArbeitszeit_Tick(System::Object^  sender, System::EventArgs^  e) {
 	}
+
+	//TIMER UHR
 	private: System::Void timerUhr_Tick(System::Object^  sender, System::EventArgs^  e) {
 	}
+
+	//TIMER PAUSE
 	private: System::Void timerPause_Tick(System::Object^  sender, System::EventArgs^  e) {
 	}
 };
