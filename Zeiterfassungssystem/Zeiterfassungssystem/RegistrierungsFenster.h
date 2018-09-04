@@ -333,7 +333,7 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void btn_mitarbeiter_hinzufuegen_Click(System::Object^  sender, System::EventArgs^  e) {
 		bool fehler = false;
-
+		int parse;
 		//Eingabepprüfung im Eventhandler
 		if (this->txt_name->Text->Length == 0) {
 
@@ -374,29 +374,33 @@ namespace Zeiterfassungssystem {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			fehler = true;
 		}
-
-		else {
-
-			this->DialogResult = System::Windows::Forms::DialogResult::OK;
-
-		}
+		
 		//ÄNDERUNG
 		if (fehler) {
 			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehler!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+		else if (!Int32::TryParse(txt_arbeitsstunden->Text, parse)) {
+			MessageBox::Show("Arbeitsstunden: Bitte geben Sie eine ganze Zahl ein!");
+		}
+		else if (!Int32::TryParse(txt_urlaubstage->Text, parse)) {
+			MessageBox::Show("Urlaubstage: Bitte geben Sie eine ganze Zahl ein!");
 		}
 		else {
 			if (this->txt_Rolle->SelectedItem->ToString()->Equals("Mitarbeiter")) {
 				//vorgesetzter = getVorgesetzter();
 				Abteilung^ abteilung = gcnew Abteilung(txt_abteilung->Text, vorgesetzter);
 				Mitarbeiter^ mitarbeiter = gcnew Mitarbeiter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text));
+				mitarbeiter->setVorgesetzter(vorgesetzter);
 				mitarbeiter->setAbteilung(abteilung);
 				abteilung->fuegeMitarbeiterHinzu(mitarbeiter);
+				this->DialogResult = System::Windows::Forms::DialogResult::OK;
 				this->Close();
 			}
 			else {
 				Abteilung^ abteilungvorgesetzter = gcnew Abteilung(txt_abteilung->Text, vorgesetzter);
 				Vorgesetzter^ vorgesetzter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilungvorgesetzter, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text));
+				this->DialogResult = System::Windows::Forms::DialogResult::OK;
 				this->Close();
 			}
 		}

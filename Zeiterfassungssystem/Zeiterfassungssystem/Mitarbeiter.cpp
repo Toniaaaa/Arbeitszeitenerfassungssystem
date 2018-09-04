@@ -9,3 +9,8 @@ bool Mitarbeiter::istVorgesetzter()
 {
 	return false;
 }
+
+void Mitarbeiter::setVorgesetzter(Vorgesetzter ^ vorgesetzter)
+{
+	this->vorgesetzter = vorgesetzter;
+}
