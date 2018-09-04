@@ -48,4 +48,10 @@ public:
 	void fuegeEreignisHinzu(Ereignis^ ereignis);
 	void removeEreignis(Int32 index);
 
+	// Ereignislisteauswertungsmethodensammlung
+
+	DateTime^ getArbeitsAnfang(); // null wenn arbeitstag (noch) nicht begonnen
+	DateTime^ getPauseAnfang(); // null wenn pause gerade nicht läuft
+
+	TimeSpan^ getAktuelleArbeitszeit();
 };

@@ -30,7 +30,6 @@ namespace Zeiterfassungssystem {
 		Int32 pauseMinute;
 		Int32 pauseStunde;
 		String^ pauseSek;
-		String^ pauseMin;
 		String^ pauseStd;
 
 	private: System::Windows::Forms::Timer^  timerUhr;
@@ -519,6 +518,7 @@ namespace Zeiterfassungssystem {
 			pauseSek = Convert::ToString(pauseSekunde);
 		}
 
+		String^ pauseMin;
 		if (pauseMinute < 10) {
 			pauseMin = "0" + Convert::ToString(pauseMinute);
 		}
