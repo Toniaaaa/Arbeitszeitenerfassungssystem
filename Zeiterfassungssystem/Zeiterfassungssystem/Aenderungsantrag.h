@@ -2,12 +2,13 @@
 
 ref class Angestellter;
 using namespace System;
+
+[Serializable]
 ref class Aenderungsantrag
 {
 private:
 
 	//Membervariablen
-	String ^ m_AntragstellerName;
 	Angestellter^ m_Antragsteller;
 	DateTime^ m_Tag;
 	DateTime^ m_Anfang;
@@ -16,8 +17,7 @@ private:
 	String^ m_Kommentar;
 
 public:
-	Aenderungsantrag();
-	Aenderungsantrag(String^ angestellterName, Angestellter^ antragsteller, DateTime^ tag, DateTime^ anfang, DateTime^ ende, String^ grund, String^ kommentar);
+	Aenderungsantrag(Angestellter^ antragsteller, DateTime^ tag, DateTime^ anfang, DateTime^ ende, String^ grund, String^ kommentar);
 	~Aenderungsantrag();
 
 	//Getter und Setter
@@ -26,7 +26,6 @@ public:
 	inline DateTime^ getTag() { return m_Tag; }
 	inline String^ getGrund() { return m_Grund; }
 	inline String^ getKommentar() { return m_Kommentar; }
-	inline String^ getAntragstellerName() { return m_AntragstellerName; }
 	inline Angestellter^ getAntragsteller() { return m_Antragsteller; }
 	void setAnfang(DateTime^ anfang);
 	void setEnde(DateTime^ ende);

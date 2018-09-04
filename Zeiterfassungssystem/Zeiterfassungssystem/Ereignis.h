@@ -19,9 +19,9 @@ private:
 	DateTime timestamp;
 
 public:
-	Ereignis(EreignisTyp typ, DateTime timestamp);
+	Ereignis(EreignisTyp typ, DateTime^ timestamp);
 
 	EreignisTyp getTyp();
-	DateTime getTimestamp();
+	DateTime^ getTimestamp();
 };
 

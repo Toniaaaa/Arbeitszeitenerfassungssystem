@@ -34,18 +34,8 @@ namespace Zeiterfassungssystem {
 		Angestellter^ angestellterAkt;
 		RegistrierungsFenster^ registrierungsfenster;
 		Vorgesetzter^ vorgesetzter;
-		Ereignis^ arbeitsanfang;
-		Ereignis ^ arbeitsende;
-		Ereignis^ pausenanfang;
-		Ereignis^ pausenende;
 		StatistikFenster^ statistikfenster;
 		UrlaubsanfragenbearbeitungsFenster^ urlaubsbearbeitungsfenster;
-
-		bool gekommen = false;
-		bool gegangen = false;
-		bool anfrage = false;
-		Int32 resturlaub;
-
 
 
 	private: System::Windows::Forms::Timer^  timerUhr;
@@ -499,21 +489,17 @@ namespace Zeiterfassungssystem {
 		public: Angestellter ^ getVorgesetzter() {
 			return angestellterAkt;
 		}
-		public: void hatNeueAnfrage(bool anfrage) {
-			this->anfrage = anfrage;
-		}
 
 	//KOMMEN
 	private: System::Void kommenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		arbeitsanfang = gcnew Ereignis(ARBEIT_START, DateTime::Now);
+		Ereignis^ arbeitsanfang = gcnew Ereignis(ARBEIT_START, DateTime::Now);
 		angestellterAkt->fuegeEreignisHinzu(arbeitsanfang);
 		timerArbeitszeit->Start();
-		gekommen = true;
 	}
 
 	//PAUSE
 	private: System::Void pauseCbox_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-		if (gekommen && !gegangen) {
+		/*if (gekommen && !gegangen) {
 			if (timerArbeitszeit->Enabled) {
 				timerArbeitszeit->Stop();
 				timerPause->Start();
@@ -540,7 +526,7 @@ namespace Zeiterfassungssystem {
 		else {
 			MessageBox::Show("Bitte beginnen Sie zuerst Ihre Arbeitszeit, bevor Sie eine Pause starten!", "Keine Pause möglich",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
-		}
+		}*/
 	}
 
 	//GEHEN
@@ -549,15 +535,8 @@ namespace Zeiterfassungssystem {
 		timerArbeitszeit->Stop();
 		timerPause->Stop();
 
-		arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
+		Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
 		angestellterAkt->fuegeEreignisHinzu(arbeitsende);
-		gegangen = true;
-		Int32 zeitstunden = angestellterAkt->berechneZeitstunden();
-		angestellterAkt->fuegeArbeitszeitHinzu(zeitstunden);
-		for (int i = 0; i < angestellterAkt->getAnzahlEreignisse(); i++) {
-			angestellterAkt->removeEreignis(i);
-
-		}
 	}
 
 	//STATISTIKFENSTER
@@ -571,13 +550,7 @@ namespace Zeiterfassungssystem {
 
 	//URLAUBSFENSTER
 	private: System::Void urlaubBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		if (anfrage == false) {
-			MessageBox::Show("Keine neue Urlaubsanfrage!", "Information",
-				MessageBoxButtons::OK, MessageBoxIcon::Information);
-		}
-		else {
-			urlaubsbearbeitungsfenster->Show();
-		}
+		urlaubsbearbeitungsfenster->Show();
 	}
 
 	//REGISTRIERUNGSFENSTER
@@ -591,7 +564,7 @@ namespace Zeiterfassungssystem {
 	}
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {
-		resturlaub = angestellterAkt->getUrlaubstage();
+		Int32 resturlaub = angestellterAkt->getUrlaubstage();
 		nameLbl->Text = angestellterAkt->getVorname() + " " + angestellterAkt->getNachname();
 		resturlaubLbl->Text = angestellterAkt->getAnzahlArbeitstage() + " Tage";
 	}
@@ -607,6 +580,8 @@ namespace Zeiterfassungssystem {
 
 	//TIMER UHR
 	private: System::Void timerUhr_Tick(System::Object^  sender, System::EventArgs^  e) {
+		uhrzeitLbl->Text = DateTime::Now.ToString("HH:mm:ss");
+		datumLbl->Text = DateTime::Now.ToString("dddd, dd. MMMM yyyy");
 	}
 
 	//TIMER PAUSE

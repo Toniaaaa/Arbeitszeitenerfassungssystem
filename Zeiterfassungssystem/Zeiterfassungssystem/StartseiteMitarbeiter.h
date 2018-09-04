@@ -23,16 +23,8 @@ namespace Zeiterfassungssystem {
 	private: 
 		Angestellter^ angestellterAkt;
 		Unternehmen^ unternehmen;
-		Ereignis^ arbeitsanfang; 
-		Ereignis ^ arbeitsende;
-		Ereignis^ pausenanfang;
-		Ereignis^ pausenende;
 		StatistikFenster^ statistikfenster;
 		Urlaubfenster^ urlaubsfenster;
-
-		bool gekommen = false;
-		bool gegangen = false;
-		Int32 resturlaub;
 
 		Int32 pauseSekunde;
 		Int32 pauseMinute;
@@ -450,10 +442,9 @@ namespace Zeiterfassungssystem {
 
 	//Beim kommen wird ein neues Ereignis mit Zeitstempel erstellt und zu der Liste des Angestellten hinzugefügt
 	private: System::Void kommenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		arbeitsanfang = gcnew Ereignis(ARBEIT_START, DateTime::Now);
+		Ereignis^ arbeitsanfang = gcnew Ereignis(ARBEIT_START, DateTime::Now);
 		angestellterAkt->fuegeEreignisHinzu(arbeitsanfang);
 		timerArbeitszeit->Start();
-		gekommen = true;
 	}
 
 	//Beim gehen wird ein neues Ereignis mit Zeitstempel erstellt und zu der Liste des Angestellten hinzugefügt
@@ -462,15 +453,8 @@ namespace Zeiterfassungssystem {
 		timerArbeitszeit->Stop();
 		timerPause->Stop();
 
-		arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
+		Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
 		angestellterAkt->fuegeEreignisHinzu(arbeitsende);
-		gegangen = true;
-		Int32 zeitstunden = angestellterAkt->berechneZeitstunden();
-		angestellterAkt->fuegeArbeitszeitHinzu(zeitstunden);
-		for (int i = 0; i < angestellterAkt->getAnzahlEreignisse(); i++) {
-			angestellterAkt->removeEreignis(i);
-
-		}
 	}
 
 	private: System::Void timerArbeitszeit_Tick(System::Object^  sender, System::EventArgs^  e) {
@@ -478,7 +462,7 @@ namespace Zeiterfassungssystem {
 	
 	//Wenn Button geklickt werden ereignisse erstellt und dem angestellten hinzugefügt
 	private: System::Void pauseCbox_Click(System::Object^  sender, System::EventArgs^  e) {
-		if (gekommen && !gegangen) {
+		/*if (gekommen && !gegangen) {
 			if (timerArbeitszeit->Enabled) {
 				timerArbeitszeit->Stop();
 				timerPause->Start();
@@ -505,11 +489,11 @@ namespace Zeiterfassungssystem {
 		else {
 			MessageBox::Show("Bitte beginnen Sie zuerst Ihre Arbeitszeit, bevor Sie eine Pause starten!", "Keine Pause möglich",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
-		}
+		}*/
 	}
 
 	private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
-		resturlaub = angestellterAkt->getUrlaubstage();
+		Int32 resturlaub = angestellterAkt->getUrlaubstage();
 		nameLbl->Text = angestellterAkt->getVorname() + " " + angestellterAkt->getNachname();
 		resturlaubLbl->Text = angestellterAkt->getAnzahlArbeitstage() + " Tage";
 	}

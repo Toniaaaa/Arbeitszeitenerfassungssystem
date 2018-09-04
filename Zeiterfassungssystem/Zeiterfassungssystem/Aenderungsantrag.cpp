@@ -1,14 +1,7 @@
 #include "Aenderungsantrag.h"
 
-
-
-Aenderungsantrag::Aenderungsantrag()
+Aenderungsantrag::Aenderungsantrag(Angestellter^ antragsteller, DateTime^ tag, DateTime^ anfang, DateTime^ ende, String^ grund, String^ kommentar)
 {
-}
-
-Aenderungsantrag::Aenderungsantrag(String^ antragstellerName, Angestellter^ antragsteller, DateTime^ tag, DateTime^ anfang, DateTime^ ende, String^ grund, String^ kommentar)
-{
-	this->m_AntragstellerName = antragstellerName;
 	this->m_Antragsteller = antragsteller;
 	this->m_Anfang = anfang;
 	this->m_Ende = ende;

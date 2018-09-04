@@ -2,14 +2,9 @@
 
 using namespace System;
 
-Urlaubsantrag::Urlaubsantrag()
-{
-}
-
-Urlaubsantrag::Urlaubsantrag(DateTime anfang, DateTime ende, Int32 tage) {
+Urlaubsantrag::Urlaubsantrag(DateTime anfang, DateTime ende) {
 	this->m_Anfang = anfang;
 	this->m_Ende = ende;
-	this->m_Tage = tage;
 }
 
 Urlaubsantrag::~Urlaubsantrag() {
@@ -23,10 +18,6 @@ void Urlaubsantrag::setAnfang(DateTime anfang) {
 
 void Urlaubsantrag::setEnde(DateTime ende) {
 	this->m_Ende = ende;
-}
-
-void Urlaubsantrag::setTage(Int32 tage) {
-	this->m_Tage = tage;
 }
 
 Int32 Urlaubsantrag::berechneTage(DateTime^ anfang, DateTime^ ende) {

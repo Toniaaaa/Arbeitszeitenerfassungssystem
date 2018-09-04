@@ -252,8 +252,6 @@ namespace Zeiterfassungssystem {
 	//der Beginn nicht nach dem Ende liegt und der Beginn nicht in der Vergangenheit liegt.
 	private: System::Void Einreichen_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		//Wenn Einreichen geklickt dann hinterlege dies als benachrichtigung bei vorgesetzten
-		startseitevorgesetzter->hatNeueAnfrage(true);
 		//Vergleich der Daten wird in Integern gespeichert
 		vergleichDaten = DateTime::Compare(p_Anfang, p_Ende);
 		vergleichMitHeute = DateTime::Compare(DateTime::Today.Date, p_Anfang);
@@ -287,6 +285,8 @@ namespace Zeiterfassungssystem {
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			this->Close(); //Fenster wird nur geschlossen, wenn alle Angaben gemacht wurden und OK sind.
 		}
+
+		// TODO: anfrage speichern!
 	}
 
 	//Wenn abbrechen gedrueckt schliesse Fenster

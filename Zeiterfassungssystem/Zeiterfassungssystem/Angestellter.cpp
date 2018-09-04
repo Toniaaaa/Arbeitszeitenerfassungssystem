@@ -19,11 +19,6 @@ Abteilung ^ Angestellter::getAbteilung()
 	return abteilung;
 }
 
-List<Ereignis^>^ Angestellter::getAlleEreignisse()
-{
-	return listeEreignisse;
-}
-
 Ereignis ^ Angestellter::getEreignis(Int32 index)
 {
 	return listeEreignisse[index];
@@ -34,14 +29,9 @@ Int32 Angestellter::getAnzahlEreignisse()
 	return listeEreignisse->Count;
 }
 
-void Angestellter::fuegeArbeitszeitHinzu(Int32 arbeitszeit)
-{
-	arbeitszeitenliste.Add(arbeitszeit);
-}
-
 Int32 Angestellter::getAnzahlArbeitstage()
 {
-	return arbeitszeitenliste.Count;
+	return 0; // TODO
 }
 
 void Angestellter::fuegeEreignisHinzu(Ereignis^ ereignis)
@@ -53,40 +43,3 @@ void Angestellter::removeEreignis(Int32 index)
 {
 	listeEreignisse->RemoveAt(index);
 }
-
-Int32 Angestellter::berechneZeitstunden()
-{
-	DateTime anfang;
-	DateTime ende;
-	DateTime pauseanfang;
-	DateTime pauseende;
-
-	for (int i = 0; i < listeEreignisse->Count; i++) {
-
-		if (listeEreignisse[i]->getTyp() == ARBEIT_START) {
-			anfang = listeEreignisse[i]->getTimestamp();
-		}
-		if (listeEreignisse[i]->getTyp() == PAUSE_START) {
-			pauseanfang = listeEreignisse[i]->getTimestamp();
-		}
-	
-		if (listeEreignisse[i]->getTyp() == PAUSE_ENDE) {
-			pauseende = listeEreignisse[i]->getTimestamp();
-		}
-		
-		if (listeEreignisse[i]->getTyp() == ARBEIT_ENDE) {
-			ende = listeEreignisse[i]->getTimestamp();
-		}
-	}
-
-	
-		Int32 pause = DateTime::Compare(pauseanfang, pauseende);
-		Int32 arbeitszeit = DateTime::Compare(anfang, ende) - pause;
-		return arbeitszeit;
-	
-}
-		
-		
-
-
-
