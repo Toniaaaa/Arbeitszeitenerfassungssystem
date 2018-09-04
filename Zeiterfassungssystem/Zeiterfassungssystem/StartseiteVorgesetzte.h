@@ -37,6 +37,15 @@ namespace Zeiterfassungssystem {
 		StatistikFenster^ statistikfenster;
 		UrlaubsanfragenbearbeitungsFenster^ urlaubsbearbeitungsfenster;
 
+		Int32 sekunde;
+		Int32 minute;
+		Int32 stunde;
+		Int32 pauseSekunde;
+		Int32 pauseMinute;
+		Int32 pauseStunde;
+		TimeSpan^ arbeitszeit;
+		TimeSpan^ pausenzeit;
+
 
 	private: System::Windows::Forms::Timer^  timerUhr;
 	private: System::Windows::Forms::Label^  datumLbl;
@@ -55,6 +64,10 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Button^  addBtn;
 	private: System::Windows::Forms::Button^  editBtn;
 	private: System::Windows::Forms::Button^  personalBtn;
+	private: System::Windows::Forms::Label^  lbl_heutigeArbeitszeitText;
+	private: System::Windows::Forms::Label^  lbl_heutigePausenzeitText;
+	private: System::Windows::Forms::Label^  lbl_arbeitszeit;
+	private: System::Windows::Forms::Label^  lbl_pausenzeit;
 	private: System::Windows::Forms::Label^  uhrzeitLbl;
 
 	public:
@@ -125,6 +138,10 @@ namespace Zeiterfassungssystem {
 			this->addBtn = (gcnew System::Windows::Forms::Button());
 			this->editBtn = (gcnew System::Windows::Forms::Button());
 			this->personalBtn = (gcnew System::Windows::Forms::Button());
+			this->lbl_heutigeArbeitszeitText = (gcnew System::Windows::Forms::Label());
+			this->lbl_heutigePausenzeitText = (gcnew System::Windows::Forms::Label());
+			this->lbl_arbeitszeit = (gcnew System::Windows::Forms::Label());
+			this->lbl_pausenzeit = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// kommenBtn
@@ -438,6 +455,44 @@ namespace Zeiterfassungssystem {
 			this->personalBtn->UseVisualStyleBackColor = false;
 			this->personalBtn->Click += gcnew System::EventHandler(this, &StartseiteVorgesetzte::personalBtn_Click);
 			// 
+			// lbl_heutigeArbeitszeitText
+			// 
+			this->lbl_heutigeArbeitszeitText->AutoSize = true;
+			this->lbl_heutigeArbeitszeitText->ForeColor = System::Drawing::SystemColors::Window;
+			this->lbl_heutigeArbeitszeitText->Location = System::Drawing::Point(44, 25);
+			this->lbl_heutigeArbeitszeitText->Name = L"lbl_heutigeArbeitszeitText";
+			this->lbl_heutigeArbeitszeitText->Size = System::Drawing::Size(135, 17);
+			this->lbl_heutigeArbeitszeitText->TabIndex = 22;
+			this->lbl_heutigeArbeitszeitText->Text = L"Heutige Arbeitszeit: ";
+			// 
+			// lbl_heutigePausenzeitText
+			// 
+			this->lbl_heutigePausenzeitText->AutoSize = true;
+			this->lbl_heutigePausenzeitText->ForeColor = System::Drawing::SystemColors::Window;
+			this->lbl_heutigePausenzeitText->Location = System::Drawing::Point(40, 91);
+			this->lbl_heutigePausenzeitText->Name = L"lbl_heutigePausenzeitText";
+			this->lbl_heutigePausenzeitText->Size = System::Drawing::Size(139, 17);
+			this->lbl_heutigePausenzeitText->TabIndex = 23;
+			this->lbl_heutigePausenzeitText->Text = L"Heutige Pausenzeit: ";
+			// 
+			// lbl_arbeitszeit
+			// 
+			this->lbl_arbeitszeit->AutoSize = true;
+			this->lbl_arbeitszeit->Location = System::Drawing::Point(71, 58);
+			this->lbl_arbeitszeit->Name = L"lbl_arbeitszeit";
+			this->lbl_arbeitszeit->Size = System::Drawing::Size(64, 17);
+			this->lbl_arbeitszeit->TabIndex = 24;
+			this->lbl_arbeitszeit->Text = L"00:00:00";
+			// 
+			// lbl_pausenzeit
+			// 
+			this->lbl_pausenzeit->AutoSize = true;
+			this->lbl_pausenzeit->Location = System::Drawing::Point(71, 123);
+			this->lbl_pausenzeit->Name = L"lbl_pausenzeit";
+			this->lbl_pausenzeit->Size = System::Drawing::Size(64, 17);
+			this->lbl_pausenzeit->TabIndex = 25;
+			this->lbl_pausenzeit->Text = L"00:00:00";
+			// 
 			// StartseiteVorgesetzte
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
@@ -445,6 +500,10 @@ namespace Zeiterfassungssystem {
 			this->AutoScroll = true;
 			this->BackColor = System::Drawing::SystemColors::MenuHighlight;
 			this->ClientSize = System::Drawing::Size(1103, 997);
+			this->Controls->Add(this->lbl_pausenzeit);
+			this->Controls->Add(this->lbl_arbeitszeit);
+			this->Controls->Add(this->lbl_heutigePausenzeitText);
+			this->Controls->Add(this->lbl_heutigeArbeitszeitText);
 			this->Controls->Add(this->personalBtn);
 			this->Controls->Add(this->editBtn);
 			this->Controls->Add(this->addBtn);
@@ -507,17 +566,21 @@ namespace Zeiterfassungssystem {
 	//PAUSE
 	private: System::Void pauseCbox_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
 		if (angestellterAkt->getArbeitsAnfang() != nullptr) {
-
 			if(angestellterAkt->getPauseAnfang() == nullptr) {
+				angestellterAkt->setAktuelleArbeitszeit(sekunde, minute, stunde);
 				timerArbeitszeit->Stop();
 				timerPause->Start();
 				Ereignis^ pausenanfang = gcnew Ereignis(PAUSE_START, DateTime::Now);
 				angestellterAkt->fuegeEreignisHinzu(pausenanfang);
-				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon3.jpg");
-				this->pauseLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-				this->arbeitszeitLbl->ForeColor = System::Drawing::Color::Gray;
+				if (angestellterAkt->getPauseAnfang() != nullptr) {
+					this->pauseCbox->Image = Image::FromFile("Images/pauseIcon3.jpg");
+					this->pauseLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+					this->arbeitszeitLbl->ForeColor = System::Drawing::Color::Gray;
+				}
 			}
 			else {
+				angestellterAkt->setAktuelleArbeitszeit(sekunde, minute, stunde);
+				angestellterAkt->getAktuelleArbeitszeit();
 				timerArbeitszeit->Start();
 				timerPause->Stop();
 				Ereignis^ pausenende = gcnew Ereignis(PAUSE_ENDE, DateTime::Now);
@@ -582,28 +645,79 @@ namespace Zeiterfassungssystem {
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {
 		if (angestellterAkt->getArbeitsAnfang() == nullptr) {
-			// gerade freizeit
+			sekunde = 0;
+			minute = 0;
+			stunde = 0;
 		}
 		else if (angestellterAkt->getPauseAnfang() == nullptr) {
 			// gerade arbeitszeit
-			angestellterAkt->getAktuelleArbeitszeit();
+			arbeitszeit = angestellterAkt->getAktuelleArbeitszeit();
+			sekunde = arbeitszeit->Seconds;
+			minute = arbeitszeit->Minutes;
+			stunde = arbeitszeit->Hours;
 		}
 		else {
 			// gerade pause
+			pausenzeit = angestellterAkt->getAktuellePausenzeit();
+			pauseSekunde = pausenzeit->Seconds;
+			pauseMinute = pausenzeit->Minutes;
+			pauseStunde = pausenzeit->Hours;
 		}
 
+		if (angestellterAkt->getArbeitsAnfang() != nullptr && angestellterAkt->getPauseAnfang() == nullptr) {
+			timerArbeitszeit->Start();
+		}
+
+		if (angestellterAkt->getPauseAnfang() != nullptr) {
+			timerPause->Start();
+		}
+
+		lbl_arbeitszeit->Text = stunde + ":" + minute + ":" + sekunde;
+		lbl_pausenzeit->Text = pauseStunde + ":" + pauseMinute + ":" + pauseSekunde;
 		Int32 resturlaub = angestellterAkt->getUrlaubstage();
 		nameLbl->Text = angestellterAkt->getVorname() + " " + angestellterAkt->getNachname();
 		resturlaubLbl->Text = angestellterAkt->getAnzahlArbeitstage() + " Tage";
 	}
 	//WENN SEITE GESCHLOSSEN UNTERNEHMEN WIRD GESPEICHERT
 	private: System::Void StartseiteVorgesetzte_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
+		angestellterAkt->setAktuelleArbeitszeit(sekunde, minute, stunde);
+		angestellterAkt->setAktuellePausenzeit(pauseSekunde, pauseMinute, pauseStunde);
 		unternehmen->speichern();
 		Application::Exit();
 	}
 
 	//TIMER ARBEITSZEIT
 	private: System::Void timerArbeitszeit_Tick(System::Object^  sender, System::EventArgs^  e) {
+		sekunde++;
+		if (sekunde == 60) {
+			sekunde = 0;
+			minute++;
+			if (minute == 60) {
+				minute = 0;
+				stunde++;
+			}
+		}
+
+		String^ sek;
+		if (sekunde < 10) {
+			sek = "0" + Convert::ToString(sekunde);
+		}
+		else {
+			sek = Convert::ToString(sekunde);
+		}
+
+		String^ min;
+		if (minute < 10) {
+			min = "0" + Convert::ToString(minute);
+		}
+		else {
+			min = Convert::ToString(minute);
+		}
+
+		String^ std;
+		std = "0" + Convert::ToString(stunde);
+		arbeitszeitLbl->Text = std + ":" + min + ":" + sek;
+
 	}
 
 	//TIMER UHR
@@ -614,6 +728,36 @@ namespace Zeiterfassungssystem {
 
 	//TIMER PAUSE
 	private: System::Void timerPause_Tick(System::Object^  sender, System::EventArgs^  e) {
+		pauseSekunde++;
+		if (pauseSekunde == 60) {
+			pauseSekunde = 0;
+			pauseMinute++;
+			if (pauseMinute == 60) {
+				pauseMinute = 0;
+				pauseStunde++;
+			}
+		}
+
+		String^ pauseSek;
+		if (pauseSekunde < 10) {
+			pauseSek = "0" + Convert::ToString(pauseSekunde);
+		}
+		else {
+			pauseSek = Convert::ToString(pauseSekunde);
+		}
+
+		String^ pauseMin;
+		if (pauseMinute < 10) {
+			pauseMin = "0" + Convert::ToString(pauseMinute);
+		}
+		else {
+			pauseMin = Convert::ToString(pauseMinute);
+		}
+
+		String^ pauseStd;
+		pauseStd = "0" + Convert::ToString(pauseStunde);
+		pauseLbl->Text = pauseStd + ":" + pauseMin + ":" + pauseSek;
+
 	}
 };
 }

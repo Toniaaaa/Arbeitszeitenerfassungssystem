@@ -104,3 +104,22 @@ TimeSpan ^ Angestellter::getAktuelleArbeitszeit()
 	}
 	return result;
 }
+
+TimeSpan ^ Angestellter::getAktuellePausenzeit()
+{
+	return DateTime::Now - *getPauseAnfang();
+}
+
+void Angestellter::setAktuelleArbeitszeit(Int32 sekunde, Int32 minute, Int32 stunde)
+{
+	this->sekunde = sekunde;
+	this->minute = minute;
+	this->stunde = stunde;
+}
+
+void Angestellter::setAktuellePausenzeit(Int32 pauseSekunde, Int32 pauseMinute, Int32 pauseStunde)
+{
+	this->pauseSekunde = pauseSekunde;
+	this->pauseMinute = pauseMinute;
+	this->pauseStunde = pauseStunde;
+}
