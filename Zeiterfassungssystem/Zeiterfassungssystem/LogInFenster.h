@@ -31,7 +31,6 @@ namespace Zeiterfassungssystem {
 		StartseiteVorgesetzte^ startseitevorgesetzte;
 		PasswortAendernFenster^ passwortaendernseite;
 		Angestellter^ angestellter;
-		Vorgesetzter^ vorgesetzter;
 		bool loginGedrueckt = false;
 		
 	public:
@@ -222,7 +221,7 @@ namespace Zeiterfassungssystem {
 			loginGedrueckt = true;
 			startseitevorgesetzte->setAngemeldeterAngestellter(angestellter);
 			startseitevorgesetzte->setUnternehmen(unternehmen);
-		startseitevorgesetzte->Show();
+			startseitevorgesetzte->Show();
 			Close();
 		}
 		else {

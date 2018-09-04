@@ -34,18 +34,8 @@ namespace Zeiterfassungssystem {
 		Angestellter^ angestellterAkt;
 		RegistrierungsFenster^ registrierungsfenster;
 		Vorgesetzter^ vorgesetzter;
-		Ereignis^ arbeitsanfang;
-		Ereignis ^ arbeitsende;
-		Ereignis^ pausenanfang;
-		Ereignis^ pausenende;
 		StatistikFenster^ statistikfenster;
 		UrlaubsanfragenbearbeitungsFenster^ urlaubsbearbeitungsfenster;
-
-		bool gekommen = false;
-		bool gegangen = false;
-		bool anfrage = false;
-		Int32 resturlaub;
-
 
 
 	private: System::Windows::Forms::Timer^  timerUhr;
@@ -499,25 +489,29 @@ namespace Zeiterfassungssystem {
 		public: Angestellter ^ getVorgesetzter() {
 			return angestellterAkt;
 		}
-		public: void hatNeueAnfrage(bool anfrage) {
-			this->anfrage = anfrage;
-		}
 
 	//KOMMEN
 	private: System::Void kommenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		arbeitsanfang = gcnew Ereignis(ARBEIT_START, DateTime::Now);
-		angestellterAkt->fuegeEreignisHinzu(arbeitsanfang);
-		timerArbeitszeit->Start();
-		gekommen = true;
+		if (angestellterAkt->getArbeitsAnfang() == nullptr) {
+			Ereignis^ arbeitsanfang = gcnew Ereignis(ARBEIT_START, DateTime::Now);
+			angestellterAkt->fuegeEreignisHinzu(arbeitsanfang);
+			timerArbeitszeit->Start();
+
+		} 
+		else {
+			MessageBox::Show("Bitte beenden Sie Ihren Arbeitstag, bevor Sie einen neuen beginnen!", "Kein Start möglich",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 	}
 
 	//PAUSE
 	private: System::Void pauseCbox_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-		if (gekommen && !gegangen) {
-			if (timerArbeitszeit->Enabled) {
+		if (angestellterAkt->getArbeitsAnfang() != nullptr) {
+
+			if(angestellterAkt->getPauseAnfang() == nullptr) {
 				timerArbeitszeit->Stop();
 				timerPause->Start();
-				pausenanfang = gcnew Ereignis(PAUSE_START, DateTime::Now);
+				Ereignis^ pausenanfang = gcnew Ereignis(PAUSE_START, DateTime::Now);
 				angestellterAkt->fuegeEreignisHinzu(pausenanfang);
 				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon3.jpg");
 				this->pauseLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
@@ -526,16 +520,12 @@ namespace Zeiterfassungssystem {
 			else {
 				timerArbeitszeit->Start();
 				timerPause->Stop();
-				pausenende = gcnew Ereignis(PAUSE_ENDE, DateTime::Now);
+				Ereignis^ pausenende = gcnew Ereignis(PAUSE_ENDE, DateTime::Now);
 				angestellterAkt->fuegeEreignisHinzu(pausenende);
 				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon.jpg");
 				this->pauseLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 				this->arbeitszeitLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 			}
-		}
-		else if (gekommen && gegangen) {
-			MessageBox::Show("Sie haben Ihren Arbeitstag bereits beendet!", "Keine Pause möglich",
-				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 		else {
 			MessageBox::Show("Bitte beginnen Sie zuerst Ihre Arbeitszeit, bevor Sie eine Pause starten!", "Keine Pause möglich",
@@ -545,18 +535,24 @@ namespace Zeiterfassungssystem {
 
 	//GEHEN
 	private: System::Void gehenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		//Timer stoppen
-		timerArbeitszeit->Stop();
-		timerPause->Stop();
+		if (angestellterAkt->getPauseAnfang() != nullptr) {
+			MessageBox::Show("Bitte beenden Sie zuerst Ihre Pause, bevor Sie gehen!", "Kein Ende möglich",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
 
-		arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
-		angestellterAkt->fuegeEreignisHinzu(arbeitsende);
-		gegangen = true;
-		Int32 zeitstunden = angestellterAkt->berechneZeitstunden();
-		angestellterAkt->fuegeArbeitszeitHinzu(zeitstunden);
-		for (int i = 0; i < angestellterAkt->getAnzahlEreignisse(); i++) {
-			angestellterAkt->removeEreignis(i);
+		if (angestellterAkt->getArbeitsAnfang() != nullptr) {
+			//Timer stoppen
+			timerArbeitszeit->Stop();
+			timerPause->Stop();
 
+			Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
+			angestellterAkt->fuegeEreignisHinzu(arbeitsende);
+
+		}
+		else {
+			MessageBox::Show("Bitte beginnen Sie zuerst Ihre Arbeitszeit, bevor Sie gehen!", "Kein Ende möglich",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
 
@@ -571,13 +567,7 @@ namespace Zeiterfassungssystem {
 
 	//URLAUBSFENSTER
 	private: System::Void urlaubBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		if (anfrage == false) {
-			MessageBox::Show("Keine neue Urlaubsanfrage!", "Information",
-				MessageBoxButtons::OK, MessageBoxIcon::Information);
-		}
-		else {
-			urlaubsbearbeitungsfenster->Show();
-		}
+		urlaubsbearbeitungsfenster->Show();
 	}
 
 	//REGISTRIERUNGSFENSTER
@@ -591,7 +581,18 @@ namespace Zeiterfassungssystem {
 	}
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {
-		resturlaub = angestellterAkt->getUrlaubstage();
+		if (angestellterAkt->getArbeitsAnfang() == nullptr) {
+			// gerade freizeit
+		}
+		else if (angestellterAkt->getPauseAnfang() == nullptr) {
+			// gerade arbeitszeit
+			angestellterAkt->getAktuelleArbeitszeit();
+		}
+		else {
+			// gerade pause
+		}
+
+		Int32 resturlaub = angestellterAkt->getUrlaubstage();
 		nameLbl->Text = angestellterAkt->getVorname() + " " + angestellterAkt->getNachname();
 		resturlaubLbl->Text = angestellterAkt->getAnzahlArbeitstage() + " Tage";
 	}
@@ -607,6 +608,8 @@ namespace Zeiterfassungssystem {
 
 	//TIMER UHR
 	private: System::Void timerUhr_Tick(System::Object^  sender, System::EventArgs^  e) {
+		uhrzeitLbl->Text = DateTime::Now.ToString("HH:mm:ss");
+		datumLbl->Text = DateTime::Now.ToString("dddd, dd. MMMM yyyy");
 	}
 
 	//TIMER PAUSE

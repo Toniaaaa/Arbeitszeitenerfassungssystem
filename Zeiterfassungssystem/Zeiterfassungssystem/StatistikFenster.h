@@ -110,7 +110,7 @@ namespace Zeiterfassungssystem {
 		this->chart1->Series["Arbeitsstunden"]->Points->AddXY("Tag", 8);
 	}
 	private: System::Void btn_aenderungsanfrage_Click(System::Object^  sender, System::EventArgs^  e) {
-		aenderungsantrag->Show();
+		aenderungsantrag->ShowDialog(this);
 	}
 	};
 }

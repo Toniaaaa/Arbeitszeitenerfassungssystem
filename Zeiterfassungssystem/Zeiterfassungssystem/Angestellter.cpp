@@ -11,17 +11,11 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->wochenstunden = wochenstunden;
 	this->urlaubstage = urlaubstage;
 	listeEreignisse = gcnew List<Ereignis^>;
-	
 }
 
 Abteilung ^ Angestellter::getAbteilung()
 {
 	return abteilung;
-}
-
-List<Ereignis^>^ Angestellter::getAlleEreignisse()
-{
-	return listeEreignisse;
 }
 
 Ereignis ^ Angestellter::getEreignis(Int32 index)
@@ -34,14 +28,9 @@ Int32 Angestellter::getAnzahlEreignisse()
 	return listeEreignisse->Count;
 }
 
-void Angestellter::fuegeArbeitszeitHinzu(Int32 arbeitszeit)
-{
-	arbeitszeitenliste.Add(arbeitszeit);
-}
-
 Int32 Angestellter::getAnzahlArbeitstage()
 {
-	return arbeitszeitenliste.Count;
+	return 0; // TODO
 }
 
 void Angestellter::fuegeEreignisHinzu(Ereignis^ ereignis)
@@ -54,39 +43,64 @@ void Angestellter::removeEreignis(Int32 index)
 	listeEreignisse->RemoveAt(index);
 }
 
-Int32 Angestellter::berechneZeitstunden()
+DateTime ^ Angestellter::getArbeitsAnfang()
 {
-	DateTime anfang;
-	DateTime ende;
-	DateTime pauseanfang;
-	DateTime pauseende;
-
-	for (int i = 0; i < listeEreignisse->Count; i++) {
-
-		if (listeEreignisse[i]->getTyp() == ARBEIT_START) {
-			anfang = listeEreignisse[i]->getTimestamp();
-		}
-		if (listeEreignisse[i]->getTyp() == PAUSE_START) {
-			pauseanfang = listeEreignisse[i]->getTimestamp();
-		}
-	
-		if (listeEreignisse[i]->getTyp() == PAUSE_ENDE) {
-			pauseende = listeEreignisse[i]->getTimestamp();
-		}
-		
+	DateTime^ arbeitsanfang = nullptr;
+	for (int i = getAnzahlEreignisse() - 1; i >= 0; i--) {
 		if (listeEreignisse[i]->getTyp() == ARBEIT_ENDE) {
-			ende = listeEreignisse[i]->getTimestamp();
+			break;
+		}
+		if (listeEreignisse[i]->getTyp() == ARBEIT_START) {
+			arbeitsanfang = listeEreignisse[i]->getTimestamp();
+			break;
+		}
+	}
+	return arbeitsanfang;
+}
+
+DateTime ^ Angestellter::getPauseAnfang()
+{
+	DateTime^ pauseanfang = nullptr;
+
+	if (getAnzahlEreignisse() > 0 && listeEreignisse[getAnzahlEreignisse() - 1]->getTyp() == PAUSE_START) {
+		pauseanfang = listeEreignisse[getAnzahlEreignisse() - 1]->getTimestamp();
+	}
+	return pauseanfang;
+}
+
+TimeSpan ^ Angestellter::getAktuelleArbeitszeit()
+{
+	Int32 arbeitsanfang = -1;
+	for (int i = getAnzahlEreignisse() - 1; i >= 0; i--) {
+		if (listeEreignisse[i]->getTyp() == ARBEIT_ENDE) {
+			break;
+		}
+		if (listeEreignisse[i]->getTyp() == ARBEIT_START) {
+			arbeitsanfang = i;
+			break;
 		}
 	}
 
-	
-		Int32 pause = DateTime::Compare(pauseanfang, pauseende);
-		Int32 arbeitszeit = DateTime::Compare(anfang, ende) - pause;
-		return arbeitszeit;
-	
+	TimeSpan^ result = nullptr;
+	if (arbeitsanfang != -1) {
+		result = DateTime::Now - *(listeEreignisse[arbeitsanfang]->getTimestamp());
+
+		DateTime^ pausestart = nullptr;
+		for (int i = arbeitsanfang + 1; i < getAnzahlEreignisse(); i++) {
+			if (listeEreignisse[i]->getTyp() == PAUSE_START) {
+				pausestart = listeEreignisse[i]->getTimestamp();
+			}
+			else if (listeEreignisse[i]->getTyp() == PAUSE_ENDE) {
+				TimeSpan^ pause = *(listeEreignisse[i]->getTimestamp()) - *(pausestart);
+				result -= *pause;
+				pausestart = nullptr;
+			}
+		}
+
+		if (pausestart != nullptr) {
+			TimeSpan^ pause = DateTime::Now - *(pausestart);
+			result -= *pause;
+		}
+	}
+	return result;
 }
-		
-		
-
-
-

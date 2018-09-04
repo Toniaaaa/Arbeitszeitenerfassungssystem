@@ -1,9 +1,9 @@
 #include "Ereignis.h"
 
-Ereignis::Ereignis(EreignisTyp typ, DateTime  timestamp)
+Ereignis::Ereignis(EreignisTyp typ, DateTime^ timestamp)
 {
 	this->typ = typ;
-	this->timestamp = timestamp;
+	this->timestamp = *timestamp;
 }
 
 EreignisTyp Ereignis::getTyp()
@@ -11,7 +11,7 @@ EreignisTyp Ereignis::getTyp()
 	return typ;
 }
 
-DateTime  Ereignis::getTimestamp()
+DateTime^ Ereignis::getTimestamp()
 {
 	return timestamp;
 }

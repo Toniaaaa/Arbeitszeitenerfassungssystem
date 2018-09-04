@@ -19,7 +19,6 @@ private:
 	Int32 wochenstunden;
 	Int32 urlaubstage;
 	List<Ereignis^>^ listeEreignisse;
-	List<Int32> arbeitszeitenliste;
 
 public:
 	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage);
@@ -32,10 +31,9 @@ public:
 	inline String^ getPasswort() {return passwort;};
 	inline Int32 getWochensstunden() {return wochenstunden;}
 	inline Int32 getUrlaubstage() {return urlaubstage;}
-	List<Ereignis^>^ getAlleEreignisse();
+	
 	Ereignis^ getEreignis(Int32 index);
 	Int32 getAnzahlEreignisse();
-	void fuegeArbeitszeitHinzu(Int32 arbeitszeit);
 	Int32 getAnzahlArbeitstage();
 
 	//Setter
@@ -49,7 +47,11 @@ public:
 	virtual bool istVorgesetzter() = 0;
 	void fuegeEreignisHinzu(Ereignis^ ereignis);
 	void removeEreignis(Int32 index);
-	Int32 berechneZeitstunden();
-	
 
+	// Ereignislisteauswertungsmethodensammlung
+
+	DateTime^ getArbeitsAnfang(); // null wenn arbeitstag (noch) nicht begonnen
+	DateTime^ getPauseAnfang(); // null wenn pause gerade nicht läuft
+
+	TimeSpan^ getAktuelleArbeitszeit();
 };
