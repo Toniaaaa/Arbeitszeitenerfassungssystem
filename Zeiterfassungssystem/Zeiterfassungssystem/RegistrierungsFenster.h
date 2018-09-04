@@ -327,6 +327,10 @@ namespace Zeiterfassungssystem {
 			this->txt_urlaubstage->Text = "";
 		}
 
+		void setStartseiteVorgesetzte(StartseiteVorgesetzte^ startseiteVorgesetzte) {
+			this->startseitevorgesetzte = startseiteVorgesetzte;
+		}
+
 	public: void setUnternehmen(Unternehmen^ unternehmen) {
 		this->unternehmen = unternehmen;
 	}
@@ -388,12 +392,13 @@ namespace Zeiterfassungssystem {
 		}
 		else {
 			if (this->txt_Rolle->SelectedItem->ToString()->Equals("Mitarbeiter")) {
-				//vorgesetzter = getVorgesetzter();
-				Abteilung^ abteilung = gcnew Abteilung(txt_abteilung->Text, vorgesetzter);
+				//vorgesetzter = (Vorgesetzter^)startseitevorgesetzte->getVorgesetzter();
+				Abteilung^ abteilung = unternehmen->getAbteilung(0);
+				vorgesetzter = abteilung->getVorgesetzter();
 				Mitarbeiter^ mitarbeiter = gcnew Mitarbeiter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text));
 				mitarbeiter->setVorgesetzter(vorgesetzter);
-				mitarbeiter->setAbteilung(abteilung);
-				abteilung->fuegeMitarbeiterHinzu(mitarbeiter);
+				mitarbeiter->setAbteilung(vorgesetzter->getAbteilung());
+				vorgesetzter->getAbteilung()->fuegeMitarbeiterHinzu(mitarbeiter);
 				this->DialogResult = System::Windows::Forms::DialogResult::OK;
 				this->Close();
 			}

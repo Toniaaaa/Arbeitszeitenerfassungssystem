@@ -22,7 +22,6 @@ namespace Zeiterfassungssystem {
 	//zum lesen und schreiben
 	using namespace System::Runtime::Serialization::Formatters::Binary;
 	using namespace System::IO;
-	
 
 	/// <summary>
 	/// Zusammenfassung für VorgesetztenSeite
@@ -572,6 +571,8 @@ namespace Zeiterfassungssystem {
 
 	//REGISTRIERUNGSFENSTER
 	private: System::Void addBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		//registrierungsfenster->setStartseiteVorgesetzte(this);
+		registrierungsfenster->setUnternehmen(unternehmen);
 		System::Windows::Forms::DialogResult result = registrierungsfenster->ShowDialog(this);
 	}
 	private: System::Void editBtn_Click(System::Object^  sender, System::EventArgs^  e) {
