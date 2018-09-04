@@ -58,7 +58,6 @@ public:
 
 	DateTime^ getArbeitsAnfang(); // null wenn arbeitstag (noch) nicht begonnen
 	DateTime^ getPauseAnfang(); // null wenn pause gerade nicht läuft
-
 	TimeSpan^ getAktuelleArbeitszeit();
 	TimeSpan^ getAktuellePausenzeit();
 	void setAktuelleArbeitszeit(Int32 sekunde, Int32 minute, Int32 stunde);

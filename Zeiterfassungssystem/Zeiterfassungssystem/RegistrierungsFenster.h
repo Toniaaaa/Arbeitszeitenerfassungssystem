@@ -405,6 +405,7 @@ namespace Zeiterfassungssystem {
 			else {
 				Abteilung^ abteilungvorgesetzter = gcnew Abteilung(txt_abteilung->Text, vorgesetzter);
 				Vorgesetzter^ vorgesetzter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilungvorgesetzter, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text));
+				unternehmen->addAbteilung(abteilungvorgesetzter);
 				this->DialogResult = System::Windows::Forms::DialogResult::OK;
 				this->Close();
 			}
