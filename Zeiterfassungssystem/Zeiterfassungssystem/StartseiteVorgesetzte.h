@@ -63,10 +63,11 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Button^  addBtn;
 	private: System::Windows::Forms::Button^  editBtn;
 	private: System::Windows::Forms::Button^  personalBtn;
-	private: System::Windows::Forms::Label^  lbl_heutigeArbeitszeitText;
-	private: System::Windows::Forms::Label^  lbl_heutigePausenzeitText;
-	private: System::Windows::Forms::Label^  lbl_arbeitszeit;
-	private: System::Windows::Forms::Label^  lbl_pausenzeit;
+	private: System::Windows::Forms::Label^  nameLbl;
+
+
+
+
 	private: System::Windows::Forms::Label^  uhrzeitLbl;
 
 	public:
@@ -93,7 +94,7 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Button^  kommenBtn;
 	private: System::Windows::Forms::Button^  gehenBtn;
 	private: System::Windows::Forms::Label^  halloLbl;
-	private: System::Windows::Forms::Label^  nameLbl;
+
 	private: System::Windows::Forms::Timer^  timerArbeitszeit;
 	private: System::Windows::Forms::Label^  arbeitszeitLbl;
 	private: System::ComponentModel::IContainer^  components;
@@ -116,7 +117,6 @@ namespace Zeiterfassungssystem {
 			this->kommenBtn = (gcnew System::Windows::Forms::Button());
 			this->gehenBtn = (gcnew System::Windows::Forms::Button());
 			this->halloLbl = (gcnew System::Windows::Forms::Label());
-			this->nameLbl = (gcnew System::Windows::Forms::Label());
 			this->timerArbeitszeit = (gcnew System::Windows::Forms::Timer(this->components));
 			this->arbeitszeitLbl = (gcnew System::Windows::Forms::Label());
 			this->timerUhr = (gcnew System::Windows::Forms::Timer(this->components));
@@ -137,10 +137,7 @@ namespace Zeiterfassungssystem {
 			this->addBtn = (gcnew System::Windows::Forms::Button());
 			this->editBtn = (gcnew System::Windows::Forms::Button());
 			this->personalBtn = (gcnew System::Windows::Forms::Button());
-			this->lbl_heutigeArbeitszeitText = (gcnew System::Windows::Forms::Label());
-			this->lbl_heutigePausenzeitText = (gcnew System::Windows::Forms::Label());
-			this->lbl_arbeitszeit = (gcnew System::Windows::Forms::Label());
-			this->lbl_pausenzeit = (gcnew System::Windows::Forms::Label());
+			this->nameLbl = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// kommenBtn
@@ -181,19 +178,6 @@ namespace Zeiterfassungssystem {
 			this->halloLbl->TabIndex = 3;
 			this->halloLbl->Text = L"Hallo";
 			this->halloLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
-			// 
-			// nameLbl
-			// 
-			this->nameLbl->Anchor = System::Windows::Forms::AnchorStyles::Top;
-			this->nameLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 30, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->nameLbl->Location = System::Drawing::Point(7, 81);
-			this->nameLbl->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
-			this->nameLbl->Name = L"nameLbl";
-			this->nameLbl->Size = System::Drawing::Size(1097, 57);
-			this->nameLbl->TabIndex = 4;
-			this->nameLbl->Text = L"Beispiel-Name eines MA";
-			this->nameLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// timerArbeitszeit
 			// 
@@ -255,12 +239,13 @@ namespace Zeiterfassungssystem {
 			this->arbeitszeitSchriftLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20.25F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->arbeitszeitSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->arbeitszeitSchriftLbl->Location = System::Drawing::Point(397, 500);
+			this->arbeitszeitSchriftLbl->Location = System::Drawing::Point(443, 510);
 			this->arbeitszeitSchriftLbl->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->arbeitszeitSchriftLbl->Name = L"arbeitszeitSchriftLbl";
-			this->arbeitszeitSchriftLbl->Size = System::Drawing::Size(267, 39);
+			this->arbeitszeitSchriftLbl->Size = System::Drawing::Size(176, 39);
 			this->arbeitszeitSchriftLbl->TabIndex = 8;
-			this->arbeitszeitSchriftLbl->Text = L"Tagesarbeitszeit";
+			this->arbeitszeitSchriftLbl->Text = L"Arbeitszeit";
+			this->arbeitszeitSchriftLbl->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			// 
 			// resturlaubSchriftLbl
 			// 
@@ -287,7 +272,7 @@ namespace Zeiterfassungssystem {
 			this->PausenSchriftLbl->Name = L"PausenSchriftLbl";
 			this->PausenSchriftLbl->Size = System::Drawing::Size(313, 31);
 			this->PausenSchriftLbl->TabIndex = 10;
-			this->PausenSchriftLbl->Text = L"Pause heute";
+			this->PausenSchriftLbl->Text = L"Pause seit Beginn";
 			this->PausenSchriftLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// nochWochenstundenSchriftLbl
@@ -374,7 +359,7 @@ namespace Zeiterfassungssystem {
 			this->pauseLbl->Name = L"pauseLbl";
 			this->pauseLbl->Size = System::Drawing::Size(360, 62);
 			this->pauseLbl->TabIndex = 16;
-			this->pauseLbl->Text = L"0:00:00 Stunden";
+			this->pauseLbl->Text = L"00:00:00";
 			this->pauseLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// resturlaubLbl
@@ -454,43 +439,18 @@ namespace Zeiterfassungssystem {
 			this->personalBtn->UseVisualStyleBackColor = false;
 			this->personalBtn->Click += gcnew System::EventHandler(this, &StartseiteVorgesetzte::personalBtn_Click);
 			// 
-			// lbl_heutigeArbeitszeitText
+			// nameLbl
 			// 
-			this->lbl_heutigeArbeitszeitText->AutoSize = true;
-			this->lbl_heutigeArbeitszeitText->ForeColor = System::Drawing::SystemColors::Window;
-			this->lbl_heutigeArbeitszeitText->Location = System::Drawing::Point(44, 25);
-			this->lbl_heutigeArbeitszeitText->Name = L"lbl_heutigeArbeitszeitText";
-			this->lbl_heutigeArbeitszeitText->Size = System::Drawing::Size(135, 17);
-			this->lbl_heutigeArbeitszeitText->TabIndex = 22;
-			this->lbl_heutigeArbeitszeitText->Text = L"Heutige Arbeitszeit: ";
-			// 
-			// lbl_heutigePausenzeitText
-			// 
-			this->lbl_heutigePausenzeitText->AutoSize = true;
-			this->lbl_heutigePausenzeitText->ForeColor = System::Drawing::SystemColors::Window;
-			this->lbl_heutigePausenzeitText->Location = System::Drawing::Point(40, 91);
-			this->lbl_heutigePausenzeitText->Name = L"lbl_heutigePausenzeitText";
-			this->lbl_heutigePausenzeitText->Size = System::Drawing::Size(139, 17);
-			this->lbl_heutigePausenzeitText->TabIndex = 23;
-			this->lbl_heutigePausenzeitText->Text = L"Heutige Pausenzeit: ";
-			// 
-			// lbl_arbeitszeit
-			// 
-			this->lbl_arbeitszeit->AutoSize = true;
-			this->lbl_arbeitszeit->Location = System::Drawing::Point(71, 58);
-			this->lbl_arbeitszeit->Name = L"lbl_arbeitszeit";
-			this->lbl_arbeitszeit->Size = System::Drawing::Size(64, 17);
-			this->lbl_arbeitszeit->TabIndex = 24;
-			this->lbl_arbeitszeit->Text = L"00:00:00";
-			// 
-			// lbl_pausenzeit
-			// 
-			this->lbl_pausenzeit->AutoSize = true;
-			this->lbl_pausenzeit->Location = System::Drawing::Point(71, 123);
-			this->lbl_pausenzeit->Name = L"lbl_pausenzeit";
-			this->lbl_pausenzeit->Size = System::Drawing::Size(64, 17);
-			this->lbl_pausenzeit->TabIndex = 25;
-			this->lbl_pausenzeit->Text = L"00:00:00";
+			this->nameLbl->Anchor = System::Windows::Forms::AnchorStyles::Top;
+			this->nameLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 30, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->nameLbl->Location = System::Drawing::Point(7, 81);
+			this->nameLbl->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->nameLbl->Name = L"nameLbl";
+			this->nameLbl->Size = System::Drawing::Size(1097, 57);
+			this->nameLbl->TabIndex = 4;
+			this->nameLbl->Text = L"Beispiel-Name eines MA";
+			this->nameLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// StartseiteVorgesetzte
 			// 
@@ -499,10 +459,6 @@ namespace Zeiterfassungssystem {
 			this->AutoScroll = true;
 			this->BackColor = System::Drawing::SystemColors::MenuHighlight;
 			this->ClientSize = System::Drawing::Size(1103, 997);
-			this->Controls->Add(this->lbl_pausenzeit);
-			this->Controls->Add(this->lbl_arbeitszeit);
-			this->Controls->Add(this->lbl_heutigePausenzeitText);
-			this->Controls->Add(this->lbl_heutigeArbeitszeitText);
 			this->Controls->Add(this->personalBtn);
 			this->Controls->Add(this->editBtn);
 			this->Controls->Add(this->addBtn);
@@ -566,7 +522,6 @@ namespace Zeiterfassungssystem {
 	private: System::Void pauseCbox_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
 		if (angestellterAkt->getArbeitsAnfang() != nullptr) {
 			if(angestellterAkt->getPauseAnfang() == nullptr) {
-				angestellterAkt->setAktuelleArbeitszeit(sekunde, minute, stunde);
 				timerArbeitszeit->Stop();
 				timerPause->Start();
 				Ereignis^ pausenanfang = gcnew Ereignis(PAUSE_START, DateTime::Now);
@@ -578,7 +533,6 @@ namespace Zeiterfassungssystem {
 				}
 			}
 			else {
-				angestellterAkt->setAktuelleArbeitszeit(sekunde, minute, stunde);
 				angestellterAkt->getAktuelleArbeitszeit();
 				timerArbeitszeit->Start();
 				timerPause->Stop();
@@ -607,6 +561,15 @@ namespace Zeiterfassungssystem {
 			//Timer stoppen
 			timerArbeitszeit->Stop();
 			timerPause->Stop();
+
+			pauseSekunde = 0;
+			pauseMinute = 0;
+			pauseStunde = 0;
+			sekunde = 0;
+			minute = 0;
+			stunde = 0;
+			arbeitszeitLbl->Text = uhrzeitString(sekunde, minute, stunde);
+			pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
 
 			Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
 			angestellterAkt->fuegeEreignisHinzu(arbeitsende);
@@ -649,40 +612,38 @@ namespace Zeiterfassungssystem {
 			sekunde = 0;
 			minute = 0;
 			stunde = 0;
+			pauseSekunde = 0;
+			pauseMinute = 0;
+			pauseStunde = 0;
 		}
-		else if (angestellterAkt->getPauseAnfang() == nullptr) {
+		else {
 			// gerade arbeitszeit
-			arbeitszeit = angestellterAkt->getAktuelleArbeitszeit();
+			TimeSpan^ arbeitszeit = angestellterAkt->getAktuelleArbeitszeit();
 			sekunde = arbeitszeit->Seconds;
 			minute = arbeitszeit->Minutes;
 			stunde = arbeitszeit->Hours;
-		}
-		else {
-			// gerade pause
-			pausenzeit = angestellterAkt->getAktuellePausenzeit();
+
+			TimeSpan^ pausenzeit = angestellterAkt->getPausezeit();
 			pauseSekunde = pausenzeit->Seconds;
 			pauseMinute = pausenzeit->Minutes;
 			pauseStunde = pausenzeit->Hours;
+		
+			if (angestellterAkt->getPauseAnfang() != nullptr) {
+				timerPause->Start();
+			}
+			else {
+				timerArbeitszeit->Start();
+			}
 		}
 
-		if (angestellterAkt->getArbeitsAnfang() != nullptr && angestellterAkt->getPauseAnfang() == nullptr) {
-			timerArbeitszeit->Start();
-		}
-
-		if (angestellterAkt->getPauseAnfang() != nullptr) {
-			timerPause->Start();
-		}
-
-		lbl_arbeitszeit->Text = stunde + ":" + minute + ":" + sekunde;
-		lbl_pausenzeit->Text = pauseStunde + ":" + pauseMinute + ":" + pauseSekunde;
+		arbeitszeitLbl->Text = uhrzeitString(sekunde, minute, stunde);
+		pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
 		Int32 resturlaub = angestellterAkt->getUrlaubstage();
 		nameLbl->Text = angestellterAkt->getVorname() + " " + angestellterAkt->getNachname();
 		resturlaubLbl->Text = angestellterAkt->getAnzahlArbeitstage() + " Tage";
 	}
 	//WENN SEITE GESCHLOSSEN UNTERNEHMEN WIRD GESPEICHERT
 	private: System::Void StartseiteVorgesetzte_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
-		angestellterAkt->setAktuelleArbeitszeit(sekunde, minute, stunde);
-		angestellterAkt->setAktuellePausenzeit(pauseSekunde, pauseMinute, pauseStunde);
 		unternehmen->speichern();
 		Application::Exit();
 	}
@@ -699,25 +660,7 @@ namespace Zeiterfassungssystem {
 			}
 		}
 
-		String^ sek;
-		if (sekunde < 10) {
-			sek = "0" + Convert::ToString(sekunde);
-		}
-		else {
-			sek = Convert::ToString(sekunde);
-		}
-
-		String^ min;
-		if (minute < 10) {
-			min = "0" + Convert::ToString(minute);
-		}
-		else {
-			min = Convert::ToString(minute);
-		}
-
-		String^ std;
-		std = "0" + Convert::ToString(stunde);
-		arbeitszeitLbl->Text = std + ":" + min + ":" + sek;
+		arbeitszeitLbl->Text = uhrzeitString(sekunde, minute, stunde);
 
 	}
 
@@ -739,26 +682,30 @@ namespace Zeiterfassungssystem {
 			}
 		}
 
-		String^ pauseSek;
-		if (pauseSekunde < 10) {
-			pauseSek = "0" + Convert::ToString(pauseSekunde);
+		pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
+
+	}
+
+	private: String^ uhrzeitString(Int32 sekunde, Int32 minute, Int32 stunde) {
+		String^ sek;
+		if (sekunde < 10) {
+			sek = "0" + Convert::ToString(sekunde);
 		}
 		else {
-			pauseSek = Convert::ToString(pauseSekunde);
+			sek = Convert::ToString(sekunde);
 		}
 
-		String^ pauseMin;
-		if (pauseMinute < 10) {
-			pauseMin = "0" + Convert::ToString(pauseMinute);
+		String^ min;
+		if (minute < 10) {
+			min = "0" + Convert::ToString(minute);
 		}
 		else {
-			pauseMin = Convert::ToString(pauseMinute);
+			min = Convert::ToString(minute);
 		}
 
-		String^ pauseStd;
-		pauseStd = "0" + Convert::ToString(pauseStunde);
-		pauseLbl->Text = pauseStd + ":" + pauseMin + ":" + pauseSek;
-
+		String^ std;
+		std = "0" + Convert::ToString(stunde);
+		return std + ":" + min + ":" + sek;
 	}
 };
 }
