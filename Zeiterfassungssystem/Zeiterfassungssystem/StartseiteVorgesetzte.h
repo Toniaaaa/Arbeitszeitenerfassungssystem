@@ -7,6 +7,7 @@
 #include "RegistrierungsFenster.h"
 #include "Ereignis.h"
 #include "UrlaubsbearbeitungsFenster.h"
+#include "PersonalFenster.h"
 
 
 
@@ -35,6 +36,7 @@ namespace Zeiterfassungssystem {
 		Vorgesetzter^ vorgesetzter;
 		StatistikFenster^ statistikfenster;
 		UrlaubsanfragenbearbeitungsFenster^ urlaubsbearbeitungsfenster;
+		PersonalFenster^ personalfenster;
 
 		Int32 sekunde;
 		Int32 minute;
@@ -77,6 +79,7 @@ namespace Zeiterfassungssystem {
 			registrierungsfenster = gcnew RegistrierungsFenster;
 			statistikfenster = gcnew StatistikFenster;
 			urlaubsbearbeitungsfenster = gcnew UrlaubsanfragenbearbeitungsFenster;
+			personalfenster = gcnew PersonalFenster;
 			
 		}
 
@@ -607,6 +610,7 @@ namespace Zeiterfassungssystem {
 		
 	}
 	private: System::Void personalBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		personalfenster->Show();
 	}
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {

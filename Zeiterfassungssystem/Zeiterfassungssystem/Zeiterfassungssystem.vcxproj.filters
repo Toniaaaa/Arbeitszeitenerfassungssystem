@@ -69,6 +69,9 @@
     <ClInclude Include="UrlaubsbearbeitungsFenster.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="PersonalFenster.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Angestellter.cpp">
@@ -120,6 +123,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="UrlaubsbearbeitungsFenster.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="PersonalFenster.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
