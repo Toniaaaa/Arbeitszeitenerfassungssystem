@@ -141,6 +141,9 @@
     <ClInclude Include="PasswortAendernFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="PersonalFenster.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="RegistrierungsFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -173,6 +176,7 @@
     <ClCompile Include="LogInFenster.cpp" />
     <ClCompile Include="Mitarbeiter.cpp" />
     <ClCompile Include="PasswortAendernFenster.cpp" />
+    <ClCompile Include="PersonalFenster.cpp" />
     <ClCompile Include="RegistrierungsFenster.cpp" />
     <ClCompile Include="StartseiteMitarbeiter.cpp" />
     <ClCompile Include="StartseiteVorgesetzte.cpp" />
@@ -195,6 +199,9 @@
   <ItemGroup>
     <EmbeddedResource Include="LogInFenster.resx">
       <DependentUpon>LogInFenster.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PersonalFenster.resx">
+      <DependentUpon>PersonalFenster.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RegistrierungsFenster.resx">
       <DependentUpon>RegistrierungsFenster.h</DependentUpon>

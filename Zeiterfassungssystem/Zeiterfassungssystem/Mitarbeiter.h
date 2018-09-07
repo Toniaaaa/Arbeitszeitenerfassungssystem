@@ -10,12 +10,8 @@ ref class Vorgesetzter;
 ref class Mitarbeiter :
 	public Angestellter
 {
-private:
-	Vorgesetzter^ vorgesetzter;
 public:
 	Mitarbeiter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage);
 
 	bool istVorgesetzter() override;
-
-	void setVorgesetzter(Vorgesetzter^ vorgesetzter);
 };

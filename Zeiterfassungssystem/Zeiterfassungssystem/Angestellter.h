@@ -19,12 +19,6 @@ private:
 	Int32 wochenstunden;
 	Int32 urlaubstage;
 	List<Ereignis^>^ listeEreignisse;
-	Int32 sekunde;
-	Int32 minute;
-	Int32 stunde;
-	Int32 pauseSekunde;
-	Int32 pauseMinute;
-	Int32 pauseStunde;
 
 public:
 	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage);
@@ -59,7 +53,11 @@ public:
 	DateTime^ getArbeitsAnfang(); // null wenn arbeitstag (noch) nicht begonnen
 	DateTime^ getPauseAnfang(); // null wenn pause gerade nicht läuft
 	TimeSpan^ getAktuelleArbeitszeit();
-	TimeSpan^ getAktuellePausenzeit();
-	void setAktuelleArbeitszeit(Int32 sekunde, Int32 minute, Int32 stunde);
-	void setAktuellePausenzeit(Int32 pauseSekunde, Int32 pauseMinute, Int32 pauseStunde);
+	TimeSpan^ getAktuellePausenzeit(); // liefert die Zeit der aktuell laufenden Pause
+	TimeSpan^ getPausezeit(); // liefert die Zeit der bisherigen Pausen seit letztem Arbeitsbeginn
+	//arbeitsblock speichert datetime anfang und ende timespan pausezeit Timespan arbeitszeit
+	//getarbeitsblöcke gui zeigt die an 
+
+private:
+	Int32 getArbeitsAnfangIndex();
 };

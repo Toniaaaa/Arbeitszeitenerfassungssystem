@@ -10,14 +10,12 @@ using namespace System::IO;
 Unternehmen::Unternehmen()
 {
 	abteilungen = gcnew List<Abteilung^>;
+
 	Abteilung^ administration;
 	Vorgesetzter^ admin = gcnew Vorgesetzter("Admin", "istrator", administration, "1", "1234", 169, 28);
 	administration = gcnew Abteilung("1", admin);
 	admin->setAbteilung(administration);
-	//HIER IST WAS FALSCH 
-	Mitarbeiter^ mitarbeiter = gcnew Mitarbeiter("Antonia", "Sensen", administration, "288740", "hallo", 40, 28);
-	administration->fuegeMitarbeiterHinzu(mitarbeiter);
-	mitarbeiter->setAbteilung(administration);
+	
 	abteilungen->Add(administration);
 }
 

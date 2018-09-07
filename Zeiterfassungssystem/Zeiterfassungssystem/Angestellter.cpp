@@ -45,17 +45,13 @@ void Angestellter::removeEreignis(Int32 index)
 
 DateTime ^ Angestellter::getArbeitsAnfang()
 {
-	DateTime^ arbeitsanfang = nullptr;
-	for (int i = getAnzahlEreignisse() - 1; i >= 0; i--) {
-		if (listeEreignisse[i]->getTyp() == ARBEIT_ENDE) {
-			break;
-		}
-		if (listeEreignisse[i]->getTyp() == ARBEIT_START) {
-			arbeitsanfang = listeEreignisse[i]->getTimestamp();
-			break;
-		}
+	Int32 index = getArbeitsAnfangIndex();
+	if (index != -1) {
+		return listeEreignisse[index]->getTimestamp();
 	}
-	return arbeitsanfang;
+	else {
+		return nullptr;
+	}
 }
 
 DateTime ^ Angestellter::getPauseAnfang()
@@ -70,6 +66,54 @@ DateTime ^ Angestellter::getPauseAnfang()
 
 TimeSpan ^ Angestellter::getAktuelleArbeitszeit()
 {
+	Int32 arbeitsanfang = getArbeitsAnfangIndex();
+
+	TimeSpan^ result = nullptr;
+	if (arbeitsanfang != -1) {
+		result = DateTime::Now - *(listeEreignisse[arbeitsanfang]->getTimestamp());
+
+		TimeSpan^ pause = getPausezeit();
+		result = TimeSpan::operator-(*result, *pause);
+	}
+	return result;
+}
+
+TimeSpan ^ Angestellter::getAktuellePausenzeit()
+{
+	return DateTime::Now - *getPauseAnfang();
+}
+
+TimeSpan ^ Angestellter::getPausezeit()
+{
+	Int32 index = getArbeitsAnfangIndex();
+	TimeSpan^ result = nullptr;
+
+	if (index != -1) {
+		result = gcnew TimeSpan();
+
+		DateTime^ pausestart = nullptr;
+		for (int i = index + 1; i < getAnzahlEreignisse(); i++) {
+			if (listeEreignisse[i]->getTyp() == PAUSE_START) {
+				pausestart = listeEreignisse[i]->getTimestamp();
+			}
+			else if (listeEreignisse[i]->getTyp() == PAUSE_ENDE) {
+				TimeSpan^ pause = *(listeEreignisse[i]->getTimestamp()) - *(pausestart);
+				result = TimeSpan::operator+(*result, *pause);
+				pausestart = nullptr;
+			}
+		}
+
+		if (pausestart != nullptr) {
+			TimeSpan^ pause = DateTime::Now - *(pausestart);
+			result = TimeSpan::operator+(*result, *pause);
+		}
+	}
+
+	return result;
+}
+
+Int32 Angestellter::getArbeitsAnfangIndex()
+{
 	Int32 arbeitsanfang = -1;
 	for (int i = getAnzahlEreignisse() - 1; i >= 0; i--) {
 		if (listeEreignisse[i]->getTyp() == ARBEIT_ENDE) {
@@ -80,46 +124,5 @@ TimeSpan ^ Angestellter::getAktuelleArbeitszeit()
 			break;
 		}
 	}
-
-	TimeSpan^ result = nullptr;
-	if (arbeitsanfang != -1) {
-		result = DateTime::Now - *(listeEreignisse[arbeitsanfang]->getTimestamp());
-
-		DateTime^ pausestart = nullptr;
-		for (int i = arbeitsanfang + 1; i < getAnzahlEreignisse(); i++) {
-			if (listeEreignisse[i]->getTyp() == PAUSE_START) {
-				pausestart = listeEreignisse[i]->getTimestamp();
-			}
-			else if (listeEreignisse[i]->getTyp() == PAUSE_ENDE) {
-				TimeSpan^ pause = *(listeEreignisse[i]->getTimestamp()) - *(pausestart);
-				result -= *pause;
-				pausestart = nullptr;
-			}
-		}
-
-		if (pausestart != nullptr) {
-			TimeSpan^ pause = DateTime::Now - *(pausestart);
-			result -= *pause;
-		}
-	}
-	return result;
-}
-
-TimeSpan ^ Angestellter::getAktuellePausenzeit()
-{
-	return DateTime::Now - *getPauseAnfang();
-}
-
-void Angestellter::setAktuelleArbeitszeit(Int32 sekunde, Int32 minute, Int32 stunde)
-{
-	this->sekunde = sekunde;
-	this->minute = minute;
-	this->stunde = stunde;
-}
-
-void Angestellter::setAktuellePausenzeit(Int32 pauseSekunde, Int32 pauseMinute, Int32 pauseStunde)
-{
-	this->pauseSekunde = pauseSekunde;
-	this->pauseMinute = pauseMinute;
-	this->pauseStunde = pauseStunde;
+	return arbeitsanfang;
 }

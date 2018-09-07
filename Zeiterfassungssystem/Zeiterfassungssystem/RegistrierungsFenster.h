@@ -114,7 +114,6 @@ namespace Zeiterfassungssystem {
 			this->txt_passwort->Size = System::Drawing::Size(351, 22);
 			this->txt_passwort->TabIndex = 19;
 			this->txt_abteilung->FormattingEnabled = true;
-			this->txt_abteilung->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Verwaltung", L"IT Sicherheit", L"Software Entwicklung" });
 			this->txt_abteilung->Location = System::Drawing::Point(161, 209);
 			this->txt_abteilung->Name = L"txt_abteilung";
 			this->txt_abteilung->Size = System::Drawing::Size(351, 24);
@@ -220,11 +219,19 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->txt_name);
 			this->Name = L"RegistrierungsFenster";
 			this->Text = L"Registrierung";
+			this->Load += gcnew System::EventHandler(this, &RegistrierungsFenster::registrierungsFenster_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
+	private: System::Void registrierungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+
+		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+			txt_abteilung->Items->Add(unternehmen->getAbteilung(i)->getAbteilungsnummer());
+		}
+
+	}
 			 //Getter zun Datenaustausch
 	public:
 		String ^ getName() {
@@ -334,21 +341,27 @@ namespace Zeiterfassungssystem {
 		}
 		else {
 			if (this->txt_Rolle->SelectedItem->ToString()->Equals("Mitarbeiter")) {
-				//vorgesetzter = (Vorgesetzter^)startseitevorgesetzte->getVorgesetzter();
-				Abteilung^ abteilung = unternehmen->getAbteilung(0);
-				vorgesetzter = abteilung->getVorgesetzter();
+				Abteilung^ abteilung = nullptr;
+
+				for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+					if (unternehmen->getAbteilung(i)->getAbteilungsnummer()->Equals(getAbteilung())) {
+						abteilung = unternehmen->getAbteilung(i);
+					}
+				}
+
 				Mitarbeiter^ mitarbeiter = gcnew Mitarbeiter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text));
-				mitarbeiter->setVorgesetzter(vorgesetzter);
-				vorgesetzter->getAbteilung()->fuegeMitarbeiterHinzu(mitarbeiter);
+				mitarbeiter->setAbteilung(abteilung);
+				abteilung->fuegeMitarbeiterHinzu(mitarbeiter);
 				this->DialogResult = System::Windows::Forms::DialogResult::OK;
 				this->Close();
 			}
 			else {
-				Abteilung^ abteilungvorgesetzter = gcnew Abteilung(txt_abteilung->Text, vorgesetzter);
-				vorgesetzter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilungvorgesetzter, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text));
-				vorgesetzter->setAbteilung(abteilungvorgesetzter);
-				abteilungvorgesetzter->setVorgesetzter(vorgesetzter);
-				unternehmen->addAbteilung(abteilungvorgesetzter);
+				Abteilung^ abteilung = gcnew Abteilung(txt_abteilung->Text, nullptr);
+				Vorgesetzter^ neuerMitarbeiter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text));
+				abteilung->setVorgesetzter(neuerMitarbeiter);
+				
+				unternehmen->addAbteilung(abteilung);
+
 				this->DialogResult = System::Windows::Forms::DialogResult::OK;
 				this->Close();
 			}
