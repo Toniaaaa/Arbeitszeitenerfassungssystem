@@ -3,6 +3,7 @@
 #include "Abteilung.h"
 #include "Mitarbeiter.h"
 #include "Unternehmen.h"
+#include "Ereignis.h"
 
 namespace Zeiterfassungssystem {
 
@@ -140,15 +141,19 @@ namespace Zeiterfassungssystem {
 	private: System::Void PersonalFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		List<Angestellter^>^ angestellte = unternehmenAkt->getAlleAngestellte();
 
+
  		for (int i = 0; i < unternehmenAkt->getAlleAngestellte()->Count; i++) {
-			if (unternehmenAkt->getAlleAngestellte() != nullptr) {
-				ListViewItem^ item = gcnew ListViewItem();
-				item->Clone();
-				item->Text = angestellte[i]->getNachname();
-				item->SubItems->Add(angestellte[i]->getVorname());
-				item->SubItems->Add(angestellte[i]->getPersonalnummer());
-				item->SubItems->Add(angestellte[i]->getAbteilung()->getAbteilungsnummer());
-				listView1->Items->Add(item);
+			for (int j = 0; j < angestellte[i]->getAnzahlEreignisse(); j++) {
+				if (unternehmenAkt->getAlleAngestellte() != nullptr) {
+					ListViewItem^ item = gcnew ListViewItem();
+					item->Clone();
+					item->Text = angestellte[i]->getNachname();
+					item->SubItems->Add(angestellte[i]->getVorname());
+					item->SubItems->Add(angestellte[i]->getEreignis(j)->getTimestamp()->ToString());
+					item->SubItems->Add(angestellte[i]->getAbteilung()->getAbteilungsnummer());
+					listView1->Items->Add(item);
+
+			}
 
 			}
 
@@ -157,7 +162,7 @@ namespace Zeiterfassungssystem {
 	}
 			 
 private: System::Void PersonalFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
-	//listView1->Clear();
+	//listView1->Clear;
 }
 			 
 };

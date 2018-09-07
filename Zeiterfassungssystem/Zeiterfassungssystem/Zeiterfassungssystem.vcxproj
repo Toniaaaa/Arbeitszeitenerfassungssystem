@@ -157,6 +157,9 @@
     <ClInclude Include="StatistikFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="StundenStatistikFenster.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Urlaubsantrag.h" />
     <ClInclude Include="UrlaubsbearbeitungsFenster.h">
       <FileType>CppForm</FileType>
@@ -181,6 +184,7 @@
     <ClCompile Include="StartseiteMitarbeiter.cpp" />
     <ClCompile Include="StartseiteVorgesetzte.cpp" />
     <ClCompile Include="StatistikFenster.cpp" />
+    <ClCompile Include="StundenStatistikFenster.cpp" />
     <ClCompile Include="Urlaubsantrag.cpp" />
     <ClCompile Include="UrlaubsbearbeitungsFenster.cpp" />
     <ClCompile Include="UrlaubsFenster.cpp" />
@@ -214,6 +218,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="StatistikFenster.resx">
       <DependentUpon>StatistikFenster.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StundenStatistikFenster.resx">
+      <DependentUpon>StundenStatistikFenster.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
