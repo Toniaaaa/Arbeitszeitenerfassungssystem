@@ -1,7 +1,8 @@
 #pragma once
-//#include "Angestellter.h"
+#include "Angestellter.h"
 #include "Abteilung.h"
-//#include "Unternehmen.h"
+#include "Mitarbeiter.h"
+#include "Unternehmen.h"
 
 namespace Zeiterfassungssystem {
 
@@ -11,12 +12,14 @@ namespace Zeiterfassungssystem {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Collections::Generic;
 
 	/// <summary>
 	/// Zusammenfassung für PersonalFenster
 	/// </summary>
 	public ref class PersonalFenster : public System::Windows::Forms::Form
 	{
+
 	public:
 		PersonalFenster(void)
 		{
@@ -117,19 +120,28 @@ namespace Zeiterfassungssystem {
 		}
 #pragma endregion
 
-		Abteilung^ abteilung;
-
-
-
-		
+	private:
+		Unternehmen^ unternehmen;
+	/*	public:
+			void setUnternehmen(Unternehmen^ unternehmen) {
+				this->unternehmen = unternehmen;
+			}
+	*/	
 			 
 	private: System::Void PersonalFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		ListViewItem^ item = gcnew ListViewItem();
-		Angestellter^ angestellter;
-		item->Text = "Sensen";
-		item->SubItems->Add("Pantonia");
-		item->SubItems->Add("2");
-		listView1->Items->Add(item);
+		/*List<Angestellter^>^ angestellte = unternehmen->getAlleAngestellte();
+		
+ 		for (int i = 0; i < unternehmen->getAlleAngestellte()->Count; i++) {
+			if (unternehmen->getAlleAngestellte() != nullptr) {
+				item->Text = angestellte[i]->getNachname();
+				item->SubItems->Add(angestellte[i]->getVorname());
+				item->SubItems->Add(angestellte[i]->getPersonalnummer());
+				listView1->Items->Add(item);
+
+			}
+
+		} */
 	}
 };
 }

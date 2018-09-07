@@ -4,6 +4,7 @@
 #include "Angestellter.h"
 #include "PasswortAendernFenster.h"
 #include "StartseiteVorgesetzte.h"
+#include "PersonalFenster.h"
 
 namespace Zeiterfassungssystem {
 
@@ -30,6 +31,7 @@ namespace Zeiterfassungssystem {
 		StartseiteMitarbeiter^ startseitemitarbeiter;
 		StartseiteVorgesetzte^ startseitevorgesetzte;
 		PasswortAendernFenster^ passwortaendernseite;
+		PersonalFenster^ personalfenster;
 		Angestellter^ angestellter;
 		bool loginGedrueckt = false;
 		
@@ -42,6 +44,7 @@ namespace Zeiterfassungssystem {
 			startseitemitarbeiter = gcnew StartseiteMitarbeiter();
 			startseitevorgesetzte = gcnew StartseiteVorgesetzte();
 			passwortaendernseite = gcnew PasswortAendernFenster();
+			//personalfenster = gcnew PersonalFenster();
 		}
 
 	protected:
@@ -208,6 +211,7 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void logInButton_Click(System::Object^  sender, System::EventArgs^  e) {
 		String^ passwort = getKennwort();
+		
 		String^ personalnummer = getBenutzername();
 	    angestellter = unternehmen->loginaccept(personalnummer, passwort);
 		if (angestellter != nullptr && angestellter->istVorgesetzter() == false) {
@@ -221,6 +225,7 @@ namespace Zeiterfassungssystem {
 			loginGedrueckt = true;
 			startseitevorgesetzte->setAngemeldeterAngestellter(angestellter);
 			startseitevorgesetzte->setUnternehmen(unternehmen);
+			//personalfenster->setUnternehmen(unternehmen);
 			startseitevorgesetzte->Show();
 			Close();
 		}

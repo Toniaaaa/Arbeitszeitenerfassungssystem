@@ -27,5 +27,6 @@ public:
 	void addAbteilung(Abteilung^ abteilung);
 	List<Angestellter^>^ getAlleAngestellte();
 	Angestellter^ loginaccept(String^ personalnummer, String^ passwort);
+	List<Abteilung^>^ getAbteilungen();
 
 };

@@ -97,3 +97,8 @@ Angestellter ^ Unternehmen::loginaccept(String ^ personalnummer, String ^ passwo
 	} 
 	return result;
 }
+
+List<Abteilung^>^ Unternehmen::getAbteilungen()
+{
+	return abteilungen;
+}

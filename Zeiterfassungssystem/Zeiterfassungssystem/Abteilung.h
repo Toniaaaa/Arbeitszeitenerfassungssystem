@@ -26,5 +26,6 @@ public:
 	void fuegeMitarbeiterHinzu(Mitarbeiter^ mitarbeiter);
 	Int32 getAnzahlMitarbeiter();
 	void removeMitarbeiter(Int32 index);
+	List<Mitarbeiter^>^ getMitarbeiterListe();
 
 };

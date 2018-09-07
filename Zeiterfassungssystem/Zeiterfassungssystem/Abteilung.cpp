@@ -42,3 +42,8 @@ void Abteilung::removeMitarbeiter(Int32 index)
 {
 	mitarbeiter->RemoveAt(index);
 }
+
+List<Mitarbeiter^>^ Abteilung::getMitarbeiterListe()
+{
+	return mitarbeiter;
+}
