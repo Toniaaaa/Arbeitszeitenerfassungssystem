@@ -22,7 +22,6 @@ namespace Zeiterfassungssystem {
 	//zum lesen und schreiben
 	using namespace System::Runtime::Serialization::Formatters::Binary;
 	using namespace System::IO;
-
 	/// <summary>
 	/// Zusammenfassung für VorgesetztenSeite
 	/// </summary>
@@ -112,7 +111,6 @@ namespace Zeiterfassungssystem {
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
-			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(StartseiteVorgesetzte::typeid));
 			this->kommenBtn = (gcnew System::Windows::Forms::Button());
 			this->gehenBtn = (gcnew System::Windows::Forms::Button());
 			this->halloLbl = (gcnew System::Windows::Forms::Label());
@@ -146,7 +144,6 @@ namespace Zeiterfassungssystem {
 			// kommenBtn
 			// 
 			this->kommenBtn->Anchor = System::Windows::Forms::AnchorStyles::Top;
-			this->kommenBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"kommenBtn.Image")));
 			this->kommenBtn->Location = System::Drawing::Point(47, 335);
 			this->kommenBtn->Margin = System::Windows::Forms::Padding(4);
 			this->kommenBtn->Name = L"kommenBtn";
@@ -158,7 +155,6 @@ namespace Zeiterfassungssystem {
 			// gehenBtn
 			// 
 			this->gehenBtn->Anchor = System::Windows::Forms::AnchorStyles::Top;
-			this->gehenBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"gehenBtn.Image")));
 			this->gehenBtn->Location = System::Drawing::Point(773, 335);
 			this->gehenBtn->Margin = System::Windows::Forms::Padding(4);
 			this->gehenBtn->Name = L"gehenBtn";
@@ -310,7 +306,6 @@ namespace Zeiterfassungssystem {
 			this->statistikBtn->BackColor = System::Drawing::SystemColors::HighlightText;
 			this->statistikBtn->FlatAppearance->BorderColor = System::Drawing::Color::White;
 			this->statistikBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15));
-			this->statistikBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"statistikBtn.Image")));
 			this->statistikBtn->Location = System::Drawing::Point(17, 658);
 			this->statistikBtn->Margin = System::Windows::Forms::Padding(4);
 			this->statistikBtn->Name = L"statistikBtn";
@@ -325,7 +320,6 @@ namespace Zeiterfassungssystem {
 			this->urlaubBtn->BackColor = System::Drawing::SystemColors::HighlightText;
 			this->urlaubBtn->FlatAppearance->BorderColor = System::Drawing::Color::White;
 			this->urlaubBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15));
-			this->urlaubBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"urlaubBtn.Image")));
 			this->urlaubBtn->Location = System::Drawing::Point(773, 658);
 			this->urlaubBtn->Margin = System::Windows::Forms::Padding(4);
 			this->urlaubBtn->Name = L"urlaubBtn";
@@ -340,7 +334,6 @@ namespace Zeiterfassungssystem {
 			this->kalenderBtn->BackColor = System::Drawing::SystemColors::HighlightText;
 			this->kalenderBtn->FlatAppearance->BorderColor = System::Drawing::Color::White;
 			this->kalenderBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15));
-			this->kalenderBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"kalenderBtn.Image")));
 			this->kalenderBtn->Location = System::Drawing::Point(396, 658);
 			this->kalenderBtn->Margin = System::Windows::Forms::Padding(4);
 			this->kalenderBtn->Name = L"kalenderBtn";
@@ -395,7 +388,6 @@ namespace Zeiterfassungssystem {
 			// 
 			this->pauseCbox->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->pauseCbox->Appearance = System::Windows::Forms::Appearance::Button;
-			this->pauseCbox->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pauseCbox.Image")));
 			this->pauseCbox->Location = System::Drawing::Point(384, 366);
 			this->pauseCbox->Margin = System::Windows::Forms::Padding(4);
 			this->pauseCbox->Name = L"pauseCbox";
@@ -415,7 +407,6 @@ namespace Zeiterfassungssystem {
 			this->addBtn->BackColor = System::Drawing::SystemColors::HighlightText;
 			this->addBtn->FlatAppearance->BorderColor = System::Drawing::Color::White;
 			this->addBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15));
-			this->addBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"addBtn.Image")));
 			this->addBtn->Location = System::Drawing::Point(21, 774);
 			this->addBtn->Margin = System::Windows::Forms::Padding(4);
 			this->addBtn->Name = L"addBtn";
@@ -430,7 +421,6 @@ namespace Zeiterfassungssystem {
 			this->editBtn->BackColor = System::Drawing::SystemColors::HighlightText;
 			this->editBtn->FlatAppearance->BorderColor = System::Drawing::Color::White;
 			this->editBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15));
-			this->editBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"editBtn.Image")));
 			this->editBtn->Location = System::Drawing::Point(396, 774);
 			this->editBtn->Margin = System::Windows::Forms::Padding(4);
 			this->editBtn->Name = L"editBtn";
@@ -445,7 +435,6 @@ namespace Zeiterfassungssystem {
 			this->personalBtn->BackColor = System::Drawing::SystemColors::HighlightText;
 			this->personalBtn->FlatAppearance->BorderColor = System::Drawing::Color::White;
 			this->personalBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15));
-			this->personalBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"personalBtn.Image")));
 			this->personalBtn->Location = System::Drawing::Point(773, 774);
 			this->personalBtn->Margin = System::Windows::Forms::Padding(4);
 			this->personalBtn->Name = L"personalBtn";
@@ -620,6 +609,7 @@ namespace Zeiterfassungssystem {
 
 	//STATISTIKFENSTER
 	private: System::Void statistikBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		statistikfenster->setAngestellterAkt(angestellterAkt);
 		statistikfenster->ShowDialog(this);
 	}
 
@@ -642,6 +632,9 @@ namespace Zeiterfassungssystem {
 		
 	}
 	private: System::Void personalBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+
+
+
 	}
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {
@@ -762,6 +755,3 @@ namespace Zeiterfassungssystem {
 	}
 };
 }
-
-
-

@@ -10,7 +10,6 @@ namespace Zeiterfassungssystem {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-
 	/// <summary>
 	/// Zusammenfassung für StatistikFenster
 	/// </summary>
@@ -18,6 +17,7 @@ namespace Zeiterfassungssystem {
 	{
 	private: 
 		AenderungsantragsFenster ^ aenderungsantrag;
+		Angestellter^ angestellterAkt;
 	public:
 		StatistikFenster(void)
 		{
@@ -108,9 +108,16 @@ namespace Zeiterfassungssystem {
 #pragma endregion
 	private: System::Void StatistikFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		this->chart1->Series["Arbeitsstunden"]->Points->AddXY("Tag", 8);
+		for (int i = 0; i < angestellterAkt->getAnzahlArbeitstage(); i++) {
+			this->chart1->Series["Arbeitsstunden"]->Points->AddXY("Tag" + i, i);
+		}
+
 	}
 	private: System::Void btn_aenderungsanfrage_Click(System::Object^  sender, System::EventArgs^  e) {
 		aenderungsantrag->ShowDialog(this);
+	}
+	public: void setAngestellterAkt(Angestellter^ angestellter) {
+		this->angestellterAkt = angestellter;
 	}
 	};
 }
