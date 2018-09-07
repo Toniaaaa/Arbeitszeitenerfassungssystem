@@ -10,16 +10,15 @@ namespace Zeiterfassungssystem {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Globalization;
 	/// <summary>
 	/// Zusammenfassung für StatistikFenster
 	/// </summary>
 	public ref class StatistikFenster : public System::Windows::Forms::Form
 	{
-	private: 
-		AenderungsantragsFenster ^ aenderungsantrag;
 	private: System::Windows::Forms::Label^  label;
-	private: System::Windows::Forms::Label^  lbl_gesamtstunden;
-
+			 System::Windows::Forms::Label^  lbl_gesamtstunden;
+			 AenderungsantragsFenster ^ aenderungsantrag;
 			 Angestellter^ angestellterAkt;
 	public:
 		StatistikFenster(void)
@@ -42,7 +41,7 @@ namespace Zeiterfassungssystem {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::DataVisualization::Charting::Chart^  chart1;
+	public: System::Windows::Forms::DataVisualization::Charting::Chart^  chart1;
 	protected:
 	private: System::Windows::Forms::Button^  btn_aenderungsanfrage;
 
@@ -59,9 +58,9 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^  legend2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->chart1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->btn_aenderungsanfrage = (gcnew System::Windows::Forms::Button());
 			this->label = (gcnew System::Windows::Forms::Label());
@@ -71,17 +70,19 @@ namespace Zeiterfassungssystem {
 			// 
 			// chart1
 			// 
-			chartArea2->Name = L"ChartArea1";
-			this->chart1->ChartAreas->Add(chartArea2);
-			legend2->Name = L"Legend1";
-			this->chart1->Legends->Add(legend2);
+			chartArea1->Name = L"ChartArea1";
+			this->chart1->ChartAreas->Add(chartArea1);
+			legend1->Name = L"Legend1";
+			this->chart1->Legends->Add(legend1);
 			this->chart1->Location = System::Drawing::Point(46, 37);
 			this->chart1->Name = L"chart1";
-			series2->ChartArea = L"ChartArea1";
-			series2->IsValueShownAsLabel = true;
-			series2->Legend = L"Legend1";
-			series2->Name = L"Arbeitsstunden";
-			this->chart1->Series->Add(series2);
+			series1->ChartArea = L"ChartArea1";
+			series1->IsValueShownAsLabel = true;
+			series1->Legend = L"Legend1";
+			series1->Name = L"Arbeitsstunden";
+			series1->XValueType = System::Windows::Forms::DataVisualization::Charting::ChartValueType::Date;
+			series1->YValueType = System::Windows::Forms::DataVisualization::Charting::ChartValueType::Double;
+			this->chart1->Series->Add(series1);
 			this->chart1->Size = System::Drawing::Size(1340, 316);
 			this->chart1->TabIndex = 0;
 			this->chart1->Text = L"chart1";
@@ -125,31 +126,18 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->chart1);
 			this->Name = L"StatistikFenster";
 			this->Text = L"StatistikFenster";
-			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &StatistikFenster::StatistikFenster_FormClosing);
-			this->Load += gcnew System::EventHandler(this, &StatistikFenster::StatistikFenster_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
-	private: System::Void StatistikFenster_Load(System::Object^  sender, System::EventArgs^  e) {
-		this->chart1->Series["Arbeitsstunden"]->Points->AddXY("Tag", 8);
-		int gesamtstunden = 0;
-		for (int i = 0; i < 50; i++) {
-			this->chart1->Series["Arbeitsstunden"]->Points->AddXY("Tag " + (i+1), i+1);
-			gesamtstunden += i + 1;
-		}
-		lbl_gesamtstunden->Text = gesamtstunden + "";
-	}
+
 	private: System::Void btn_aenderungsanfrage_Click(System::Object^  sender, System::EventArgs^  e) {
 		aenderungsantrag->ShowDialog(this);
 	}
 	public: void setAngestellterAkt(Angestellter^ angestellter) {
 		this->angestellterAkt = angestellter;
-	}
-	private: System::Void StatistikFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
-		this->chart1->Series["Arbeitsstunden"]->Points->Clear();
 	}
 };
 }

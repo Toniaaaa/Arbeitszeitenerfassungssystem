@@ -114,7 +114,7 @@ namespace Zeiterfassungssystem {
 			this->txt_personalnummer->Location = System::Drawing::Point(161, 239);
 			this->txt_personalnummer->Name = L"txt_personalnummer";
 			this->txt_personalnummer->Size = System::Drawing::Size(351, 22);
-			this->txt_personalnummer->TabIndex = 0;
+			this->txt_personalnummer->TabIndex = 3;
 			this->txt_personalnummer->Validating += gcnew System::ComponentModel::CancelEventHandler(this, &RegistrierungsFenster::txt_personalnummer_Validating);
 			// 
 			// txt_passwort
@@ -122,7 +122,7 @@ namespace Zeiterfassungssystem {
 			this->txt_passwort->Location = System::Drawing::Point(161, 267);
 			this->txt_passwort->Name = L"txt_passwort";
 			this->txt_passwort->Size = System::Drawing::Size(351, 22);
-			this->txt_passwort->TabIndex = 19;
+			this->txt_passwort->TabIndex = 4;
 			// 
 			// txt_abteilung
 			// 
@@ -130,14 +130,14 @@ namespace Zeiterfassungssystem {
 			this->txt_abteilung->Location = System::Drawing::Point(161, 209);
 			this->txt_abteilung->Name = L"txt_abteilung";
 			this->txt_abteilung->Size = System::Drawing::Size(351, 24);
-			this->txt_abteilung->TabIndex = 25;
+			this->txt_abteilung->TabIndex = 2;
 			// 
 			// txt_arbeitsstunden
 			// 
 			this->txt_arbeitsstunden->Location = System::Drawing::Point(161, 297);
 			this->txt_arbeitsstunden->Name = L"txt_arbeitsstunden";
 			this->txt_arbeitsstunden->Size = System::Drawing::Size(351, 22);
-			this->txt_arbeitsstunden->TabIndex = 23;
+			this->txt_arbeitsstunden->TabIndex = 5;
 			this->txt_arbeitsstunden->Validating += gcnew System::ComponentModel::CancelEventHandler(this, &RegistrierungsFenster::txt_arbeitsstunden_Validating);
 			// 
 			// txt_urlaubstage
@@ -145,7 +145,7 @@ namespace Zeiterfassungssystem {
 			this->txt_urlaubstage->Location = System::Drawing::Point(161, 327);
 			this->txt_urlaubstage->Name = L"txt_urlaubstage";
 			this->txt_urlaubstage->Size = System::Drawing::Size(351, 22);
-			this->txt_urlaubstage->TabIndex = 22;
+			this->txt_urlaubstage->TabIndex = 6;
 			this->txt_urlaubstage->Validating += gcnew System::ComponentModel::CancelEventHandler(this, &RegistrierungsFenster::txt_urlaubstage_Validating);
 			// 
 			// txt_Rolle
@@ -155,14 +155,14 @@ namespace Zeiterfassungssystem {
 			this->txt_Rolle->Location = System::Drawing::Point(161, 361);
 			this->txt_Rolle->Name = L"txt_Rolle";
 			this->txt_Rolle->Size = System::Drawing::Size(349, 24);
-			this->txt_Rolle->TabIndex = 33;
+			this->txt_Rolle->TabIndex = 7;
 			// 
 			// btn_mitarbeiter_hinzufuegen
 			// 
 			this->btn_mitarbeiter_hinzufuegen->Location = System::Drawing::Point(161, 408);
 			this->btn_mitarbeiter_hinzufuegen->Name = L"btn_mitarbeiter_hinzufuegen";
 			this->btn_mitarbeiter_hinzufuegen->Size = System::Drawing::Size(171, 35);
-			this->btn_mitarbeiter_hinzufuegen->TabIndex = 16;
+			this->btn_mitarbeiter_hinzufuegen->TabIndex = 8;
 			this->btn_mitarbeiter_hinzufuegen->Text = L"Hinzufügen";
 			this->btn_mitarbeiter_hinzufuegen->UseVisualStyleBackColor = true;
 			this->btn_mitarbeiter_hinzufuegen->Click += gcnew System::EventHandler(this, &RegistrierungsFenster::btn_mitarbeiter_hinzufuegen_Click);
@@ -255,7 +255,7 @@ namespace Zeiterfassungssystem {
 			this->txt_name->Location = System::Drawing::Point(161, 152);
 			this->txt_name->Name = L"txt_name";
 			this->txt_name->Size = System::Drawing::Size(351, 22);
-			this->txt_name->TabIndex = 35;
+			this->txt_name->TabIndex = 0;
 			this->txt_name->Validating += gcnew System::ComponentModel::CancelEventHandler(this, &RegistrierungsFenster::txt_name_Validating);
 			// 
 			// RegistrierungsFenster
@@ -427,7 +427,7 @@ namespace Zeiterfassungssystem {
 	}
 private: System::Void txt_name_Validating(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
 
-	String^ pattern = "[A-Z][a-z]+";
+	String^ pattern = "[A-Z]([a-z]+)";
 	Regex^ regex = gcnew Regex(pattern);
 
 	if (!regex->IsMatch(txt_name->Text)) {
@@ -439,13 +439,12 @@ private: System::Void txt_name_Validating(System::Object^  sender, System::Compo
 private: System::Void txt_vorname_Validating(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
 
 	String^ pattern = "[A-Z][a-z]+";
-	Regex^ regex = gcnew Regex(txt_vorname->Text);
+	Regex^ regex = gcnew Regex(pattern);
 
-	if (!regex->IsMatch(pattern)) {
+	if (!regex->IsMatch(txt_vorname->Text)) {
 		MessageBox::Show("Bitte geben Sie nur Buchstaben ein.", "Fehler!", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		txt_vorname->Text = "";
 	}
-
 }
 private: System::Void txt_personalnummer_Validating(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
 
@@ -471,7 +470,7 @@ private: System::Void txt_arbeitsstunden_Validating(System::Object^  sender, Sys
 }
 private: System::Void txt_urlaubstage_Validating(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
 
-	String^ pattern = "[0-9]+";
+	String^ pattern = "[0-9][0-9]";
 	Regex^ regex = gcnew Regex(pattern);
 
 	if (!regex->IsMatch(txt_urlaubstage->Text)) {

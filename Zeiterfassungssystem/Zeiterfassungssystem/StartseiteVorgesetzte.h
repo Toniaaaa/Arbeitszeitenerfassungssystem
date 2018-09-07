@@ -527,7 +527,7 @@ namespace Zeiterfassungssystem {
 				}
 			}
 			else {
-				angestellterAkt->getAktuelleArbeitszeit();
+				//angestellterAkt->getAktuelleArbeitszeit();
 				timerArbeitszeit->Start();
 				timerPause->Stop();
 				Ereignis^ pausenende = gcnew Ereignis(PAUSE_ENDE, DateTime::Now);
@@ -573,6 +573,13 @@ namespace Zeiterfassungssystem {
 			MessageBox::Show("Bitte beginnen Sie zuerst Ihre Arbeitszeit, bevor Sie gehen!", "Kein Ende möglich",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+
+		//Hier Fehler im Speichern des Balkens (Timespan in Int)
+		DateTime^ heute = DateTime::Now;
+		DateTime^ onlydate = heute->Date;
+		TimeSpan^ timespan = angestellterAkt->getAktuelleArbeitszeit();
+		statistikfenster->chart1->Series["Arbeitsstunden"]->Points->AddXY(onlydate, timespan);
+
 	}
 
 	//STATISTIKFENSTER
@@ -592,7 +599,6 @@ namespace Zeiterfassungssystem {
 
 	//REGISTRIERUNGSFENSTER
 	private: System::Void addBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		//registrierungsfenster->setStartseiteVorgesetzte(this);
 		registrierungsfenster->setUnternehmen(unternehmen);
 		System::Windows::Forms::DialogResult result = registrierungsfenster->ShowDialog(this);
 	}
