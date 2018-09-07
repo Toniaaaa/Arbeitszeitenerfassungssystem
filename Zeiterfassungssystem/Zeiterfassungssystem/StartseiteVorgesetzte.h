@@ -606,7 +606,8 @@ namespace Zeiterfassungssystem {
 		
 	}
 	private: System::Void personalBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		personalfenster->Show();
+		personalfenster->setUnternehmen(unternehmen);
+		personalfenster->ShowDialog(this);
 	}
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {

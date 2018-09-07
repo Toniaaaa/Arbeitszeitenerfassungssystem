@@ -44,7 +44,10 @@ namespace Zeiterfassungssystem {
 	protected:
 	private: System::Windows::Forms::ColumnHeader^  clm_Name;
 	private: System::Windows::Forms::ColumnHeader^  clm_Vorname;
+	private: System::Windows::Forms::ColumnHeader^  clm_Personalnummer;
 	private: System::Windows::Forms::ColumnHeader^  clm_Abteilung;
+
+
 
 
 
@@ -65,31 +68,30 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::ListViewItem^  listViewItem1 = (gcnew System::Windows::Forms::ListViewItem(gcnew cli::array< System::String^  >(3) {
-				L"",
-					L"", L""
-			}, -1));
 			this->listView1 = (gcnew System::Windows::Forms::ListView());
 			this->clm_Name = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_Vorname = (gcnew System::Windows::Forms::ColumnHeader());
+			this->clm_Personalnummer = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_Abteilung = (gcnew System::Windows::Forms::ColumnHeader());
 			this->SuspendLayout();
 			// 
 			// listView1
 			// 
-			this->listView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(3) {
+			this->listView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(4) {
 				this->clm_Name, this->clm_Vorname,
-					this->clm_Abteilung
+					this->clm_Personalnummer, this->clm_Abteilung
 			});
 			this->listView1->Dock = System::Windows::Forms::DockStyle::Fill;
-			listViewItem1->IndentCount = 8;
-			this->listView1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ListViewItem^  >(1) { listViewItem1 });
+			this->listView1->FullRowSelect = true;
+			this->listView1->GridLines = true;
 			this->listView1->Location = System::Drawing::Point(0, 0);
 			this->listView1->Name = L"listView1";
 			this->listView1->Size = System::Drawing::Size(493, 403);
+			this->listView1->Sorting = System::Windows::Forms::SortOrder::Ascending;
 			this->listView1->TabIndex = 0;
 			this->listView1->UseCompatibleStateImageBehavior = false;
 			this->listView1->View = System::Windows::Forms::View::Details;
+			this->listView1->VirtualListSize = 8;
 			// 
 			// clm_Name
 			// 
@@ -101,19 +103,26 @@ namespace Zeiterfassungssystem {
 			this->clm_Vorname->Text = L"Vorname";
 			this->clm_Vorname->Width = 184;
 			// 
+			// clm_Personalnummer
+			// 
+			this->clm_Personalnummer->Text = L"Personalnummer";
+			this->clm_Personalnummer->Width = 149;
+			// 
 			// clm_Abteilung
 			// 
 			this->clm_Abteilung->Text = L"Abteilung";
-			this->clm_Abteilung->Width = 149;
 			// 
 			// PersonalFenster
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->AutoSize = true;
 			this->ClientSize = System::Drawing::Size(493, 403);
 			this->Controls->Add(this->listView1);
+			this->DoubleBuffered = true;
 			this->Name = L"PersonalFenster";
 			this->Text = L"PersonalFenster";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &PersonalFenster::PersonalFenster_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &PersonalFenster::PersonalFenster_Load);
 			this->ResumeLayout(false);
 
@@ -121,27 +130,35 @@ namespace Zeiterfassungssystem {
 #pragma endregion
 
 	private:
-		Unternehmen^ unternehmen;
-	/*	public:
-			void setUnternehmen(Unternehmen^ unternehmen) {
-				this->unternehmen = unternehmen;
-			}
-	*/	
+		Unternehmen^ unternehmenAkt;
+
+		public: void setUnternehmen(Unternehmen^ unternehmen) {
+					this->unternehmenAkt = unternehmen;
+				}
+	
 			 
 	private: System::Void PersonalFenster_Load(System::Object^  sender, System::EventArgs^  e) {
-		ListViewItem^ item = gcnew ListViewItem();
-		/*List<Angestellter^>^ angestellte = unternehmen->getAlleAngestellte();
-		
- 		for (int i = 0; i < unternehmen->getAlleAngestellte()->Count; i++) {
-			if (unternehmen->getAlleAngestellte() != nullptr) {
+		List<Angestellter^>^ angestellte = unternehmenAkt->getAlleAngestellte();
+
+ 		for (int i = 0; i < unternehmenAkt->getAlleAngestellte()->Count; i++) {
+			if (unternehmenAkt->getAlleAngestellte() != nullptr) {
+				ListViewItem^ item = gcnew ListViewItem();
+				item->Clone();
 				item->Text = angestellte[i]->getNachname();
 				item->SubItems->Add(angestellte[i]->getVorname());
 				item->SubItems->Add(angestellte[i]->getPersonalnummer());
+				item->SubItems->Add(angestellte[i]->getAbteilung()->getAbteilungsnummer());
 				listView1->Items->Add(item);
 
 			}
 
-		} */
+		} 
+		
 	}
+			 
+private: System::Void PersonalFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+	//listView1->Clear();
+}
+			 
 };
 }

@@ -44,7 +44,6 @@ namespace Zeiterfassungssystem {
 			startseitemitarbeiter = gcnew StartseiteMitarbeiter();
 			startseitevorgesetzte = gcnew StartseiteVorgesetzte();
 			passwortaendernseite = gcnew PasswortAendernFenster();
-			//personalfenster = gcnew PersonalFenster();
 		}
 
 	protected:
@@ -225,7 +224,6 @@ namespace Zeiterfassungssystem {
 			loginGedrueckt = true;
 			startseitevorgesetzte->setAngemeldeterAngestellter(angestellter);
 			startseitevorgesetzte->setUnternehmen(unternehmen);
-			//personalfenster->setUnternehmen(unternehmen);
 			startseitevorgesetzte->Show();
 			Close();
 		}
