@@ -533,6 +533,7 @@ namespace Zeiterfassungssystem {
 			angestellterAkt->fuegeEreignisHinzu(arbeitsanfang);
 			timerArbeitszeit->Start();
 			lbl_Status->Text = "Viel Erfolg beim Erledigen\nIhrer Aufgaben!";
+			angestellterAkt->setAktuellenStatus("Viel Erfolg beim Erledigen\nIhrer Aufgaben!");
 
 		} 
 		else {
@@ -554,6 +555,7 @@ namespace Zeiterfassungssystem {
 					this->pauseLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 					this->arbeitszeitLbl->ForeColor = System::Drawing::Color::Gray;
 					lbl_Status->Text = "Geniessen Sie Ihre Pause!";
+					angestellterAkt->setAktuellenStatus("Geniessen Sie Ihre Pause!");
 				}
 			}
 			else {
@@ -566,6 +568,7 @@ namespace Zeiterfassungssystem {
 				this->pauseLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 				this->arbeitszeitLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 				lbl_Status->Text = "Viel Erfolg beim Erledigen\nIhrer Aufgaben!";
+				angestellterAkt->setAktuellenStatus("Viel Erfolg beim Erledigen\nIhrer Aufgaben!");
 			}
 		}
 		else {
@@ -595,7 +598,8 @@ namespace Zeiterfassungssystem {
 			stunde = 0;
 			arbeitszeitLbl->Text = uhrzeitString(sekunde, minute, stunde);
 			pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
-			lbl_Status->Text = "Schönen Feierabend!";
+			lbl_Status->Text = "Schönen Feierabend";
+			angestellterAkt->setAktuellenStatus("Schönen Feierabend");
 			Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
 			angestellterAkt->fuegeEreignisHinzu(arbeitsende);
 
@@ -606,10 +610,14 @@ namespace Zeiterfassungssystem {
 		}
 
 		//Hier Fehler im Speichern des Balkens (Timespan in Int)
+		/*
 		DateTime^ heute = DateTime::Now;
 		DateTime^ onlydate = heute->Date;
 		TimeSpan^ timespan = angestellterAkt->getAktuelleArbeitszeit();
 		statistikfenster->chart1->Series["Arbeitsstunden"]->Points->AddXY(onlydate, timespan);
+		*/
+
+		statistikfenster->setTimespan(angestellterAkt->getAktuelleArbeitszeit());
 
 	}
 
@@ -649,7 +657,9 @@ namespace Zeiterfassungssystem {
 			pauseSekunde = 0;
 			pauseMinute = 0;
 			pauseStunde = 0;
-			lbl_Status->Text = "Schön dass Sie da sind!";
+			angestellterAkt->setAktuellenStatus("Schön dass Sie da sind!");
+			angestellterAkt->getStatus();
+
 		}
 		else {
 			// gerade arbeitszeit
@@ -671,6 +681,7 @@ namespace Zeiterfassungssystem {
 			}
 		}
 
+		lbl_Status->Text = angestellterAkt->getStatus();
 		arbeitszeitLbl->Text = uhrzeitString(sekunde, minute, stunde);
 		pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
 		Int32 resturlaub = angestellterAkt->getUrlaubstage();

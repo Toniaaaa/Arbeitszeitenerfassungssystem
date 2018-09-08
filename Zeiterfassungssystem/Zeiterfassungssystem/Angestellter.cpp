@@ -43,6 +43,16 @@ void Angestellter::removeEreignis(Int32 index)
 	listeEreignisse->RemoveAt(index);
 }
 
+void Angestellter::setAktuellenStatus(String ^ status)
+{
+	this->status = status;
+}
+
+String ^ Angestellter::getStatus()
+{
+	return status;
+}
+
 DateTime ^ Angestellter::getArbeitsAnfang()
 {
 	Int32 index = getArbeitsAnfangIndex();

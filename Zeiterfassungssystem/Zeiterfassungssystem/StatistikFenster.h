@@ -126,12 +126,17 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->chart1);
 			this->Name = L"StatistikFenster";
 			this->Text = L"StatistikFenster";
+			this->Load += gcnew System::EventHandler(this, &StatistikFenster::StatistikFenster_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
+		private: TimeSpan^  timespan;
+		public: void setTimespan(TimeSpan^ timespan) {
+			this->timespan = timespan;
+		}
 
 	private: System::Void btn_aenderungsanfrage_Click(System::Object^  sender, System::EventArgs^  e) {
 		aenderungsantrag->ShowDialog(this);
@@ -139,5 +144,11 @@ namespace Zeiterfassungssystem {
 	public: void setAngestellterAkt(Angestellter^ angestellter) {
 		this->angestellterAkt = angestellter;
 	}
+private: System::Void StatistikFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+	double timeSpan = timespan->TotalHours;
+	DateTime^ heute = DateTime::Now;
+	DateTime^ onlydate = heute->Date;
+	chart1->Series["Arbeitsstunden"]->Points->AddXY(onlydate, timeSpan);
+}
 };
 }
