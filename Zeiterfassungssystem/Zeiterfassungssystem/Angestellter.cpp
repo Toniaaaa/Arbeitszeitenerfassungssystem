@@ -16,6 +16,7 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->arbeitsMinuten = 0;
 	this->ueberStunden = 0;
 	this->ueberMinuten = 0;
+	this->ueberStundenGesamt = 0.0;
 }
 
 Abteilung ^ Angestellter::getAbteilung()
@@ -152,7 +153,12 @@ void Angestellter::beendeArbeitstag(Int32 stunden, Int32 minuten, Boolean erreic
 		ueberMinuten = minuten;
 	}
 	else {
-		arbeitsStunden -= stunden;
-		arbeitsMinuten -= minuten;
+		arbeitsStunden = stunden;
+		arbeitsMinuten = minuten;
 	}
+}
+
+void Angestellter::setUeberstundenGesamt(Int32 stunden, Int32 minuten) 
+{
+	ueberStundenGesamt += (stunden + minuten / 60);
 }

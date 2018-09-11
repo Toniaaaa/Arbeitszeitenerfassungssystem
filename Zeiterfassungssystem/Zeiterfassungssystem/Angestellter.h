@@ -25,6 +25,7 @@ private:
 	Int32 ueberStunden;
 	Int32 ueberMinuten;
 	Boolean wochenZeitErreicht;
+	Double ueberStundenGesamt;
 
 public:
 	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage);
@@ -38,6 +39,7 @@ public:
 	inline Int32 getWochensstunden() {return wochenstunden;}
 	inline Int32 getUrlaubstage() {return urlaubstage;}
 	inline Boolean getWochenZeitErreicht() {return wochenZeitErreicht;}
+	inline Double getUeberstundenGesamt() { return ueberStundenGesamt; }
 	
 	Ereignis^ getEreignis(Int32 index);
 	Int32 getAnzahlEreignisse();
@@ -56,6 +58,7 @@ public:
 	inline void setArbeitsMinuten(Int32 minuten) { this->arbeitsMinuten = minuten; }
 	inline void setUeberStunden(Int32 stunden) { this->ueberStunden = stunden; }
 	inline void setUeberMinuten(Int32 minuten) { this->ueberMinuten = minuten; }
+	void setUeberstundenGesamt(Int32 stunden, Int32 minuten);
 	virtual bool istVorgesetzter() = 0;
 	void fuegeEreignisHinzu(Ereignis^ ereignis);
 	void removeEreignis(Int32 index);
