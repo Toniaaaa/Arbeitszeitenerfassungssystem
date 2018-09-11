@@ -20,7 +20,10 @@ private:
 	Int32 urlaubstage;
 	List<Ereignis^>^ listeEreignisse;
 	String^ status;
-	TimeSpan^ arbeitszeit;
+	Int32 arbeitsStunden;
+	Int32 arbeitsMinuten;
+	Int32 ueberStunden;
+	Int32 ueberMinuten;
 	Boolean wochenZeitErreicht;
 
 public:
@@ -49,6 +52,10 @@ public:
 	inline void setWochenstunden(Int32 wochenstunden) {this->wochenstunden = wochenstunden;}
 	inline void setUrlaubstage(Int32 urlaubstage) {this->urlaubstage = urlaubstage;}
 	inline void setWochenZeitErreicht(Boolean erreicht) {this->wochenZeitErreicht = erreicht;}
+	inline void setArbeitsStunden(Int32 stunden) { this->arbeitsStunden = stunden; }
+	inline void setArbeitsMinuten(Int32 minuten) { this->arbeitsMinuten = minuten; }
+	inline void setUeberStunden(Int32 stunden) { this->ueberStunden = stunden; }
+	inline void setUeberMinuten(Int32 minuten) { this->ueberMinuten = minuten; }
 	virtual bool istVorgesetzter() = 0;
 	void fuegeEreignisHinzu(Ereignis^ ereignis);
 	void removeEreignis(Int32 index);
@@ -56,11 +63,13 @@ public:
 	//Hilfsmethoden
 	void setAktuellenStatus(String^ status);
 	String^ getStatus();
-	void setGesamtzeit(TimeSpan^ arbeitszeit);
-	TimeSpan^ getArbeitszeit();
-	void beendeArbeitstag(TimeSpan^ zeit, Boolean erreicht);
+	void beendeArbeitstag(Int32 stunden, Int32 minuten, Boolean erreicht);
 	// Ereignislisteauswertungsmethodensammlung
 
+	inline Int32 getArbeitsStunden() { return arbeitsStunden; }
+	inline Int32 getArbeitsMinuten() { return arbeitsMinuten; }
+	inline Int32 getUeberStunden() { return ueberStunden; }
+	inline Int32 getUeberMinuten() { return ueberMinuten; }
 	DateTime^ getArbeitsAnfang(); // null wenn arbeitstag (noch) nicht begonnen
 	DateTime^ getPauseAnfang(); // null wenn pause gerade nicht läuft
 	TimeSpan^ getAktuelleArbeitszeit();

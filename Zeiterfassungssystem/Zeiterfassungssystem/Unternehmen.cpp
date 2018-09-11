@@ -15,7 +15,6 @@ Unternehmen::Unternehmen()
 	Vorgesetzter^ admin = gcnew Vorgesetzter("Admin", "istrator", administration, "1", "1234", 169, 28);
 	administration = gcnew Abteilung("1", admin);
 	admin->setAbteilung(administration);
-
 	abteilungen->Add(administration);
 }
 

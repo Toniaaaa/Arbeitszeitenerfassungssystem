@@ -48,7 +48,6 @@ namespace Zeiterfassungssystem {
 		Int32 arbeitsMinuten;
 		TimeSpan^ arbeitszeit;
 		TimeSpan^ pausenzeit;
-		TimeSpan^ wochenArbeitszeit;
 		Boolean wochenZeitErreicht;
 
 	private: System::Windows::Forms::Timer^  timerUhr;
@@ -513,7 +512,6 @@ namespace Zeiterfassungssystem {
 			timerArbeitszeit->Start();
 			lbl_Status->Text = "Viel Erfolg beim Erledigen Ihrer Aufgaben!";
 			angestellterAkt->setAktuellenStatus("Viel Erfolg beim Erledigen Ihrer Aufgaben!");
-
 		} 
 		else {
 			MessageBox::Show("Bitte beenden Sie Ihren Arbeitstag, bevor Sie einen neuen beginnen!", "Kein Start möglich",
@@ -546,8 +544,8 @@ namespace Zeiterfassungssystem {
 				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon.jpg");
 				this->pauseLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 				this->arbeitszeitLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-				lbl_Status->Text = "Viel Erfolg beim Erledigen\nIhrer Aufgaben!";
-				angestellterAkt->setAktuellenStatus("Viel Erfolg beim Erledigen\nIhrer Aufgaben!");
+				lbl_Status->Text = "Viel Erfolg beim Erledigen Ihrer Aufgaben!";
+				angestellterAkt->setAktuellenStatus("Viel Erfolg beim Erledigen Ihrer Aufgaben!");
 			}
 		}
 		else {
@@ -572,9 +570,8 @@ namespace Zeiterfassungssystem {
 				//Timer stoppen
 				timerArbeitszeit->Stop();
 				timerPause->Stop();
-				wochenArbeitszeit = gcnew TimeSpan(arbeitsStunden, arbeitsMinuten, 0);
 				String^ text = "Ihr Arbeitstag wurde erfolgreich beendet!\nSie haben heute " + stunde + " Stunden und " + minute + " Minuten gearbeitet.";
-				//angestellterAkt->beendeArbeitstag(wochenArbeitszeit, wochenZeitErreicht);
+				angestellterAkt->beendeArbeitstag(arbeitsStunden, arbeitsMinuten, wochenZeitErreicht);
 				
 				pauseSekunde = 0;
 				pauseMinute = 0;
@@ -641,18 +638,21 @@ namespace Zeiterfassungssystem {
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {
 
-		if (angestellterAkt->getArbeitszeit() == nullptr) {
-			wochenArbeitszeit = gcnew TimeSpan(angestellterAkt->getWochensstunden(), 0, 0);
+		wochenZeitErreicht = angestellterAkt->getWochenZeitErreicht();
+
+		if (wochenZeitErreicht) {
+			arbeitsStunden = angestellterAkt->getUeberStunden();
+			arbeitsMinuten = angestellterAkt->getUeberMinuten();
+			this->nochWochenstundenLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+			this->nochWochenstundenSchriftLbl->Text = L"Überstunden";
+			this->nochWochenstundenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 		}
 		else {
-			wochenArbeitszeit = angestellterAkt->getArbeitszeit();
+			arbeitsStunden = angestellterAkt->getArbeitsStunden();
+			arbeitsMinuten = angestellterAkt->getArbeitsMinuten();
 		}
 
-		arbeitsStunden = wochenArbeitszeit->Hours;
-		arbeitsMinuten = wochenArbeitszeit->Minutes;
 		nochWochenstundenLbl->Text = uhrzeitString(arbeitsMinuten, arbeitsStunden) + " Stunden";
-
-		wochenZeitErreicht = angestellterAkt->getWochenZeitErreicht();
 
 		if (angestellterAkt->getArbeitsAnfang() == nullptr) {
 			sekunde = 0;
@@ -701,16 +701,18 @@ namespace Zeiterfassungssystem {
 	//TIMER ARBEITSZEIT
 	private: System::Void timerArbeitszeit_Tick(System::Object^  sender, System::EventArgs^  e) {
 		
+		sekunde++;
+
 		//Wenn die Wochen-Arbeitszeit überschritten wird, wird der Wert auf True gesetzt. 
 		//Dadurch läuft der Abeitszeit-Timer vorwärts und ändert die Farbe.
-		if (wochenArbeitszeit->Hours == 0 && wochenArbeitszeit->Minutes == 0 && arbeitszeit->Seconds == 60) {
+
+		if (arbeitsStunden == 0 && arbeitsMinuten == 0 && sekunde == 60) {
 			wochenZeitErreicht = true;
 			this->nochWochenstundenLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->nochWochenstundenSchriftLbl->Text = L"Überstunden";
 			this->nochWochenstundenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 		}
 
-		sekunde++;
 		if (sekunde == 60) {
 			sekunde = 0;
 			minute++;
@@ -778,7 +780,13 @@ namespace Zeiterfassungssystem {
 		}
 
 		String^ std;
-		std = "0" + Convert::ToString(stunde);
+		if (stunde < 10) {
+			std = "0" + Convert::ToString(stunde);
+		}
+		else {
+			std = Convert::ToString(stunde);
+		}
+
 		return std + ":" + min + ":" + sek;
 	}
 
@@ -793,7 +801,13 @@ namespace Zeiterfassungssystem {
 		}
 
 		String^ std;
-		std = "0" + Convert::ToString(stunde);
+		if (stunde < 10) {
+			std = "0" + Convert::ToString(stunde);
+		}
+		else {
+			std =  Convert::ToString(stunde);
+		}
+
 		return std + ":" + min;
 	}
 };
