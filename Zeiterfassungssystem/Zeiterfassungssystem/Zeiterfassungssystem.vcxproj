@@ -134,6 +134,9 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Angestellter.h" />
+    <ClInclude Include="BearbeitungsFenster.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="LogInFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -176,6 +179,7 @@
     <ClCompile Include="Aenderungsantrag.cpp" />
     <ClCompile Include="AenderungsantragsFenster.cpp" />
     <ClCompile Include="Angestellter.cpp" />
+    <ClCompile Include="BearbeitungsFenster.cpp" />
     <ClCompile Include="LogInFenster.cpp" />
     <ClCompile Include="Mitarbeiter.cpp" />
     <ClCompile Include="PasswortAendernFenster.cpp" />

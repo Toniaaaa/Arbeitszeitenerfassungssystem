@@ -75,6 +75,9 @@
     <ClInclude Include="StundenStatistikFenster.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="BearbeitungsFenster.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Angestellter.cpp">
@@ -132,6 +135,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="StundenStatistikFenster.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="BearbeitungsFenster.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
