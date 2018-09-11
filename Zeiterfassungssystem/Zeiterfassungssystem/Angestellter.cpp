@@ -162,3 +162,8 @@ void Angestellter::setUeberstundenGesamt(Int32 stunden, Int32 minuten)
 {
 	ueberStundenGesamt += (stunden + minuten / 60);
 }
+
+DateTime^ Angestellter::getLetzterArbeitstag() 
+{
+	return this->getArbeitsAnfang()->Date;
+}

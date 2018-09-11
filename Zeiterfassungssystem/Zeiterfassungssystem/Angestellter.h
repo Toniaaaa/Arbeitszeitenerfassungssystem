@@ -73,6 +73,7 @@ public:
 	inline Int32 getArbeitsMinuten() { return arbeitsMinuten; }
 	inline Int32 getUeberStunden() { return ueberStunden; }
 	inline Int32 getUeberMinuten() { return ueberMinuten; }
+	DateTime^ getLetzterArbeitstag();
 	DateTime^ getArbeitsAnfang(); // null wenn arbeitstag (noch) nicht begonnen
 	DateTime^ getPauseAnfang(); // null wenn pause gerade nicht läuft
 	TimeSpan^ getAktuelleArbeitszeit();

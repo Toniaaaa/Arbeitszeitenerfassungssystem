@@ -638,6 +638,45 @@ namespace Zeiterfassungssystem {
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {
 
+		//Wenn eine neue Woche startet, wird die Arbeitszeit zurueckgesetzt
+		//Dafür müssen die Kalenderwochen des letzten Arbeitstags mit der KW von heute verglichen werden
+		CultureInfo^ meinCI = gcnew CultureInfo("de");
+		Calendar^ meinKalender = meinCI->Calendar;
+		CalendarWeekRule^ meineCWR = meinCI->DateTimeFormat->CalendarWeekRule;
+		DayOfWeek^ meinErsterWochentag = meinCI->DateTimeFormat->FirstDayOfWeek;
+
+		//Kalenderwoche von heute berechnen
+		DateTime^ heute = DateTime::Today;
+		int kWHeute = meinKalender->GetWeekOfYear(*heute, *meineCWR, *meinErsterWochentag);
+
+		//Kalenderwoche vom letzten Arbeitstag berechnen
+		int kWLetzterTag;
+		try {
+			DateTime^ letzterTag = angestellterAkt->getLetzterArbeitstag();
+			kWLetzterTag = meinKalender->GetWeekOfYear(*letzterTag, *meineCWR, *meinErsterWochentag);
+		}
+		catch (System::NullReferenceException ^e) {
+			DateTime^ letzterTag = DateTime::Today;
+			kWLetzterTag = meinKalender->GetWeekOfYear(*letzterTag, *meineCWR, *meinErsterWochentag);
+		}
+
+		//Kalenderwochen vergleichen und evtl. notwendige Werte zurücksetzen
+		if (kWHeute > kWLetzterTag) {
+			//Wenn der Mitarbeiter in der letzten Woche seine Arbeitszeit nicht erreicht hat, wird ihm das von seinen Überstunden wieder abgezogen
+			if (!angestellterAkt->getWochenZeitErreicht()) {
+				angestellterAkt->setUeberstundenGesamt(-(angestellterAkt->getArbeitsStunden()), -(angestellterAkt->getArbeitsMinuten()));
+			}
+			else {
+				angestellterAkt->setUeberstundenGesamt(angestellterAkt->getUeberStunden(), angestellterAkt->getUeberStunden());
+			}
+			//Wochenarbeitszeit wird wieder auf ihre Anfangswerte zurückgesetzt
+			angestellterAkt->setWochenZeitErreicht(false);
+			angestellterAkt->setArbeitsStunden(angestellterAkt->getWochensstunden());
+			angestellterAkt->setArbeitsMinuten(0);
+			angestellterAkt->setUeberStunden(0);
+			angestellterAkt->setUeberMinuten(0);
+		}
+
 		wochenZeitErreicht = angestellterAkt->getWochenZeitErreicht();
 
 		if (wochenZeitErreicht) {
