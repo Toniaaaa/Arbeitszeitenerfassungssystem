@@ -53,6 +53,16 @@ String ^ Angestellter::getStatus()
 	return status;
 }
 
+void Angestellter::setGesamtzeit(Double ^ arbeitsstunden)
+{
+	this->arbeitsstunden = arbeitsstunden;
+}
+
+Double ^ Angestellter::getArbeitsstunden()
+{
+	return arbeitsstunden;
+}
+
 DateTime ^ Angestellter::getArbeitsAnfang()
 {
 	Int32 index = getArbeitsAnfangIndex();

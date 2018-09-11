@@ -8,7 +8,7 @@
 #include "Ereignis.h"
 #include "UrlaubsbearbeitungsFenster.h"
 #include "PersonalFenster.h"
-
+#include "StundenStatistikFenster.h"
 
 
 namespace Zeiterfassungssystem {
@@ -36,6 +36,7 @@ namespace Zeiterfassungssystem {
 		StatistikFenster^ statistikfenster;
 		UrlaubsanfragenbearbeitungsFenster^ urlaubsbearbeitungsfenster;
 		PersonalFenster^ personalfenster;
+		StundenStatistikFenster^ statistik;
 
 		Int32 sekunde;
 		Int32 minute;
@@ -81,6 +82,7 @@ namespace Zeiterfassungssystem {
 			statistikfenster = gcnew StatistikFenster;
 			urlaubsbearbeitungsfenster = gcnew UrlaubsanfragenbearbeitungsFenster;
 			personalfenster = gcnew PersonalFenster;
+			statistik = gcnew StundenStatistikFenster;
 			
 		}
 
@@ -598,10 +600,11 @@ namespace Zeiterfassungssystem {
 			stunde = 0;
 			arbeitszeitLbl->Text = uhrzeitString(sekunde, minute, stunde);
 			pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
-			lbl_Status->Text = "Schönen Feierabend";
-			angestellterAkt->setAktuellenStatus("Schönen Feierabend");
+			lbl_Status->Text = "Schönen Feierabend!";
+			angestellterAkt->setAktuellenStatus("Schönen Feierabend!");
 			Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
 			angestellterAkt->fuegeEreignisHinzu(arbeitsende);
+			
 
 		}
 		else {
@@ -623,8 +626,10 @@ namespace Zeiterfassungssystem {
 
 	//STATISTIKFENSTER
 	private: System::Void statistikBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		statistikfenster->setAngestellterAkt(angestellterAkt);
-		statistikfenster->ShowDialog(this);
+		//statistikfenster->setAngestellterAkt(angestellterAkt);
+		//statistikfenster->ShowDialog(this);
+		statistik->setAktuellenAngestellten(angestellterAkt);
+		statistik->ShowDialog(this);
 	}
 
 	//KALENDERFENSTER
@@ -684,9 +689,9 @@ namespace Zeiterfassungssystem {
 		lbl_Status->Text = angestellterAkt->getStatus();
 		arbeitszeitLbl->Text = uhrzeitString(sekunde, minute, stunde);
 		pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
-		Int32 resturlaub = angestellterAkt->getUrlaubstage();
 		nameLbl->Text = angestellterAkt->getVorname() + " " + angestellterAkt->getNachname();
-		resturlaubLbl->Text = angestellterAkt->getAnzahlArbeitstage() + " Tage";
+		resturlaubLbl->Text = angestellterAkt->getUrlaubstage() + " Tage";
+		
 	}
 	//WENN SEITE GESCHLOSSEN UNTERNEHMEN WIRD GESPEICHERT
 	private: System::Void StartseiteVorgesetzte_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {

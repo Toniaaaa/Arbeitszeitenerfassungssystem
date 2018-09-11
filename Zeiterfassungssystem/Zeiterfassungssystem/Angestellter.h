@@ -20,6 +20,7 @@ private:
 	Int32 urlaubstage;
 	List<Ereignis^>^ listeEreignisse;
 	String^ status;
+	Double^ arbeitsstunden;
 
 public:
 	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage);
@@ -52,6 +53,8 @@ public:
 	//Hilfsmethoden
 	void setAktuellenStatus(String^ status);
 	String^ getStatus();
+	void setGesamtzeit(Double^ arbeitsstunden);
+	Double^ getArbeitsstunden();
 	// Ereignislisteauswertungsmethodensammlung
 
 	DateTime^ getArbeitsAnfang(); // null wenn arbeitstag (noch) nicht begonnen
