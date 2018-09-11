@@ -20,7 +20,8 @@ private:
 	Int32 urlaubstage;
 	List<Ereignis^>^ listeEreignisse;
 	String^ status;
-	Double^ arbeitsstunden;
+	TimeSpan^ arbeitszeit;
+	Boolean wochenZeitErreicht;
 
 public:
 	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage);
@@ -33,6 +34,7 @@ public:
 	inline String^ getPasswort() {return passwort;};
 	inline Int32 getWochensstunden() {return wochenstunden;}
 	inline Int32 getUrlaubstage() {return urlaubstage;}
+	inline Boolean getWochenZeitErreicht() {return wochenZeitErreicht;}
 	
 	Ereignis^ getEreignis(Int32 index);
 	Int32 getAnzahlEreignisse();
@@ -46,6 +48,7 @@ public:
 	inline void setPasswort(String^ passwort) {this->passwort = passwort;}
 	inline void setWochenstunden(Int32 wochenstunden) {this->wochenstunden = wochenstunden;}
 	inline void setUrlaubstage(Int32 urlaubstage) {this->urlaubstage = urlaubstage;}
+	inline void setWochenZeitErreicht(Boolean erreicht) {this->wochenZeitErreicht = erreicht;}
 	virtual bool istVorgesetzter() = 0;
 	void fuegeEreignisHinzu(Ereignis^ ereignis);
 	void removeEreignis(Int32 index);
@@ -53,8 +56,9 @@ public:
 	//Hilfsmethoden
 	void setAktuellenStatus(String^ status);
 	String^ getStatus();
-	void setGesamtzeit(Double^ arbeitsstunden);
-	Double^ getArbeitsstunden();
+	void setGesamtzeit(TimeSpan^ arbeitszeit);
+	TimeSpan^ getArbeitszeit();
+	void beendeArbeitstag(TimeSpan^ zeit, Boolean erreicht);
 	// Ereignislisteauswertungsmethodensammlung
 
 	DateTime^ getArbeitsAnfang(); // null wenn arbeitstag (noch) nicht begonnen
@@ -62,7 +66,7 @@ public:
 	TimeSpan^ getAktuelleArbeitszeit();
 	TimeSpan^ getAktuellePausenzeit(); // liefert die Zeit der aktuell laufenden Pause
 	TimeSpan^ getPausezeit(); // liefert die Zeit der bisherigen Pausen seit letztem Arbeitsbeginn
-	//arbeitsblock speichert datetime anfang und ende timespan pausezeit Timespan arbeitszeit
+	//arbeitsblock speichert datetime anfang und ende, Timespan pausezeit, Timespan arbeitszeit
 	//getarbeitsblöcke gui zeigt die an 
 
 private:
