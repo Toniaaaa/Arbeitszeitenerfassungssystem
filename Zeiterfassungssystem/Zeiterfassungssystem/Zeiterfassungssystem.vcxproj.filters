@@ -78,6 +78,9 @@
     <ClInclude Include="BearbeitungsFenster.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="KalenderFenster.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Angestellter.cpp">
@@ -140,6 +143,9 @@
     <ClCompile Include="BearbeitungsFenster.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="KalenderFenster.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LogInFenster.resx">
@@ -161,6 +167,9 @@
       <Filter>Ressourcendateien</Filter>
     </EmbeddedResource>
     <EmbeddedResource Include="StundenStatistikFenster.resx">
+      <Filter>Ressourcendateien</Filter>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BearbeitungsFenster.resx">
       <Filter>Ressourcendateien</Filter>
     </EmbeddedResource>
   </ItemGroup>

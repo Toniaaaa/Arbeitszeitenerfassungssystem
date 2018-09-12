@@ -137,6 +137,9 @@
     <ClInclude Include="BearbeitungsFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="KalenderFenster.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="LogInFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -180,6 +183,7 @@
     <ClCompile Include="AenderungsantragsFenster.cpp" />
     <ClCompile Include="Angestellter.cpp" />
     <ClCompile Include="BearbeitungsFenster.cpp" />
+    <ClCompile Include="KalenderFenster.cpp" />
     <ClCompile Include="LogInFenster.cpp" />
     <ClCompile Include="Mitarbeiter.cpp" />
     <ClCompile Include="PasswortAendernFenster.cpp" />
@@ -207,6 +211,9 @@
   <ItemGroup>
     <EmbeddedResource Include="BearbeitungsFenster.resx">
       <DependentUpon>BearbeitungsFenster.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KalenderFenster.resx">
+      <DependentUpon>KalenderFenster.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LogInFenster.resx">
       <DependentUpon>LogInFenster.h</DependentUpon>

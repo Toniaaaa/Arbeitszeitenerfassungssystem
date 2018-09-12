@@ -10,6 +10,7 @@
 #include "PersonalFenster.h"
 #include "StundenStatistikFenster.h"
 #include "BearbeitungsFenster.h"
+#include "KalenderFenster.h"
 
 
 namespace Zeiterfassungssystem {
@@ -39,6 +40,7 @@ namespace Zeiterfassungssystem {
 		PersonalFenster^ personalfenster;
 		StundenStatistikFenster^ statistik;
 		BearbeitungsFenster^ bearbeitungsfenster;
+		KalenderFenster^ kalenderfenster;
 
 		Int32 sekunde;
 		Int32 minute;
@@ -83,6 +85,7 @@ namespace Zeiterfassungssystem {
 			personalfenster = gcnew PersonalFenster;
 			statistik = gcnew StundenStatistikFenster;
 			bearbeitungsfenster = gcnew BearbeitungsFenster;
+			kalenderfenster = gcnew KalenderFenster;
 		}
 
 	protected:
@@ -617,6 +620,7 @@ namespace Zeiterfassungssystem {
 
 	//KALENDERFENSTER
 	private: System::Void kalenderBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		kalenderfenster->ShowDialog(this);
 	}
 
 	//URLAUBSFENSTER
