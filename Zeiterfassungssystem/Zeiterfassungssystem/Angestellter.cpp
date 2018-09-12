@@ -12,6 +12,11 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->urlaubstage = urlaubstage;
 	listeEreignisse = gcnew List<Ereignis^>;
 	this->wochenZeitErreicht = false;
+	this->arbeitsStunden = wochenstunden;
+	this->arbeitsMinuten = 0;
+	this->ueberStunden = 0;
+	this->ueberMinuten = 0;
+	this->ueberStundenGesamt = 0.0;
 }
 
 Abteilung ^ Angestellter::getAbteilung()
@@ -52,16 +57,6 @@ void Angestellter::setAktuellenStatus(String ^ status)
 String ^ Angestellter::getStatus()
 {
 	return status;
-}
-
-void Angestellter::setGesamtzeit(TimeSpan ^ arbeitszeit)
-{
-	this->arbeitszeit= arbeitszeit;
-}
-
-TimeSpan ^ Angestellter::getArbeitszeit()
-{
-	return arbeitszeit;
 }
 
 DateTime ^ Angestellter::getArbeitsAnfang()
@@ -148,8 +143,27 @@ Int32 Angestellter::getArbeitsAnfangIndex()
 	return arbeitsanfang;
 }
 
-void Angestellter::beendeArbeitstag(TimeSpan^ zeit, Boolean erreicht) 
+void Angestellter::beendeArbeitstag(Int32 stunden, Int32 minuten, Boolean erreicht) 
 {
 	wochenZeitErreicht = erreicht;
-	arbeitszeit = zeit;
+	if (erreicht) {
+		arbeitsStunden = 0;
+		arbeitsMinuten = 0;
+		ueberStunden = stunden;
+		ueberMinuten = minuten;
+	}
+	else {
+		arbeitsStunden = stunden;
+		arbeitsMinuten = minuten;
+	}
+}
+
+void Angestellter::setUeberstundenGesamt(Int32 stunden, Int32 minuten) 
+{
+	ueberStundenGesamt += (stunden + minuten / 60);
+}
+
+DateTime^ Angestellter::getLetzterArbeitstag() 
+{
+	return this->getArbeitsAnfang()->Date;
 }
