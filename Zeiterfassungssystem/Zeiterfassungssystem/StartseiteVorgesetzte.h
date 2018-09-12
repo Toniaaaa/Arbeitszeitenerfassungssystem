@@ -9,6 +9,7 @@
 #include "UrlaubsbearbeitungsFenster.h"
 #include "PersonalFenster.h"
 #include "StundenStatistikFenster.h"
+#include "BearbeitungsFenster.h"
 
 
 namespace Zeiterfassungssystem {
@@ -37,6 +38,7 @@ namespace Zeiterfassungssystem {
 		UrlaubsanfragenbearbeitungsFenster^ urlaubsbearbeitungsfenster;
 		PersonalFenster^ personalfenster;
 		StundenStatistikFenster^ statistik;
+		BearbeitungsFenster^ bearbeitungsfenster;
 
 		Int32 sekunde;
 		Int32 minute;
@@ -81,7 +83,7 @@ namespace Zeiterfassungssystem {
 			urlaubsbearbeitungsfenster = gcnew UrlaubsanfragenbearbeitungsFenster;
 			personalfenster = gcnew PersonalFenster;
 			statistik = gcnew StundenStatistikFenster;
-			
+			bearbeitungsfenster = gcnew BearbeitungsFenster;
 		}
 
 	protected:
@@ -631,7 +633,7 @@ namespace Zeiterfassungssystem {
 		System::Windows::Forms::DialogResult result = registrierungsfenster->ShowDialog(this);
 	}
 	private: System::Void editBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		
+		bearbeitungsfenster->ShowDialog(this);
 	}
 	private: System::Void personalBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		personalfenster->setUnternehmen(unternehmen);
