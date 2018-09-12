@@ -205,6 +205,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="BearbeitungsFenster.resx">
+      <DependentUpon>BearbeitungsFenster.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LogInFenster.resx">
       <DependentUpon>LogInFenster.h</DependentUpon>
     </EmbeddedResource>

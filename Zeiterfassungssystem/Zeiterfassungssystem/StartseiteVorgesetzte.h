@@ -630,6 +630,7 @@ namespace Zeiterfassungssystem {
 		System::Windows::Forms::DialogResult result = registrierungsfenster->ShowDialog(this);
 	}
 	private: System::Void editBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		bearbeitungsfenster->setUnternehmen(unternehmen);
 		bearbeitungsfenster->ShowDialog(this);
 	}
 	private: System::Void personalBtn_Click(System::Object^  sender, System::EventArgs^  e) {

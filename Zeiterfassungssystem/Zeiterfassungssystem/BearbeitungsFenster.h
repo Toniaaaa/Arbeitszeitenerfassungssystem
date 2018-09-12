@@ -1,4 +1,7 @@
 #pragma once
+#include "Unternehmen.h"
+#include "Angestellter.h"
+#include "Abteilung.h"
 
 namespace Zeiterfassungssystem {
 
@@ -60,7 +63,8 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Label^  lbl_urlaubstage;
 	private: System::Windows::Forms::Label^  lbl_rolle;
 	private: System::Windows::Forms::Button^  btn_mitarbeiter_hinzufuegen;
-	private: System::Windows::Forms::Label^  lbl_Registrierung;
+	private: System::Windows::Forms::Label^  lbl_bearbeitung;
+
 	private:
 		/// <summary>
 		/// Erforderliche Designervariable.
@@ -90,40 +94,40 @@ namespace Zeiterfassungssystem {
 			this->lbl_arbeitsstunden = (gcnew System::Windows::Forms::Label());
 			this->lbl_urlaubstage = (gcnew System::Windows::Forms::Label());
 			this->lbl_rolle = (gcnew System::Windows::Forms::Label());
-			this->lbl_Registrierung = (gcnew System::Windows::Forms::Label());
+			this->lbl_bearbeitung = (gcnew System::Windows::Forms::Label());
 			this->txt_name = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
 			// 
 			// txt_vorname
 			// 
-			this->txt_vorname->Location = System::Drawing::Point(161, 180);
+			this->txt_vorname->Location = System::Drawing::Point(161, 207);
 			this->txt_vorname->Name = L"txt_vorname";
 			this->txt_vorname->Size = System::Drawing::Size(351, 22);
-			this->txt_vorname->TabIndex = 1;
-			//this->txt_vorname->Validating += gcnew System::ComponentModel::CancelEventHandler(this, &RegistrierungsFenster::txt_vorname_Validating);
+			this->txt_vorname->TabIndex = 2;
 			// 
 			// txt_personalnummer
 			// 
-			this->txt_personalnummer->Location = System::Drawing::Point(161, 239);
+			this->txt_personalnummer->Location = System::Drawing::Point(161, 147);
 			this->txt_personalnummer->Name = L"txt_personalnummer";
 			this->txt_personalnummer->Size = System::Drawing::Size(351, 22);
-			this->txt_personalnummer->TabIndex = 3;
-			//this->txt_personalnummer->Validating += gcnew System::ComponentModel::CancelEventHandler(this, &RegistrierungsFenster::txt_personalnummer_Validating);
+			this->txt_personalnummer->TabIndex = 0;
+			this->txt_personalnummer->TextChanged += gcnew System::EventHandler(this, &BearbeitungsFenster::txt_personalnummer_TextChanged);
 			// 
 			// txt_passwort
 			// 
 			this->txt_passwort->Location = System::Drawing::Point(161, 267);
 			this->txt_passwort->Name = L"txt_passwort";
+			this->txt_passwort->PasswordChar = '*';
 			this->txt_passwort->Size = System::Drawing::Size(351, 22);
 			this->txt_passwort->TabIndex = 4;
 			// 
 			// txt_abteilung
 			// 
 			this->txt_abteilung->FormattingEnabled = true;
-			this->txt_abteilung->Location = System::Drawing::Point(161, 209);
+			this->txt_abteilung->Location = System::Drawing::Point(161, 236);
 			this->txt_abteilung->Name = L"txt_abteilung";
 			this->txt_abteilung->Size = System::Drawing::Size(351, 24);
-			this->txt_abteilung->TabIndex = 2;
+			this->txt_abteilung->TabIndex = 3;
 			// 
 			// txt_arbeitsstunden
 			// 
@@ -131,7 +135,6 @@ namespace Zeiterfassungssystem {
 			this->txt_arbeitsstunden->Name = L"txt_arbeitsstunden";
 			this->txt_arbeitsstunden->Size = System::Drawing::Size(351, 22);
 			this->txt_arbeitsstunden->TabIndex = 5;
-			//this->txt_arbeitsstunden->Validating += gcnew System::ComponentModel::CancelEventHandler(this, &RegistrierungsFenster::txt_arbeitsstunden_Validating);
 			// 
 			// txt_urlaubstage
 			// 
@@ -139,7 +142,6 @@ namespace Zeiterfassungssystem {
 			this->txt_urlaubstage->Name = L"txt_urlaubstage";
 			this->txt_urlaubstage->Size = System::Drawing::Size(351, 22);
 			this->txt_urlaubstage->TabIndex = 6;
-			//this->txt_urlaubstage->Validating += gcnew System::ComponentModel::CancelEventHandler(this, &RegistrierungsFenster::txt_urlaubstage_Validating);
 			// 
 			// txt_Rolle
 			// 
@@ -158,12 +160,12 @@ namespace Zeiterfassungssystem {
 			this->btn_mitarbeiter_hinzufuegen->TabIndex = 8;
 			this->btn_mitarbeiter_hinzufuegen->Text = L"Hinzufügen";
 			this->btn_mitarbeiter_hinzufuegen->UseVisualStyleBackColor = true;
-			//this->btn_mitarbeiter_hinzufuegen->Click += gcnew System::EventHandler(this, &RegistrierungsFenster::btn_mitarbeiter_hinzufuegen_Click);
+			this->btn_mitarbeiter_hinzufuegen->Click += gcnew System::EventHandler(this, &BearbeitungsFenster::btn_mitarbeiter_hinzufuegen_Click);
 			// 
 			// lbl_name
 			// 
 			this->lbl_name->AutoSize = true;
-			this->lbl_name->Location = System::Drawing::Point(16, 157);
+			this->lbl_name->Location = System::Drawing::Point(16, 184);
 			this->lbl_name->Name = L"lbl_name";
 			this->lbl_name->Size = System::Drawing::Size(45, 17);
 			this->lbl_name->TabIndex = 8;
@@ -172,7 +174,7 @@ namespace Zeiterfassungssystem {
 			// lbl_vorname
 			// 
 			this->lbl_vorname->AutoSize = true;
-			this->lbl_vorname->Location = System::Drawing::Point(14, 185);
+			this->lbl_vorname->Location = System::Drawing::Point(14, 212);
 			this->lbl_vorname->Name = L"lbl_vorname";
 			this->lbl_vorname->Size = System::Drawing::Size(65, 17);
 			this->lbl_vorname->TabIndex = 9;
@@ -181,7 +183,7 @@ namespace Zeiterfassungssystem {
 			// lbl_abteilung
 			// 
 			this->lbl_abteilung->AutoSize = true;
-			this->lbl_abteilung->Location = System::Drawing::Point(15, 216);
+			this->lbl_abteilung->Location = System::Drawing::Point(15, 243);
 			this->lbl_abteilung->Name = L"lbl_abteilung";
 			this->lbl_abteilung->Size = System::Drawing::Size(67, 17);
 			this->lbl_abteilung->TabIndex = 13;
@@ -190,7 +192,7 @@ namespace Zeiterfassungssystem {
 			// lbl_personalnummer
 			// 
 			this->lbl_personalnummer->AutoSize = true;
-			this->lbl_personalnummer->Location = System::Drawing::Point(15, 244);
+			this->lbl_personalnummer->Location = System::Drawing::Point(12, 152);
 			this->lbl_personalnummer->Name = L"lbl_personalnummer";
 			this->lbl_personalnummer->Size = System::Drawing::Size(115, 17);
 			this->lbl_personalnummer->TabIndex = 14;
@@ -232,33 +234,32 @@ namespace Zeiterfassungssystem {
 			this->lbl_rolle->TabIndex = 32;
 			this->lbl_rolle->Text = L"Rolle";
 			// 
-			// lbl_Registrierung
+			// lbl_bearbeitung
 			// 
-			this->lbl_Registrierung->AutoSize = true;
-			this->lbl_Registrierung->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 22.2F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->lbl_bearbeitung->AutoSize = true;
+			this->lbl_bearbeitung->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 22.2F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lbl_Registrierung->Location = System::Drawing::Point(153, 42);
-			this->lbl_Registrierung->Name = L"lbl_Registrierung";
-			this->lbl_Registrierung->Size = System::Drawing::Size(260, 44);
-			this->lbl_Registrierung->TabIndex = 34;
-			this->lbl_Registrierung->Text = L"Registrierung";
+			this->lbl_bearbeitung->Location = System::Drawing::Point(153, 42);
+			this->lbl_bearbeitung->Name = L"lbl_bearbeitung";
+			this->lbl_bearbeitung->Size = System::Drawing::Size(236, 44);
+			this->lbl_bearbeitung->TabIndex = 34;
+			this->lbl_bearbeitung->Text = L"Bearbeitung";
 			// 
 			// txt_name
 			// 
-			this->txt_name->Location = System::Drawing::Point(161, 152);
+			this->txt_name->Location = System::Drawing::Point(161, 179);
 			this->txt_name->Name = L"txt_name";
 			this->txt_name->Size = System::Drawing::Size(351, 22);
-			this->txt_name->TabIndex = 0;
-			//this->txt_name->Validating += gcnew System::ComponentModel::CancelEventHandler(this, &RegistrierungsFenster::txt_name_Validating);
+			this->txt_name->TabIndex = 1;
 			// 
-			// RegistrierungsFenster
+			// BearbeitungsFenster
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
 			this->ClientSize = System::Drawing::Size(524, 456);
 			this->Controls->Add(this->txt_name);
-			this->Controls->Add(this->lbl_Registrierung);
+			this->Controls->Add(this->lbl_bearbeitung);
 			this->Controls->Add(this->lbl_rolle);
 			this->Controls->Add(this->lbl_urlaubstage);
 			this->Controls->Add(this->lbl_arbeitsstunden);
@@ -275,13 +276,130 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->txt_passwort);
 			this->Controls->Add(this->txt_personalnummer);
 			this->Controls->Add(this->txt_vorname);
-			this->Name = L"RegistrierungsFenster";
-			this->Text = L"Registrierung";
-			//this->Load += gcnew System::EventHandler(this, &RegistrierungsFenster::registrierungsFenster_Load);
+			this->Name = L"BearbeitungsFenster";
+			this->Text = L"Bearbeitung";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &BearbeitungsFenster::BearbeitungsFenster_FormClosing);
+			this->Load += gcnew System::EventHandler(this, &BearbeitungsFenster::BearbeitungsFenster_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
-	};
+	private:
+		Unternehmen ^ unternehmen;
+		Angestellter^ angestellter;
+		void clear() {
+			this->txt_name->Text = "";
+			this->txt_vorname->Text = "";
+			this->txt_personalnummer->Text = "";
+			this->txt_passwort->Text = "";
+			this->txt_abteilung->Text = "";
+			this->txt_arbeitsstunden->Text = "";
+			this->txt_urlaubstage->Text = "";
+			this->txt_Rolle->Text = "";
+		}
+	public: 
+		void setUnternehmen(Unternehmen^ unternehmen) {
+			this->unternehmen = unternehmen;
+		}
+		void setAngestellten(Angestellter^ angestellter) {
+			this->angestellter = angestellter;
+		}
+		String^ getPersonalnummer() {
+			return this->txt_personalnummer->Text;
+		}
+
+	private: System::Void BearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+	}
+private: System::Void txt_personalnummer_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+		List<Angestellter^>^ angestellte = gcnew List<Angestellter^>;
+		angestellte = unternehmen->getAlleAngestellte();
+		
+
+		for (int i = 0; i < angestellte->Count; i++) {
+			if (angestellte[i]->getPersonalnummer()->Equals(getPersonalnummer())) {
+				setAngestellten(angestellte[i]);
+				txt_name->Text = angestellte[i]->getNachname();
+				txt_vorname->Text = angestellte[i]->getVorname();
+				txt_abteilung->Text = angestellte[i]->getAbteilung()->getAbteilungsnummer();
+				txt_passwort->Text = angestellte[i]->getPasswort();
+				txt_arbeitsstunden->Text = Convert::ToString(angestellte[i]->getWochensstunden());
+				txt_urlaubstage->Text = Convert::ToString(angestellte[i]->getUrlaubstage());
+				if (!angestellte[i]->istVorgesetzter()) {
+					txt_Rolle->Text = "Mitarbeiter";
+					angestellte[i]->istVorgesetzter() == false;
+				}
+				else {
+					txt_Rolle->Text = "Vorgesetzter";
+					angestellte[i]->istVorgesetzter() == true;
+				}
+			}
+		}
+	
+}
+private: System::Void btn_mitarbeiter_hinzufuegen_Click(System::Object^  sender, System::EventArgs^  e) {
+	bool fehler = false;
+	int parse;
+	//Eingabepprüfung im Eventhandler
+	if (this->txt_name->Text->Length == 0) {
+
+		this->DialogResult = System::Windows::Forms::DialogResult::None;
+		fehler = true;
+	}
+
+	else if (this->txt_vorname->Text->Length == 0) {
+
+		this->DialogResult = System::Windows::Forms::DialogResult::None;
+		fehler = true;
+	}
+
+	else if (this->txt_personalnummer->Text->Length == 0) {
+
+		this->DialogResult = System::Windows::Forms::DialogResult::None;
+		fehler = true;
+	}
+
+	else if (this->txt_passwort->Text->Length == 0) {
+
+		this->DialogResult = System::Windows::Forms::DialogResult::None;
+		fehler = true;
+	}
+
+	else if (this->txt_arbeitsstunden->Text->Length == 0) {
+
+		this->DialogResult = System::Windows::Forms::DialogResult::None;
+		fehler = true;
+	}
+
+	else if (this->txt_urlaubstage->Text->Length == 0) {
+
+		this->DialogResult = System::Windows::Forms::DialogResult::None;
+		fehler = true;
+	}
+	else if (this->txt_Rolle->Text->Length == 0) {
+		this->DialogResult = System::Windows::Forms::DialogResult::None;
+		fehler = true;
+	}
+	//ÄNDERUNG
+	if (fehler) {
+		System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehler!",
+			MessageBoxButtons::OK, MessageBoxIcon::Error);
+	}
+	else {
+		angestellter->setNachname(txt_name->Text);
+		angestellter->setVorname(txt_vorname->Text);
+		angestellter->setPersonalnummer(txt_personalnummer->Text);
+		angestellter->setPasswort(txt_passwort->Text);
+		angestellter->setWochenstunden(Convert::ToInt32(txt_arbeitsstunden->Text));
+		angestellter->setUrlaubstage(Convert::ToInt32(txt_urlaubstage->Text));
+	
+		MessageBox::Show("Erfolgreich", "Angestellten Daten erfolgreich geändert!", MessageBoxButtons::OK, MessageBoxIcon::Information);
+		this->clear();
+
+	}
+}
+private: System::Void BearbeitungsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+	
+}
+};
 }

@@ -41,6 +41,7 @@ public:
 	inline Boolean getWochenZeitErreicht() {return wochenZeitErreicht;}
 	inline Double getUeberstundenGesamt() { return ueberStundenGesamt; }
 	
+	
 	Ereignis^ getEreignis(Int32 index);
 	Int32 getAnzahlEreignisse();
 	Int32 getAnzahlArbeitstage();
@@ -64,15 +65,15 @@ public:
 	void removeEreignis(Int32 index);
 
 	//Hilfsmethoden
+	inline Int32 getArbeitsStunden() { return arbeitsStunden; }
+	inline Int32 getArbeitsMinuten() { return arbeitsMinuten; }
+	inline Int32 getUeberStunden() { return ueberStunden; }
+	inline Int32 getUeberMinuten() { return ueberMinuten; }
 	void setAktuellenStatus(String^ status);
 	String^ getStatus();
 	void beendeArbeitstag(Int32 stunden, Int32 minuten, Boolean erreicht);
 	// Ereignislisteauswertungsmethodensammlung
 
-	inline Int32 getArbeitsStunden() { return arbeitsStunden; }
-	inline Int32 getArbeitsMinuten() { return arbeitsMinuten; }
-	inline Int32 getUeberStunden() { return ueberStunden; }
-	inline Int32 getUeberMinuten() { return ueberMinuten; }
 	DateTime^ getLetzterArbeitstag();
 	DateTime^ getArbeitsAnfang(); // null wenn arbeitstag (noch) nicht begonnen
 	DateTime^ getPauseAnfang(); // null wenn pause gerade nicht läuft
