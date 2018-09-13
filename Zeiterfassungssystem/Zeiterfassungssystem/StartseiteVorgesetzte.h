@@ -576,7 +576,6 @@ namespace Zeiterfassungssystem {
 				timerArbeitszeit->Stop();
 				timerPause->Stop();
 				String^ text = "Ihr Arbeitstag wurde erfolgreich beendet!\nSie haben heute " + stunde + " Stunden und " + minute + " Minuten gearbeitet.";
-				angestellterAkt->beendeArbeitstag(arbeitsStunden, arbeitsMinuten, wochenZeitErreicht);
 				
 				pauseSekunde = 0;
 				pauseMinute = 0;
@@ -609,6 +608,7 @@ namespace Zeiterfassungssystem {
 		statistikfenster->chart1->Series["Arbeitsstunden"]->Points->AddXY(onlydate, timespan);
 		*/
 
+		angestellterAkt->beendeArbeitstag(arbeitsStunden, arbeitsMinuten, wochenZeitErreicht);
 		statistikfenster->setTimespan(angestellterAkt->getAktuelleArbeitszeit());
 
 	}
