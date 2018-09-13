@@ -311,7 +311,8 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void BearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 	}
-private: System::Void txt_personalnummer_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+
+	private: System::Void txt_personalnummer_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 		List<Angestellter^>^ angestellte = gcnew List<Angestellter^>;
 		angestellte = unternehmen->getAlleAngestellte();
 		
@@ -327,79 +328,80 @@ private: System::Void txt_personalnummer_TextChanged(System::Object^  sender, Sy
 				txt_urlaubstage->Text = Convert::ToString(angestellte[i]->getUrlaubstage());
 				if (!angestellte[i]->istVorgesetzter()) {
 					txt_Rolle->Text = "Mitarbeiter";
-					angestellte[i]->istVorgesetzter() == false;
+					!angestellte[i]->istVorgesetzter();
 				}
 				else {
 					txt_Rolle->Text = "Vorgesetzter";
-					angestellte[i]->istVorgesetzter() == true;
+					angestellte[i]->istVorgesetzter();
 				}
 			}
 		}
 	
-}
-private: System::Void btn_mitarbeiter_hinzufuegen_Click(System::Object^  sender, System::EventArgs^  e) {
-	bool fehler = false;
-	int parse;
-	//Eingabepprüfung im Eventhandler
-	if (this->txt_name->Text->Length == 0) {
-
-		this->DialogResult = System::Windows::Forms::DialogResult::None;
-		fehler = true;
 	}
 
-	else if (this->txt_vorname->Text->Length == 0) {
+	private: System::Void btn_mitarbeiter_hinzufuegen_Click(System::Object^  sender, System::EventArgs^  e) {
+		bool fehler = false;
+		int parse;
+		//Eingabepprüfung im Eventhandler
+		if (this->txt_name->Text->Length == 0) {
 
-		this->DialogResult = System::Windows::Forms::DialogResult::None;
-		fehler = true;
-	}
+			this->DialogResult = System::Windows::Forms::DialogResult::None;
+			fehler = true;
+		}
 
-	else if (this->txt_personalnummer->Text->Length == 0) {
+		else if (this->txt_vorname->Text->Length == 0) {
 
-		this->DialogResult = System::Windows::Forms::DialogResult::None;
-		fehler = true;
-	}
+			this->DialogResult = System::Windows::Forms::DialogResult::None;
+			fehler = true;
+		}
 
-	else if (this->txt_passwort->Text->Length == 0) {
+		else if (this->txt_personalnummer->Text->Length == 0) {
 
-		this->DialogResult = System::Windows::Forms::DialogResult::None;
-		fehler = true;
-	}
+			this->DialogResult = System::Windows::Forms::DialogResult::None;
+			fehler = true;
+		}
 
-	else if (this->txt_arbeitsstunden->Text->Length == 0) {
+		else if (this->txt_passwort->Text->Length == 0) {
 
-		this->DialogResult = System::Windows::Forms::DialogResult::None;
-		fehler = true;
-	}
+			this->DialogResult = System::Windows::Forms::DialogResult::None;
+			fehler = true;
+		}
 
-	else if (this->txt_urlaubstage->Text->Length == 0) {
+		else if (this->txt_arbeitsstunden->Text->Length == 0) {
 
-		this->DialogResult = System::Windows::Forms::DialogResult::None;
-		fehler = true;
-	}
-	else if (this->txt_Rolle->Text->Length == 0) {
-		this->DialogResult = System::Windows::Forms::DialogResult::None;
-		fehler = true;
-	}
-	//ÄNDERUNG
-	if (fehler) {
-		System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehler!",
-			MessageBoxButtons::OK, MessageBoxIcon::Error);
-	}
-	else {
-		angestellter->setNachname(txt_name->Text);
-		angestellter->setVorname(txt_vorname->Text);
-		angestellter->setPersonalnummer(txt_personalnummer->Text);
-		angestellter->setPasswort(txt_passwort->Text);
-		angestellter->setWochenstunden(Convert::ToInt32(txt_arbeitsstunden->Text));
-		angestellter->setUrlaubstage(Convert::ToInt32(txt_urlaubstage->Text));
+			this->DialogResult = System::Windows::Forms::DialogResult::None;
+			fehler = true;
+		}
+
+		else if (this->txt_urlaubstage->Text->Length == 0) {
+
+			this->DialogResult = System::Windows::Forms::DialogResult::None;
+			fehler = true;
+		}
+		else if (this->txt_Rolle->Text->Length == 0) {
+			this->DialogResult = System::Windows::Forms::DialogResult::None;
+			fehler = true;
+		}
+		//ÄNDERUNG
+		if (fehler) {
+			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehler!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+		else {
+			angestellter->setNachname(txt_name->Text);
+			angestellter->setVorname(txt_vorname->Text);
+			angestellter->setPersonalnummer(txt_personalnummer->Text);
+			angestellter->setPasswort(txt_passwort->Text);
+			angestellter->setWochenstunden(Convert::ToInt32(txt_arbeitsstunden->Text));
+			angestellter->setUrlaubstage(Convert::ToInt32(txt_urlaubstage->Text));
 	
-		MessageBox::Show("Erfolgreich", "Angestellten Daten erfolgreich geändert!", MessageBoxButtons::OK, MessageBoxIcon::Information);
-		this->clear();
+			MessageBox::Show("Erfolgreich", "Angestellten Daten erfolgreich geändert!", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			this->clear();
 
+		}
 	}
-}
-private: System::Void BearbeitungsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+	private: System::Void BearbeitungsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
 	
-}
+	}
 };
 }

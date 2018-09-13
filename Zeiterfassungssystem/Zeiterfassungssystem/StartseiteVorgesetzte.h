@@ -588,6 +588,9 @@ namespace Zeiterfassungssystem {
 				pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
 				lbl_Status->Text = "Schönen Feierabend!";
 				angestellterAkt->setAktuellenStatus("Schönen Feierabend!");
+				TimeSpan^ time = angestellterAkt->getAktuelleArbeitszeit();
+				Double gesamt = time->TotalHours;
+				//angestellterAkt->setGesamtstunden(gesamt);
 				Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
 				angestellterAkt->fuegeEreignisHinzu(arbeitsende);
 				MessageBox::Show(text, "Arbeitstag beendet", MessageBoxButtons::OK, MessageBoxIcon::Information);

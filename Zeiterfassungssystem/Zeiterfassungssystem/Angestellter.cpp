@@ -11,6 +11,7 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->wochenstunden = wochenstunden;
 	this->urlaubstage = urlaubstage;
 	listeEreignisse = gcnew List<Ereignis^>;
+	listegesamtstunden = gcnew List<Double>;
 	this->wochenZeitErreicht = false;
 	this->arbeitsStunden = wochenstunden;
 	this->arbeitsMinuten = 0;
@@ -165,5 +166,12 @@ void Angestellter::setUeberstundenGesamt(Int32 stunden, Int32 minuten)
 
 DateTime^ Angestellter::getLetzterArbeitstag() 
 {
-	return this->getArbeitsAnfang()->Date;
+	DateTime^ datum;
+	for (int i = getAnzahlEreignisse() - 1; i >= 0; i--) {
+		if (listeEreignisse[i]->getTyp() == ARBEIT_START) {
+			datum = listeEreignisse[i]->getTimestamp()->Date;
+			break;
+		}
+	}
+	return datum;
 }

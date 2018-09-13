@@ -19,6 +19,7 @@ private:
 	Int32 wochenstunden;
 	Int32 urlaubstage;
 	List<Ereignis^>^ listeEreignisse;
+	List<Double>^ listegesamtstunden;
 	String^ status;
 	Int32 arbeitsStunden;
 	Int32 arbeitsMinuten;
@@ -40,6 +41,7 @@ public:
 	inline Int32 getUrlaubstage() {return urlaubstage;}
 	inline Boolean getWochenZeitErreicht() {return wochenZeitErreicht;}
 	inline Double getUeberstundenGesamt() { return ueberStundenGesamt; }
+	inline Double getGesamtstunden(int index) { return listegesamtstunden[index]; }
 	
 	
 	Ereignis^ getEreignis(Int32 index);
@@ -59,6 +61,7 @@ public:
 	inline void setArbeitsMinuten(Int32 minuten) { this->arbeitsMinuten = minuten; }
 	inline void setUeberStunden(Int32 stunden) { this->ueberStunden = stunden; }
 	inline void setUeberMinuten(Int32 minuten) { this->ueberMinuten = minuten; }
+	inline void setGesamtstunden(Double gesamtstunden) { listegesamtstunden->Add(gesamtstunden); }
 	void setUeberstundenGesamt(Int32 stunden, Int32 minuten);
 	virtual bool istVorgesetzter() = 0;
 	void fuegeEreignisHinzu(Ereignis^ ereignis);
