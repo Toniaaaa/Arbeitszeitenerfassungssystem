@@ -148,6 +148,9 @@ namespace Zeiterfassungssystem {
 					if (angestellter->getEreignis(i+3)->getTyp() == ARBEIT_ENDE) {
 						item->SubItems->Add(angestellter->getEreignis(i+3)->getTimestamp()->ToString());
 	
+						
+					
+						item->SubItems->Add(Convert::ToString(angestellter->getGesamtstunden(i)));
 					}
 					listView1->Items->Add(item);
 					

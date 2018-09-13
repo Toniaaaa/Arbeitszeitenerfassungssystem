@@ -9,6 +9,8 @@
 #include "UrlaubsbearbeitungsFenster.h"
 #include "PersonalFenster.h"
 #include "StundenStatistikFenster.h"
+#include "BearbeitungsFenster.h"
+#include "KalenderFenster.h"
 
 
 namespace Zeiterfassungssystem {
@@ -37,6 +39,8 @@ namespace Zeiterfassungssystem {
 		UrlaubsanfragenbearbeitungsFenster^ urlaubsbearbeitungsfenster;
 		PersonalFenster^ personalfenster;
 		StundenStatistikFenster^ statistik;
+		BearbeitungsFenster^ bearbeitungsfenster;
+		KalenderFenster^ kalenderfenster;
 
 		Int32 sekunde;
 		Int32 minute;
@@ -80,7 +84,8 @@ namespace Zeiterfassungssystem {
 			urlaubsbearbeitungsfenster = gcnew UrlaubsanfragenbearbeitungsFenster;
 			personalfenster = gcnew PersonalFenster;
 			statistik = gcnew StundenStatistikFenster;
-			
+			bearbeitungsfenster = gcnew BearbeitungsFenster;
+			kalenderfenster = gcnew KalenderFenster;
 		}
 
 	protected:
@@ -571,7 +576,6 @@ namespace Zeiterfassungssystem {
 				timerArbeitszeit->Stop();
 				timerPause->Stop();
 				String^ text = "Ihr Arbeitstag wurde erfolgreich beendet!\nSie haben heute " + stunde + " Stunden und " + minute + " Minuten gearbeitet.";
-				angestellterAkt->beendeArbeitstag(arbeitsStunden, arbeitsMinuten, wochenZeitErreicht);
 				
 				pauseSekunde = 0;
 				pauseMinute = 0;
@@ -583,6 +587,9 @@ namespace Zeiterfassungssystem {
 				pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
 				lbl_Status->Text = "Schönen Feierabend!";
 				angestellterAkt->setAktuellenStatus("Schönen Feierabend!");
+				TimeSpan^ time = angestellterAkt->getAktuelleArbeitszeit();
+				Double gesamt = time->TotalHours;
+				//angestellterAkt->setGesamtstunden(gesamt);
 				Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
 				angestellterAkt->fuegeEreignisHinzu(arbeitsende);
 				MessageBox::Show(text, "Arbeitstag beendet", MessageBoxButtons::OK, MessageBoxIcon::Information);
@@ -601,6 +608,7 @@ namespace Zeiterfassungssystem {
 		statistikfenster->chart1->Series["Arbeitsstunden"]->Points->AddXY(onlydate, timespan);
 		*/
 
+		angestellterAkt->beendeArbeitstag(arbeitsStunden, arbeitsMinuten, wochenZeitErreicht);
 		statistikfenster->setTimespan(angestellterAkt->getAktuelleArbeitszeit());
 
 	}
@@ -615,6 +623,7 @@ namespace Zeiterfassungssystem {
 
 	//KALENDERFENSTER
 	private: System::Void kalenderBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		kalenderfenster->ShowDialog(this);
 	}
 
 	//URLAUBSFENSTER
@@ -628,7 +637,8 @@ namespace Zeiterfassungssystem {
 		System::Windows::Forms::DialogResult result = registrierungsfenster->ShowDialog(this);
 	}
 	private: System::Void editBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		
+		bearbeitungsfenster->setUnternehmen(unternehmen);
+		bearbeitungsfenster->ShowDialog(this);
 	}
 	private: System::Void personalBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		personalfenster->setUnternehmen(unternehmen);
