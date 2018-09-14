@@ -24,7 +24,7 @@ namespace Zeiterfassungssystem {
 		Angestellter^ angestellterAkt;
 		Unternehmen^ unternehmen;
 		StatistikFenster^ statistikfenster;
-		Urlaubfenster^ urlaubsfenster;
+		UrlaubsFenster^ urlaubsfenster;
 
 		Int32 pauseSekunde;
 		Int32 pauseMinute;
@@ -54,7 +54,7 @@ namespace Zeiterfassungssystem {
 		{
 			InitializeComponent();	
 			statistikfenster = gcnew StatistikFenster();
-			urlaubsfenster = gcnew Urlaubfenster;
+			urlaubsfenster = gcnew UrlaubsFenster;
 		}
 
 	protected:

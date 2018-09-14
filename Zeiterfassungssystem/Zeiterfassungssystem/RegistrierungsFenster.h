@@ -331,6 +331,12 @@ namespace Zeiterfassungssystem {
 			return this->txt_Rolle->Text;
 		}
 
+		//Setter setzt den Vorgesetzten. Angestellte, die selber Vorgesetzte sind, bekommen keinen Vorgesetzten zugeordnet.
+		void setVorgesetzter(Vorgesetzter^ vorgesetzter)
+		{
+			this->vorgesetzter = vorgesetzter;
+		}
+
 		//Methode zum Zurücksetzen der Textfelder
 		void clear() {
 			this->txt_name->Text = "";
@@ -407,7 +413,7 @@ namespace Zeiterfassungssystem {
 					}
 				}
 
-				Mitarbeiter^ mitarbeiter = gcnew Mitarbeiter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text));
+				Mitarbeiter^ mitarbeiter = gcnew Mitarbeiter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), vorgesetzter);
 				mitarbeiter->setAbteilung(abteilung);
 				abteilung->fuegeMitarbeiterHinzu(mitarbeiter);
 				this->DialogResult = System::Windows::Forms::DialogResult::OK;

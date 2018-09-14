@@ -22,5 +22,8 @@ public:
 	void addAenderungsantrag(Aenderungsantrag^ neuerAntrag);
 	void removeAenderungsantrag(Int32 index);
 
+	inline List<Urlaubsantrag^>^ getUrlaubsantraege() { return listeUrlaubsantraege; }
+	inline List<Aenderungsantrag^>^ getAenderungsantraege() { return listeAenderungsantraege; }
+
 	bool istVorgesetzter() override;
 };

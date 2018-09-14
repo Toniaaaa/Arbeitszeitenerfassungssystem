@@ -11,7 +11,7 @@
 #include "StundenStatistikFenster.h"
 #include "BearbeitungsFenster.h"
 #include "KalenderFenster.h"
-
+#include "UrlaubsFenster.h"
 
 namespace Zeiterfassungssystem {
 
@@ -32,14 +32,14 @@ namespace Zeiterfassungssystem {
 	{
 	private:
 		Unternehmen ^ unternehmen;
-		Angestellter^ angestellterAkt;
+		Vorgesetzter^ angestellterAkt;
 		RegistrierungsFenster^ registrierungsfenster;
-		Vorgesetzter^ vorgesetzter;
 		StatistikFenster^ statistikfenster;
 		UrlaubsanfragenbearbeitungsFenster^ urlaubsbearbeitungsfenster;
 		PersonalFenster^ personalfenster;
 		StundenStatistikFenster^ statistik;
 		BearbeitungsFenster^ bearbeitungsfenster;
+		UrlaubsFenster^ urlaubsfenster;
 		KalenderFenster^ kalenderfenster;
 
 		Int32 sekunde;
@@ -86,6 +86,7 @@ namespace Zeiterfassungssystem {
 			statistik = gcnew StundenStatistikFenster;
 			bearbeitungsfenster = gcnew BearbeitungsFenster;
 			kalenderfenster = gcnew KalenderFenster;
+			urlaubsfenster = gcnew UrlaubsFenster;
 		}
 
 	protected:
@@ -102,7 +103,6 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Button^  kommenBtn;
 	private: System::Windows::Forms::Button^  gehenBtn;
 	private: System::Windows::Forms::Label^  halloLbl;
-
 	private: System::Windows::Forms::Timer^  timerArbeitszeit;
 	private: System::Windows::Forms::Label^  arbeitszeitLbl;
 	private: System::ComponentModel::IContainer^  components;
@@ -490,6 +490,7 @@ namespace Zeiterfassungssystem {
 			this->Text = L"Zeiterfassung Imperium Startseite Vorgesetzte";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &StartseiteVorgesetzte::StartseiteVorgesetzte_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &StartseiteVorgesetzte::StartseiteVorgesetzte_Load);
+			this->Shown += gcnew System::EventHandler(this, &StartseiteVorgesetzte::StartseiteVorgesetzte_Shown);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -501,7 +502,7 @@ namespace Zeiterfassungssystem {
 			this->unternehmen = unternehmen;
 		}
 
-		public: void  setAngemeldeterAngestellter(Angestellter^ angestellter) {
+		public: void  setAngemeldeterAngestellter(Vorgesetzter^ angestellter) {
 			this->angestellterAkt = angestellter;
 		}
 
@@ -628,12 +629,41 @@ namespace Zeiterfassungssystem {
 
 	//URLAUBSFENSTER
 	private: System::Void urlaubBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		urlaubsbearbeitungsfenster->ShowDialog(this);
+		urlaubsfenster->setAngestellter(angestellterAkt);
+		System::Windows::Forms::DialogResult result = urlaubsfenster->ShowDialog(this);
+
+		//Der Urlaubsantrag als String
+		String^ urlaubString = "Beginn: " + urlaubsfenster->p_Anfang.ToString("dddd, dd. MMMM yyyy") + "\nEnde: " + urlaubsfenster->p_Ende.ToString("dddd, dd. MMMM yyyy") + "\nUrlaubstage: " + urlaubsfenster->p_Tage.ToString() + "\n";
+
+		//Wenn vom Urlaubsfenster OK gegeben wird, wir zunächst eine Abfrage erzeugt, ob der Antrag so in Ordnung ist. Wenn der Mitarbeiter mit "Ja" bestätigt, wird ein neues Objekt vom Typ
+		//Urlaubsantrag erstellt. Bei "Nein" wird abgebrochen.
+		if (result == System::Windows::Forms::DialogResult::OK) {
+			if (MessageBox::Show("Sie wollen folgenden Urlaub beantragen:\n" + urlaubString + "\nWollen Sie diesen Antrag einreichen?", "Antrag einreichen?", MessageBoxButtons::YesNo,
+				MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+				//Neuen Urlaubsantrag aus Werten aus dem Urlaubsfenster erstellen
+				Urlaubsantrag ^u = gcnew Urlaubsantrag(angestellterAkt, urlaubsfenster->p_Anfang, urlaubsfenster->p_Ende, urlaubsfenster->p_Tage);
+				angestellterAkt->addUrlaubsantrag(u);
+				MessageBox::Show("Urlaubsantrag erfolgreich eingereicht!", "Antrag erfolgreich!",
+					MessageBoxButtons::OK, MessageBoxIcon::Information);
+			}
+			else {
+				MessageBox::Show("Ihr Urlaubsantrag wurde nicht eingereicht!", "Antrag abgebrochen!",
+					MessageBoxButtons::OK, MessageBoxIcon::Error);
+			}
+
+			urlaubsfenster->clear(); //Textfelder wieder leeren
+
+		}
+		else {
+			MessageBox::Show("Urlaubsantrag konnte nicht erstellt werden!", "Erstellen fehlgeschlagen",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 	}
 
 	//REGISTRIERUNGSFENSTER
 	private: System::Void addBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		registrierungsfenster->setUnternehmen(unternehmen);
+		registrierungsfenster->setVorgesetzter(angestellterAkt);
 		System::Windows::Forms::DialogResult result = registrierungsfenster->ShowDialog(this);
 	}
 	private: System::Void editBtn_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -739,8 +769,20 @@ namespace Zeiterfassungssystem {
 		pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
 		nameLbl->Text = angestellterAkt->getVorname() + " " + angestellterAkt->getNachname();
 		resturlaubLbl->Text = angestellterAkt->getUrlaubstage() + " Tage";
-		
+
 	}
+
+	private: System::Void StartseiteVorgesetzte_Shown(System::Object^  sender, System::EventArgs^  e) {
+		//Es wird geprüft, ob die Liste der Urlaubsanträge Anträge beinhaltet.
+		Int32 anzUrlaubsantraege = angestellterAkt->getUrlaubsantraege()->Count;
+		while (anzUrlaubsantraege > 0) {
+			urlaubsbearbeitungsfenster->setUrlaubsantrag(angestellterAkt->getUrlaubsantraege()[anzUrlaubsantraege - 1]);
+			System::Windows::Forms::DialogResult result = urlaubsbearbeitungsfenster->ShowDialog(this);
+			angestellterAkt->removeUrlaubsantrag(anzUrlaubsantraege - 1);
+			anzUrlaubsantraege--;
+		}
+	}
+
 	//WENN SEITE GESCHLOSSEN UNTERNEHMEN WIRD GESPEICHERT
 	private: System::Void StartseiteVorgesetzte_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
 		unternehmen->speichern();
@@ -791,7 +833,6 @@ namespace Zeiterfassungssystem {
 	private: System::Void timerUhr_Tick(System::Object^  sender, System::EventArgs^  e) {
 		uhrzeitLbl->Text = DateTime::Now.ToString("HH:mm:ss");
 		datumLbl->Text = DateTime::Now.ToString("dddd, dd. MMMM yyyy");
-
 	}
 
 	//TIMER PAUSE
@@ -859,5 +900,6 @@ namespace Zeiterfassungssystem {
 
 		return std + ":" + min;
 	}
+
 };
 }

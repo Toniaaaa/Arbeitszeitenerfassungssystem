@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Quelldateien\Sounds">
+      <UniqueIdentifier>{b611aee9-02f6-46a9-9d10-b05fb8d59279}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Angestellter.h">
@@ -172,10 +175,18 @@
     <EmbeddedResource Include="BearbeitungsFenster.resx">
       <Filter>Ressourcendateien</Filter>
     </EmbeddedResource>
+    <EmbeddedResource Include="KalenderFenster.resx">
+      <Filter>Ressourcendateien</Filter>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LogInFenster.resx">
       <Filter>Ressourcendateien</Filter>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Sounds\lacucarachaKurz.wav">
+      <Filter>Quelldateien\Sounds</Filter>
+    </Media>
   </ItemGroup>
 </Project>

@@ -21,6 +21,7 @@ private:
 	String^ passwort;
 	Int32 wochenstunden;
 	Int32 urlaubstage;
+	Int32 urlaubstageGenommen;
 	List<Ereignis^>^ listeEreignisse;
 	List<Double>^ listegesamtstunden;
 	String^ status;
@@ -50,7 +51,7 @@ public:
 	inline Int32 getUeberStunden() { return ueberStunden; }
 	inline Int32 getUeberMinuten() { return ueberMinuten; }
 	
-	
+	Int32 getRestUrlaub();
 	Ereignis^ getEreignis(Int32 index);
 	Int32 getAnzahlEreignisse();
 	Int32 getAnzahlArbeitstage();

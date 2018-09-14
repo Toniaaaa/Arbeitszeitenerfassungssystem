@@ -1,9 +1,5 @@
 #pragma once
-#include "Mitarbeiter.h"
-#include "Vorgesetzter.h"
 #include "Angestellter.h"
-#include "UrlaubsbearbeitungsFenster.h"
-#include "StartseiteVorgesetzte.h"
 
 namespace Zeiterfassungssystem {
 
@@ -16,9 +12,9 @@ namespace Zeiterfassungssystem {
 	using namespace System::Media;
 
 	/// <summary>
-	/// Zusammenfassung für Urlaubsfenster
+	/// Zusammenfassung für UrlaubsFenster
 	/// </summary>
-	public ref class Urlaubfenster : public System::Windows::Forms::Form
+	public ref class UrlaubsFenster : public System::Windows::Forms::Form
 	{
 
 	private:
@@ -27,11 +23,10 @@ namespace Zeiterfassungssystem {
 		Int32 vergleichMitHeute;
 		Angestellter^ angestellter;
 		Int32 restUrlaub;
-		StartseiteVorgesetzte^ startseitevorgesetzter;
 		SoundPlayer^ sound;
 
 	public:
-		Urlaubfenster(void)
+		UrlaubsFenster(void)
 		{
 			sound = gcnew SoundPlayer();
 			InitializeComponent();
@@ -41,7 +36,7 @@ namespace Zeiterfassungssystem {
 		/// <summary>
 		/// Verwendete Ressourcen bereinigen.
 		/// </summary>
-		~Urlaubfenster()
+		~UrlaubsFenster()
 		{
 			if (components)
 			{
@@ -112,7 +107,7 @@ namespace Zeiterfassungssystem {
 			this->einreichenBtn->TabIndex = 3;
 			this->einreichenBtn->Text = L"Einreichen";
 			this->einreichenBtn->UseVisualStyleBackColor = true;
-			this->einreichenBtn->Click += gcnew System::EventHandler(this, &Urlaubfenster::Einreichen_Click);
+			this->einreichenBtn->Click += gcnew System::EventHandler(this, &UrlaubsFenster::Einreichen_Click);
 			// 
 			// urlaubBeginnLbl
 			// 
@@ -143,7 +138,7 @@ namespace Zeiterfassungssystem {
 			this->abbrechenBtn->TabIndex = 10;
 			this->abbrechenBtn->Text = L"Abbrechen";
 			this->abbrechenBtn->UseVisualStyleBackColor = true;
-			this->abbrechenBtn->Click += gcnew System::EventHandler(this, &Urlaubfenster::abbrechenBtn_Click);
+			this->abbrechenBtn->Click += gcnew System::EventHandler(this, &UrlaubsFenster::abbrechenBtn_Click);
 			// 
 			// label1
 			// 
@@ -176,7 +171,7 @@ namespace Zeiterfassungssystem {
 			this->tageTxt->Size = System::Drawing::Size(100, 26);
 			this->tageTxt->TabIndex = 13;
 			// 
-			// Urlaubfenster
+			// UrlaubsFenster
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
@@ -192,9 +187,9 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->urlaubsabtragLbl);
 			this->Controls->Add(this->urlaubBeginnDTP);
 			this->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
-			this->Name = L"Urlaubfenster";
+			this->Name = L"UrlaubsFenster";
 			this->Text = L"Urlaubsantrag";
-			this->Load += gcnew System::EventHandler(this, &Urlaubfenster::Urlaubfenster_Load);
+			this->Load += gcnew System::EventHandler(this, &UrlaubsFenster::UrlaubsFenster_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -223,8 +218,7 @@ namespace Zeiterfassungssystem {
 			Int32 get() {
 				Int32 tageKonvertiert;
 				if (tageTxt->Text->Length > 0) {
-					String^ tageS = this->tageTxt->Text;
-					tageKonvertiert = Convert::ToInt32(tageS);
+					tageKonvertiert = Convert::ToInt32(this->tageTxt->Text);
 				}
 				else {
 					tageKonvertiert = 0;
@@ -236,8 +230,7 @@ namespace Zeiterfassungssystem {
 	//NEU: Angestellter wird gesetzt:
 	public: void setAngestellter(Angestellter^ angestellterUebergabe)
 	{
-		Angestellter^ angestellter = angestellterUebergabe;
-		restUrlaub = angestellter->getUrlaubstage();
+		angestellter = angestellterUebergabe;
 	}
 
 		//Eingaben werden zurückgesetzt
@@ -286,7 +279,6 @@ namespace Zeiterfassungssystem {
 			this->Close(); //Fenster wird nur geschlossen, wenn alle Angaben gemacht wurden und OK sind.
 		}
 
-		// TODO: anfrage speichern!
 	}
 
 	//Wenn abbrechen gedrueckt schliesse Fenster
@@ -296,11 +288,13 @@ namespace Zeiterfassungssystem {
 	}
 
 	//Waehrend Fenster laed spiele Musik
-	private: System::Void Urlaubfenster_Load(System::Object^  sender, System::EventArgs^  e)
+	private: System::Void UrlaubsFenster_Load(System::Object^  sender, System::EventArgs^  e)
 	{
-		sound->SoundLocation = "Sounds/lacucarachaKurz.wav";
+		/*sound->SoundLocation = "Sounds/lacucarachaKurz.wav";
 		sound->Load();
-		sound->Play();
+		sound->Play();*/
+		restUrlaub = angestellter->getRestUrlaub();
+		MessageBox::Show("Resturlaub: " + restUrlaub, "Ihr Resturlaub", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
 	};
 }

@@ -236,6 +236,12 @@
     <EmbeddedResource Include="StundenStatistikFenster.resx">
       <DependentUpon>StundenStatistikFenster.h</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UrlaubsbearbeitungsFenster.resx">
+      <DependentUpon>UrlaubsbearbeitungsFenster.h</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Sounds\lacucarachaKurz.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

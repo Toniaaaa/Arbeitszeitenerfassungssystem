@@ -222,7 +222,7 @@ namespace Zeiterfassungssystem {
 		}
 		else if (angestellter != nullptr && angestellter->istVorgesetzter() == true) {
 			loginGedrueckt = true;
-			startseitevorgesetzte->setAngemeldeterAngestellter(angestellter);
+			startseitevorgesetzte->setAngemeldeterAngestellter((Vorgesetzter^) angestellter);
 			startseitevorgesetzte->setUnternehmen(unternehmen);
 			startseitevorgesetzte->Show();
 			Close();
