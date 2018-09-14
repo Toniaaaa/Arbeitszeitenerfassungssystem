@@ -633,7 +633,8 @@ namespace Zeiterfassungssystem {
 		System::Windows::Forms::DialogResult result = urlaubsfenster->ShowDialog(this);
 
 		//Der Urlaubsantrag als String
-		String^ urlaubString = "Beginn: " + urlaubsfenster->p_Anfang.ToString("dddd, dd. MMMM yyyy") + "\nEnde: " + urlaubsfenster->p_Ende.ToString("dddd, dd. MMMM yyyy") + "\nUrlaubstage: " + urlaubsfenster->p_Tage.ToString() + "\n";
+		String^ urlaubString = "Beginn: " + urlaubsfenster->p_Anfang.ToString("dddd, dd. MMMM yyyy") + "\nEnde: " + urlaubsfenster->p_Ende.ToString("dddd, dd. MMMM yyyy") 
+			+ "\nUrlaubstage: " + urlaubsfenster->p_Tage.ToString() + "\nKommentar: " + urlaubsfenster->p_Kommentar + "\n";
 
 		//Wenn vom Urlaubsfenster OK gegeben wird, wir zunächst eine Abfrage erzeugt, ob der Antrag so in Ordnung ist. Wenn der Mitarbeiter mit "Ja" bestätigt, wird ein neues Objekt vom Typ
 		//Urlaubsantrag erstellt. Bei "Nein" wird abgebrochen.
@@ -641,7 +642,7 @@ namespace Zeiterfassungssystem {
 			if (MessageBox::Show("Sie wollen folgenden Urlaub beantragen:\n" + urlaubString + "\nWollen Sie diesen Antrag einreichen?", "Antrag einreichen?", MessageBoxButtons::YesNo,
 				MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 				//Neuen Urlaubsantrag aus Werten aus dem Urlaubsfenster erstellen
-				Urlaubsantrag ^u = gcnew Urlaubsantrag(angestellterAkt, urlaubsfenster->p_Anfang, urlaubsfenster->p_Ende, urlaubsfenster->p_Tage);
+				Urlaubsantrag ^u = gcnew Urlaubsantrag(angestellterAkt, urlaubsfenster->p_Anfang, urlaubsfenster->p_Ende, urlaubsfenster->p_Tage, urlaubsfenster->p_Kommentar);
 				angestellterAkt->addUrlaubsantrag(u);
 				MessageBox::Show("Urlaubsantrag erfolgreich eingereicht!", "Antrag erfolgreich!",
 					MessageBoxButtons::OK, MessageBoxIcon::Information);

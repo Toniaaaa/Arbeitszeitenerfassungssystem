@@ -21,6 +21,9 @@ namespace Zeiterfassungssystem {
 		String^ textZumAntrag;
 
 	private: System::Windows::Forms::TextBox^  txt_Kommentar;
+	private: System::Windows::Forms::Label^  label1;
+	private: System::Windows::Forms::Label^  lbl_kommentarText;
+
 	private: System::Windows::Forms::Label^  lbl_Kommentar;
 
 	public:
@@ -81,11 +84,13 @@ namespace Zeiterfassungssystem {
 			this->lbl_anfang = (gcnew System::Windows::Forms::Label());
 			this->txt_Kommentar = (gcnew System::Windows::Forms::TextBox());
 			this->lbl_Kommentar = (gcnew System::Windows::Forms::Label());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->lbl_kommentarText = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// btn_AntragBestaetigen
 			// 
-			this->btn_AntragBestaetigen->Location = System::Drawing::Point(16, 297);
+			this->btn_AntragBestaetigen->Location = System::Drawing::Point(17, 329);
 			this->btn_AntragBestaetigen->Margin = System::Windows::Forms::Padding(2, 3, 2, 3);
 			this->btn_AntragBestaetigen->Name = L"btn_AntragBestaetigen";
 			this->btn_AntragBestaetigen->Size = System::Drawing::Size(109, 40);
@@ -96,7 +101,7 @@ namespace Zeiterfassungssystem {
 			// 
 			// btn_AntragAblehnen
 			// 
-			this->btn_AntragAblehnen->Location = System::Drawing::Point(157, 297);
+			this->btn_AntragAblehnen->Location = System::Drawing::Point(178, 329);
 			this->btn_AntragAblehnen->Margin = System::Windows::Forms::Padding(2, 3, 2, 3);
 			this->btn_AntragAblehnen->Name = L"btn_AntragAblehnen";
 			this->btn_AntragAblehnen->Size = System::Drawing::Size(115, 40);
@@ -111,7 +116,7 @@ namespace Zeiterfassungssystem {
 			this->lbl_Aenderungsanfrage->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lbl_Aenderungsanfrage->ImageAlign = System::Drawing::ContentAlignment::TopCenter;
-			this->lbl_Aenderungsanfrage->Location = System::Drawing::Point(11, 21);
+			this->lbl_Aenderungsanfrage->Location = System::Drawing::Point(21, 21);
 			this->lbl_Aenderungsanfrage->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_Aenderungsanfrage->Name = L"lbl_Aenderungsanfrage";
 			this->lbl_Aenderungsanfrage->Size = System::Drawing::Size(261, 58);
@@ -122,10 +127,10 @@ namespace Zeiterfassungssystem {
 			// 
 			this->lbl_NameMA->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lbl_NameMA->Location = System::Drawing::Point(1, 88);
+			this->lbl_NameMA->Location = System::Drawing::Point(-1, 90);
 			this->lbl_NameMA->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_NameMA->Name = L"lbl_NameMA";
-			this->lbl_NameMA->Size = System::Drawing::Size(295, 26);
+			this->lbl_NameMA->Size = System::Drawing::Size(306, 26);
 			this->lbl_NameMA->TabIndex = 3;
 			this->lbl_NameMA->Text = L"Beispiel MA";
 			this->lbl_NameMA->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -200,9 +205,9 @@ namespace Zeiterfassungssystem {
 			// 
 			// txt_Kommentar
 			// 
-			this->txt_Kommentar->Location = System::Drawing::Point(17, 260);
+			this->txt_Kommentar->Location = System::Drawing::Point(17, 292);
 			this->txt_Kommentar->Name = L"txt_Kommentar";
-			this->txt_Kommentar->Size = System::Drawing::Size(255, 20);
+			this->txt_Kommentar->Size = System::Drawing::Size(276, 20);
 			this->txt_Kommentar->TabIndex = 12;
 			// 
 			// lbl_Kommentar
@@ -210,18 +215,42 @@ namespace Zeiterfassungssystem {
 			this->lbl_Kommentar->AutoSize = true;
 			this->lbl_Kommentar->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lbl_Kommentar->Location = System::Drawing::Point(14, 234);
+			this->lbl_Kommentar->Location = System::Drawing::Point(14, 271);
 			this->lbl_Kommentar->Name = L"lbl_Kommentar";
-			this->lbl_Kommentar->Size = System::Drawing::Size(86, 18);
+			this->lbl_Kommentar->Size = System::Drawing::Size(165, 18);
 			this->lbl_Kommentar->TabIndex = 13;
-			this->lbl_Kommentar->Text = L"Kommentar";
+			this->lbl_Kommentar->Text = L"Kommentar hinzufügen:";
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label1->Location = System::Drawing::Point(13, 208);
+			this->label1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(84, 17);
+			this->label1->TabIndex = 14;
+			this->label1->Text = L"Kommentar:";
+			// 
+			// lbl_kommentarText
+			// 
+			this->lbl_kommentarText->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.2F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->lbl_kommentarText->Location = System::Drawing::Point(101, 208);
+			this->lbl_kommentarText->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->lbl_kommentarText->Name = L"lbl_kommentarText";
+			this->lbl_kommentarText->Size = System::Drawing::Size(192, 54);
+			this->lbl_kommentarText->TabIndex = 15;
 			// 
 			// UrlaubsanfragenbearbeitungsFenster
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
-			this->ClientSize = System::Drawing::Size(283, 349);
+			this->ClientSize = System::Drawing::Size(305, 381);
+			this->Controls->Add(this->lbl_kommentarText);
+			this->Controls->Add(this->label1);
 			this->Controls->Add(this->lbl_Kommentar);
 			this->Controls->Add(this->txt_Kommentar);
 			this->Controls->Add(this->lbl_anfang);
@@ -249,6 +278,7 @@ namespace Zeiterfassungssystem {
 		p_Tage = antrag->getTage();
 		p_Anfang = antrag->getAnfang();
 		p_Ende = antrag->getEnde();
+		p_Kommentar = antrag->getKommentarAntragsteller();
 	}
 	
 public:
@@ -287,6 +317,14 @@ public:
 
 	property String^ p_Kommentar
 	{
+		void set(String^ p_Kommentar) {
+			if (p_Kommentar->Length == 0) {
+				this->lbl_kommentarText->Text = "-----";
+			}
+			else {
+				this->lbl_kommentarText->Text = p_Kommentar;
+			}
+		}
 		String^ get() {
 			return txt_Kommentar->Text;
 		}
@@ -301,7 +339,7 @@ private: System::Void btn_AntragBestaetigen_Click(System::Object^  sender, Syste
 {
 	if (MessageBox::Show("Urlaubsabtrag wirklich bestätigen?", "Antrag bestätigen?", MessageBoxButtons::YesNo,
 		MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-		antrag->setKommentar(p_Kommentar);
+		antrag->setKommentarVorgesetzter(p_Kommentar);
 		textZumAntrag = "Ihr Urlaubsantrag über " + antrag->getTage() + " Tage\nvom " + lbl_anfang->Text + "\nbis " + lbl_ende->Text + "\nwurde bestätigt.\nViel Spaß in Ihrem Urlaub.";
 		if (p_Kommentar->Length > 0) {
 			textZumAntrag += "\n\nKommentar:\n" + p_Kommentar;
@@ -317,7 +355,7 @@ private: System::Void btn_AntragAblehnen_Click(System::Object^  sender, System::
 {
 	if (MessageBox::Show("Urlaubsabtrag wirklich ablehnen?", "Antrag ablehnen?", MessageBoxButtons::YesNo,
 		MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-		antrag->setKommentar(p_Kommentar);
+		antrag->setKommentarVorgesetzter(p_Kommentar);
 		textZumAntrag = "Ihr Urlaubsantrag über " + antrag->getTage() + " Tage\nvom " + lbl_anfang->Text + "\nbis " + lbl_ende->Text + "\nwurde leider abgelehnt.";
 		if (p_Kommentar->Length > 0) {
 			textZumAntrag += "\n\nKommentar:\n" + p_Kommentar;

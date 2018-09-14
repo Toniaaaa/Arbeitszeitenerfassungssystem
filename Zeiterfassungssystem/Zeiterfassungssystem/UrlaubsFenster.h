@@ -23,7 +23,10 @@ namespace Zeiterfassungssystem {
 		Int32 vergleichMitHeute;
 		Angestellter^ angestellter;
 		Int32 restUrlaub;
-		SoundPlayer^ sound;
+	private: System::Windows::Forms::Label^  label4;
+	private: System::Windows::Forms::TextBox^  kommentarTxt;
+
+			 SoundPlayer^ sound;
 
 	public:
 		UrlaubsFenster(void)
@@ -76,14 +79,15 @@ namespace Zeiterfassungssystem {
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->tageTxt = (gcnew System::Windows::Forms::TextBox());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->kommentarTxt = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
 			// 
 			// urlaubBeginnDTP
 			// 
-			this->urlaubBeginnDTP->Location = System::Drawing::Point(304, 212);
-			this->urlaubBeginnDTP->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->urlaubBeginnDTP->Location = System::Drawing::Point(203, 108);
 			this->urlaubBeginnDTP->Name = L"urlaubBeginnDTP";
-			this->urlaubBeginnDTP->Size = System::Drawing::Size(298, 26);
+			this->urlaubBeginnDTP->Size = System::Drawing::Size(200, 20);
 			this->urlaubBeginnDTP->TabIndex = 0;
 			// 
 			// urlaubsabtragLbl
@@ -91,19 +95,17 @@ namespace Zeiterfassungssystem {
 			this->urlaubsabtragLbl->AutoSize = true;
 			this->urlaubsabtragLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->urlaubsabtragLbl->Location = System::Drawing::Point(148, 78);
-			this->urlaubsabtragLbl->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->urlaubsabtragLbl->Location = System::Drawing::Point(99, 38);
 			this->urlaubsabtragLbl->Name = L"urlaubsabtragLbl";
-			this->urlaubsabtragLbl->Size = System::Drawing::Size(340, 55);
+			this->urlaubsabtragLbl->Size = System::Drawing::Size(233, 37);
 			this->urlaubsabtragLbl->TabIndex = 2;
 			this->urlaubsabtragLbl->Text = L"Urlaubsantrag";
 			// 
 			// einreichenBtn
 			// 
-			this->einreichenBtn->Location = System::Drawing::Point(68, 511);
-			this->einreichenBtn->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->einreichenBtn->Location = System::Drawing::Point(45, 332);
 			this->einreichenBtn->Name = L"einreichenBtn";
-			this->einreichenBtn->Size = System::Drawing::Size(183, 57);
+			this->einreichenBtn->Size = System::Drawing::Size(122, 37);
 			this->einreichenBtn->TabIndex = 3;
 			this->einreichenBtn->Text = L"Einreichen";
 			this->einreichenBtn->UseVisualStyleBackColor = true;
@@ -114,27 +116,24 @@ namespace Zeiterfassungssystem {
 			this->urlaubBeginnLbl->AutoSize = true;
 			this->urlaubBeginnLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->urlaubBeginnLbl->Location = System::Drawing::Point(33, 214);
-			this->urlaubBeginnLbl->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->urlaubBeginnLbl->Location = System::Drawing::Point(22, 108);
 			this->urlaubBeginnLbl->Name = L"urlaubBeginnLbl";
-			this->urlaubBeginnLbl->Size = System::Drawing::Size(199, 29);
+			this->urlaubBeginnLbl->Size = System::Drawing::Size(134, 20);
 			this->urlaubBeginnLbl->TabIndex = 5;
 			this->urlaubBeginnLbl->Text = L"Erster Urlaubstag";
 			// 
 			// urlaubEndeDTP
 			// 
-			this->urlaubEndeDTP->Location = System::Drawing::Point(304, 300);
-			this->urlaubEndeDTP->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->urlaubEndeDTP->Location = System::Drawing::Point(203, 154);
 			this->urlaubEndeDTP->Name = L"urlaubEndeDTP";
-			this->urlaubEndeDTP->Size = System::Drawing::Size(298, 26);
+			this->urlaubEndeDTP->Size = System::Drawing::Size(200, 20);
 			this->urlaubEndeDTP->TabIndex = 9;
 			// 
 			// abbrechenBtn
 			// 
-			this->abbrechenBtn->Location = System::Drawing::Point(388, 511);
-			this->abbrechenBtn->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->abbrechenBtn->Location = System::Drawing::Point(259, 332);
 			this->abbrechenBtn->Name = L"abbrechenBtn";
-			this->abbrechenBtn->Size = System::Drawing::Size(183, 57);
+			this->abbrechenBtn->Size = System::Drawing::Size(122, 37);
 			this->abbrechenBtn->TabIndex = 10;
 			this->abbrechenBtn->Text = L"Abbrechen";
 			this->abbrechenBtn->UseVisualStyleBackColor = true;
@@ -145,10 +144,9 @@ namespace Zeiterfassungssystem {
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(33, 302);
-			this->label1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label1->Location = System::Drawing::Point(22, 154);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(207, 29);
+			this->label1->Size = System::Drawing::Size(141, 20);
 			this->label1->TabIndex = 11;
 			this->label1->Text = L"Letzter Urlaubstag";
 			// 
@@ -157,26 +155,47 @@ namespace Zeiterfassungssystem {
 			this->label2->AutoSize = true;
 			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label2->Location = System::Drawing::Point(33, 394);
-			this->label2->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label2->Location = System::Drawing::Point(22, 203);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(143, 29);
+			this->label2->Size = System::Drawing::Size(96, 20);
 			this->label2->TabIndex = 12;
 			this->label2->Text = L"Urlaubstage";
 			// 
 			// tageTxt
 			// 
-			this->tageTxt->Location = System::Drawing::Point(304, 396);
+			this->tageTxt->Location = System::Drawing::Point(203, 203);
+			this->tageTxt->Margin = System::Windows::Forms::Padding(2);
 			this->tageTxt->Name = L"tageTxt";
-			this->tageTxt->Size = System::Drawing::Size(100, 26);
+			this->tageTxt->Size = System::Drawing::Size(68, 20);
 			this->tageTxt->TabIndex = 13;
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label4->Location = System::Drawing::Point(22, 246);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(91, 20);
+			this->label4->TabIndex = 15;
+			this->label4->Text = L"Kommentar";
+			// 
+			// kommentarTxt
+			// 
+			this->kommentarTxt->Location = System::Drawing::Point(26, 279);
+			this->kommentarTxt->Margin = System::Windows::Forms::Padding(2);
+			this->kommentarTxt->Name = L"kommentarTxt";
+			this->kommentarTxt->Size = System::Drawing::Size(377, 20);
+			this->kommentarTxt->TabIndex = 16;
 			// 
 			// UrlaubsFenster
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
-			this->ClientSize = System::Drawing::Size(650, 586);
+			this->ClientSize = System::Drawing::Size(433, 381);
+			this->Controls->Add(this->kommentarTxt);
+			this->Controls->Add(this->label4);
 			this->Controls->Add(this->tageTxt);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
@@ -186,7 +205,6 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->einreichenBtn);
 			this->Controls->Add(this->urlaubsabtragLbl);
 			this->Controls->Add(this->urlaubBeginnDTP);
-			this->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->Name = L"UrlaubsFenster";
 			this->Text = L"Urlaubsantrag";
 			this->Load += gcnew System::EventHandler(this, &UrlaubsFenster::UrlaubsFenster_Load);
@@ -227,6 +245,13 @@ namespace Zeiterfassungssystem {
 			}
 		}
 
+		property String^ p_Kommentar
+		{
+			String^ get() {
+				return kommentarTxt->Text;
+			}
+		}
+
 	//NEU: Angestellter wird gesetzt:
 	public: void setAngestellter(Angestellter^ angestellterUebergabe)
 	{
@@ -239,6 +264,7 @@ namespace Zeiterfassungssystem {
 			this->urlaubBeginnDTP->Value = DateTime::Today;
 			this->urlaubEndeDTP->Value = DateTime::Today;
 			this->tageTxt->Text = "";
+			this->kommentarTxt->Text = "";
 		}
 
 	//Beim Klick auf "Einreichen" wird das Fenster geschlossen und OK gesendet, falls: Die Tage eingetragen wurden und die Zahl positiv ist,

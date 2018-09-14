@@ -201,7 +201,7 @@ namespace Zeiterfassungssystem {
 			this->txt_Kennwort->Text = "";
 		}
 
-			 //Beim Laden des Fensters wird eine Sound Datei abgespielt
+	//Beim Laden des Fensters wird eine Sound Datei abgespielt
 	private: System::Void loginFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		//sound->SoundLocation = "";
 		//sound->Load();
@@ -215,7 +215,7 @@ namespace Zeiterfassungssystem {
 	    angestellter = unternehmen->loginaccept(personalnummer, passwort);
 		if (angestellter != nullptr && angestellter->istVorgesetzter() == false) {
 			loginGedrueckt = true;
-			startseitemitarbeiter->setAngemeldeterAngestelter(angestellter);
+			startseitemitarbeiter->setAngemeldeterAngestellter((Mitarbeiter^) angestellter);
 			startseitemitarbeiter->setUnternehmen(unternehmen);
 			startseitemitarbeiter->Show();
 			Close();

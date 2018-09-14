@@ -239,6 +239,9 @@
     <EmbeddedResource Include="UrlaubsbearbeitungsFenster.resx">
       <DependentUpon>UrlaubsbearbeitungsFenster.h</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UrlaubsFenster.resx">
+      <DependentUpon>UrlaubsFenster.h</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Media Include="Sounds\lacucarachaKurz.wav" />
