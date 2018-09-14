@@ -678,44 +678,7 @@ namespace Zeiterfassungssystem {
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {
 
-		//Wenn eine neue Woche startet, wird die Arbeitszeit zurueckgesetzt
-		//Dafür müssen die Kalenderwochen des letzten Arbeitstags mit der KW von heute verglichen werden
-		CultureInfo^ meinCI = gcnew CultureInfo("de");
-		Calendar^ meinKalender = meinCI->Calendar;
-		CalendarWeekRule^ meineCWR = meinCI->DateTimeFormat->CalendarWeekRule;
-		DayOfWeek^ meinErsterWochentag = meinCI->DateTimeFormat->FirstDayOfWeek;
-
-		//Kalenderwoche von heute berechnen
-		DateTime^ heute = DateTime::Today;
-		int kWHeute = meinKalender->GetWeekOfYear(*heute, *meineCWR, *meinErsterWochentag);
-
-		//Kalenderwoche vom letzten Arbeitstag berechnen
-		int kWLetzterTag;
-		try {
-			DateTime^ letzterTag = angestellterAkt->getLetzterArbeitstag();
-			kWLetzterTag = meinKalender->GetWeekOfYear(*letzterTag, *meineCWR, *meinErsterWochentag);
-		}
-		catch (System::NullReferenceException ^e) {
-			DateTime^ letzterTag = DateTime::Today;
-			kWLetzterTag = meinKalender->GetWeekOfYear(*letzterTag, *meineCWR, *meinErsterWochentag);
-		}
-
-		//Kalenderwochen vergleichen und evtl. notwendige Werte zurücksetzen
-		if (kWHeute > kWLetzterTag) {
-			//Wenn der Mitarbeiter in der letzten Woche seine Arbeitszeit nicht erreicht hat, wird ihm das von seinen Überstunden wieder abgezogen
-			if (!angestellterAkt->getWochenZeitErreicht()) {
-				angestellterAkt->setUeberstundenGesamt(-(angestellterAkt->getArbeitsStunden()), -(angestellterAkt->getArbeitsMinuten()));
-			}
-			else {
-				angestellterAkt->setUeberstundenGesamt(angestellterAkt->getUeberStunden(), angestellterAkt->getUeberStunden());
-			}
-			//Wochenarbeitszeit wird wieder auf ihre Anfangswerte zurückgesetzt
-			angestellterAkt->setWochenZeitErreicht(false);
-			angestellterAkt->setArbeitsStunden(angestellterAkt->getWochensstunden());
-			angestellterAkt->setArbeitsMinuten(0);
-			angestellterAkt->setUeberStunden(0);
-			angestellterAkt->setUeberMinuten(0);
-		}
+		this->neueWoche();
 
 		wochenZeitErreicht = angestellterAkt->getWochenZeitErreicht();
 
@@ -774,22 +737,7 @@ namespace Zeiterfassungssystem {
 
 	//WENN DIE SEITE FERTIG GELADEN WURDE
 	private: System::Void StartseiteVorgesetzte_Shown(System::Object^  sender, System::EventArgs^  e) {
-		//Es wird geprüft, ob die Liste der Urlaubsanträge Anträge beinhaltet. 
-		//Wenn Anträge vorhanden sind, können sie bestätigt werden.
-		Int32 anzAntragsInfos = angestellterAkt->getAntragsInfos()->Count;
-		while (anzAntragsInfos > 0) {
-			MessageBox::Show(angestellterAkt->getAntragsInfos()[anzAntragsInfos - 1], "Ihr Antrag", MessageBoxButtons::OK, MessageBoxIcon::Information);
-			angestellterAkt->removeAntragsInfo(--anzAntragsInfos);
-			urlaubsbearbeitungsfenster->clear();
-		}
-		//Es wird geprüft, ob zu den gestellten Anträgen neue Informationen vorhanden sind. Diese werden ggf. als MessageBox ausgegeben.
-		Int32 anzUrlaubsantraege = angestellterAkt->getUrlaubsantraege()->Count;
-		while (anzUrlaubsantraege > 0) {
-			urlaubsbearbeitungsfenster->setUrlaubsantrag(angestellterAkt->getUrlaubsantraege()[anzUrlaubsantraege - 1]);
-			System::Windows::Forms::DialogResult result = urlaubsbearbeitungsfenster->ShowDialog(this);
-			angestellterAkt->removeUrlaubsantrag(--anzUrlaubsantraege);
-			urlaubsbearbeitungsfenster->clear();
-		}
+		this->pruefeAntraege();
 	}
 
 	//WENN SEITE GESCHLOSSEN UNTERNEHMEN WIRD GESPEICHERT
@@ -836,6 +784,11 @@ namespace Zeiterfassungssystem {
 		arbeitszeitLbl->Text = uhrzeitString(sekunde, minute, stunde);
 		nochWochenstundenLbl->Text = uhrzeitString(arbeitsMinuten, arbeitsStunden) + " Stunden";
 
+		//Regelmäßige Überprüfung, ob sich etwas an den Anträgen oder AntragsInfos geändert hat:
+		Int32 interval = 1; //In welchem Rhythmus (Minuten wird geprüft)
+		if (sekunde == 0 && minute % interval == 0) {
+			this->pruefeAntraege();
+		}
 	}
 
 	//TIMER UHR
@@ -910,5 +863,65 @@ namespace Zeiterfassungssystem {
 		return std + ":" + min;
 	}
 
+	private: void pruefeAntraege() {
+		//Es wird geprüft, ob die Liste der Urlaubsanträge Anträge beinhaltet. 
+		//Wenn Anträge vorhanden sind, können sie bestätigt werden.
+		Int32 anzAntragsInfos = angestellterAkt->getAntragsInfos()->Count;
+		while (anzAntragsInfos > 0) {
+			MessageBox::Show(angestellterAkt->getAntragsInfos()[anzAntragsInfos - 1], "Ihr Antrag", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			angestellterAkt->removeAntragsInfo(--anzAntragsInfos);
+			urlaubsbearbeitungsfenster->clear();
+		}
+		//Es wird geprüft, ob zu den gestellten Anträgen neue Informationen vorhanden sind. Diese werden ggf. als MessageBox ausgegeben.
+		Int32 anzUrlaubsantraege = angestellterAkt->getUrlaubsantraege()->Count;
+		while (anzUrlaubsantraege > 0) {
+			urlaubsbearbeitungsfenster->setUrlaubsantrag(angestellterAkt->getUrlaubsantraege()[anzUrlaubsantraege - 1]);
+			System::Windows::Forms::DialogResult result = urlaubsbearbeitungsfenster->ShowDialog(this);
+			angestellterAkt->removeUrlaubsantrag(--anzUrlaubsantraege);
+			urlaubsbearbeitungsfenster->clear();
+		}
+	}
+	
+	// Wenn eine neue Woche startet, wird die Arbeitszeit zurueckgesetzt
+	private: void neueWoche() 
+	{
+		//Dafür müssen die Kalenderwochen des letzten Arbeitstags mit der KW von heute verglichen werden
+		CultureInfo^ meinCI = gcnew CultureInfo("de");
+		Calendar^ meinKalender = meinCI->Calendar;
+		CalendarWeekRule^ meineCWR = meinCI->DateTimeFormat->CalendarWeekRule;
+		DayOfWeek^ meinErsterWochentag = meinCI->DateTimeFormat->FirstDayOfWeek;
+
+		//Kalenderwoche von heute berechnen
+		DateTime^ heute = DateTime::Today;
+		int kWHeute = meinKalender->GetWeekOfYear(*heute, *meineCWR, *meinErsterWochentag);
+
+		//Kalenderwoche vom letzten Arbeitstag berechnen
+		int kWLetzterTag;
+		try {
+			DateTime^ letzterTag = angestellterAkt->getLetzterArbeitstag();
+			kWLetzterTag = meinKalender->GetWeekOfYear(*letzterTag, *meineCWR, *meinErsterWochentag);
+		}
+		catch (System::NullReferenceException ^e) {
+			DateTime^ letzterTag = DateTime::Today;
+			kWLetzterTag = meinKalender->GetWeekOfYear(*letzterTag, *meineCWR, *meinErsterWochentag);
+		}
+
+		//Kalenderwochen vergleichen und evtl. notwendige Werte zurücksetzen
+		if (kWHeute > kWLetzterTag) {
+			//Wenn der Mitarbeiter in der letzten Woche seine Arbeitszeit nicht erreicht hat, wird ihm das von seinen Überstunden wieder abgezogen
+			if (!angestellterAkt->getWochenZeitErreicht()) {
+				angestellterAkt->setUeberstundenGesamt(-(angestellterAkt->getArbeitsStunden()), -(angestellterAkt->getArbeitsMinuten()));
+			}
+			else {
+				angestellterAkt->setUeberstundenGesamt(angestellterAkt->getUeberStunden(), angestellterAkt->getUeberStunden());
+			}
+			//Wochenarbeitszeit wird wieder auf ihre Anfangswerte zurückgesetzt
+			angestellterAkt->setWochenZeitErreicht(false);
+			angestellterAkt->setArbeitsStunden(angestellterAkt->getWochensstunden());
+			angestellterAkt->setArbeitsMinuten(0);
+			angestellterAkt->setUeberStunden(0);
+			angestellterAkt->setUeberMinuten(0);
+		}
+	}
 };
 }
