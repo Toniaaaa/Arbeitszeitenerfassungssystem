@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Aenderungsantrag.h"
+#include "Urlaubsantrag.h"
+
 using namespace System;
 using namespace System::Collections;
 using namespace System::Collections::Generic;
@@ -42,6 +45,10 @@ public:
 	inline Boolean getWochenZeitErreicht() {return wochenZeitErreicht;}
 	inline Double getUeberstundenGesamt() { return ueberStundenGesamt; }
 	inline Double getGesamtstunden(int index) { return listegesamtstunden[index]; }
+	inline Int32 getArbeitsStunden() { return arbeitsStunden; }
+	inline Int32 getArbeitsMinuten() { return arbeitsMinuten; }
+	inline Int32 getUeberStunden() { return ueberStunden; }
+	inline Int32 getUeberMinuten() { return ueberMinuten; }
 	
 	
 	Ereignis^ getEreignis(Int32 index);
@@ -68,10 +75,6 @@ public:
 	void removeEreignis(Int32 index);
 
 	//Hilfsmethoden
-	inline Int32 getArbeitsStunden() { return arbeitsStunden; }
-	inline Int32 getArbeitsMinuten() { return arbeitsMinuten; }
-	inline Int32 getUeberStunden() { return ueberStunden; }
-	inline Int32 getUeberMinuten() { return ueberMinuten; }
 	void setAktuellenStatus(String^ status);
 	String^ getStatus();
 	void beendeArbeitstag(Int32 stunden, Int32 minuten, Boolean erreicht);
