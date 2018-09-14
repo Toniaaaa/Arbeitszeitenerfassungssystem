@@ -12,6 +12,7 @@
 #include "BearbeitungsFenster.h"
 #include "KalenderFenster.h"
 #include "UrlaubsFenster.h"
+#include "AenderungsantragsFenster.h"
 
 namespace Zeiterfassungssystem {
 
@@ -39,6 +40,7 @@ namespace Zeiterfassungssystem {
 		BearbeitungsFenster^ bearbeitungsfenster;
 		UrlaubsFenster^ urlaubsfenster;
 		KalenderFenster^ kalenderfenster;
+		AenderungsantragsFenster^ aenderungsfenster;
 
 		Int32 sekunde;
 		Int32 minute;
@@ -83,6 +85,7 @@ namespace Zeiterfassungssystem {
 			bearbeitungsfenster = gcnew BearbeitungsFenster;
 			kalenderfenster = gcnew KalenderFenster;
 			urlaubsfenster = gcnew UrlaubsFenster;
+			aenderungsfenster = gcnew AenderungsantragsFenster;
 		}
 
 	protected:
@@ -403,11 +406,13 @@ namespace Zeiterfassungssystem {
 			this->editBtn->BackColor = System::Drawing::SystemColors::HighlightText;
 			this->editBtn->FlatAppearance->BorderColor = System::Drawing::Color::White;
 			this->editBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15));
+			this->editBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"editBtn.Image")));
 			this->editBtn->Location = System::Drawing::Point(297, 629);
 			this->editBtn->Name = L"editBtn";
 			this->editBtn->Size = System::Drawing::Size(235, 76);
 			this->editBtn->TabIndex = 20;
 			this->editBtn->UseVisualStyleBackColor = false;
+			this->editBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::editBtn_Click);
 			// 
 			// personalBtn
 			// 
@@ -642,10 +647,10 @@ namespace Zeiterfassungssystem {
 		//Wenn vom Urlaubsfenster OK gegeben wird, wir zunächst eine Abfrage erzeugt, ob der Antrag so in Ordnung ist. Wenn der Mitarbeiter mit "Ja" bestätigt, wird ein neues Objekt vom Typ
 		//Urlaubsantrag erstellt. Bei "Nein" wird abgebrochen.
 		if (result == System::Windows::Forms::DialogResult::OK) {
-			if (MessageBox::Show("Sie wollen folgenden Urlaub beantragen:\n" + urlaubString + "\nWollen Sie diesen Antrag einreichen?", "Antrag einreichen?", MessageBoxButtons::YesNo,
+			if (MessageBox::Show("Sie wollen folgenden Urlaub beantragen:\n\n" + urlaubString + "\nWollen Sie diesen Antrag einreichen?", "Antrag einreichen?", MessageBoxButtons::YesNo,
 				MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 				//Neuen Urlaubsantrag aus Werten aus dem Urlaubsfenster erstellen
-				Urlaubsantrag ^u = gcnew Urlaubsantrag(angestellterAkt, urlaubsfenster->p_Anfang, urlaubsfenster->p_Ende, urlaubsfenster->p_Tage, urlaubsfenster->p_Kommentar);
+				Urlaubsantrag^ u = gcnew Urlaubsantrag(angestellterAkt, urlaubsfenster->p_Anfang, urlaubsfenster->p_Ende, urlaubsfenster->p_Tage, urlaubsfenster->p_Kommentar);
 				vorgesetzter->addUrlaubsantrag(u);
 				MessageBox::Show("Urlaubsantrag erfolgreich eingereicht!", "Antrag erfolgreich!",
 					MessageBoxButtons::OK, MessageBoxIcon::Information);
@@ -660,6 +665,40 @@ namespace Zeiterfassungssystem {
 		}
 		else {
 			MessageBox::Show("Urlaubsantrag konnte nicht erstellt werden!", "Erstellen fehlgeschlagen",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+	}
+
+	//AENDERUNGSANTRAG ERSTELLEN
+	private: System::Void editBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		aenderungsfenster->setAntragssteller(angestellterAkt);
+		System::Windows::Forms::DialogResult result = aenderungsfenster->ShowDialog(this);
+
+		//Der Aenderungsantrag als String
+		String^ aenderungString = "Sie wollen folgende Änderung beantragen:\n\nTag der Änderung: " + aenderungsfenster->p_Tag.ToString("dddd, dd. MMMM yyyy") + "\nNeuer Beginn: " 
+			+ aenderungsfenster->p_Ankunft.ToString("HH:mm") + "\nNeues Ende: " + aenderungsfenster->p_Gehen.ToString("HH:mm") + "\nGrund: " + aenderungsfenster->p_Grund 
+			+ "\nKommentar: " + aenderungsfenster->p_Kommentar + "\n\nWollen Sie diesen Antrag einreichen?";
+
+		//Wenn vom Änderungsfenster OK gegeben wird, wir zunächst eine Abfrage erzeugt, ob der Antrag so in Ordnung ist. Wenn der Mitarbeiter mit "Ja" bestätigt, wird ein neues Objekt 
+		//vom Typ Änderungsantrag erstellt. Bei "Nein" wird abgebrochen.
+		if (result == System::Windows::Forms::DialogResult::OK) {
+			if (MessageBox::Show(aenderungString, "Antrag einreichen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+				//Neuen Änderungsantrag aus Werten aus dem Änderungsfenster erstellen
+				Aenderungsantrag^ a = gcnew Aenderungsantrag(angestellterAkt, aenderungsfenster->p_Tag, aenderungsfenster->p_Ankunft, aenderungsfenster->p_Gehen, aenderungsfenster->p_Grund,
+					aenderungsfenster->p_Kommentar);
+				vorgesetzter->addAenderungsantrag(a);
+				MessageBox::Show("Änderungsantrag erfolgreich eingereicht!", "Antrag erfolgreich!", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			}
+			else {
+				MessageBox::Show("Ihr Änderungsantrag wurde nicht eingereicht!", "Antrag abgebrochen!",
+					MessageBoxButtons::OK, MessageBoxIcon::Error);
+			}
+
+			aenderungsfenster->clear(); //Textfelder wieder leeren
+
+		}
+		else {
+			MessageBox::Show("Änderungsantrag konnte nicht erstellt werden!", "Erstellen fehlgeschlagen",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
@@ -912,5 +951,6 @@ namespace Zeiterfassungssystem {
 			angestellterAkt->setUeberMinuten(0);
 		}
 	}
-	};
+
+};
 }

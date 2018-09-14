@@ -16,22 +16,18 @@ namespace Zeiterfassungssystem {
 	public ref class UrlaubsanfragenbearbeitungsFenster : public System::Windows::Forms::Form
 	{
 	private:
-		bool anfrage;
 		Urlaubsantrag^ antrag;
 		String^ textZumAntrag;
 
 	private: System::Windows::Forms::TextBox^  txt_Kommentar;
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::Label^  lbl_kommentarText;
-
 	private: System::Windows::Forms::Label^  lbl_Kommentar;
 
 	public:
 		UrlaubsanfragenbearbeitungsFenster(void)
 		{
 			InitializeComponent();
-
-			anfrage = false;
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
@@ -337,7 +333,7 @@ public:
 
 private: System::Void btn_AntragBestaetigen_Click(System::Object^  sender, System::EventArgs^  e) 
 {
-	if (MessageBox::Show("Urlaubsabtrag wirklich bestätigen?", "Antrag bestätigen?", MessageBoxButtons::YesNo,
+	if (MessageBox::Show("Urlaubsantrag wirklich bestätigen?", "Antrag bestätigen?", MessageBoxButtons::YesNo,
 		MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 		antrag->setKommentarVorgesetzter(p_Kommentar);
 		textZumAntrag = "Ihr Urlaubsantrag über " + antrag->getTage() + " Tage\nvom " + lbl_anfang->Text + "\nbis " + lbl_ende->Text + "\nwurde bestätigt.\nViel Spaß in Ihrem Urlaub.";
@@ -353,7 +349,7 @@ private: System::Void btn_AntragBestaetigen_Click(System::Object^  sender, Syste
 
 private: System::Void btn_AntragAblehnen_Click(System::Object^  sender, System::EventArgs^  e) 
 {
-	if (MessageBox::Show("Urlaubsabtrag wirklich ablehnen?", "Antrag ablehnen?", MessageBoxButtons::YesNo,
+	if (MessageBox::Show("Urlaubsantrag wirklich ablehnen?", "Antrag ablehnen?", MessageBoxButtons::YesNo,
 		MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 		antrag->setKommentarVorgesetzter(p_Kommentar);
 		textZumAntrag = "Ihr Urlaubsantrag über " + antrag->getTage() + " Tage\nvom " + lbl_anfang->Text + "\nbis " + lbl_ende->Text + "\nwurde leider abgelehnt.";
