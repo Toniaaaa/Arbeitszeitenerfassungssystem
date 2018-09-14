@@ -246,6 +246,20 @@
   <ItemGroup>
     <Media Include="Sounds\lacucarachaKurz.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\addIcon.jpg" />
+    <Image Include="Images\editIcon.jpg" />
+    <Image Include="Images\gehenIcon.jpg" />
+    <Image Include="Images\kalenderIcon.jpg" />
+    <Image Include="Images\kommenIcon.jpg" />
+    <Image Include="Images\LogOutIcon2.jpg" />
+    <Image Include="Images\pauseIcon.jpg" />
+    <Image Include="Images\pauseIcon2.jpg" />
+    <Image Include="Images\pauseIcon3.jpg" />
+    <Image Include="Images\PersonalIcon2.jpg" />
+    <Image Include="Images\statistikIcon.jpg" />
+    <Image Include="Images\urlaubIcon2.jpg" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

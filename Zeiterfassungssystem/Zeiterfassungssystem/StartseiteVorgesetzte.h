@@ -73,6 +73,7 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Button^  personalBtn;
 	private: System::Windows::Forms::Label^  nameLbl;
 	private: System::Windows::Forms::Label^  lbl_Status;
+	private: System::Windows::Forms::Button^  logOutBtn;
 	private: System::Windows::Forms::Label^  uhrzeitLbl;
 
 	public:
@@ -147,6 +148,7 @@ namespace Zeiterfassungssystem {
 			this->personalBtn = (gcnew System::Windows::Forms::Button());
 			this->nameLbl = (gcnew System::Windows::Forms::Label());
 			this->lbl_Status = (gcnew System::Windows::Forms::Label());
+			this->logOutBtn = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// kommenBtn
@@ -455,6 +457,16 @@ namespace Zeiterfassungssystem {
 			this->lbl_Status->Text = L"Status";
 			this->lbl_Status->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
+			// logOutBtn
+			// 
+			this->logOutBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"logOutBtn.Image")));
+			this->logOutBtn->Location = System::Drawing::Point(19, 12);
+			this->logOutBtn->Name = L"logOutBtn";
+			this->logOutBtn->Size = System::Drawing::Size(122, 44);
+			this->logOutBtn->TabIndex = 22;
+			this->logOutBtn->UseVisualStyleBackColor = true;
+			this->logOutBtn->Click += gcnew System::EventHandler(this, &StartseiteVorgesetzte::logOutBtn_Click);
+			// 
 			// StartseiteVorgesetzte
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -463,6 +475,7 @@ namespace Zeiterfassungssystem {
 			this->AutoSize = true;
 			this->BackColor = System::Drawing::SystemColors::MenuHighlight;
 			this->ClientSize = System::Drawing::Size(827, 810);
+			this->Controls->Add(this->logOutBtn);
 			this->Controls->Add(this->lbl_Status);
 			this->Controls->Add(this->personalBtn);
 			this->Controls->Add(this->editBtn);
@@ -676,6 +689,16 @@ namespace Zeiterfassungssystem {
 		personalfenster->ShowDialog(this);
 	}
 
+	//LOGOUT
+	private: System::Void logOutBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		//Falls der Angestellte den Arbeitstag noch nicht beendet hat, wird eine Sicherheitsabfrage ausgelöst
+		if (MessageBox::Show("Wollen Sie sich wirklich ausloggen?", "Wirklich ausloggen?", MessageBoxButtons::YesNo,
+			MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+			//Falls der Angestellte gerade die Pause aktiviert hat, wird diese zunächst beendet
+			Application::Restart();
+		}
+	}
+
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {
 
@@ -878,8 +901,13 @@ namespace Zeiterfassungssystem {
 		while (anzUrlaubsantraege > 0) {
 			urlaubsbearbeitungsfenster->setUrlaubsantrag(angestellterAkt->getUrlaubsantraege()[anzUrlaubsantraege - 1]);
 			System::Windows::Forms::DialogResult result = urlaubsbearbeitungsfenster->ShowDialog(this);
-			angestellterAkt->removeUrlaubsantrag(--anzUrlaubsantraege);
-			urlaubsbearbeitungsfenster->clear();
+			//Nur, wenn einer der beiden Buttons gedrückt wurde, wird der Antrag aus der Liste entfernt. Wird das Fenster einfach über das "X" geschlossen, bleibt der Antrag in der Liste
+			//und erscheint bei der nächsten Überprüfung wieder.
+			if (result == System::Windows::Forms::DialogResult::OK) {
+				angestellterAkt->removeUrlaubsantrag(anzUrlaubsantraege - 1);
+				urlaubsbearbeitungsfenster->clear();
+			}
+			anzUrlaubsantraege--;
 		}
 	}
 	

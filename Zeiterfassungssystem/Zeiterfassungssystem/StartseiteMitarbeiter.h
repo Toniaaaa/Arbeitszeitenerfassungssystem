@@ -71,6 +71,7 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Button^  personalBtn;
 	private: System::Windows::Forms::Label^  nameLbl;
 	private: System::Windows::Forms::Label^  lbl_Status;
+	private: System::Windows::Forms::Button^  logOutBtn;
 	private: System::Windows::Forms::Label^  uhrzeitLbl;
 
 	public:
@@ -142,6 +143,7 @@ namespace Zeiterfassungssystem {
 			this->personalBtn = (gcnew System::Windows::Forms::Button());
 			this->nameLbl = (gcnew System::Windows::Forms::Label());
 			this->lbl_Status = (gcnew System::Windows::Forms::Label());
+			this->logOutBtn = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// kommenBtn
@@ -389,13 +391,11 @@ namespace Zeiterfassungssystem {
 			this->addBtn->BackColor = System::Drawing::SystemColors::HighlightText;
 			this->addBtn->FlatAppearance->BorderColor = System::Drawing::Color::White;
 			this->addBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15));
-			this->addBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"addBtn.Image")));
 			this->addBtn->Location = System::Drawing::Point(16, 629);
 			this->addBtn->Name = L"addBtn";
 			this->addBtn->Size = System::Drawing::Size(235, 76);
 			this->addBtn->TabIndex = 19;
 			this->addBtn->UseVisualStyleBackColor = false;
-			//this->addBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::addBtn_Click);
 			// 
 			// editBtn
 			// 
@@ -403,13 +403,11 @@ namespace Zeiterfassungssystem {
 			this->editBtn->BackColor = System::Drawing::SystemColors::HighlightText;
 			this->editBtn->FlatAppearance->BorderColor = System::Drawing::Color::White;
 			this->editBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15));
-			this->editBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"editBtn.Image")));
 			this->editBtn->Location = System::Drawing::Point(297, 629);
 			this->editBtn->Name = L"editBtn";
 			this->editBtn->Size = System::Drawing::Size(235, 76);
 			this->editBtn->TabIndex = 20;
 			this->editBtn->UseVisualStyleBackColor = false;
-			//this->editBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::editBtn_Click);
 			// 
 			// personalBtn
 			// 
@@ -417,13 +415,11 @@ namespace Zeiterfassungssystem {
 			this->personalBtn->BackColor = System::Drawing::SystemColors::HighlightText;
 			this->personalBtn->FlatAppearance->BorderColor = System::Drawing::Color::White;
 			this->personalBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15));
-			this->personalBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"personalBtn.Image")));
 			this->personalBtn->Location = System::Drawing::Point(580, 629);
 			this->personalBtn->Name = L"personalBtn";
 			this->personalBtn->Size = System::Drawing::Size(235, 76);
 			this->personalBtn->TabIndex = 21;
 			this->personalBtn->UseVisualStyleBackColor = false;
-			//this->personalBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::personalBtn_Click);
 			// 
 			// nameLbl
 			// 
@@ -450,6 +446,16 @@ namespace Zeiterfassungssystem {
 			this->lbl_Status->Text = L"Status";
 			this->lbl_Status->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
+			// logOutBtn
+			// 
+			this->logOutBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"logOutBtn.Image")));
+			this->logOutBtn->Location = System::Drawing::Point(19, 12);
+			this->logOutBtn->Name = L"logOutBtn";
+			this->logOutBtn->Size = System::Drawing::Size(122, 44);
+			this->logOutBtn->TabIndex = 22;
+			this->logOutBtn->UseVisualStyleBackColor = true;
+			this->logOutBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::logOutBtn_Click);
+			// 
 			// StartseiteMitarbeiter
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -458,6 +464,7 @@ namespace Zeiterfassungssystem {
 			this->AutoSize = true;
 			this->BackColor = System::Drawing::SystemColors::MenuHighlight;
 			this->ClientSize = System::Drawing::Size(827, 810);
+			this->Controls->Add(this->logOutBtn);
 			this->Controls->Add(this->lbl_Status);
 			this->Controls->Add(this->personalBtn);
 			this->Controls->Add(this->editBtn);
@@ -555,7 +562,7 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
-
+	
 	//GEHEN
 	private: System::Void gehenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		if (angestellterAkt->getPauseAnfang() != nullptr) {
@@ -654,6 +661,16 @@ namespace Zeiterfassungssystem {
 		else {
 			MessageBox::Show("Urlaubsantrag konnte nicht erstellt werden!", "Erstellen fehlgeschlagen",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+	}
+
+	//LOGOUT
+	private: System::Void logOutBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		//Falls der Angestellte den Arbeitstag noch nicht beendet hat, wird eine Sicherheitsabfrage ausgelöst
+		if (MessageBox::Show("Wollen Sie sich wirklich ausloggen?", "Wirklich ausloggen?", MessageBoxButtons::YesNo,
+			MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+			//Falls der Angestellte gerade die Pause aktiviert hat, wird diese zunächst beendet
+			Application::Restart();
 		}
 	}
 

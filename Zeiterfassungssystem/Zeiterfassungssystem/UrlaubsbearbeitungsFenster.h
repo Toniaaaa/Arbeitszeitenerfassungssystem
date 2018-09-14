@@ -90,7 +90,7 @@ namespace Zeiterfassungssystem {
 			// 
 			// btn_AntragBestaetigen
 			// 
-			this->btn_AntragBestaetigen->Location = System::Drawing::Point(17, 329);
+			this->btn_AntragBestaetigen->Location = System::Drawing::Point(38, 329);
 			this->btn_AntragBestaetigen->Margin = System::Windows::Forms::Padding(2, 3, 2, 3);
 			this->btn_AntragBestaetigen->Name = L"btn_AntragBestaetigen";
 			this->btn_AntragBestaetigen->Size = System::Drawing::Size(109, 40);
@@ -101,7 +101,7 @@ namespace Zeiterfassungssystem {
 			// 
 			// btn_AntragAblehnen
 			// 
-			this->btn_AntragAblehnen->Location = System::Drawing::Point(178, 329);
+			this->btn_AntragAblehnen->Location = System::Drawing::Point(191, 329);
 			this->btn_AntragAblehnen->Margin = System::Windows::Forms::Padding(2, 3, 2, 3);
 			this->btn_AntragAblehnen->Name = L"btn_AntragAblehnen";
 			this->btn_AntragAblehnen->Size = System::Drawing::Size(115, 40);
@@ -116,21 +116,21 @@ namespace Zeiterfassungssystem {
 			this->lbl_Aenderungsanfrage->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lbl_Aenderungsanfrage->ImageAlign = System::Drawing::ContentAlignment::TopCenter;
-			this->lbl_Aenderungsanfrage->Location = System::Drawing::Point(21, 21);
+			this->lbl_Aenderungsanfrage->Location = System::Drawing::Point(12, 26);
 			this->lbl_Aenderungsanfrage->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_Aenderungsanfrage->Name = L"lbl_Aenderungsanfrage";
-			this->lbl_Aenderungsanfrage->Size = System::Drawing::Size(261, 58);
+			this->lbl_Aenderungsanfrage->Size = System::Drawing::Size(309, 29);
 			this->lbl_Aenderungsanfrage->TabIndex = 2;
-			this->lbl_Aenderungsanfrage->Text = L"Neue Urlaubsanfrage\r\n              von ";
+			this->lbl_Aenderungsanfrage->Text = L"Neue Urlaubsanfrage von";
 			// 
 			// lbl_NameMA
 			// 
 			this->lbl_NameMA->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lbl_NameMA->Location = System::Drawing::Point(-1, 90);
+			this->lbl_NameMA->Location = System::Drawing::Point(-1, 66);
 			this->lbl_NameMA->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_NameMA->Name = L"lbl_NameMA";
-			this->lbl_NameMA->Size = System::Drawing::Size(306, 26);
+			this->lbl_NameMA->Size = System::Drawing::Size(332, 26);
 			this->lbl_NameMA->TabIndex = 3;
 			this->lbl_NameMA->Text = L"Beispiel MA";
 			this->lbl_NameMA->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -140,7 +140,7 @@ namespace Zeiterfassungssystem {
 			this->lbl_AnfrageErsterTag->AutoSize = true;
 			this->lbl_AnfrageErsterTag->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.2F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->lbl_AnfrageErsterTag->Location = System::Drawing::Point(13, 132);
+			this->lbl_AnfrageErsterTag->Location = System::Drawing::Point(11, 118);
 			this->lbl_AnfrageErsterTag->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_AnfrageErsterTag->Name = L"lbl_AnfrageErsterTag";
 			this->lbl_AnfrageErsterTag->Size = System::Drawing::Size(123, 17);
@@ -152,7 +152,7 @@ namespace Zeiterfassungssystem {
 			this->lbl_AnfrageLetzterUrlaubstag->AutoSize = true;
 			this->lbl_AnfrageLetzterUrlaubstag->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.2F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->lbl_AnfrageLetzterUrlaubstag->Location = System::Drawing::Point(13, 157);
+			this->lbl_AnfrageLetzterUrlaubstag->Location = System::Drawing::Point(11, 144);
 			this->lbl_AnfrageLetzterUrlaubstag->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_AnfrageLetzterUrlaubstag->Name = L"lbl_AnfrageLetzterUrlaubstag";
 			this->lbl_AnfrageLetzterUrlaubstag->Size = System::Drawing::Size(129, 17);
@@ -164,7 +164,7 @@ namespace Zeiterfassungssystem {
 			this->lbl_AnfrageAnzahlUrlaubstage->AutoSize = true;
 			this->lbl_AnfrageAnzahlUrlaubstage->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.2F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->lbl_AnfrageAnzahlUrlaubstage->Location = System::Drawing::Point(13, 181);
+			this->lbl_AnfrageAnzahlUrlaubstage->Location = System::Drawing::Point(11, 170);
 			this->lbl_AnfrageAnzahlUrlaubstage->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_AnfrageAnzahlUrlaubstage->Name = L"lbl_AnfrageAnzahlUrlaubstage";
 			this->lbl_AnfrageAnzahlUrlaubstage->Size = System::Drawing::Size(136, 17);
@@ -174,7 +174,7 @@ namespace Zeiterfassungssystem {
 			// lbl_ende
 			// 
 			this->lbl_ende->AutoSize = true;
-			this->lbl_ende->Location = System::Drawing::Point(189, 161);
+			this->lbl_ende->Location = System::Drawing::Point(163, 148);
 			this->lbl_ende->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_ende->Name = L"lbl_ende";
 			this->lbl_ende->Size = System::Drawing::Size(61, 13);
@@ -184,7 +184,7 @@ namespace Zeiterfassungssystem {
 			// lbl_tage
 			// 
 			this->lbl_tage->AutoSize = true;
-			this->lbl_tage->Location = System::Drawing::Point(189, 185);
+			this->lbl_tage->Location = System::Drawing::Point(163, 174);
 			this->lbl_tage->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_tage->Name = L"lbl_tage";
 			this->lbl_tage->Size = System::Drawing::Size(19, 13);
@@ -195,7 +195,7 @@ namespace Zeiterfassungssystem {
 			// lbl_anfang
 			// 
 			this->lbl_anfang->AutoSize = true;
-			this->lbl_anfang->Location = System::Drawing::Point(189, 136);
+			this->lbl_anfang->Location = System::Drawing::Point(163, 122);
 			this->lbl_anfang->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_anfang->Name = L"lbl_anfang";
 			this->lbl_anfang->Size = System::Drawing::Size(61, 13);
@@ -207,7 +207,7 @@ namespace Zeiterfassungssystem {
 			// 
 			this->txt_Kommentar->Location = System::Drawing::Point(17, 292);
 			this->txt_Kommentar->Name = L"txt_Kommentar";
-			this->txt_Kommentar->Size = System::Drawing::Size(276, 20);
+			this->txt_Kommentar->Size = System::Drawing::Size(304, 20);
 			this->txt_Kommentar->TabIndex = 12;
 			// 
 			// lbl_Kommentar
@@ -226,7 +226,7 @@ namespace Zeiterfassungssystem {
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(13, 208);
+			this->label1->Location = System::Drawing::Point(11, 196);
 			this->label1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(84, 17);
@@ -237,10 +237,10 @@ namespace Zeiterfassungssystem {
 			// 
 			this->lbl_kommentarText->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.2F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->lbl_kommentarText->Location = System::Drawing::Point(101, 208);
+			this->lbl_kommentarText->Location = System::Drawing::Point(99, 196);
 			this->lbl_kommentarText->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_kommentarText->Name = L"lbl_kommentarText";
-			this->lbl_kommentarText->Size = System::Drawing::Size(192, 54);
+			this->lbl_kommentarText->Size = System::Drawing::Size(222, 66);
 			this->lbl_kommentarText->TabIndex = 15;
 			// 
 			// UrlaubsanfragenbearbeitungsFenster
@@ -248,7 +248,7 @@ namespace Zeiterfassungssystem {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
-			this->ClientSize = System::Drawing::Size(305, 381);
+			this->ClientSize = System::Drawing::Size(331, 381);
 			this->Controls->Add(this->lbl_kommentarText);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->lbl_Kommentar);
@@ -290,14 +290,14 @@ public:
 	property DateTime^ p_Ende
 	{
 		void set(DateTime^ p_Ende) {
-			this->lbl_ende->Text = p_Ende->ToString("dd.mm.yyyy");
+			this->lbl_ende->Text = p_Ende->ToString("dddd, dd. MMMM yyyy");
 		}
 	}
 
 	property DateTime^ p_Anfang
 	{
 		void set(DateTime^ p_Anfang) {
-			this->lbl_anfang->Text = p_Anfang->ToString("dd.mm.yyyy");
+			this->lbl_anfang->Text = p_Anfang->ToString("dddd, dd. MMMM yyyy");
 		}
 	}
 

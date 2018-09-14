@@ -16,6 +16,9 @@
     <Filter Include="Quelldateien\Sounds">
       <UniqueIdentifier>{b611aee9-02f6-46a9-9d10-b05fb8d59279}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quelldateien\Images">
+      <UniqueIdentifier>{50939e26-2a07-43c4-9692-8326c5bd8c30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Angestellter.h">
@@ -188,5 +191,43 @@
     <Media Include="Sounds\lacucarachaKurz.wav">
       <Filter>Quelldateien\Sounds</Filter>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\addIcon.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\editIcon.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\gehenIcon.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\kalenderIcon.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\kommenIcon.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\LogOutIcon2.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\pauseIcon.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\pauseIcon2.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\pauseIcon3.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\PersonalIcon2.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\statistikIcon.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\urlaubIcon2.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
   </ItemGroup>
 </Project>

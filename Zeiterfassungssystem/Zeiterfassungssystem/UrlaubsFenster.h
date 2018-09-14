@@ -106,7 +106,7 @@ namespace Zeiterfassungssystem {
 			this->einreichenBtn->Location = System::Drawing::Point(45, 332);
 			this->einreichenBtn->Name = L"einreichenBtn";
 			this->einreichenBtn->Size = System::Drawing::Size(122, 37);
-			this->einreichenBtn->TabIndex = 3;
+			this->einreichenBtn->TabIndex = 4;
 			this->einreichenBtn->Text = L"Einreichen";
 			this->einreichenBtn->UseVisualStyleBackColor = true;
 			this->einreichenBtn->Click += gcnew System::EventHandler(this, &UrlaubsFenster::Einreichen_Click);
@@ -127,14 +127,14 @@ namespace Zeiterfassungssystem {
 			this->urlaubEndeDTP->Location = System::Drawing::Point(203, 154);
 			this->urlaubEndeDTP->Name = L"urlaubEndeDTP";
 			this->urlaubEndeDTP->Size = System::Drawing::Size(200, 20);
-			this->urlaubEndeDTP->TabIndex = 9;
+			this->urlaubEndeDTP->TabIndex = 1;
 			// 
 			// abbrechenBtn
 			// 
 			this->abbrechenBtn->Location = System::Drawing::Point(259, 332);
 			this->abbrechenBtn->Name = L"abbrechenBtn";
 			this->abbrechenBtn->Size = System::Drawing::Size(122, 37);
-			this->abbrechenBtn->TabIndex = 10;
+			this->abbrechenBtn->TabIndex = 5;
 			this->abbrechenBtn->Text = L"Abbrechen";
 			this->abbrechenBtn->UseVisualStyleBackColor = true;
 			this->abbrechenBtn->Click += gcnew System::EventHandler(this, &UrlaubsFenster::abbrechenBtn_Click);
@@ -167,7 +167,7 @@ namespace Zeiterfassungssystem {
 			this->tageTxt->Margin = System::Windows::Forms::Padding(2);
 			this->tageTxt->Name = L"tageTxt";
 			this->tageTxt->Size = System::Drawing::Size(68, 20);
-			this->tageTxt->TabIndex = 13;
+			this->tageTxt->TabIndex = 2;
 			// 
 			// label4
 			// 
@@ -186,7 +186,7 @@ namespace Zeiterfassungssystem {
 			this->kommentarTxt->Margin = System::Windows::Forms::Padding(2);
 			this->kommentarTxt->Name = L"kommentarTxt";
 			this->kommentarTxt->Size = System::Drawing::Size(377, 20);
-			this->kommentarTxt->TabIndex = 16;
+			this->kommentarTxt->TabIndex = 3;
 			// 
 			// UrlaubsFenster
 			// 
@@ -320,7 +320,6 @@ namespace Zeiterfassungssystem {
 		sound->Load();
 		sound->Play();*/
 		restUrlaub = angestellter->getRestUrlaub();
-		MessageBox::Show("Resturlaub: " + restUrlaub, "Ihr Resturlaub", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
 	};
 }
