@@ -2,6 +2,7 @@
 #include "Unternehmen.h"
 #include "Angestellter.h"
 #include "Abteilung.h"
+#include "Vorgesetzter.h"
 
 namespace Zeiterfassungssystem {
 
@@ -64,6 +65,7 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Label^  lbl_rolle;
 	private: System::Windows::Forms::Button^  btn_mitarbeiter_hinzufuegen;
 	private: System::Windows::Forms::Label^  lbl_bearbeitung;
+	private: System::Windows::Forms::Button^  btn_loeschen;
 
 	private:
 		/// <summary>
@@ -96,6 +98,7 @@ namespace Zeiterfassungssystem {
 			this->lbl_rolle = (gcnew System::Windows::Forms::Label());
 			this->lbl_bearbeitung = (gcnew System::Windows::Forms::Label());
 			this->txt_name = (gcnew System::Windows::Forms::TextBox());
+			this->btn_loeschen = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// txt_vorname
@@ -252,12 +255,23 @@ namespace Zeiterfassungssystem {
 			this->txt_name->Size = System::Drawing::Size(351, 22);
 			this->txt_name->TabIndex = 1;
 			// 
+			// btn_loeschen
+			// 
+			this->btn_loeschen->Location = System::Drawing::Point(341, 408);
+			this->btn_loeschen->Name = L"btn_loeschen";
+			this->btn_loeschen->Size = System::Drawing::Size(171, 35);
+			this->btn_loeschen->TabIndex = 35;
+			this->btn_loeschen->Text = L"Löschen";
+			this->btn_loeschen->UseVisualStyleBackColor = true;
+			this->btn_loeschen->Click += gcnew System::EventHandler(this, &BearbeitungsFenster::btn_loeschen_Click);
+			// 
 			// BearbeitungsFenster
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
 			this->ClientSize = System::Drawing::Size(524, 456);
+			this->Controls->Add(this->btn_loeschen);
 			this->Controls->Add(this->txt_name);
 			this->Controls->Add(this->lbl_bearbeitung);
 			this->Controls->Add(this->lbl_rolle);
@@ -288,6 +302,7 @@ namespace Zeiterfassungssystem {
 	private:
 		Unternehmen ^ unternehmen;
 		Angestellter^ angestellter;
+		List<Angestellter^>^ angestellte = gcnew List<Angestellter^>;
 		void clear() {
 			this->txt_name->Text = "";
 			this->txt_vorname->Text = "";
@@ -313,7 +328,6 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void txt_personalnummer_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-		List<Angestellter^>^ angestellte = gcnew List<Angestellter^>;
 		angestellte = unternehmen->getAlleAngestellte();
 		
 
@@ -328,12 +342,12 @@ namespace Zeiterfassungssystem {
 				txt_urlaubstage->Text = Convert::ToString(angestellte[i]->getUrlaubstage());
 				if (!angestellte[i]->istVorgesetzter()) {
 					txt_Rolle->Text = "Mitarbeiter";
-					!angestellte[i]->istVorgesetzter();
 				}
 				else {
 					txt_Rolle->Text = "Vorgesetzter";
-					angestellte[i]->istVorgesetzter();
 				}
+
+
 			}
 		}
 	
@@ -388,20 +402,48 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 		else {
+			
 			angestellter->setNachname(txt_name->Text);
 			angestellter->setVorname(txt_vorname->Text);
 			angestellter->setPersonalnummer(txt_personalnummer->Text);
 			angestellter->setPasswort(txt_passwort->Text);
 			angestellter->setWochenstunden(Convert::ToInt32(txt_arbeitsstunden->Text));
 			angestellter->setUrlaubstage(Convert::ToInt32(txt_urlaubstage->Text));
-	
+			for (int k = 0; k < unternehmen->getAnzahlAbteilungen(); k++) {
+				if (txt_abteilung->Text->Equals(unternehmen->getAbteilung(k)->getAbteilungsnummer())) {
+					angestellter->setAbteilung(unternehmen->getAbteilung(k));
+
+				}
+
+			}
+			if (txt_Rolle->Text->Equals("Vorgesetzter")) {
+				angestellter->getAbteilung()->setVorgesetzter(gcnew Vorgesetzter(txt_vorname->Text,txt_name->Text,angestellter->getAbteilung(),txt_passwort->Text, txt_arbeitsstunden->Text, Convert::ToInt32(txt_arbeitsstunden->Text), Convert::ToInt32(txt_urlaubstage->Text)));
+				for (int i = 0; i < angestellter->getAbteilung()->getAnzahlMitarbeiter(); i++) {
+					if (angestellte[i]->getPersonalnummer()->Equals(angestellter->getPersonalnummer())) {
+						angestellte[i]->getAbteilung()->removeMitarbeiter(i);
+					}
+				}
+				
+			}
+			else {
+
+				
+			}
 			MessageBox::Show("Erfolgreich", "Angestellten Daten erfolgreich geändert!", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			this->clear();
 
 		}
 	}
 	private: System::Void BearbeitungsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
-	
+		this->clear();
 	}
+private: System::Void btn_loeschen_Click(System::Object^  sender, System::EventArgs^  e) {
+
+	for (int i = 0; i < angestellter->getAbteilung()->getAnzahlMitarbeiter(); i++) {
+		if (angestellte[i]->getPersonalnummer()->Equals(getPersonalnummer())) {
+			angestellte[i]->getAbteilung()->removeMitarbeiter(i);
+		}
+	}
+}
 };
 }

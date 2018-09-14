@@ -150,7 +150,7 @@ namespace Zeiterfassungssystem {
 	
 						
 					
-						item->SubItems->Add(Convert::ToString(angestellter->getGesamtstunden(i)));
+						//item->SubItems->Add(Convert::ToString(angestellter->getGesamtstunden(i)));
 					}
 					listView1->Items->Add(item);
 					
