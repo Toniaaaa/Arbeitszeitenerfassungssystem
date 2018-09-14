@@ -133,6 +133,9 @@
     <ClInclude Include="AenderungsantragsFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="AenderungsbearbeitungsFenster.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Angestellter.h" />
     <ClInclude Include="BearbeitungsFenster.h">
       <FileType>CppForm</FileType>
@@ -181,6 +184,7 @@
     <ClCompile Include="Abteilung.cpp" />
     <ClCompile Include="Aenderungsantrag.cpp" />
     <ClCompile Include="AenderungsantragsFenster.cpp" />
+    <ClCompile Include="AenderungsbearbeitungsFenster.cpp" />
     <ClCompile Include="Angestellter.cpp" />
     <ClCompile Include="BearbeitungsFenster.cpp" />
     <ClCompile Include="KalenderFenster.cpp" />
@@ -209,6 +213,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AenderungsbearbeitungsFenster.resx">
+      <DependentUpon>AenderungsbearbeitungsFenster.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BearbeitungsFenster.resx">
       <DependentUpon>BearbeitungsFenster.h</DependentUpon>
     </EmbeddedResource>

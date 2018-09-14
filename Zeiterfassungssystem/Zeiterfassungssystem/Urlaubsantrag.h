@@ -33,8 +33,5 @@ public:
 	void setKommentarAntragsteller(String^ kommentar);
 	void setKommentarVorgesetzter(String^ kommentar);
 
-	//Weitere Methoden:
-	Int32 berechneTage(DateTime^ anfang, DateTime^ ende);
-
 };
 

@@ -25,7 +25,3 @@ void Urlaubsantrag::setKommentarVorgesetzter(String^ kommentar)
 	this->m_KommentarVorgesetzter = kommentar;
 }
 
-Int32 Urlaubsantrag::berechneTage(DateTime^ anfang, DateTime^ ende) {
-	
-	return 0;
-}

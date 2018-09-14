@@ -12,6 +12,7 @@
 #include "BearbeitungsFenster.h"
 #include "KalenderFenster.h"
 #include "UrlaubsFenster.h"
+#include "AenderungsbearbeitungsFenster.h"
 
 namespace Zeiterfassungssystem {
 
@@ -41,6 +42,7 @@ namespace Zeiterfassungssystem {
 		BearbeitungsFenster^ bearbeitungsfenster;
 		UrlaubsFenster^ urlaubsfenster;
 		KalenderFenster^ kalenderfenster;
+		AenderungsbearbeitungsFenster^ aenderungsfenster;
 
 		Int32 sekunde;
 		Int32 minute;
@@ -88,6 +90,7 @@ namespace Zeiterfassungssystem {
 			bearbeitungsfenster = gcnew BearbeitungsFenster;
 			kalenderfenster = gcnew KalenderFenster;
 			urlaubsfenster = gcnew UrlaubsFenster;
+			aenderungsfenster = gcnew AenderungsbearbeitungsFenster;
 		}
 
 	protected:
@@ -888,15 +891,16 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: void pruefeAntraege() {
-		//Es wird geprüft, ob die Liste der Urlaubsanträge Anträge beinhaltet. 
-		//Wenn Anträge vorhanden sind, können sie bestätigt werden.
+		//Es wird geprüft, ob zu den gestellten Anträgen neue Informationen vorhanden sind. Diese werden ggf. als MessageBox ausgegeben.
 		Int32 anzAntragsInfos = angestellterAkt->getAntragsInfos()->Count;
 		while (anzAntragsInfos > 0) {
 			MessageBox::Show(angestellterAkt->getAntragsInfos()[anzAntragsInfos - 1], "Ihr Antrag", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			angestellterAkt->removeAntragsInfo(--anzAntragsInfos);
 			urlaubsbearbeitungsfenster->clear();
 		}
-		//Es wird geprüft, ob zu den gestellten Anträgen neue Informationen vorhanden sind. Diese werden ggf. als MessageBox ausgegeben.
+
+		//Es wird geprüft, ob die Liste der Urlaubsanträge Anträge beinhaltet. 
+		//Wenn Anträge vorhanden sind, können sie bestätigt werden.
 		Int32 anzUrlaubsantraege = angestellterAkt->getUrlaubsantraege()->Count;
 		while (anzUrlaubsantraege > 0) {
 			urlaubsbearbeitungsfenster->setUrlaubsantrag(angestellterAkt->getUrlaubsantraege()[anzUrlaubsantraege - 1]);
@@ -908,6 +912,21 @@ namespace Zeiterfassungssystem {
 				urlaubsbearbeitungsfenster->clear();
 			}
 			anzUrlaubsantraege--;
+		}
+
+		//Es wird geprüft, ob die Liste der Änderungsanträge Anträge beinhaltet. 
+		//Wenn Anträge vorhanden sind, können sie bestätigt werden.
+		Int32 anzAenderungsantraege = angestellterAkt->getAenderungsantraege()->Count;
+		while (anzAenderungsantraege > 0) {
+			aenderungsfenster->setAenderungsantrag(angestellterAkt->getAenderungsantraege()[anzAenderungsantraege - 1]);
+			System::Windows::Forms::DialogResult result = aenderungsfenster->ShowDialog(this);
+			//Nur, wenn einer der beiden Buttons gedrückt wurde, wird der Antrag aus der Liste entfernt. Wird das Fenster einfach über das "X" geschlossen, bleibt der Antrag in der Liste
+			//und erscheint bei der nächsten Überprüfung wieder.
+			if (result == System::Windows::Forms::DialogResult::OK) {
+				angestellterAkt->removeAenderungsantrag(anzAenderungsantraege - 1);
+				aenderungsfenster->clear();
+			}
+			anzAenderungsantraege--;
 		}
 	}
 	

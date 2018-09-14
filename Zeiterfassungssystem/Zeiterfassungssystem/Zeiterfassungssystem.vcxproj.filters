@@ -87,6 +87,9 @@
     <ClInclude Include="KalenderFenster.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="AenderungsbearbeitungsFenster.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Angestellter.cpp">
@@ -150,6 +153,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="KalenderFenster.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="AenderungsbearbeitungsFenster.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
