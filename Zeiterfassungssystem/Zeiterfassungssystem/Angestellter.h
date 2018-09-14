@@ -24,6 +24,7 @@ private:
 	Int32 urlaubstageGenommen;
 	List<Ereignis^>^ listeEreignisse;
 	List<Double>^ listegesamtstunden;
+	List<String^>^ antragsInfos;
 	String^ status;
 	Int32 arbeitsStunden;
 	Int32 arbeitsMinuten;
@@ -50,6 +51,7 @@ public:
 	inline Int32 getArbeitsMinuten() { return arbeitsMinuten; }
 	inline Int32 getUeberStunden() { return ueberStunden; }
 	inline Int32 getUeberMinuten() { return ueberMinuten; }
+	inline List<String^>^ getAntragsInfos() { return antragsInfos; }
 	
 	Int32 getRestUrlaub();
 	Ereignis^ getEreignis(Int32 index);
@@ -74,11 +76,14 @@ public:
 	virtual bool istVorgesetzter() = 0;
 	void fuegeEreignisHinzu(Ereignis^ ereignis);
 	void removeEreignis(Int32 index);
+	void addAntragsInfo(String^ info);
+	void removeAntragsInfo(Int32 index);
 
 	//Hilfsmethoden
 	void setAktuellenStatus(String^ status);
 	String^ getStatus();
 	void beendeArbeitstag(Int32 stunden, Int32 minuten, Boolean erreicht);
+	void nehmeUrlaub(Int32 tage);
 	// Ereignislisteauswertungsmethodensammlung
 
 	DateTime^ getLetzterArbeitstag();

@@ -18,6 +18,10 @@ namespace Zeiterfassungssystem {
 	private:
 		bool anfrage;
 		Urlaubsantrag^ antrag;
+		String^ textZumAntrag;
+
+	private: System::Windows::Forms::TextBox^  txt_Kommentar;
+	private: System::Windows::Forms::Label^  lbl_Kommentar;
 
 	public:
 		UrlaubsanfragenbearbeitungsFenster(void)
@@ -41,8 +45,8 @@ namespace Zeiterfassungssystem {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Button^  btn_AenderungBestaetigen;
-	private: System::Windows::Forms::Button^  btn_AenderungAblehnen;
+	private: System::Windows::Forms::Button^  btn_AntragBestaetigen;
+	private: System::Windows::Forms::Button^  btn_AntragAblehnen;
 	private: System::Windows::Forms::Label^  lbl_Aenderungsanfrage;
 	private: System::Windows::Forms::Label^  lbl_NameMA;
 	private: System::Windows::Forms::Label^  lbl_AnfrageErsterTag;
@@ -65,8 +69,8 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->btn_AenderungBestaetigen = (gcnew System::Windows::Forms::Button());
-			this->btn_AenderungAblehnen = (gcnew System::Windows::Forms::Button());
+			this->btn_AntragBestaetigen = (gcnew System::Windows::Forms::Button());
+			this->btn_AntragAblehnen = (gcnew System::Windows::Forms::Button());
 			this->lbl_Aenderungsanfrage = (gcnew System::Windows::Forms::Label());
 			this->lbl_NameMA = (gcnew System::Windows::Forms::Label());
 			this->lbl_AnfrageErsterTag = (gcnew System::Windows::Forms::Label());
@@ -75,27 +79,31 @@ namespace Zeiterfassungssystem {
 			this->lbl_ende = (gcnew System::Windows::Forms::Label());
 			this->lbl_tage = (gcnew System::Windows::Forms::Label());
 			this->lbl_anfang = (gcnew System::Windows::Forms::Label());
+			this->txt_Kommentar = (gcnew System::Windows::Forms::TextBox());
+			this->lbl_Kommentar = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
-			// btn_AenderungBestaetigen
+			// btn_AntragBestaetigen
 			// 
-			this->btn_AenderungBestaetigen->Location = System::Drawing::Point(30, 257);
-			this->btn_AenderungBestaetigen->Margin = System::Windows::Forms::Padding(2, 3, 2, 3);
-			this->btn_AenderungBestaetigen->Name = L"btn_AenderungBestaetigen";
-			this->btn_AenderungBestaetigen->Size = System::Drawing::Size(85, 40);
-			this->btn_AenderungBestaetigen->TabIndex = 0;
-			this->btn_AenderungBestaetigen->Text = L"Bestätigen";
-			this->btn_AenderungBestaetigen->UseVisualStyleBackColor = true;
+			this->btn_AntragBestaetigen->Location = System::Drawing::Point(16, 297);
+			this->btn_AntragBestaetigen->Margin = System::Windows::Forms::Padding(2, 3, 2, 3);
+			this->btn_AntragBestaetigen->Name = L"btn_AntragBestaetigen";
+			this->btn_AntragBestaetigen->Size = System::Drawing::Size(109, 40);
+			this->btn_AntragBestaetigen->TabIndex = 0;
+			this->btn_AntragBestaetigen->Text = L"Bestätigen";
+			this->btn_AntragBestaetigen->UseVisualStyleBackColor = true;
+			this->btn_AntragBestaetigen->Click += gcnew System::EventHandler(this, &UrlaubsanfragenbearbeitungsFenster::btn_AntragBestaetigen_Click);
 			// 
-			// btn_AenderungAblehnen
+			// btn_AntragAblehnen
 			// 
-			this->btn_AenderungAblehnen->Location = System::Drawing::Point(179, 257);
-			this->btn_AenderungAblehnen->Margin = System::Windows::Forms::Padding(2, 3, 2, 3);
-			this->btn_AenderungAblehnen->Name = L"btn_AenderungAblehnen";
-			this->btn_AenderungAblehnen->Size = System::Drawing::Size(85, 40);
-			this->btn_AenderungAblehnen->TabIndex = 1;
-			this->btn_AenderungAblehnen->Text = L"Ablehnen";
-			this->btn_AenderungAblehnen->UseVisualStyleBackColor = true;
+			this->btn_AntragAblehnen->Location = System::Drawing::Point(157, 297);
+			this->btn_AntragAblehnen->Margin = System::Windows::Forms::Padding(2, 3, 2, 3);
+			this->btn_AntragAblehnen->Name = L"btn_AntragAblehnen";
+			this->btn_AntragAblehnen->Size = System::Drawing::Size(115, 40);
+			this->btn_AntragAblehnen->TabIndex = 1;
+			this->btn_AntragAblehnen->Text = L"Ablehnen";
+			this->btn_AntragAblehnen->UseVisualStyleBackColor = true;
+			this->btn_AntragAblehnen->Click += gcnew System::EventHandler(this, &UrlaubsanfragenbearbeitungsFenster::btn_AntragAblehnen_Click);
 			// 
 			// lbl_Aenderungsanfrage
 			// 
@@ -103,7 +111,7 @@ namespace Zeiterfassungssystem {
 			this->lbl_Aenderungsanfrage->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lbl_Aenderungsanfrage->ImageAlign = System::Drawing::ContentAlignment::TopCenter;
-			this->lbl_Aenderungsanfrage->Location = System::Drawing::Point(26, 16);
+			this->lbl_Aenderungsanfrage->Location = System::Drawing::Point(11, 21);
 			this->lbl_Aenderungsanfrage->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_Aenderungsanfrage->Name = L"lbl_Aenderungsanfrage";
 			this->lbl_Aenderungsanfrage->Size = System::Drawing::Size(261, 58);
@@ -127,7 +135,7 @@ namespace Zeiterfassungssystem {
 			this->lbl_AnfrageErsterTag->AutoSize = true;
 			this->lbl_AnfrageErsterTag->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.2F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->lbl_AnfrageErsterTag->Location = System::Drawing::Point(9, 129);
+			this->lbl_AnfrageErsterTag->Location = System::Drawing::Point(13, 132);
 			this->lbl_AnfrageErsterTag->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_AnfrageErsterTag->Name = L"lbl_AnfrageErsterTag";
 			this->lbl_AnfrageErsterTag->Size = System::Drawing::Size(123, 17);
@@ -139,7 +147,7 @@ namespace Zeiterfassungssystem {
 			this->lbl_AnfrageLetzterUrlaubstag->AutoSize = true;
 			this->lbl_AnfrageLetzterUrlaubstag->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.2F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->lbl_AnfrageLetzterUrlaubstag->Location = System::Drawing::Point(11, 157);
+			this->lbl_AnfrageLetzterUrlaubstag->Location = System::Drawing::Point(13, 157);
 			this->lbl_AnfrageLetzterUrlaubstag->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_AnfrageLetzterUrlaubstag->Name = L"lbl_AnfrageLetzterUrlaubstag";
 			this->lbl_AnfrageLetzterUrlaubstag->Size = System::Drawing::Size(129, 17);
@@ -151,7 +159,7 @@ namespace Zeiterfassungssystem {
 			this->lbl_AnfrageAnzahlUrlaubstage->AutoSize = true;
 			this->lbl_AnfrageAnzahlUrlaubstage->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.2F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->lbl_AnfrageAnzahlUrlaubstage->Location = System::Drawing::Point(11, 185);
+			this->lbl_AnfrageAnzahlUrlaubstage->Location = System::Drawing::Point(13, 181);
 			this->lbl_AnfrageAnzahlUrlaubstage->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_AnfrageAnzahlUrlaubstage->Name = L"lbl_AnfrageAnzahlUrlaubstage";
 			this->lbl_AnfrageAnzahlUrlaubstage->Size = System::Drawing::Size(136, 17);
@@ -161,7 +169,7 @@ namespace Zeiterfassungssystem {
 			// lbl_ende
 			// 
 			this->lbl_ende->AutoSize = true;
-			this->lbl_ende->Location = System::Drawing::Point(189, 157);
+			this->lbl_ende->Location = System::Drawing::Point(189, 161);
 			this->lbl_ende->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_ende->Name = L"lbl_ende";
 			this->lbl_ende->Size = System::Drawing::Size(61, 13);
@@ -190,12 +198,32 @@ namespace Zeiterfassungssystem {
 			this->lbl_anfang->Text = L"00.00.0000";
 			this->lbl_anfang->TextAlign = System::Drawing::ContentAlignment::TopRight;
 			// 
+			// txt_Kommentar
+			// 
+			this->txt_Kommentar->Location = System::Drawing::Point(17, 260);
+			this->txt_Kommentar->Name = L"txt_Kommentar";
+			this->txt_Kommentar->Size = System::Drawing::Size(255, 20);
+			this->txt_Kommentar->TabIndex = 12;
+			// 
+			// lbl_Kommentar
+			// 
+			this->lbl_Kommentar->AutoSize = true;
+			this->lbl_Kommentar->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lbl_Kommentar->Location = System::Drawing::Point(14, 234);
+			this->lbl_Kommentar->Name = L"lbl_Kommentar";
+			this->lbl_Kommentar->Size = System::Drawing::Size(86, 18);
+			this->lbl_Kommentar->TabIndex = 13;
+			this->lbl_Kommentar->Text = L"Kommentar";
+			// 
 			// UrlaubsanfragenbearbeitungsFenster
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
-			this->ClientSize = System::Drawing::Size(297, 324);
+			this->ClientSize = System::Drawing::Size(283, 349);
+			this->Controls->Add(this->lbl_Kommentar);
+			this->Controls->Add(this->txt_Kommentar);
 			this->Controls->Add(this->lbl_anfang);
 			this->Controls->Add(this->lbl_tage);
 			this->Controls->Add(this->lbl_ende);
@@ -204,8 +232,8 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->lbl_AnfrageErsterTag);
 			this->Controls->Add(this->lbl_NameMA);
 			this->Controls->Add(this->lbl_Aenderungsanfrage);
-			this->Controls->Add(this->btn_AenderungAblehnen);
-			this->Controls->Add(this->btn_AenderungBestaetigen);
+			this->Controls->Add(this->btn_AntragAblehnen);
+			this->Controls->Add(this->btn_AntragBestaetigen);
 			this->Margin = System::Windows::Forms::Padding(2, 3, 2, 3);
 			this->Name = L"UrlaubsanfragenbearbeitungsFenster";
 			this->Text = L"Neue Anfrage";
@@ -256,6 +284,50 @@ public:
 			this->lbl_NameMA->Text = p_Name;
 		}
 	}
+
+	property String^ p_Kommentar
+	{
+		String^ get() {
+			return txt_Kommentar->Text;
+		}
+	}
+
+	void clear() 
+	{
+		this->txt_Kommentar->Text = "";
+	}
+
+private: System::Void btn_AntragBestaetigen_Click(System::Object^  sender, System::EventArgs^  e) 
+{
+	if (MessageBox::Show("Urlaubsabtrag wirklich bestätigen?", "Antrag bestätigen?", MessageBoxButtons::YesNo,
+		MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+		antrag->setKommentar(p_Kommentar);
+		textZumAntrag = "Ihr Urlaubsantrag über " + antrag->getTage() + " Tage\nvom " + lbl_anfang->Text + "\nbis " + lbl_ende->Text + "\nwurde bestätigt.\nViel Spaß in Ihrem Urlaub.";
+		if (p_Kommentar->Length > 0) {
+			textZumAntrag += "\n\nKommentar:\n" + p_Kommentar;
+		}
+		antrag->getAntragsteller()->addAntragsInfo(textZumAntrag);
+		antrag->getAntragsteller()->nehmeUrlaub(Convert::ToInt32(lbl_tage->Text));
+		this->DialogResult = System::Windows::Forms::DialogResult::OK;
+		this->Close();
+	}
+}
+
+private: System::Void btn_AntragAblehnen_Click(System::Object^  sender, System::EventArgs^  e) 
+{
+	if (MessageBox::Show("Urlaubsabtrag wirklich ablehnen?", "Antrag ablehnen?", MessageBoxButtons::YesNo,
+		MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+		antrag->setKommentar(p_Kommentar);
+		textZumAntrag = "Ihr Urlaubsantrag über " + antrag->getTage() + " Tage\nvom " + lbl_anfang->Text + "\nbis " + lbl_ende->Text + "\nwurde leider abgelehnt.";
+		if (p_Kommentar->Length > 0) {
+			textZumAntrag += "\n\nKommentar:\n" + p_Kommentar;
+		}
+		antrag->getAntragsteller()->addAntragsInfo(textZumAntrag);
+		this->DialogResult = System::Windows::Forms::DialogResult::OK;
+		this->Close();
+	}
+}
+
 };
 
 }

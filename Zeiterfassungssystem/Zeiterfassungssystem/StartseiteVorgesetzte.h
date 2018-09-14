@@ -768,18 +768,27 @@ namespace Zeiterfassungssystem {
 		arbeitszeitLbl->Text = uhrzeitString(sekunde, minute, stunde);
 		pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
 		nameLbl->Text = angestellterAkt->getVorname() + " " + angestellterAkt->getNachname();
-		resturlaubLbl->Text = angestellterAkt->getUrlaubstage() + " Tage";
+		resturlaubLbl->Text = angestellterAkt-> getRestUrlaub() + " Tage";
 
 	}
 
+	//WENN DIE SEITE FERTIG GELADEN WURDE
 	private: System::Void StartseiteVorgesetzte_Shown(System::Object^  sender, System::EventArgs^  e) {
-		//Es wird geprüft, ob die Liste der Urlaubsanträge Anträge beinhaltet.
+		//Es wird geprüft, ob die Liste der Urlaubsanträge Anträge beinhaltet. 
+		//Wenn Anträge vorhanden sind, können sie bestätigt werden.
+		Int32 anzAntragsInfos = angestellterAkt->getAntragsInfos()->Count;
+		while (anzAntragsInfos > 0) {
+			MessageBox::Show(angestellterAkt->getAntragsInfos()[anzAntragsInfos - 1], "Ihr Antrag", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			angestellterAkt->removeAntragsInfo(--anzAntragsInfos);
+			urlaubsbearbeitungsfenster->clear();
+		}
+		//Es wird geprüft, ob zu den gestellten Anträgen neue Informationen vorhanden sind. Diese werden ggf. als MessageBox ausgegeben.
 		Int32 anzUrlaubsantraege = angestellterAkt->getUrlaubsantraege()->Count;
 		while (anzUrlaubsantraege > 0) {
 			urlaubsbearbeitungsfenster->setUrlaubsantrag(angestellterAkt->getUrlaubsantraege()[anzUrlaubsantraege - 1]);
 			System::Windows::Forms::DialogResult result = urlaubsbearbeitungsfenster->ShowDialog(this);
-			angestellterAkt->removeUrlaubsantrag(anzUrlaubsantraege - 1);
-			anzUrlaubsantraege--;
+			angestellterAkt->removeUrlaubsantrag(--anzUrlaubsantraege);
+			urlaubsbearbeitungsfenster->clear();
 		}
 	}
 

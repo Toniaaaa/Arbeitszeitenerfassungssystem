@@ -13,6 +13,7 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->urlaubstageGenommen = 0;
 	listeEreignisse = gcnew List<Ereignis^>;
 	listegesamtstunden = gcnew List<Double>;
+	antragsInfos = gcnew List<String^>;
 	this->wochenZeitErreicht = false;
 	this->arbeitsStunden = wochenstunden;
 	this->arbeitsMinuten = 0;
@@ -54,6 +55,16 @@ void Angestellter::fuegeEreignisHinzu(Ereignis^ ereignis)
 void Angestellter::removeEreignis(Int32 index)
 {
 	listeEreignisse->RemoveAt(index);
+}
+
+void Angestellter::addAntragsInfo(String^ info)
+{
+	antragsInfos->Add(info);
+}
+
+void Angestellter::removeAntragsInfo(Int32 index)
+{
+	antragsInfos->RemoveAt(index);
 }
 
 void Angestellter::setAktuellenStatus(String ^ status)
@@ -180,4 +191,9 @@ DateTime^ Angestellter::getLetzterArbeitstag()
 		}
 	}
 	return datum;
+}
+
+void Angestellter::nehmeUrlaub(Int32 tage)
+{
+	urlaubstageGenommen += tage;
 }

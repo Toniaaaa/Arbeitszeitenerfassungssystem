@@ -14,20 +14,9 @@ Urlaubsantrag::~Urlaubsantrag() {
 }
 
 //Setter
-void Urlaubsantrag::setAnfang(DateTime anfang) {
-	this->m_Anfang = anfang;
-}
-
-void Urlaubsantrag::setEnde(DateTime ende) {
-	this->m_Ende = ende;
-}
-
-void Urlaubsantrag::setTage(Int32 tage) {
-	this->m_Tage = tage;
-}
-
-void Urlaubsantrag::setAntragsteller(Angestellter^ antragsteller) {
-	this->m_Antragsteller = antragsteller;
+void Urlaubsantrag::setKommentar(String^ kommentar)
+{
+	this->m_Kommentar = kommentar;
 }
 
 Int32 Urlaubsantrag::berechneTage(DateTime^ anfang, DateTime^ ende) {
