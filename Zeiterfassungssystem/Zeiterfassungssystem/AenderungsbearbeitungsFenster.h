@@ -330,7 +330,7 @@ namespace Zeiterfassungssystem {
 		this->ereignisse = ereignisse;
 	}
 
-	private: System::Void AenderungsbearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+	public: System::Void AenderungsbearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		istOffen = true;
 		p_Tag = antrag->getTag();
 		p_Ankunft = antrag->getAnfang();
@@ -407,6 +407,7 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void btn_AntragBestaetigen_Click(System::Object^  sender, System::EventArgs^  e)
 	{
+		Angestellter^ angestellter = antrag->getAntragsteller();
 		if (MessageBox::Show("Änderungsantrag wirklich bestätigen?", "Antrag bestätigen?", MessageBoxButtons::YesNo,
 			MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 			antrag->setKommentarVorgesetzter(p_Kommentar);
@@ -415,6 +416,24 @@ namespace Zeiterfassungssystem {
 				textZumAntrag += "\n\nKommentar:\n" + p_Kommentar;
 			}
 			antrag->getAntragsteller()->addAntragsInfo(textZumAntrag);
+			for (int i = 0; i < antrag->getAntragsteller()->getAnzahlEreignisse(); i++) {
+				if (angestellter->getEreignis(i)->getTimestamp()->Equals(antrag->getTag())
+					&& angestellter->getEreignis(i)->getTyp() == ARBEIT_START) {
+					Ereignis^ arbeitsanfang = gcnew Ereignis(ARBEIT_START, antrag->getAnfang());
+					angestellter->fuegeEreignisHinzu(arbeitsanfang);
+					angestellter->removeEreignis(i);
+					break;
+				for (int j = i; j < antrag->getAntragsteller()->getAnzahlEreignisse(); j++) {
+
+					if (angestellter->getEreignis(j)->getTimestamp()->Equals(antrag->getTag())
+						&& angestellter->getEreignis(j)->getTyp() == ARBEIT_ENDE) {
+						Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, antrag->getEnde());
+						angestellter->fuegeEreignisHinzu(arbeitsende);
+						angestellter->removeEreignis(j);
+					}
+				}
+				}
+			}
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			this->Close();
 		}
