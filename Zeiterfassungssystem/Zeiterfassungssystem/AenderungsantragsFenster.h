@@ -426,10 +426,11 @@ namespace Zeiterfassungssystem {
 		gruendeAuswahl->Items->Add("Krankheit");
 		gruendeAuswahl->Items->Add("Fehler beim LogOut");
 		gruendeAuswahl->Items->Add("Fehler beim LogIn");
+		gruendeAuswahl->Items->Add("Computer-Absturz");
 		gruendeAuswahl->Items->Add("Sonstiges (siehe Kommentar)");
 	}
 
-			 //Angestellter wird gesetzt:
+	//Angestellter wird gesetzt:
 	public: void setAntragssteller(Angestellter^ antragstellerUebergabe)
 	{
 		antragsteller = antragstellerUebergabe;
