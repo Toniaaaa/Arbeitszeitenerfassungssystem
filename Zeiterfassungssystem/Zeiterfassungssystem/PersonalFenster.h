@@ -189,21 +189,32 @@ namespace Zeiterfassungssystem {
 				if (unternehmenAkt->getAlleAngestellte() != nullptr) {
 					ListViewItem^ item = gcnew ListViewItem();
 					item->Clone();
-					if (angestellte[i]->getStatus()->Equals("Viel Erfolg beim Erledigen Ihrer Aufgaben!")) {
-						item->Text = "arbeitet..";
-						item->ForeColor = System::Drawing::Color::SpringGreen;
+					try {
+						if (angestellte[i]->getStatus()->Equals("Viel Erfolg beim Erledigen Ihrer Aufgaben!")) {
+							item->Text = "arbeitet..";
+							item->ForeColor = System::Drawing::Color::SpringGreen;
+						}
+						else if (angestellte[i]->getStatus()->Equals("Geniessen Sie Ihre Pause!")) {
+							item->Text = "in der Pause..";
+							item->ForeColor = System::Drawing::Color::Gray;
+						}
+						else if (angestellte[i]->getStatus()->Equals("Schön, dass Sie da sind!")) {
+							item->Text = "anwesend..";
+							item->ForeColor = System::Drawing::Color::Black;
+						}
+						else {
+							item->Text = "nicht anwesend..";
+							item->ForeColor = System::Drawing::Color::Red;
+						}
 					}
-					else if (angestellte[i]->getStatus()->Equals("Geniessen Sie Ihre Pause!")) {
-						item->Text = "in der Pause..";
-						item->ForeColor = System::Drawing::Color::Gray;
-					}
-					else if (angestellte[i]->getStatus()->Equals("Schön, dass Sie da sind!")) {
-						item->Text = "anwesend..";
-						item->ForeColor = System::Drawing::Color::Black;
-					}
-					else {
+					catch (NullReferenceException ^e) {
 						item->Text = "nicht anwesend..";
 						item->ForeColor = System::Drawing::Color::Red;
+					}
+
+					String^ arbeitsMinutenString = Convert::ToString(angestellte[i]->getArbeitsMinuten());
+					if (angestellte[i]->getArbeitsMinuten() < 10) {
+						arbeitsMinutenString = "0" + Convert::ToString(angestellte[i]->getArbeitsMinuten());
 					}
 
 					String^ ueberMinutenString = Convert::ToString(angestellte[i]->getUeberMinuten());
@@ -218,7 +229,7 @@ namespace Zeiterfassungssystem {
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getUrlaubstage()));
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getRestUrlaub()));
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getWochensstunden()));
-					item->SubItems->Add(Convert::ToString(angestellte[i]->getArbeitsStunden() + ":" + angestellte[i]->getArbeitsMinuten()));
+					item->SubItems->Add(Convert::ToString(angestellte[i]->getArbeitsStunden() + ":" + arbeitsMinutenString));
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getUeberstundenGesamt()));
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getUeberStunden()) + ":" + ueberMinutenString);
 					listView1->Items->Add(item);
