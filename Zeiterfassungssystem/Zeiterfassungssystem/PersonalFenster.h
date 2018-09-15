@@ -86,8 +86,9 @@ namespace Zeiterfassungssystem {
 			this->listView1->FullRowSelect = true;
 			this->listView1->GridLines = true;
 			this->listView1->Location = System::Drawing::Point(0, 0);
+			this->listView1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->listView1->Name = L"listView1";
-			this->listView1->Size = System::Drawing::Size(493, 403);
+			this->listView1->Size = System::Drawing::Size(1114, 552);
 			this->listView1->Sorting = System::Windows::Forms::SortOrder::Ascending;
 			this->listView1->TabIndex = 0;
 			this->listView1->UseCompatibleStateImageBehavior = false;
@@ -115,12 +116,13 @@ namespace Zeiterfassungssystem {
 			// 
 			// PersonalFenster
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoSize = true;
-			this->ClientSize = System::Drawing::Size(493, 403);
+			this->ClientSize = System::Drawing::Size(1114, 552);
 			this->Controls->Add(this->listView1);
 			this->DoubleBuffered = true;
+			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->Name = L"PersonalFenster";
 			this->Text = L"PersonalFenster";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &PersonalFenster::PersonalFenster_FormClosing);

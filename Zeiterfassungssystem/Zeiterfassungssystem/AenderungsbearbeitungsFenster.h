@@ -20,13 +20,10 @@ namespace Zeiterfassungssystem {
 	private:
 		Aenderungsantrag^ antrag;
 		String^ textZumAntrag;
+
 	private: System::Windows::Forms::TextBox^  kommentarVorgesetzterTxt;
-
-
 	private: System::Windows::Forms::Label^  kommentarLbl;
 	private: System::Windows::Forms::Label^  kommentarAntragstellerLbl;
-
-
 	private: System::Windows::Forms::Label^  grundLbl;
 	private: System::Windows::Forms::Label^  label3;
 	private: System::Windows::Forms::Label^  label4;
