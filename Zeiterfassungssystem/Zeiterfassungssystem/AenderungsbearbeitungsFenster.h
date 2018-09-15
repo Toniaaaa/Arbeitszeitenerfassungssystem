@@ -1,6 +1,7 @@
 #pragma once
 #include "Aenderungsantrag.h"
 #include "Angestellter.h"
+#include "Ereignis.h"
 
 namespace Zeiterfassungssystem {
 
@@ -324,6 +325,10 @@ namespace Zeiterfassungssystem {
 
 		}
 #pragma endregion
+	private: List<Ereignis^>^ ereignisse;
+	public: void setEreignisListe(List<Ereignis^>^ ereignisse) {
+		this->ereignisse = ereignisse;
+	}
 
 	private: System::Void AenderungsbearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		p_Tag = antrag->getTag();
