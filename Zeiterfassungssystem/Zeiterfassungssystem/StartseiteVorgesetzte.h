@@ -592,6 +592,7 @@ namespace Zeiterfassungssystem {
 				//Timer stoppen
 				timerArbeitszeit->Stop();
 				timerPause->Stop();
+				angestellterAkt->speichereArbeitszeit(arbeitsStunden, arbeitsMinuten, wochenZeitErreicht);
 				String^ text = "Ihr Arbeitstag wurde erfolgreich beendet!\nSie haben heute " + stunde + " Stunden und " + minute + " Minuten gearbeitet.";
 				
 				pauseSekunde = 0;
@@ -609,6 +610,7 @@ namespace Zeiterfassungssystem {
 				//angestellterAkt->setGesamtstunden(gesamt);
 				Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
 				angestellterAkt->fuegeEreignisHinzu(arbeitsende);
+				statistikfenster->setTimespan(angestellterAkt->getAktuelleArbeitszeit()); //HIER RICHTIG???
 				MessageBox::Show(text, "Arbeitstag beendet", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			}
 		}
@@ -624,9 +626,6 @@ namespace Zeiterfassungssystem {
 		TimeSpan^ timespan = angestellterAkt->getAktuelleArbeitszeit();
 		statistikfenster->chart1->Series["Arbeitsstunden"]->Points->AddXY(onlydate, timespan);
 		*/
-
-		angestellterAkt->beendeArbeitstag(arbeitsStunden, arbeitsMinuten, wochenZeitErreicht);
-		statistikfenster->setTimespan(angestellterAkt->getAktuelleArbeitszeit());
 
 	}
 
@@ -709,6 +708,7 @@ namespace Zeiterfassungssystem {
 
 		wochenZeitErreicht = angestellterAkt->getWochenZeitErreicht();
 
+		//Anzeige Noch-Arbeitszeit bzw. Überstunden wird gesetzt
 		if (wochenZeitErreicht) {
 			arbeitsStunden = angestellterAkt->getUeberStunden();
 			arbeitsMinuten = angestellterAkt->getUeberMinuten();
@@ -721,9 +721,8 @@ namespace Zeiterfassungssystem {
 			arbeitsMinuten = angestellterAkt->getArbeitsMinuten();
 		}
 
-		nochWochenstundenLbl->Text = uhrzeitString(arbeitsMinuten, arbeitsStunden) + " Stunden";
-
 		if (angestellterAkt->getArbeitsAnfang() == nullptr) {
+
 			sekunde = 0;
 			minute = 0;
 			stunde = 0;
@@ -734,7 +733,9 @@ namespace Zeiterfassungssystem {
 			angestellterAkt->getStatus();
 
 		}
+		//Fall, dass der Timer nicht beendet wurde, bevor das Fenster geschlossen wurde, also der Timer im Hintergrund lief:
 		else {
+
 			// gerade arbeitszeit
 			TimeSpan^ arbeitszeit = angestellterAkt->getAktuelleArbeitszeit();
 			sekunde = arbeitszeit->Seconds;
@@ -745,7 +746,43 @@ namespace Zeiterfassungssystem {
 			pauseSekunde = pausenzeit->Seconds;
 			pauseMinute = pausenzeit->Minutes;
 			pauseStunde = pausenzeit->Hours;
-		
+
+			//Anzeige Noch-Arbeitszeit bzw. Überstunden wird gesetzt
+			//Es wurden bereits Überstunden gezählt (also Wochen-Arbeitszeit war schon erreicht)
+			if (wochenZeitErreicht) {
+				arbeitsStunden += stunde;
+				if (arbeitsMinuten + minute >= 60) {
+					arbeitsStunden++;
+					arbeitsMinuten = arbeitsMinuten + minute - 60;
+				}
+				else {
+					arbeitsMinuten += minute;
+				}
+
+			}
+			//Es wurden noch keine Überstunden gezählt (also Wochen-Arbeitszeit noch nicht erreicht)
+			else {
+				arbeitsStunden -= stunde;
+				if (arbeitsMinuten - minute < 0) {
+					arbeitsStunden--;
+					arbeitsMinuten = arbeitsMinuten - minute + 60;
+				}
+				else {
+					arbeitsMinuten -= minute;
+				}
+
+				//Fall, dass die Wochen-Arbeitszeit erreicht wurde, während das Fenster geschlossen war
+				if (arbeitsStunden < 0) {
+					wochenZeitErreicht = true;
+					this->nochWochenstundenLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+					this->nochWochenstundenSchriftLbl->Text = L"Überstunden";
+					this->nochWochenstundenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+					arbeitsStunden = -arbeitsStunden - 1; //-1, weil die Arbeitsstunden von 00:00 auf 1:01 springen. Mit -1 ist das korrigiert.
+					arbeitsMinuten = (arbeitsMinuten == 0) ? arbeitsMinuten : 60 - arbeitsMinuten;
+				}
+			}
+
+			//Timer wird gestartet
 			if (angestellterAkt->getPauseAnfang() != nullptr) {
 				timerPause->Start();
 			}
@@ -754,11 +791,12 @@ namespace Zeiterfassungssystem {
 			}
 		}
 
+		nochWochenstundenLbl->Text = uhrzeitString(arbeitsMinuten, arbeitsStunden) + " Stunden";
 		lbl_Status->Text = angestellterAkt->getStatus();
 		arbeitszeitLbl->Text = uhrzeitString(sekunde, minute, stunde);
 		pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
 		nameLbl->Text = angestellterAkt->getVorname() + " " + angestellterAkt->getNachname();
-		resturlaubLbl->Text = angestellterAkt-> getRestUrlaub() + " Tage";
+		resturlaubLbl->Text = angestellterAkt->getRestUrlaub() + " Tage";
 
 	}
 
@@ -767,9 +805,10 @@ namespace Zeiterfassungssystem {
 		this->pruefeAntraege();
 	}
 
-	//WENN SEITE GESCHLOSSEN UNTERNEHMEN WIRD GESPEICHERT
+	//SEITE WIRD GESCHLOSSEN
 	private: System::Void StartseiteVorgesetzte_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
-		unternehmen->speichern();
+		angestellterAkt->setWochenZeitErreicht(wochenZeitErreicht); //Es wird gespeichert, ob die Wochen-Arbeitszeit bereits erreicht wurde.
+		unternehmen->speichern(); //Unternehmen wird gespeichert
 		Application::Exit();
 	}
 

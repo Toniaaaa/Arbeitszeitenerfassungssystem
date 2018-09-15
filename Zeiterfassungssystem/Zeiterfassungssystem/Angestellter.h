@@ -82,7 +82,7 @@ public:
 	//Hilfsmethoden
 	void setAktuellenStatus(String^ status);
 	String^ getStatus();
-	void beendeArbeitstag(Int32 stunden, Int32 minuten, Boolean erreicht);
+	void speichereArbeitszeit(Int32 stunden, Int32 minuten, Boolean erreicht);
 	void nehmeUrlaub(Int32 tage);
 	// Ereignislisteauswertungsmethodensammlung
 

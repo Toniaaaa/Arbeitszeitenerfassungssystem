@@ -161,7 +161,7 @@ Int32 Angestellter::getArbeitsAnfangIndex()
 	return arbeitsanfang;
 }
 
-void Angestellter::beendeArbeitstag(Int32 stunden, Int32 minuten, Boolean erreicht) 
+void Angestellter::speichereArbeitszeit(Int32 stunden, Int32 minuten, Boolean erreicht)
 {
 	wochenZeitErreicht = erreicht;
 	if (erreicht) {
