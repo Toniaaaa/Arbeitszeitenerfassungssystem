@@ -715,6 +715,7 @@ namespace Zeiterfassungssystem {
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
 
+		this->urlaubstagSetzen();
 		this->neueWoche();
 
 		wochenZeitErreicht = angestellterAkt->getWochenZeitErreicht();
@@ -759,7 +760,7 @@ namespace Zeiterfassungssystem {
 			pauseStunde = pausenzeit->Hours;
 
 			//Anzeige Noch-Arbeitszeit bzw. Überstunden wird gesetzt
-			//Es wurden bereits Überstunden gezählt (also Wochen-Arbeitszeit war schon erreicht)
+			//Fall: Es wurden bereits Überstunden gezählt (also Wochen-Arbeitszeit war schon erreicht)
 			if (wochenZeitErreicht) {
 				arbeitsStunden += stunde;
 				if (arbeitsMinuten + minute >= 60) {
@@ -771,7 +772,7 @@ namespace Zeiterfassungssystem {
 				}
  				
 			}
-			//Es wurden noch keine Überstunden gezählt (also Wochen-Arbeitszeit noch nicht erreicht)
+			//Fall: Es wurden noch keine Überstunden gezählt (also Wochen-Arbeitszeit noch nicht erreicht)
 			else {
 				arbeitsStunden -= stunde;
 				if (arbeitsMinuten - minute < 0) {
@@ -782,7 +783,7 @@ namespace Zeiterfassungssystem {
 					arbeitsMinuten -= minute;
 				}
 				
-				//Fall, dass die Wochen-Arbeitszeit erreicht wurde, während das Fenster geschlossen war
+				//Fall: Die Wochen-Arbeitszeit wurde erreicht, während das Fenster geschlossen war
 				if (arbeitsStunden < 0) {
 					wochenZeitErreicht = true;
 					this->nochWochenstundenLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
@@ -991,5 +992,25 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
+	// Wenn eine neues Jahr startet, werden die Urlaubstage zurueckgesetzt
+	private: void urlaubstagSetzen() {
+
+		DateTime^ letzterTag = angestellterAkt->getLetzterArbeitstag();
+		DateTime^ heute = DateTime::Today;
+
+		//Urlaubstage verfallen nach 3 Monaten
+		if (letzterTag != nullptr && letzterTag->Year > heute->Year) {
+			angestellterAkt->setUrlaubstageGespart(angestellterAkt->getRestUrlaub());
+			angestellterAkt->setUrlaubstageGenommen(0);
+			//Angestellter wird informiert
+			MessageBox::Show("Sie haben noch " + angestellterAkt->getUrlaubstageGespart() + " Resturlaub aus dem vergangenen Jahr nicht genommen!\nDieser verfällt nach 3 Monaten!", 
+				"Achtung: Ihr Resturlaub verfällt", MessageBoxButtons::OK, MessageBoxIcon::Information);
+		}
+
+		//Urlaubstage, die aus dem letzten Jahr stammen, verfallen, wenn sie nicht bis März genommen wurden
+		if (angestellterAkt->getUrlaubstageGespart() != 0 && heute->Month >= 4) {
+			angestellterAkt->setUrlaubstageGespart(0);
+		}
+	}
 };
 }

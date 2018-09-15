@@ -11,6 +11,7 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->wochenstunden = wochenstunden;
 	this->urlaubstage = urlaubstage;
 	this->urlaubstageGenommen = 0;
+	this->urlaubstageGespart = 0;
 	listeEreignisse = gcnew List<Ereignis^>;
 	listegesamtstunden = gcnew List<Double>;
 	antragsInfos = gcnew List<String^>;
@@ -24,7 +25,7 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 
 Int32 Angestellter::getRestUrlaub() 
 {
-	return urlaubstage - urlaubstageGenommen;
+	return urlaubstage + urlaubstageGespart - urlaubstageGenommen;
 }
 
 Abteilung ^ Angestellter::getAbteilung()

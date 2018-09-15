@@ -22,6 +22,7 @@ private:
 	Int32 wochenstunden;
 	Int32 urlaubstage;
 	Int32 urlaubstageGenommen;
+	Int32 urlaubstageGespart;
 	List<Ereignis^>^ listeEreignisse;
 	List<Double>^ listegesamtstunden;
 	List<String^>^ antragsInfos;
@@ -52,6 +53,7 @@ public:
 	inline Int32 getUeberStunden() { return ueberStunden; }
 	inline Int32 getUeberMinuten() { return ueberMinuten; }
 	inline List<String^>^ getAntragsInfos() { return antragsInfos; }
+	inline Int32 getUrlaubstageGespart() { return urlaubstageGespart; }
 	
 	Int32 getRestUrlaub();
 	Ereignis^ getEreignis(Int32 index);
@@ -66,6 +68,8 @@ public:
 	inline void setPasswort(String^ passwort) {this->passwort = passwort;}
 	inline void setWochenstunden(Int32 wochenstunden) {this->wochenstunden = wochenstunden;}
 	inline void setUrlaubstage(Int32 urlaubstage) {this->urlaubstage = urlaubstage;}
+	inline void setUrlaubstageGenommen(Int32 urlaubstage) { this->urlaubstageGenommen = urlaubstage; }
+	inline void setUrlaubstageGespart(Int32 urlaubstage) { this->urlaubstageGespart = urlaubstage; }
 	inline void setWochenZeitErreicht(Boolean erreicht) {this->wochenZeitErreicht = erreicht;}
 	inline void setArbeitsStunden(Int32 stunden) { this->arbeitsStunden = stunden; }
 	inline void setArbeitsMinuten(Int32 minuten) { this->arbeitsMinuten = minuten; }

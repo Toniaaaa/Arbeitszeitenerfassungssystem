@@ -705,6 +705,7 @@ namespace Zeiterfassungssystem {
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {
 
 		this->neueWoche();
+		this->urlaubstagSetzen();
 
 		wochenZeitErreicht = angestellterAkt->getWochenZeitErreicht();
 
@@ -1008,6 +1009,27 @@ namespace Zeiterfassungssystem {
 			angestellterAkt->setArbeitsMinuten(0);
 			angestellterAkt->setUeberStunden(0);
 			angestellterAkt->setUeberMinuten(0);
+		}
+	}
+
+	// Wenn eine neues Jahr startet, werden die Urlaubstage zurueckgesetzt
+	private: void urlaubstagSetzen() {
+
+		DateTime^ letzterTag = angestellterAkt->getLetzterArbeitstag();
+		DateTime^ heute = DateTime::Today;
+
+		//Urlaubstage verfallen nach 3 Monaten
+		if (letzterTag != nullptr && letzterTag->Year > heute->Year) {
+			angestellterAkt->setUrlaubstageGespart(angestellterAkt->getRestUrlaub());
+			angestellterAkt->setUrlaubstageGenommen(0);
+			//Angestellter wird informiert
+			MessageBox::Show("Sie haben noch " + angestellterAkt->getUrlaubstageGespart() + " Resturlaub aus dem vergangenen Jahr nicht genommen!\nDieser verfällt nach 3 Monaten!",
+				"Achtung: Ihr Resturlaub verfällt", MessageBoxButtons::OK, MessageBoxIcon::Information);
+		}
+
+		//Urlaubstage, die aus dem letzten Jahr stammen, verfallen, wenn sie nicht bis März genommen wurden
+		if (angestellterAkt->getUrlaubstageGespart() != 0 && heute->Month >= 4) {
+			angestellterAkt->setUrlaubstageGespart(0);
 		}
 	}
 };
