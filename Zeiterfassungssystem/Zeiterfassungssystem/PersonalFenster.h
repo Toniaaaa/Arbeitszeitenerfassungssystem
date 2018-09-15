@@ -234,17 +234,23 @@ namespace Zeiterfassungssystem {
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getUeberStunden()) + ":" + ueberMinutenString);
 					listView1->Items->Add(item);
 
-			
-
 			}
 
 		} 
 		
 	}
+
+	void clear() {
+		for (int i = 0; i < unternehmenAkt->getAlleAngestellte()->Count; i++) {
+			if (unternehmenAkt->getAlleAngestellte() != nullptr) {
+				listView1->Items->RemoveAt(0);
+			}
+		}
+	}
 			 
-private: System::Void PersonalFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
-	
-}
+	private: System::Void PersonalFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+		this->clear();
+	}
 			 
 };
 }
