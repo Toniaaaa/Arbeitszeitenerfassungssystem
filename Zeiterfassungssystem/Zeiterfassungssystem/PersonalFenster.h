@@ -94,12 +94,13 @@ namespace Zeiterfassungssystem {
 			this->listView1->Location = System::Drawing::Point(0, 0);
 			this->listView1->Margin = System::Windows::Forms::Padding(2);
 			this->listView1->Name = L"listView1";
-			this->listView1->Size = System::Drawing::Size(1085, 616);
+			this->listView1->Size = System::Drawing::Size(1235, 616);
 			this->listView1->Sorting = System::Windows::Forms::SortOrder::Ascending;
 			this->listView1->TabIndex = 0;
 			this->listView1->UseCompatibleStateImageBehavior = false;
 			this->listView1->View = System::Windows::Forms::View::Details;
 			this->listView1->VirtualListSize = 8;
+			this->listView1->SelectedIndexChanged += gcnew System::EventHandler(this, &PersonalFenster::listView1_SelectedIndexChanged);
 			// 
 			// clm_Status
 			// 
@@ -109,12 +110,12 @@ namespace Zeiterfassungssystem {
 			// clm_Name
 			// 
 			this->clm_Name->Text = L"Name";
-			this->clm_Name->Width = 184;
+			this->clm_Name->Width = 161;
 			// 
 			// clm_Vorname
 			// 
 			this->clm_Vorname->Text = L"Vorname";
-			this->clm_Vorname->Width = 149;
+			this->clm_Vorname->Width = 126;
 			// 
 			// clm_Personalnummer
 			// 
@@ -144,7 +145,7 @@ namespace Zeiterfassungssystem {
 			// clm_WochenstundenRest
 			// 
 			this->clm_WochenstundenRest->Text = L"Wochenstunden Rest";
-			this->clm_WochenstundenRest->Width = 127;
+			this->clm_WochenstundenRest->Width = 119;
 			// 
 			// clm_UeberstundenWoche
 			// 
@@ -161,7 +162,7 @@ namespace Zeiterfassungssystem {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoSize = true;
-			this->ClientSize = System::Drawing::Size(1085, 616);
+			this->ClientSize = System::Drawing::Size(1235, 616);
 			this->Controls->Add(this->listView1);
 			this->DoubleBuffered = true;
 			this->Margin = System::Windows::Forms::Padding(2);
@@ -252,5 +253,7 @@ namespace Zeiterfassungssystem {
 		this->clear();
 	}
 			 
+private: System::Void listView1_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+}
 };
 }
