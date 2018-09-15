@@ -715,7 +715,7 @@ namespace Zeiterfassungssystem {
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
 
-		this->urlaubstagSetzen();
+		this->urlaubstageSetzen();
 		this->neueWoche();
 
 		wochenZeitErreicht = angestellterAkt->getWochenZeitErreicht();
@@ -993,7 +993,7 @@ namespace Zeiterfassungssystem {
 	}
 
 	// Wenn eine neues Jahr startet, werden die Urlaubstage zurueckgesetzt
-	private: void urlaubstagSetzen() {
+	private: void urlaubstageSetzen() {
 
 		DateTime^ letzterTag = angestellterAkt->getLetzterArbeitstag();
 		DateTime^ heute = DateTime::Today;

@@ -51,23 +51,8 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::ColumnHeader^  clm_Resturlaub;
 	private: System::Windows::Forms::ColumnHeader^  clm_WochenstundenGesamt;
 	private: System::Windows::Forms::ColumnHeader^  clm_WochenstundenRest;
-
-
 	private: System::Windows::Forms::ColumnHeader^  clm_UeberstundenWoche;
 	private: System::Windows::Forms::ColumnHeader^  clm_UeberstundenGesamt;
-	protected:
-
-
-
-
-
-
-
-
-
-	protected:
-
-	protected:
 
 	private:
 		/// <summary>
@@ -107,9 +92,9 @@ namespace Zeiterfassungssystem {
 			this->listView1->FullRowSelect = true;
 			this->listView1->GridLines = true;
 			this->listView1->Location = System::Drawing::Point(0, 0);
-			this->listView1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->listView1->Margin = System::Windows::Forms::Padding(2);
 			this->listView1->Name = L"listView1";
-			this->listView1->Size = System::Drawing::Size(1485, 679);
+			this->listView1->Size = System::Drawing::Size(1085, 616);
 			this->listView1->Sorting = System::Windows::Forms::SortOrder::Ascending;
 			this->listView1->TabIndex = 0;
 			this->listView1->UseCompatibleStateImageBehavior = false;
@@ -119,7 +104,7 @@ namespace Zeiterfassungssystem {
 			// clm_Status
 			// 
 			this->clm_Status->Text = L"Status";
-			this->clm_Status->Width = 150;
+			this->clm_Status->Width = 128;
 			// 
 			// clm_Name
 			// 
@@ -134,52 +119,52 @@ namespace Zeiterfassungssystem {
 			// clm_Personalnummer
 			// 
 			this->clm_Personalnummer->Text = L"Personalnummer";
-			this->clm_Personalnummer->Width = 141;
+			this->clm_Personalnummer->Width = 93;
 			// 
 			// clm_Abteilung
 			// 
 			this->clm_Abteilung->Text = L"Abteilung";
-			this->clm_Abteilung->Width = 75;
+			this->clm_Abteilung->Width = 91;
 			// 
 			// clm_Urlaubstage
 			// 
 			this->clm_Urlaubstage->Text = L"Urlaubstage gesamt";
-			this->clm_Urlaubstage->Width = 135;
+			this->clm_Urlaubstage->Width = 107;
 			// 
 			// clm_Resturlaub
 			// 
 			this->clm_Resturlaub->Text = L"Resturlaub";
-			this->clm_Resturlaub->Width = 82;
+			this->clm_Resturlaub->Width = 70;
 			// 
 			// clm_WochenstundenGesamt
 			// 
 			this->clm_WochenstundenGesamt->Text = L"Wochenstunden gesamt";
-			this->clm_WochenstundenGesamt->Width = 140;
+			this->clm_WochenstundenGesamt->Width = 129;
 			// 
 			// clm_WochenstundenRest
 			// 
 			this->clm_WochenstundenRest->Text = L"Wochenstunden Rest";
-			this->clm_WochenstundenRest->Width = 155;
+			this->clm_WochenstundenRest->Width = 127;
 			// 
 			// clm_UeberstundenWoche
 			// 
 			this->clm_UeberstundenWoche->Text = L"Überstunden Woche";
-			this->clm_UeberstundenWoche->Width = 139;
+			this->clm_UeberstundenWoche->Width = 122;
 			// 
 			// clm_UeberstundenGesamt
 			// 
 			this->clm_UeberstundenGesamt->Text = L"Überstunden gesamt";
-			this->clm_UeberstundenGesamt->Width = 137;
+			this->clm_UeberstundenGesamt->Width = 113;
 			// 
 			// PersonalFenster
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoSize = true;
-			this->ClientSize = System::Drawing::Size(1485, 679);
+			this->ClientSize = System::Drawing::Size(1085, 616);
 			this->Controls->Add(this->listView1);
 			this->DoubleBuffered = true;
-			this->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"PersonalFenster";
 			this->Text = L"PersonalFenster";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &PersonalFenster::PersonalFenster_FormClosing);
@@ -206,17 +191,26 @@ namespace Zeiterfassungssystem {
 					item->Clone();
 					if (angestellte[i]->getStatus()->Equals("Viel Erfolg beim Erledigen Ihrer Aufgaben!")) {
 						item->Text = "arbeitet..";
+						item->ForeColor = System::Drawing::Color::SpringGreen;
 					}
 					else if (angestellte[i]->getStatus()->Equals("Geniessen Sie Ihre Pause!")) {
 						item->Text = "in der Pause..";
+						item->ForeColor = System::Drawing::Color::Gray;
 					}
 					else if (angestellte[i]->getStatus()->Equals("Schön, dass Sie da sind!")) {
 						item->Text = "anwesend..";
+						item->ForeColor = System::Drawing::Color::Black;
 					}
 					else {
 						item->Text = "nicht anwesend..";
+						item->ForeColor = System::Drawing::Color::Red;
 					}
-					
+
+					String^ ueberMinutenString = Convert::ToString(angestellte[i]->getUeberMinuten());
+					if (angestellte[i]->getUeberMinuten() < 10) {
+						ueberMinutenString = "0" + Convert::ToString(angestellte[i]->getUeberMinuten());
+					}
+
 					item->SubItems->Add(angestellte[i]->getNachname());
 					item->SubItems->Add(angestellte[i]->getVorname());
 					item->SubItems->Add(angestellte[i]->getPersonalnummer());
@@ -226,7 +220,7 @@ namespace Zeiterfassungssystem {
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getWochensstunden()));
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getArbeitsStunden() + ":" + angestellte[i]->getArbeitsMinuten()));
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getUeberstundenGesamt()));
-					item->SubItems->Add(Convert::ToString(angestellte[i]->getUeberStunden()) + ":" + Convert::ToString(angestellte[i]->getUeberMinuten()));
+					item->SubItems->Add(Convert::ToString(angestellte[i]->getUeberStunden()) + ":" + ueberMinutenString);
 					listView1->Items->Add(item);
 
 			
