@@ -20,6 +20,7 @@ namespace Zeiterfassungssystem {
 	private:
 		Aenderungsantrag^ antrag;
 		String^ textZumAntrag;
+		Boolean istOffen;
 
 	private: System::Windows::Forms::TextBox^  kommentarVorgesetzterTxt;
 	private: System::Windows::Forms::Label^  kommentarLbl;
@@ -34,6 +35,7 @@ namespace Zeiterfassungssystem {
 		AenderungsbearbeitungsFenster(void)
 		{
 			InitializeComponent();
+			istOffen = false;
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
@@ -316,6 +318,7 @@ namespace Zeiterfassungssystem {
 			this->Margin = System::Windows::Forms::Padding(2, 3, 2, 3);
 			this->Name = L"AenderungsbearbeitungsFenster";
 			this->Text = L"Neue Anfrage";
+			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &AenderungsbearbeitungsFenster::AenderungsbearbeitungsFenster_FormClosed);
 			this->Load += gcnew System::EventHandler(this, &AenderungsbearbeitungsFenster::AenderungsbearbeitungsFenster_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -328,6 +331,7 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void AenderungsbearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+		istOffen = true;
 		p_Tag = antrag->getTag();
 		p_Ankunft = antrag->getAnfang();
 		p_Gehen = antrag->getEnde();
@@ -392,6 +396,10 @@ namespace Zeiterfassungssystem {
 			}
 		}
 
+		Boolean getIstOffen() {
+			return istOffen;
+		}
+
 		void clear()
 		{
 			this->kommentarVorgesetzterTxt->Text = "";
@@ -427,6 +435,9 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
-	};
+	private: System::Void AenderungsbearbeitungsFenster_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {
+		istOffen = false;
+	}
+};
 
 }

@@ -804,6 +804,7 @@ namespace Zeiterfassungssystem {
 	//WENN DIE SEITE FERTIG GELADEN WURDE
 	private: System::Void StartseiteVorgesetzte_Shown(System::Object^  sender, System::EventArgs^  e) {
 		this->pruefeAntraege();
+		this->pruefeInfos();
 	}
 
 	//SEITE WIRD GESCHLOSSEN
@@ -852,9 +853,10 @@ namespace Zeiterfassungssystem {
 		nochWochenstundenLbl->Text = uhrzeitString(arbeitsMinuten, arbeitsStunden) + " Stunden";
 
 		//Regelmäßige Überprüfung, ob sich etwas an den Anträgen oder AntragsInfos geändert hat:
-		Int32 interval = 1; //In welchem Rhythmus (Minuten wird geprüft)
+		Int32 interval = 1; //In welchem Rhythmus wird geprüft (Minuten 0 bis 59)
 		if (sekunde == 0 && minute % interval == 0) {
 			this->pruefeAntraege();
+			this->pruefeInfos();
 		}
 	}
 
@@ -930,43 +932,52 @@ namespace Zeiterfassungssystem {
 		return std + ":" + min;
 	}
 
-	private: void pruefeAntraege() {
+	private: void pruefeInfos() {
 		//Es wird geprüft, ob zu den gestellten Anträgen neue Informationen vorhanden sind. Diese werden ggf. als MessageBox ausgegeben.
 		Int32 anzAntragsInfos = angestellterAkt->getAntragsInfos()->Count;
 		while (anzAntragsInfos > 0) {
-			MessageBox::Show(angestellterAkt->getAntragsInfos()[anzAntragsInfos - 1], "Ihr Antrag", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			String^ antragString = angestellterAkt->getAntragsInfos()[anzAntragsInfos - 1];
 			angestellterAkt->removeAntragsInfo(--anzAntragsInfos);
-			urlaubsbearbeitungsfenster->clear();
+			MessageBox::Show(antragString, "Ihr Antrag", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
+	}
+
+	private: void pruefeAntraege() {
 
 		//Es wird geprüft, ob die Liste der Urlaubsanträge Anträge beinhaltet. 
 		//Wenn Anträge vorhanden sind, können sie bestätigt werden.
-		Int32 anzUrlaubsantraege = angestellterAkt->getUrlaubsantraege()->Count;
-		while (anzUrlaubsantraege > 0) {
-			urlaubsbearbeitungsfenster->setUrlaubsantrag(angestellterAkt->getUrlaubsantraege()[anzUrlaubsantraege - 1]);
-			System::Windows::Forms::DialogResult result = urlaubsbearbeitungsfenster->ShowDialog(this);
-			//Nur, wenn einer der beiden Buttons gedrückt wurde, wird der Antrag aus der Liste entfernt. Wird das Fenster einfach über das "X" geschlossen, bleibt der Antrag in der Liste
-			//und erscheint bei der nächsten Überprüfung wieder.
-			if (result == System::Windows::Forms::DialogResult::OK) {
-				angestellterAkt->removeUrlaubsantrag(anzUrlaubsantraege - 1);
-				urlaubsbearbeitungsfenster->clear();
+		//Eine Überflutung mit Fenstern wird durch die Prüfung, ob diese bereits offen sind, verhindert
+		if (!urlaubsbearbeitungsfenster->getIstOffen()) {
+			Int32 anzUrlaubsantraege = angestellterAkt->getUrlaubsantraege()->Count;
+			while (anzUrlaubsantraege > 0) {
+				urlaubsbearbeitungsfenster->setUrlaubsantrag(angestellterAkt->getUrlaubsantraege()[anzUrlaubsantraege - 1]);
+				System::Windows::Forms::DialogResult result = urlaubsbearbeitungsfenster->ShowDialog(this);
+				//Nur, wenn einer der beiden Buttons gedrückt wurde, wird der Antrag aus der Liste entfernt. Wird das Fenster einfach über das "X" geschlossen, bleibt der Antrag in der Liste
+				//und erscheint bei der nächsten Überprüfung wieder.
+				if (result == System::Windows::Forms::DialogResult::OK) {
+					angestellterAkt->removeUrlaubsantrag(anzUrlaubsantraege - 1);
+					urlaubsbearbeitungsfenster->clear();
+				}
+				anzUrlaubsantraege--;
 			}
-			anzUrlaubsantraege--;
 		}
 
 		//Es wird geprüft, ob die Liste der Änderungsanträge Anträge beinhaltet. 
 		//Wenn Anträge vorhanden sind, können sie bestätigt werden.
-		Int32 anzAenderungsantraege = angestellterAkt->getAenderungsantraege()->Count;
-		while (anzAenderungsantraege > 0) {
-			aenderungsfenster->setAenderungsantrag(angestellterAkt->getAenderungsantraege()[anzAenderungsantraege - 1]);
-			System::Windows::Forms::DialogResult result = aenderungsfenster->ShowDialog(this);
-			//Nur, wenn einer der beiden Buttons gedrückt wurde, wird der Antrag aus der Liste entfernt. Wird das Fenster einfach über das "X" geschlossen, bleibt der Antrag in der Liste
-			//und erscheint bei der nächsten Überprüfung wieder.
-			if (result == System::Windows::Forms::DialogResult::OK) {
-				angestellterAkt->removeAenderungsantrag(anzAenderungsantraege - 1);
-				aenderungsfenster->clear();
+		//Eine Überflutung mit Fenstern wird durch die Prüfung, ob diese bereits offen sind, verhindert
+		if (!aenderungsfenster->getIstOffen()) {
+			Int32 anzAenderungsantraege = angestellterAkt->getAenderungsantraege()->Count;
+			while (anzAenderungsantraege > 0) {
+				aenderungsfenster->setAenderungsantrag(angestellterAkt->getAenderungsantraege()[anzAenderungsantraege - 1]);
+				System::Windows::Forms::DialogResult result = aenderungsfenster->ShowDialog(this);
+				//Nur, wenn einer der beiden Buttons gedrückt wurde, wird der Antrag aus der Liste entfernt. Wird das Fenster einfach über das "X" geschlossen, bleibt der Antrag in der Liste
+				//und erscheint bei der nächsten Überprüfung wieder.
+				if (result == System::Windows::Forms::DialogResult::OK) {
+					angestellterAkt->removeAenderungsantrag(anzAenderungsantraege - 1);
+					aenderungsfenster->clear();
+				}
+				anzAenderungsantraege--;
 			}
-			anzAenderungsantraege--;
 		}
 	}
 	

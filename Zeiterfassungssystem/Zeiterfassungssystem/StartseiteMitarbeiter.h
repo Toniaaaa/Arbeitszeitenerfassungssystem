@@ -814,7 +814,7 @@ namespace Zeiterfassungssystem {
 
 	//WENN DIE SEITE FERTIG GELADEN WURDE
 	private: System::Void StartseiteMitarbeiter_Shown(System::Object^  sender, System::EventArgs^  e) {
-		this->pruefeAntraege();
+		this->pruefeInfos();
 	}
 
 	//SEITE WIRD GESCHLOSSEN
@@ -863,10 +863,11 @@ namespace Zeiterfassungssystem {
 		nochWochenstundenLbl->Text = uhrzeitString(arbeitsMinuten, arbeitsStunden) + " Stunden";
 
 		//Regelmäßige Überprüfung, ob sich etwas an den Anträgen oder AntragsInfos geändert hat:
-		Int32 interval = 1; //In welchem Rhythmus (Minuten wird geprüft)
+		Int32 interval = 1; //In welchem Rhythmus wird geprüft (Minuten 0-59)
 		if (sekunde == 0 && minute % interval == 0) {
-			this->pruefeAntraege();
+			this->pruefeInfos();
 		}
+		
 	}
 
 	//TIMER UHR
@@ -941,12 +942,13 @@ namespace Zeiterfassungssystem {
 		return std + ":" + min;
 	}
 
-	private: void pruefeAntraege() {
+	private: void pruefeInfos() {
 		//Es wird geprüft, ob zu den gestellten Anträgen neue Informationen vorhanden sind. Diese werden ggf. als MessageBox ausgegeben.
 		Int32 anzAntragsInfos = angestellterAkt->getAntragsInfos()->Count;
 		while (anzAntragsInfos > 0) {
-			MessageBox::Show(angestellterAkt->getAntragsInfos()[anzAntragsInfos - 1], "Ihr Antrag", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			String^ antragString = angestellterAkt->getAntragsInfos()[anzAntragsInfos - 1];
 			angestellterAkt->removeAntragsInfo(--anzAntragsInfos);
+			MessageBox::Show(antragString, "Ihr Antrag", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 	}
 

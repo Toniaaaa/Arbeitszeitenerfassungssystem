@@ -18,6 +18,7 @@ namespace Zeiterfassungssystem {
 	private:
 		Urlaubsantrag^ antrag;
 		String^ textZumAntrag;
+		Boolean istOffen;
 
 	private: System::Windows::Forms::TextBox^  txt_Kommentar;
 	private: System::Windows::Forms::Label^  label1;
@@ -28,6 +29,7 @@ namespace Zeiterfassungssystem {
 		UrlaubsanfragenbearbeitungsFenster(void)
 		{
 			InitializeComponent();
+			istOffen = false;
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
@@ -262,6 +264,7 @@ namespace Zeiterfassungssystem {
 			this->Margin = System::Windows::Forms::Padding(2, 3, 2, 3);
 			this->Name = L"UrlaubsanfragenbearbeitungsFenster";
 			this->Text = L"Neue Anfrage";
+			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &UrlaubsanfragenbearbeitungsFenster::UrlaubsanfragenbearbeitungsFenster_FormClosed);
 			this->Load += gcnew System::EventHandler(this, &UrlaubsanfragenbearbeitungsFenster::AenderungsbearbeitungsFenster_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -270,6 +273,7 @@ namespace Zeiterfassungssystem {
 #pragma endregion
 	
 	private: System::Void AenderungsbearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+		istOffen = true;
 		p_Name = antrag->getAntragsteller()->getVorname() + " " + antrag->getAntragsteller()->getNachname();
 		p_Tage = antrag->getTage();
 		p_Anfang = antrag->getAnfang();
@@ -326,6 +330,10 @@ public:
 		}
 	}
 
+	Boolean getIstOffen() {
+		return istOffen;
+	}
+
 	void clear() 
 	{
 		this->txt_Kommentar->Text = "";
@@ -362,6 +370,10 @@ private: System::Void btn_AntragAblehnen_Click(System::Object^  sender, System::
 	}
 }
 
+private: System::Void UrlaubsanfragenbearbeitungsFenster_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) 
+{
+	istOffen = false;
+}
 };
 
 }
