@@ -161,7 +161,7 @@ namespace Zeiterfassungssystem {
 			this->btn_mitarbeiter_hinzufuegen->Name = L"btn_mitarbeiter_hinzufuegen";
 			this->btn_mitarbeiter_hinzufuegen->Size = System::Drawing::Size(171, 35);
 			this->btn_mitarbeiter_hinzufuegen->TabIndex = 8;
-			this->btn_mitarbeiter_hinzufuegen->Text = L"Hinzufügen";
+			this->btn_mitarbeiter_hinzufuegen->Text = L"Ändern";
 			this->btn_mitarbeiter_hinzufuegen->UseVisualStyleBackColor = true;
 			this->btn_mitarbeiter_hinzufuegen->Click += gcnew System::EventHandler(this, &BearbeitungsFenster::btn_mitarbeiter_hinzufuegen_Click);
 			// 
@@ -320,7 +320,7 @@ namespace Zeiterfassungssystem {
 		void setAngestellten(Angestellter^ angestellter) {
 			this->angestellter = angestellter;
 		}
-		String^ getPersonalnummer() {
+		String^ getPersonalnummerVergleich() {
 			return this->txt_personalnummer->Text;
 		}
 
@@ -332,7 +332,7 @@ namespace Zeiterfassungssystem {
 		
 
 		for (int i = 0; i < angestellte->Count; i++) {
-			if (angestellte[i]->getPersonalnummer()->Equals(getPersonalnummer())) {
+			if (angestellte[i]->getPersonalnummer()->Equals(getPersonalnummerVergleich())) {
 				setAngestellten(angestellte[i]);
 				txt_name->Text = angestellte[i]->getNachname();
 				txt_vorname->Text = angestellte[i]->getVorname();
@@ -440,7 +440,7 @@ namespace Zeiterfassungssystem {
 private: System::Void btn_loeschen_Click(System::Object^  sender, System::EventArgs^  e) {
 
 	for (int i = 0; i < angestellter->getAbteilung()->getAnzahlMitarbeiter(); i++) {
-		if (angestellte[i]->getPersonalnummer()->Equals(getPersonalnummer())) {
+		if (angestellte[i]->getPersonalnummer()->Equals(getPersonalnummerVergleich())) {
 			angestellte[i]->getAbteilung()->removeMitarbeiter(i);
 		}
 	}
