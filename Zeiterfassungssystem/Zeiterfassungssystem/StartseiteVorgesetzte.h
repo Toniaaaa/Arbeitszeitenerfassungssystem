@@ -705,7 +705,7 @@ namespace Zeiterfassungssystem {
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {
 
 		this->neueWoche();
-		this->urlaubstageSetzen();
+		this->neuesJahr();
 
 		wochenZeitErreicht = angestellterAkt->getWochenZeitErreicht();
 
@@ -1024,18 +1024,27 @@ namespace Zeiterfassungssystem {
 	}
 
 	// Wenn eine neues Jahr startet, werden die Urlaubstage zurueckgesetzt
-	private: void urlaubstageSetzen() {
+	private: void neuesJahr() {
 
 		DateTime^ letzterTag = angestellterAkt->getLetzterArbeitstag();
 		DateTime^ heute = DateTime::Today;
 
-		//Urlaubstage verfallen nach 3 Monaten
+		//Wenn seit dem letzten Arbeitstag ein neues Jahr angefangen hat
 		if (letzterTag != nullptr && letzterTag->Year > heute->Year) {
+			//Urlaubstage verfallen nach 3 Monaten
 			angestellterAkt->setUrlaubstageGespart(angestellterAkt->getRestUrlaub());
 			angestellterAkt->setUrlaubstageGenommen(0);
 			//Angestellter wird informiert
 			MessageBox::Show("Sie haben noch " + angestellterAkt->getUrlaubstageGespart() + " Resturlaub aus dem vergangenen Jahr nicht genommen!\nDieser verfällt nach 3 Monaten!",
 				"Achtung: Ihr Resturlaub verfällt", MessageBoxButtons::OK, MessageBoxIcon::Information);
+
+			//Gespeicherte Arbeitszeiten verfallen nach drei Jahren
+			Int32 i = 0;
+			//Kein Exception-Handling notwendig, da letzterArbeitstag kein Nullpointer sein kann (siehe oben) und daher auch schon mindesten ein Ereignis existieren muss.
+			while (heute->Year - angestellterAkt->getEreignis(i)->getTimestamp()->Year > 3) {
+				angestellterAkt->removeEreignis(i);
+				i++;
+			}
 		}
 
 		//Urlaubstage, die aus dem letzten Jahr stammen, verfallen, wenn sie nicht bis März genommen wurden
