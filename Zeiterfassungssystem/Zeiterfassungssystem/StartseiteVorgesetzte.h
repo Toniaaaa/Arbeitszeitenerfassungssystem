@@ -261,7 +261,7 @@ namespace Zeiterfassungssystem {
 			this->resturlaubSchriftLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->resturlaubSchriftLbl->ForeColor = System::Drawing::SystemColors::ControlText;
-			this->resturlaubSchriftLbl->Location = System::Drawing::Point(580, 725);
+			this->resturlaubSchriftLbl->Location = System::Drawing::Point(575, 725);
 			this->resturlaubSchriftLbl->Name = L"resturlaubSchriftLbl";
 			this->resturlaubSchriftLbl->Size = System::Drawing::Size(235, 25);
 			this->resturlaubSchriftLbl->TabIndex = 9;
@@ -369,7 +369,7 @@ namespace Zeiterfassungssystem {
 			this->resturlaubLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->resturlaubLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->resturlaubLbl->Location = System::Drawing::Point(557, 750);
+			this->resturlaubLbl->Location = System::Drawing::Point(567, 750);
 			this->resturlaubLbl->Name = L"resturlaubLbl";
 			this->resturlaubLbl->Size = System::Drawing::Size(258, 50);
 			this->resturlaubLbl->TabIndex = 17;
