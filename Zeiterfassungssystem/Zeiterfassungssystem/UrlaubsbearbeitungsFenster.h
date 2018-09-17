@@ -1,5 +1,6 @@
 #pragma once
 #include "Urlaubsantrag.h"
+#include "Unternehmen.h"
 
 namespace Zeiterfassungssystem {
 
@@ -19,6 +20,7 @@ namespace Zeiterfassungssystem {
 		Urlaubsantrag^ antrag;
 		String^ textZumAntrag;
 		Boolean istOffen;
+		Unternehmen^ unternehmen;
 
 	private: System::Windows::Forms::TextBox^  txt_Kommentar;
 	private: System::Windows::Forms::Label^  label1;
@@ -287,6 +289,11 @@ public:
 		this->antrag = antrag;
 	}
 
+	void setUnternehmen(Unternehmen^ unternehmen)
+	{
+		this->unternehmen = unternehmen;
+	}
+
 	property DateTime^ p_Ende
 	{
 		void set(DateTime^ p_Ende) {
@@ -349,7 +356,7 @@ private: System::Void btn_AntragBestaetigen_Click(System::Object^  sender, Syste
 			textZumAntrag += "\n\nKommentar:\n" + p_Kommentar;
 		}
 		antrag->getAntragsteller()->addAntragsInfo(textZumAntrag);
-		antrag->getAntragsteller()->nehmeUrlaub(Convert::ToInt32(lbl_tage->Text));
+		antrag->getAntragsteller()->nehmeUrlaub(antrag->getAnfang(), antrag->getEnde(), unternehmen->getFeiertage());
 		this->DialogResult = System::Windows::Forms::DialogResult::OK;
 		this->Close();
 	}

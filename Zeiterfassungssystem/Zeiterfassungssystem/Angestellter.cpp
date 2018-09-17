@@ -1,6 +1,8 @@
 #include "Angestellter.h"
 #include "Ereignis.h"
 
+using namespace System::Windows::Forms;
+
 Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32 wochenstunden, Int32 urlaubstage)
 {
 	this->vorname = vorname;
@@ -21,6 +23,7 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->ueberStunden = 0;
 	this->ueberMinuten = 0;
 	this->ueberStundenGesamt = 0.0;
+	this->listeUrlaubstage = gcnew List<DateTime>;
 }
 
 Int32 Angestellter::getRestUrlaub() 
@@ -195,7 +198,69 @@ DateTime^ Angestellter::getLetzterArbeitstag()
 	return datum;
 }
 
-void Angestellter::nehmeUrlaub(Int32 tage)
+//Fügt die Anzahl der Urlaubstage den genommenen Tagen hinzu und reduziert damit den Resturlaub
+//Trägt alle Tage innerhalb der Zeitspanne, die kein Wochenende oder Feiertage sind, in die Liste der Urlaubstage ein. 
+void Angestellter::nehmeUrlaub(DateTime beginn, DateTime ende, List<DateTime>^ feiertage)
 {
-	urlaubstageGenommen += tage;
+	while (beginn <= ende) {
+		//Prüfe, ob dieser Tag bereits ein Feiertag ist
+		Boolean istFeiertag = false;
+		for (int i = 0; i < feiertage->Count; i++) {
+			if (beginn == feiertage[i]) {
+				istFeiertag = true;
+				break;
+			}
+		}
+		//Prüfe, ob dieser Tag ein Samstag oder Sonntag ist
+		if (!istFeiertag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
+			//Tag wird der Liste hinzugefügt und ein Tag den genommenen Urlaubstagen hinzugefügt.
+			listeUrlaubstage->Add(beginn);
+			urlaubstageGenommen++;
+		}
+		beginn = beginn.AddDays(1.0);
+	}
+}
+
+//Berechnet die Anzahl der Tage in einem Intervall ohne Wochenenden und Feiertage
+Int32 Angestellter::berechneUrlaubstage(DateTime beginn, DateTime ende, List<DateTime>^ feiertage)
+{
+
+	Int32 anzUrlaubstage = 0;
+
+	while (beginn <= ende) {
+		//Prüfe, ob dieser Tag bereits ein Feiertag ist
+		Boolean istFeiertag = false;
+		for (int i = 0; i < feiertage->Count; i++) {
+			if (beginn == feiertage[i]) {
+				istFeiertag = true;
+				break;
+			}
+		}
+		//Prüfe, ob dieser Tag ein Samstag oder Sonntag ist
+		if (!istFeiertag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
+			//Tag wird der Liste hinzugefügt und ein Tag den genommenen Urlaubstagen hinzugefügt.
+			anzUrlaubstage++;
+		}
+		beginn = beginn.AddDays(1.0);
+	}
+
+	return anzUrlaubstage;
+}
+
+
+void Angestellter::addUrlaubstag(DateTime tag)
+{
+	listeUrlaubstage->Add(tag);
+}
+
+void Angestellter::removeUrlaubstag(DateTime tag)
+{
+	listeUrlaubstage->Remove(tag);
+}
+
+void Angestellter::loescheAlleUrlaubstage()
+{
+	for (int i = listeUrlaubstage->Count - 1; i >= 0; i--) {
+		listeUrlaubstage->RemoveAt(i);
+	}
 }

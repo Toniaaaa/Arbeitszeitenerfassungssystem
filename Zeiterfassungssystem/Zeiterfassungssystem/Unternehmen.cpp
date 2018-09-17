@@ -10,12 +10,14 @@ using namespace System::IO;
 Unternehmen::Unternehmen()
 {
 	abteilungen = gcnew List<Abteilung^>;
+	feiertage = gcnew List<DateTime>;
 
 	Abteilung^ administration;
 	Vorgesetzter^ admin = gcnew Vorgesetzter("Admin", "istrator", administration, "1", "1234", 169, 28);
 	administration = gcnew Abteilung("1", admin);
 	admin->setAbteilung(administration);
 	abteilungen->Add(administration);
+	this->erstelleRegelFeiertage();
 }
 
 Unternehmen^ Unternehmen::ladeUnternehmen(String^ file) {
@@ -100,4 +102,30 @@ Angestellter ^ Unternehmen::loginaccept(String ^ personalnummer, String ^ passwo
 List<Abteilung^>^ Unternehmen::getAbteilungen()
 {
 	return abteilungen;
+}
+
+void Unternehmen::addFeiertag(DateTime tag)
+{
+	this->feiertage->Add(tag);
+}
+
+void Unternehmen::removeFeiertag(DateTime tag)
+{
+	feiertage->Remove(tag);
+}
+
+void Unternehmen::erstelleRegelFeiertage()
+{
+	for (int i = 0; i < feiertageRegel->Length; i = i + 2) {
+		DateTime heute = DateTime::Today;
+		DateTime^ feiertag = gcnew DateTime(heute.Year, feiertageRegel[i + 1], feiertageRegel[i]);
+		feiertage->Add(*feiertag);
+	}
+}
+
+void Unternehmen::loescheAlleFeiertage()
+{
+	for (int i = feiertage->Count - 1; i >= 0; i--) {
+		feiertage->RemoveAt(i);
+	}
 }

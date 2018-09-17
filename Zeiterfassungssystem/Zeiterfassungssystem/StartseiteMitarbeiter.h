@@ -642,6 +642,7 @@ namespace Zeiterfassungssystem {
 	//URLAUBSFENSTER
 	private: System::Void urlaubBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		urlaubsfenster->setAngestellter(angestellterAkt);
+		urlaubsfenster->setUnternehmen(unternehmen);
 		System::Windows::Forms::DialogResult result = urlaubsfenster->ShowDialog(this);
 
 		//Wenn vom Urlaubsfenster OK gegeben wird, wir zunächst eine Abfrage erzeugt, ob der Antrag so in Ordnung ist. Wenn der Mitarbeiter mit "Ja" bestätigt, wird ein neues Objekt vom Typ
@@ -1035,6 +1036,10 @@ namespace Zeiterfassungssystem {
 		if (angestellterAkt->getUrlaubstageGespart() != 0 && heute->Month >= 4) {
 			angestellterAkt->setUrlaubstageGespart(0);
 		}
+
+		//Feiertage werden für das neue Jahr gesetzt
+		unternehmen->loescheAlleFeiertage();
+		unternehmen->erstelleRegelFeiertage();
 	}
 
 };

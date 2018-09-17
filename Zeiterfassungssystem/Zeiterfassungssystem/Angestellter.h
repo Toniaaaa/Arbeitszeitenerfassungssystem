@@ -23,6 +23,7 @@ private:
 	Int32 urlaubstage;
 	Int32 urlaubstageGenommen;
 	Int32 urlaubstageGespart;
+	List<DateTime>^ listeUrlaubstage;
 	List<Ereignis^>^ listeEreignisse;
 	List<Double>^ listegesamtstunden;
 	List<String^>^ antragsInfos;
@@ -82,12 +83,16 @@ public:
 	void removeEreignis(Int32 index);
 	void addAntragsInfo(String^ info);
 	void removeAntragsInfo(Int32 index);
+	void addUrlaubstag(DateTime tag);
+	void removeUrlaubstag(DateTime tag);
+	void loescheAlleUrlaubstage();
 
 	//Hilfsmethoden
 	void setAktuellenStatus(String^ status);
 	String^ getStatus();
 	void speichereArbeitszeit(Int32 stunden, Int32 minuten, Boolean erreicht);
-	void nehmeUrlaub(Int32 tage);
+	void nehmeUrlaub(DateTime beginn, DateTime ende, List<DateTime>^ feiertage);
+	Int32 berechneUrlaubstage(DateTime beginn, DateTime ende, List<DateTime>^ feiertage);
 	// Ereignislisteauswertungsmethodensammlung
 
 	DateTime^ getLetzterArbeitstag();

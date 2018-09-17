@@ -11,13 +11,14 @@ ref class Unternehmen
 {
 private:
 	List<Abteilung^>^ abteilungen;
+	List<DateTime>^ feiertage;
 	String^ file;
 
 	Unternehmen();
 
 public:
 	static String^ SPEICHERORT = "Rebellion.dat";
-
+	static array<Int32>^ feiertageRegel = {1, 1, 1, 5, 3, 10, 25, 12, 26, 12};
 	static Unternehmen^ ladeUnternehmen(String^ file);
 	void speichern();
 
@@ -28,5 +29,9 @@ public:
 	List<Angestellter^>^ getAlleAngestellte();
 	Angestellter^ loginaccept(String^ personalnummer, String^ passwort);
 	List<Abteilung^>^ getAbteilungen();
-
+	inline List<DateTime>^ getFeiertage() { return feiertage; }
+	void addFeiertag(DateTime tag);
+	void removeFeiertag(DateTime tag);
+	void erstelleRegelFeiertage();
+	void loescheAlleFeiertage();
 };
