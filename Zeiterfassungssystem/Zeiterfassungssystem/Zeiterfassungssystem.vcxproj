@@ -129,6 +129,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Abteilung.h" />
+    <ClInclude Include="AbteilungsFenster.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Aenderungsantrag.h" />
     <ClInclude Include="AenderungsantragsFenster.h">
       <FileType>CppForm</FileType>
@@ -137,6 +140,9 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Angestellter.h" />
+    <ClInclude Include="AuswahlFenster.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="BearbeitungsFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -182,10 +188,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Abteilung.cpp" />
+    <ClCompile Include="AbteilungsFenster.cpp" />
     <ClCompile Include="Aenderungsantrag.cpp" />
     <ClCompile Include="AenderungsantragsFenster.cpp" />
     <ClCompile Include="AenderungsbearbeitungsFenster.cpp" />
     <ClCompile Include="Angestellter.cpp" />
+    <ClCompile Include="AuswahlFenster.cpp" />
     <ClCompile Include="BearbeitungsFenster.cpp" />
     <ClCompile Include="KalenderFenster.cpp" />
     <ClCompile Include="LogInFenster.cpp" />
@@ -213,8 +221,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AbteilungsFenster.resx">
+      <DependentUpon>AbteilungsFenster.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AenderungsbearbeitungsFenster.resx">
       <DependentUpon>AenderungsbearbeitungsFenster.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AuswahlFenster.resx">
+      <DependentUpon>AuswahlFenster.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="BearbeitungsFenster.resx">
       <DependentUpon>BearbeitungsFenster.h</DependentUpon>
