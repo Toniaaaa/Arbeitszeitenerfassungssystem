@@ -825,6 +825,11 @@ namespace Zeiterfassungssystem {
 			}
 		}
 
+		//Zeitpunkt des Einloggens speichern
+		Ereignis^ eingeloggt = gcnew Ereignis(EINGELOGGT, DateTime::Now);
+		angestellterAkt->fuegeEreignisHinzu(eingeloggt);
+
+		//Labels setzen:
 		ueberstundenLbl->Text = angestellterAkt->getUeberstundenGesamt() + " Stunden";
 		nochWochenstundenLbl->Text = uhrzeitString(arbeitsMinuten, arbeitsStunden) + " Stunden";
 		lbl_Status->Text = angestellterAkt->getStatus();
