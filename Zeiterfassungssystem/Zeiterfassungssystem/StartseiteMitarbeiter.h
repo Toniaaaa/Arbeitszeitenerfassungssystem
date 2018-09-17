@@ -962,6 +962,7 @@ namespace Zeiterfassungssystem {
 		while (anzAntragsInfos > 0) {
 			String^ antragString = angestellterAkt->getAntragsInfos()[anzAntragsInfos - 1];
 			angestellterAkt->removeAntragsInfo(--anzAntragsInfos);
+			resturlaubLbl->Text = angestellterAkt->getRestUrlaub() + " Tage";
 			MessageBox::Show(antragString, "Ihr Antrag", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 	}
@@ -977,10 +978,10 @@ namespace Zeiterfassungssystem {
 
 		//Kalenderwoche von heute berechnen
 		DateTime^ heute = DateTime::Today;
-		int kWHeute = meinKalender->GetWeekOfYear(*heute, *meineCWR, *meinErsterWochentag);
+		Int32 kWHeute = meinKalender->GetWeekOfYear(*heute, *meineCWR, *meinErsterWochentag);
 
 		//Kalenderwoche vom letzten Arbeitstag berechnen
-		int kWLetzterTag;
+		Int32 kWLetzterTag;
 		try {
 			DateTime^ letzterTag = angestellterAkt->getLetzterArbeitstag();
 			kWLetzterTag = meinKalender->GetWeekOfYear(*letzterTag, *meineCWR, *meinErsterWochentag);
@@ -1005,6 +1006,8 @@ namespace Zeiterfassungssystem {
 			angestellterAkt->setArbeitsMinuten(0);
 			angestellterAkt->setUeberStunden(0);
 			angestellterAkt->setUeberMinuten(0);
+			//Falls in dieser Woche freie Tage vorhanden sind (Urlaub, Feiertage) wird die Arbeitszeit dieser Woche entsprechend angepasst.
+			freieTagePruefen(kWHeute, meinKalender, meineCWR, meinErsterWochentag);
 		}
 	}
 
@@ -1040,6 +1043,47 @@ namespace Zeiterfassungssystem {
 		//Feiertage werden für das neue Jahr gesetzt
 		unternehmen->loescheAlleFeiertage();
 		unternehmen->erstelleRegelFeiertage();
+	}
+
+	void freieTagePruefen(Int32 kWHeute, Calendar^ meinKalender, CalendarWeekRule^ meineCWR, DayOfWeek^ meinErsterWochentag)
+	{
+		Int32 anzFreieTage = 0;
+		Double TagesArbeitszeit = angestellterAkt->getWochensstunden() / 5;
+
+		try {
+			for (int i = 0; i < unternehmen->getFeiertage()->Count; i++) {
+				//Kalenderwochen der Feiertage berechnen
+				Int32 kWFeiertag;
+				DateTime feiertag = unternehmen->getFeiertage()[i];
+				kWFeiertag = meinKalender->GetWeekOfYear(feiertag, *meineCWR, *meinErsterWochentag);
+				//Prüfen, ob dieser Feiertag in der aktuellen Woche liegt.
+				if (kWHeute == kWFeiertag) {
+					anzFreieTage++;
+				}
+			}
+			for (int i = 0; i < angestellterAkt->getListeUrlaubstage()->Count; i++) {
+				//Kalenderwochen der Urlaubstage berechnen
+				Int32 kWUrlaubstag;
+				DateTime urlaubstag = angestellterAkt->getListeUrlaubstage()[i];
+				kWUrlaubstag = meinKalender->GetWeekOfYear(urlaubstag, *meineCWR, *meinErsterWochentag);
+				//Prüfen, ob dieser Urlaubstag in der aktuellen Woche liegt.
+				if (kWHeute == kWUrlaubstag) {
+					anzFreieTage++;
+				}
+			}
+		}
+		catch (System::NullReferenceException ^e) {
+			//Keine Aktion notwendig
+		}
+
+		//Stunden und Minuten berechnen, die in dieser Woche durch die freien Tage weniger gearbeitet werden müssen
+		Double wenigerArbeitszeit = TagesArbeitszeit * anzFreieTage;
+		Int32 wenigerStunden = wenigerArbeitszeit;
+		Int32 wenigerMinuten = (wenigerArbeitszeit - wenigerStunden) * 60;
+		
+		//Diese Zeit von den ArbeitsStunden und Minuten dieser Woche abziehen
+		angestellterAkt->setArbeitsStunden(angestellterAkt->getArbeitsStunden() - wenigerStunden);
+		angestellterAkt->setArbeitsMinuten(angestellterAkt->getArbeitsMinuten() - wenigerMinuten);
 	}
 
 };

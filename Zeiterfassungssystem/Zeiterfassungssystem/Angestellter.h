@@ -55,6 +55,7 @@ public:
 	inline Int32 getUeberMinuten() { return ueberMinuten; }
 	inline List<String^>^ getAntragsInfos() { return antragsInfos; }
 	inline Int32 getUrlaubstageGespart() { return urlaubstageGespart; }
+	inline List<DateTime>^ getListeUrlaubstage() { return listeUrlaubstage; }
 	
 	Int32 getRestUrlaub();
 	Ereignis^ getEreignis(Int32 index);
