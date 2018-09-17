@@ -25,6 +25,7 @@ namespace Zeiterfassungssystem {
 		Angestellter^ angestellter;
 		Int32 restUrlaub;
 		Unternehmen^ unternehmen;
+		Int32 anzahlUrlaubstage;
 
 	private: System::Windows::Forms::Label^  label4;
 	private: System::Windows::Forms::TextBox^  kommentarTxt;
@@ -241,19 +242,12 @@ namespace Zeiterfassungssystem {
 
 		property Int32 p_Tage
 		{
-			void set(Int32 tage) {
-				this->urlaubstageLbl->Text = Convert::ToString(tage);
+			Int32 get() {
+				return this->anzahlUrlaubstage;
 			}
 
-			Int32 get() {
-				Int32 tageKonvertiert;
-				if (urlaubstageLbl->Text->Length > 0) {
-					tageKonvertiert = Convert::ToInt32(this->urlaubstageLbl->Text);
-				}
-				else {
-					tageKonvertiert = 0;
-				}
-				return tageKonvertiert;
+			void set(Int32 tage) {
+				this->urlaubstageLbl->Text = Convert::ToString(tage);
 			}
 		}
 
@@ -331,16 +325,17 @@ namespace Zeiterfassungssystem {
 		sound->Load();
 		sound->Play();*/
 		restUrlaub = angestellter->getRestUrlaub();
+		anzahlUrlaubstage = 1;
 	}
 
 	private: System::Void urlaubBeginnDTP_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
-		Int32 anzTage = angestellter->berechneUrlaubstage(p_Anfang, p_Ende, unternehmen->getFeiertage());
-		this->urlaubstageLbl->Text = Convert::ToString(anzTage) + " Tage";
+		anzahlUrlaubstage = angestellter->berechneUrlaubstage(p_Anfang, p_Ende, unternehmen->getFeiertage());
+		this->urlaubstageLbl->Text = Convert::ToString(anzahlUrlaubstage) + " Tage";
 	}
 
 	private: System::Void urlaubEndeDTP_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
-		Int32 anzTage = angestellter->berechneUrlaubstage(p_Anfang, p_Ende, unternehmen->getFeiertage());
-		this->urlaubstageLbl->Text = Convert::ToString(anzTage) + " Tage";
+		anzahlUrlaubstage = angestellter->berechneUrlaubstage(p_Anfang, p_Ende, unternehmen->getFeiertage());
+		this->urlaubstageLbl->Text = Convert::ToString(anzahlUrlaubstage) + " Tage";
 	}
 
 };
