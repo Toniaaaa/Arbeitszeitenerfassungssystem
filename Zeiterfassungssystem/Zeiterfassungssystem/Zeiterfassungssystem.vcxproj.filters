@@ -90,6 +90,9 @@
     <ClInclude Include="AenderungsbearbeitungsFenster.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="AuswahlFenster.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Angestellter.cpp">
@@ -156,6 +159,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="AenderungsbearbeitungsFenster.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="AuswahlFenster.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
