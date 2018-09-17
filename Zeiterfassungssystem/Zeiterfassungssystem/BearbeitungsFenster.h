@@ -442,6 +442,7 @@ private: System::Void btn_loeschen_Click(System::Object^  sender, System::EventA
 	for (int i = 0; i < angestellter->getAbteilung()->getAnzahlMitarbeiter(); i++) {
 		if (angestellte[i]->getPersonalnummer()->Equals(getPersonalnummerVergleich())) {
 			angestellte[i]->getAbteilung()->removeMitarbeiter(i);
+			unternehmen->getAlleAngestellte()->RemoveAt(i);
 		}
 	}
 }
