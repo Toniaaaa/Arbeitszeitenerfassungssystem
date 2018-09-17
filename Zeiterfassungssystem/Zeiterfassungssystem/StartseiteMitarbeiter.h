@@ -68,12 +68,15 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Label^  resturlaubLbl;
 	private: System::Windows::Forms::CheckBox^  pauseCbox;
 	private: System::Windows::Forms::Timer^  timerPause;
-	private: System::Windows::Forms::Button^  addBtn;
+
 	private: System::Windows::Forms::Button^  editBtn;
-	private: System::Windows::Forms::Button^  personalBtn;
+
 	private: System::Windows::Forms::Label^  nameLbl;
 	private: System::Windows::Forms::Label^  lbl_Status;
 	private: System::Windows::Forms::Button^  logOutBtn;
+	private: System::Windows::Forms::Label^  ueberstundenSchriftLbl;
+	private: System::Windows::Forms::Label^  ueberstundenLbl;
+
 	private: System::Windows::Forms::Label^  uhrzeitLbl;
 
 	public:
@@ -141,19 +144,19 @@ namespace Zeiterfassungssystem {
 			this->resturlaubLbl = (gcnew System::Windows::Forms::Label());
 			this->pauseCbox = (gcnew System::Windows::Forms::CheckBox());
 			this->timerPause = (gcnew System::Windows::Forms::Timer(this->components));
-			this->addBtn = (gcnew System::Windows::Forms::Button());
 			this->editBtn = (gcnew System::Windows::Forms::Button());
-			this->personalBtn = (gcnew System::Windows::Forms::Button());
 			this->nameLbl = (gcnew System::Windows::Forms::Label());
 			this->lbl_Status = (gcnew System::Windows::Forms::Label());
 			this->logOutBtn = (gcnew System::Windows::Forms::Button());
+			this->ueberstundenSchriftLbl = (gcnew System::Windows::Forms::Label());
+			this->ueberstundenLbl = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// kommenBtn
 			// 
 			this->kommenBtn->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->kommenBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"kommenBtn.Image")));
-			this->kommenBtn->Location = System::Drawing::Point(35, 272);
+			this->kommenBtn->Location = System::Drawing::Point(36, 272);
 			this->kommenBtn->Name = L"kommenBtn";
 			this->kommenBtn->Size = System::Drawing::Size(200, 130);
 			this->kommenBtn->TabIndex = 0;
@@ -164,7 +167,7 @@ namespace Zeiterfassungssystem {
 			// 
 			this->gehenBtn->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->gehenBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"gehenBtn.Image")));
-			this->gehenBtn->Location = System::Drawing::Point(580, 272);
+			this->gehenBtn->Location = System::Drawing::Point(581, 272);
 			this->gehenBtn->Name = L"gehenBtn";
 			this->gehenBtn->Size = System::Drawing::Size(200, 130);
 			this->gehenBtn->TabIndex = 1;
@@ -178,7 +181,7 @@ namespace Zeiterfassungssystem {
 			this->halloLbl->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->halloLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->halloLbl->Location = System::Drawing::Point(368, 21);
+			this->halloLbl->Location = System::Drawing::Point(369, 21);
 			this->halloLbl->Name = L"halloLbl";
 			this->halloLbl->Size = System::Drawing::Size(81, 31);
 			this->halloLbl->TabIndex = 3;
@@ -198,7 +201,7 @@ namespace Zeiterfassungssystem {
 			this->arbeitszeitLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 36, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->arbeitszeitLbl->ForeColor = System::Drawing::Color::White;
-			this->arbeitszeitLbl->Location = System::Drawing::Point(305, 445);
+			this->arbeitszeitLbl->Location = System::Drawing::Point(306, 445);
 			this->arbeitszeitLbl->Name = L"arbeitszeitLbl";
 			this->arbeitszeitLbl->Size = System::Drawing::Size(212, 55);
 			this->arbeitszeitLbl->TabIndex = 5;
@@ -216,7 +219,7 @@ namespace Zeiterfassungssystem {
 			this->uhrzeitLbl->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->uhrzeitLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 56));
 			this->uhrzeitLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->uhrzeitLbl->Location = System::Drawing::Point(1, 176);
+			this->uhrzeitLbl->Location = System::Drawing::Point(2, 176);
 			this->uhrzeitLbl->Name = L"uhrzeitLbl";
 			this->uhrzeitLbl->Size = System::Drawing::Size(827, 93);
 			this->uhrzeitLbl->TabIndex = 6;
@@ -229,7 +232,7 @@ namespace Zeiterfassungssystem {
 			this->datumLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 24, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->datumLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->datumLbl->Location = System::Drawing::Point(3, 136);
+			this->datumLbl->Location = System::Drawing::Point(4, 136);
 			this->datumLbl->Name = L"datumLbl";
 			this->datumLbl->Size = System::Drawing::Size(825, 50);
 			this->datumLbl->TabIndex = 7;
@@ -243,7 +246,7 @@ namespace Zeiterfassungssystem {
 			this->arbeitszeitSchriftLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20.25F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->arbeitszeitSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->arbeitszeitSchriftLbl->Location = System::Drawing::Point(337, 414);
+			this->arbeitszeitSchriftLbl->Location = System::Drawing::Point(338, 414);
 			this->arbeitszeitSchriftLbl->Name = L"arbeitszeitSchriftLbl";
 			this->arbeitszeitSchriftLbl->Size = System::Drawing::Size(142, 31);
 			this->arbeitszeitSchriftLbl->TabIndex = 8;
@@ -256,9 +259,9 @@ namespace Zeiterfassungssystem {
 			this->resturlaubSchriftLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->resturlaubSchriftLbl->ForeColor = System::Drawing::SystemColors::ControlText;
-			this->resturlaubSchriftLbl->Location = System::Drawing::Point(580, 725);
+			this->resturlaubSchriftLbl->Location = System::Drawing::Point(613, 621);
 			this->resturlaubSchriftLbl->Name = L"resturlaubSchriftLbl";
-			this->resturlaubSchriftLbl->Size = System::Drawing::Size(235, 25);
+			this->resturlaubSchriftLbl->Size = System::Drawing::Size(185, 25);
 			this->resturlaubSchriftLbl->TabIndex = 9;
 			this->resturlaubSchriftLbl->Text = L"Resturlaub";
 			this->resturlaubSchriftLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -269,11 +272,11 @@ namespace Zeiterfassungssystem {
 			this->PausenSchriftLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->PausenSchriftLbl->ForeColor = System::Drawing::SystemColors::ControlText;
-			this->PausenSchriftLbl->Location = System::Drawing::Point(297, 725);
+			this->PausenSchriftLbl->Location = System::Drawing::Point(216, 621);
 			this->PausenSchriftLbl->Name = L"PausenSchriftLbl";
-			this->PausenSchriftLbl->Size = System::Drawing::Size(235, 25);
+			this->PausenSchriftLbl->Size = System::Drawing::Size(185, 25);
 			this->PausenSchriftLbl->TabIndex = 10;
-			this->PausenSchriftLbl->Text = L"Pause seit Beginn";
+			this->PausenSchriftLbl->Text = L"Pause heute";
 			this->PausenSchriftLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// nochWochenstundenSchriftLbl
@@ -282,11 +285,11 @@ namespace Zeiterfassungssystem {
 			this->nochWochenstundenSchriftLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->nochWochenstundenSchriftLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->nochWochenstundenSchriftLbl->Location = System::Drawing::Point(14, 725);
+			this->nochWochenstundenSchriftLbl->Location = System::Drawing::Point(21, 621);
 			this->nochWochenstundenSchriftLbl->Name = L"nochWochenstundenSchriftLbl";
-			this->nochWochenstundenSchriftLbl->Size = System::Drawing::Size(237, 25);
+			this->nochWochenstundenSchriftLbl->Size = System::Drawing::Size(180, 25);
 			this->nochWochenstundenSchriftLbl->TabIndex = 11;
-			this->nochWochenstundenSchriftLbl->Text = L"Übrige Wochenstunden";
+			this->nochWochenstundenSchriftLbl->Text = L"Wochenstunden";
 			this->nochWochenstundenSchriftLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// statistikBtn
@@ -296,9 +299,9 @@ namespace Zeiterfassungssystem {
 			this->statistikBtn->FlatAppearance->BorderColor = System::Drawing::Color::White;
 			this->statistikBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15));
 			this->statistikBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"statistikBtn.Image")));
-			this->statistikBtn->Location = System::Drawing::Point(13, 535);
+			this->statistikBtn->Location = System::Drawing::Point(21, 530);
 			this->statistikBtn->Name = L"statistikBtn";
-			this->statistikBtn->Size = System::Drawing::Size(235, 76);
+			this->statistikBtn->Size = System::Drawing::Size(180, 65);
 			this->statistikBtn->TabIndex = 12;
 			this->statistikBtn->UseVisualStyleBackColor = false;
 			this->statistikBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::statistikBtn_Click);
@@ -311,9 +314,9 @@ namespace Zeiterfassungssystem {
 			this->urlaubBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15));
 			this->urlaubBtn->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->urlaubBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"urlaubBtn.Image")));
-			this->urlaubBtn->Location = System::Drawing::Point(580, 535);
+			this->urlaubBtn->Location = System::Drawing::Point(618, 530);
 			this->urlaubBtn->Name = L"urlaubBtn";
-			this->urlaubBtn->Size = System::Drawing::Size(235, 76);
+			this->urlaubBtn->Size = System::Drawing::Size(180, 65);
 			this->urlaubBtn->TabIndex = 13;
 			this->urlaubBtn->UseVisualStyleBackColor = false;
 			this->urlaubBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::urlaubBtn_Click);
@@ -325,9 +328,9 @@ namespace Zeiterfassungssystem {
 			this->kalenderBtn->FlatAppearance->BorderColor = System::Drawing::Color::White;
 			this->kalenderBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15));
 			this->kalenderBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"kalenderBtn.Image")));
-			this->kalenderBtn->Location = System::Drawing::Point(297, 535);
+			this->kalenderBtn->Location = System::Drawing::Point(221, 530);
 			this->kalenderBtn->Name = L"kalenderBtn";
-			this->kalenderBtn->Size = System::Drawing::Size(235, 76);
+			this->kalenderBtn->Size = System::Drawing::Size(180, 65);
 			this->kalenderBtn->TabIndex = 14;
 			this->kalenderBtn->UseVisualStyleBackColor = false;
 			this->kalenderBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::kalenderBtn_Click);
@@ -338,9 +341,9 @@ namespace Zeiterfassungssystem {
 			this->nochWochenstundenLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->nochWochenstundenLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->nochWochenstundenLbl->Location = System::Drawing::Point(6, 750);
+			this->nochWochenstundenLbl->Location = System::Drawing::Point(22, 655);
 			this->nochWochenstundenLbl->Name = L"nochWochenstundenLbl";
-			this->nochWochenstundenLbl->Size = System::Drawing::Size(250, 50);
+			this->nochWochenstundenLbl->Size = System::Drawing::Size(180, 25);
 			this->nochWochenstundenLbl->TabIndex = 15;
 			this->nochWochenstundenLbl->Text = L"00:00 Stunden";
 			this->nochWochenstundenLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -351,9 +354,9 @@ namespace Zeiterfassungssystem {
 			this->pauseLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->pauseLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->pauseLbl->Location = System::Drawing::Point(271, 750);
+			this->pauseLbl->Location = System::Drawing::Point(221, 655);
 			this->pauseLbl->Name = L"pauseLbl";
-			this->pauseLbl->Size = System::Drawing::Size(270, 50);
+			this->pauseLbl->Size = System::Drawing::Size(180, 25);
 			this->pauseLbl->TabIndex = 16;
 			this->pauseLbl->Text = L"00:00:00";
 			this->pauseLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -364,9 +367,9 @@ namespace Zeiterfassungssystem {
 			this->resturlaubLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->resturlaubLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->resturlaubLbl->Location = System::Drawing::Point(557, 750);
+			this->resturlaubLbl->Location = System::Drawing::Point(618, 655);
 			this->resturlaubLbl->Name = L"resturlaubLbl";
-			this->resturlaubLbl->Size = System::Drawing::Size(258, 50);
+			this->resturlaubLbl->Size = System::Drawing::Size(180, 25);
 			this->resturlaubLbl->TabIndex = 17;
 			this->resturlaubLbl->Text = L"0 Tage";
 			this->resturlaubLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
@@ -376,7 +379,7 @@ namespace Zeiterfassungssystem {
 			this->pauseCbox->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->pauseCbox->Appearance = System::Windows::Forms::Appearance::Button;
 			this->pauseCbox->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pauseCbox.Image")));
-			this->pauseCbox->Location = System::Drawing::Point(288, 297);
+			this->pauseCbox->Location = System::Drawing::Point(289, 297);
 			this->pauseCbox->Name = L"pauseCbox";
 			this->pauseCbox->Size = System::Drawing::Size(240, 80);
 			this->pauseCbox->TabIndex = 18;
@@ -388,18 +391,6 @@ namespace Zeiterfassungssystem {
 			this->timerPause->Interval = 1000;
 			this->timerPause->Tick += gcnew System::EventHandler(this, &StartseiteMitarbeiter::timerPause_Tick);
 			// 
-			// addBtn
-			// 
-			this->addBtn->Anchor = System::Windows::Forms::AnchorStyles::Top;
-			this->addBtn->BackColor = System::Drawing::SystemColors::HighlightText;
-			this->addBtn->FlatAppearance->BorderColor = System::Drawing::Color::White;
-			this->addBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15));
-			this->addBtn->Location = System::Drawing::Point(16, 629);
-			this->addBtn->Name = L"addBtn";
-			this->addBtn->Size = System::Drawing::Size(235, 76);
-			this->addBtn->TabIndex = 19;
-			this->addBtn->UseVisualStyleBackColor = false;
-			// 
 			// editBtn
 			// 
 			this->editBtn->Anchor = System::Windows::Forms::AnchorStyles::Top;
@@ -407,31 +398,19 @@ namespace Zeiterfassungssystem {
 			this->editBtn->FlatAppearance->BorderColor = System::Drawing::Color::White;
 			this->editBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15));
 			this->editBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"editBtn.Image")));
-			this->editBtn->Location = System::Drawing::Point(297, 629);
+			this->editBtn->Location = System::Drawing::Point(421, 530);
 			this->editBtn->Name = L"editBtn";
-			this->editBtn->Size = System::Drawing::Size(235, 76);
+			this->editBtn->Size = System::Drawing::Size(180, 65);
 			this->editBtn->TabIndex = 20;
 			this->editBtn->UseVisualStyleBackColor = false;
 			this->editBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::editBtn_Click);
-			// 
-			// personalBtn
-			// 
-			this->personalBtn->Anchor = System::Windows::Forms::AnchorStyles::Top;
-			this->personalBtn->BackColor = System::Drawing::SystemColors::HighlightText;
-			this->personalBtn->FlatAppearance->BorderColor = System::Drawing::Color::White;
-			this->personalBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15));
-			this->personalBtn->Location = System::Drawing::Point(580, 629);
-			this->personalBtn->Name = L"personalBtn";
-			this->personalBtn->Size = System::Drawing::Size(235, 76);
-			this->personalBtn->TabIndex = 21;
-			this->personalBtn->UseVisualStyleBackColor = false;
 			// 
 			// nameLbl
 			// 
 			this->nameLbl->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->nameLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 30, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->nameLbl->Location = System::Drawing::Point(2, 52);
+			this->nameLbl->Location = System::Drawing::Point(3, 52);
 			this->nameLbl->Name = L"nameLbl";
 			this->nameLbl->Size = System::Drawing::Size(823, 46);
 			this->nameLbl->TabIndex = 4;
@@ -461,6 +440,32 @@ namespace Zeiterfassungssystem {
 			this->logOutBtn->UseVisualStyleBackColor = true;
 			this->logOutBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::logOutBtn_Click);
 			// 
+			// ueberstundenSchriftLbl
+			// 
+			this->ueberstundenSchriftLbl->Anchor = System::Windows::Forms::AnchorStyles::Top;
+			this->ueberstundenSchriftLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->ueberstundenSchriftLbl->ForeColor = System::Drawing::SystemColors::ControlText;
+			this->ueberstundenSchriftLbl->Location = System::Drawing::Point(416, 621);
+			this->ueberstundenSchriftLbl->Name = L"ueberstundenSchriftLbl";
+			this->ueberstundenSchriftLbl->Size = System::Drawing::Size(185, 25);
+			this->ueberstundenSchriftLbl->TabIndex = 24;
+			this->ueberstundenSchriftLbl->Text = L"Überstunden";
+			this->ueberstundenSchriftLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// ueberstundenLbl
+			// 
+			this->ueberstundenLbl->Anchor = System::Windows::Forms::AnchorStyles::Top;
+			this->ueberstundenLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->ueberstundenLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+			this->ueberstundenLbl->Location = System::Drawing::Point(417, 655);
+			this->ueberstundenLbl->Name = L"ueberstundenLbl";
+			this->ueberstundenLbl->Size = System::Drawing::Size(180, 25);
+			this->ueberstundenLbl->TabIndex = 25;
+			this->ueberstundenLbl->Text = L"0,0 Stunden";
+			this->ueberstundenLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
 			// StartseiteMitarbeiter
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -468,12 +473,12 @@ namespace Zeiterfassungssystem {
 			this->AutoScroll = true;
 			this->AutoSize = true;
 			this->BackColor = System::Drawing::SystemColors::MenuHighlight;
-			this->ClientSize = System::Drawing::Size(827, 810);
+			this->ClientSize = System::Drawing::Size(826, 691);
+			this->Controls->Add(this->ueberstundenLbl);
+			this->Controls->Add(this->ueberstundenSchriftLbl);
 			this->Controls->Add(this->logOutBtn);
 			this->Controls->Add(this->lbl_Status);
-			this->Controls->Add(this->personalBtn);
 			this->Controls->Add(this->editBtn);
-			this->Controls->Add(this->addBtn);
 			this->Controls->Add(this->pauseCbox);
 			this->Controls->Add(this->resturlaubLbl);
 			this->Controls->Add(this->pauseLbl);
@@ -639,13 +644,14 @@ namespace Zeiterfassungssystem {
 		urlaubsfenster->setAngestellter(angestellterAkt);
 		System::Windows::Forms::DialogResult result = urlaubsfenster->ShowDialog(this);
 
-		//Der Urlaubsantrag als String
-		String^ urlaubString = "Beginn: " + urlaubsfenster->p_Anfang.ToString("dddd, dd. MMMM yyyy") + "\nEnde: " + urlaubsfenster->p_Ende.ToString("dddd, dd. MMMM yyyy") + 
-			"\nUrlaubstage: " + urlaubsfenster->p_Tage.ToString() + "\nKommentar: " + urlaubsfenster->p_Kommentar + "\n";
-
 		//Wenn vom Urlaubsfenster OK gegeben wird, wir zunächst eine Abfrage erzeugt, ob der Antrag so in Ordnung ist. Wenn der Mitarbeiter mit "Ja" bestätigt, wird ein neues Objekt vom Typ
 		//Urlaubsantrag erstellt. Bei "Nein" wird abgebrochen.
 		if (result == System::Windows::Forms::DialogResult::OK) {
+
+			//Der Urlaubsantrag als String
+			String^ urlaubString = "Beginn: " + urlaubsfenster->p_Anfang.ToString("dddd, dd. MMMM yyyy") + "\nEnde: " + urlaubsfenster->p_Ende.ToString("dddd, dd. MMMM yyyy") +
+				"\nUrlaubstage: " + urlaubsfenster->p_Tage.ToString() + "\nKommentar: " + urlaubsfenster->p_Kommentar + "\n";
+
 			if (MessageBox::Show("Sie wollen folgenden Urlaub beantragen:\n\n" + urlaubString + "\nWollen Sie diesen Antrag einreichen?", "Antrag einreichen?", MessageBoxButtons::YesNo,
 				MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 				//Neuen Urlaubsantrag aus Werten aus dem Urlaubsfenster erstellen
@@ -673,14 +679,15 @@ namespace Zeiterfassungssystem {
 		aenderungsfenster->setAntragssteller(angestellterAkt);
 		System::Windows::Forms::DialogResult result = aenderungsfenster->ShowDialog(this);
 
-		//Der Aenderungsantrag als String
-		String^ aenderungString = "Sie wollen folgende Änderung beantragen:\n\nTag der Änderung: " + aenderungsfenster->p_Tag.ToString("dddd, dd. MMMM yyyy") + "\nNeuer Beginn: " 
-			+ aenderungsfenster->p_Ankunft.ToString("HH:mm") + "\nNeues Ende: " + aenderungsfenster->p_Gehen.ToString("HH:mm") + "\nGrund: " + aenderungsfenster->p_Grund 
-			+ "\nKommentar: " + aenderungsfenster->p_Kommentar + "\n\nWollen Sie diesen Antrag einreichen?";
-
 		//Wenn vom Änderungsfenster OK gegeben wird, wir zunächst eine Abfrage erzeugt, ob der Antrag so in Ordnung ist. Wenn der Mitarbeiter mit "Ja" bestätigt, wird ein neues Objekt 
 		//vom Typ Änderungsantrag erstellt. Bei "Nein" wird abgebrochen.
 		if (result == System::Windows::Forms::DialogResult::OK) {
+
+			//Der Aenderungsantrag als String
+			String^ aenderungString = "Sie wollen folgende Änderung beantragen:\n\nTag der Änderung: " + aenderungsfenster->p_Tag.ToString("dddd, dd. MMMM yyyy") + "\nNeuer Beginn: "
+				+ aenderungsfenster->p_Ankunft.ToString("HH:mm") + "\nNeues Ende: " + aenderungsfenster->p_Gehen.ToString("HH:mm") + "\nGrund: " + aenderungsfenster->p_Grund
+				+ "\nKommentar: " + aenderungsfenster->p_Kommentar + "\n\nWollen Sie diesen Antrag einreichen?";
+
 			if (MessageBox::Show(aenderungString, "Antrag einreichen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 				//Neuen Änderungsantrag aus Werten aus dem Änderungsfenster erstellen
 				Aenderungsantrag^ a = gcnew Aenderungsantrag(angestellterAkt, aenderungsfenster->p_Tag, aenderungsfenster->p_Ankunft, aenderungsfenster->p_Gehen, aenderungsfenster->p_Grund,
@@ -715,7 +722,7 @@ namespace Zeiterfassungssystem {
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
 
-		this->urlaubstageSetzen();
+		this->neuesJahr();
 		this->neueWoche();
 
 		wochenZeitErreicht = angestellterAkt->getWochenZeitErreicht();
@@ -803,6 +810,12 @@ namespace Zeiterfassungssystem {
 			}
 		}
 
+		//Zeitpunkt des Einloggens speichern
+		Ereignis^ eingeloggt = gcnew Ereignis(EINGELOGGT, DateTime::Now);
+		angestellterAkt->fuegeEreignisHinzu(eingeloggt);
+
+		//Labels setzen
+		ueberstundenLbl->Text = angestellterAkt->getUeberstundenGesamt() + " Stunden";
 		nochWochenstundenLbl->Text = uhrzeitString(arbeitsMinuten, arbeitsStunden) + " Stunden";
 		lbl_Status->Text = angestellterAkt->getStatus();
 		arbeitszeitLbl->Text = uhrzeitString(sekunde, minute, stunde);
@@ -995,18 +1008,27 @@ namespace Zeiterfassungssystem {
 	}
 
 	// Wenn eine neues Jahr startet, werden die Urlaubstage zurueckgesetzt
-	private: void urlaubstageSetzen() {
+	private: void neuesJahr() {
 
 		DateTime^ letzterTag = angestellterAkt->getLetzterArbeitstag();
 		DateTime^ heute = DateTime::Today;
 
-		//Urlaubstage verfallen nach 3 Monaten
+		//Wenn seit dem letzten Arbeitstag ein neues Jahr angefangen hat
 		if (letzterTag != nullptr && letzterTag->Year > heute->Year) {
+			//Urlaubstage verfallen nach 3 Monaten
 			angestellterAkt->setUrlaubstageGespart(angestellterAkt->getRestUrlaub());
 			angestellterAkt->setUrlaubstageGenommen(0);
 			//Angestellter wird informiert
 			MessageBox::Show("Sie haben noch " + angestellterAkt->getUrlaubstageGespart() + " Resturlaub aus dem vergangenen Jahr nicht genommen!\nDieser verfällt nach 3 Monaten!", 
 				"Achtung: Ihr Resturlaub verfällt", MessageBoxButtons::OK, MessageBoxIcon::Information);
+
+			//Gespeicherte Arbeitszeiten verfallen nach drei Jahren
+			Int32 i = 0;
+			//Kein Exception-Handling notwendig, da letzterArbeitstag kein Nullpointer sein kann (siehe oben) und daher auch schon mindesten ein Ereignis existieren muss.
+			while (heute->Year - angestellterAkt->getEreignis(i)->getTimestamp()->Year > 3) {
+				angestellterAkt->removeEreignis(i);
+				i++;
+			}
 		}
 
 		//Urlaubstage, die aus dem letzten Jahr stammen, verfallen, wenn sie nicht bis März genommen wurden
@@ -1014,5 +1036,6 @@ namespace Zeiterfassungssystem {
 			angestellterAkt->setUrlaubstageGespart(0);
 		}
 	}
+
 };
 }

@@ -182,11 +182,12 @@ void Angestellter::setUeberstundenGesamt(Int32 stunden, Int32 minuten)
 	ueberStundenGesamt += (stunden + minuten / 60);
 }
 
+//Gibt den Zeitpunkt des letzten Einloggens zurück.
 DateTime^ Angestellter::getLetzterArbeitstag() 
 {
 	DateTime^ datum;
 	for (int i = getAnzahlEreignisse() - 1; i >= 0; i--) {
-		if (listeEreignisse[i]->getTyp() == ARBEIT_START) {
+		if (listeEreignisse[i]->getTyp() == EINGELOGGT) {
 			datum = listeEreignisse[i]->getTimestamp()->Date;
 			break;
 		}

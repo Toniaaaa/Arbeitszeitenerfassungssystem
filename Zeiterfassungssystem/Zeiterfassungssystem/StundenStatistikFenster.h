@@ -77,8 +77,9 @@ namespace Zeiterfassungssystem {
 			this->listView1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->listView1->GridLines = true;
 			this->listView1->Location = System::Drawing::Point(0, 0);
+			this->listView1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->listView1->Name = L"listView1";
-			this->listView1->Size = System::Drawing::Size(1187, 517);
+			this->listView1->Size = System::Drawing::Size(1193, 568);
 			this->listView1->TabIndex = 0;
 			this->listView1->UseCompatibleStateImageBehavior = false;
 			this->listView1->View = System::Windows::Forms::View::Details;
@@ -110,10 +111,11 @@ namespace Zeiterfassungssystem {
 			// 
 			// StundenStatistikFenster
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1187, 517);
+			this->ClientSize = System::Drawing::Size(1193, 568);
 			this->Controls->Add(this->listView1);
+			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->Name = L"StundenStatistikFenster";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"StundenStatistikFenster";

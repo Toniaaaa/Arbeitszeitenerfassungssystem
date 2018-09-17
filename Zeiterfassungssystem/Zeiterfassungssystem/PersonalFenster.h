@@ -94,7 +94,7 @@ namespace Zeiterfassungssystem {
 			this->listView1->Location = System::Drawing::Point(0, 0);
 			this->listView1->Margin = System::Windows::Forms::Padding(2);
 			this->listView1->Name = L"listView1";
-			this->listView1->Size = System::Drawing::Size(1235, 616);
+			this->listView1->Size = System::Drawing::Size(1265, 607);
 			this->listView1->Sorting = System::Windows::Forms::SortOrder::Ascending;
 			this->listView1->TabIndex = 0;
 			this->listView1->UseCompatibleStateImageBehavior = false;
@@ -162,7 +162,7 @@ namespace Zeiterfassungssystem {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoSize = true;
-			this->ClientSize = System::Drawing::Size(1235, 616);
+			this->ClientSize = System::Drawing::Size(1265, 607);
 			this->Controls->Add(this->listView1);
 			this->DoubleBuffered = true;
 			this->Margin = System::Windows::Forms::Padding(2);
@@ -231,8 +231,8 @@ namespace Zeiterfassungssystem {
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getRestUrlaub()));
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getWochensstunden()));
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getArbeitsStunden() + ":" + arbeitsMinutenString));
-					item->SubItems->Add(Convert::ToString(angestellte[i]->getUeberstundenGesamt()));
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getUeberStunden()) + ":" + ueberMinutenString);
+					item->SubItems->Add(Convert::ToString(angestellte[i]->getUeberstundenGesamt()));
 					listView1->Items->Add(item);
 
 			}
