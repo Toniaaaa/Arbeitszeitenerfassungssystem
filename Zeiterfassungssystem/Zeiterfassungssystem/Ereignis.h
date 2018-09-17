@@ -5,6 +5,7 @@
 using namespace System;
 
 enum EreignisTyp {
+	EINGELOGT,
 	ARBEIT_START,
 	ARBEIT_ENDE,
 	PAUSE_START,

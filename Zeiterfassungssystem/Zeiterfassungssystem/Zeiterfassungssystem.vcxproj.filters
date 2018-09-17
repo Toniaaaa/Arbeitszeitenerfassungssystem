@@ -187,6 +187,15 @@
     <EmbeddedResource Include="KalenderFenster.resx">
       <Filter>Ressourcendateien</Filter>
     </EmbeddedResource>
+    <EmbeddedResource Include="AenderungsbearbeitungsFenster.resx">
+      <Filter>Ressourcendateien</Filter>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UrlaubsbearbeitungsFenster.resx">
+      <Filter>Ressourcendateien</Filter>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UrlaubsFenster.resx">
+      <Filter>Ressourcendateien</Filter>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LogInFenster.resx">
@@ -233,6 +242,18 @@
       <Filter>Quelldateien\Images</Filter>
     </Image>
     <Image Include="Images\urlaubIcon2.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\statistikIconKlein.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\urlaubIconKlein.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\kalenderIconKlein.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\editIconklein.jpg">
       <Filter>Quelldateien\Images</Filter>
     </Image>
   </ItemGroup>
