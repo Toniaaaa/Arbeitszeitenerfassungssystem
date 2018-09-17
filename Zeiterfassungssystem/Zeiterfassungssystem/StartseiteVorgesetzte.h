@@ -14,6 +14,7 @@
 #include "UrlaubsFenster.h"
 #include "AenderungsbearbeitungsFenster.h"
 #include "AuswahlFenster.h"
+#include "AbteilungsFenster.h"
 
 namespace Zeiterfassungssystem {
 
@@ -45,6 +46,7 @@ namespace Zeiterfassungssystem {
 		KalenderFenster^ kalenderfenster;
 		AenderungsbearbeitungsFenster^ aenderungsfenster;
 		AuswahlFenster^ auswahlfenster;
+		AbteilungsFenster^ abteilungsfenster;
 
 		Int32 sekunde;
 		Int32 minute;
@@ -96,6 +98,7 @@ namespace Zeiterfassungssystem {
 			urlaubsfenster = gcnew UrlaubsFenster;
 			aenderungsfenster = gcnew AenderungsbearbeitungsFenster;
 			auswahlfenster = gcnew AuswahlFenster;
+			abteilungsfenster = gcnew AbteilungsFenster;
 		}
 
 	protected:
@@ -717,6 +720,7 @@ namespace Zeiterfassungssystem {
 	private: System::Void addBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		registrierungsfenster->setUnternehmen(unternehmen);
 		registrierungsfenster->setVorgesetzter(angestellterAkt);
+		auswahlfenster->setAbteilungsfenster(abteilungsfenster);
 		auswahlfenster->setRegistrierungsfenster(registrierungsfenster);
 		auswahlfenster->ShowDialog(this);
 	}

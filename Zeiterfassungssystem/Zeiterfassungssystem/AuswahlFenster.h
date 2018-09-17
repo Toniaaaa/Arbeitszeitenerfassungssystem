@@ -1,5 +1,6 @@
 #pragma once
 #include "RegistrierungsFenster.h"
+#include "AbteilungsFenster.h"
 
 namespace Zeiterfassungssystem {
 
@@ -107,14 +108,21 @@ namespace Zeiterfassungssystem {
 		}
 #pragma endregion
 	private: RegistrierungsFenster^ registrierungsfenster;
+			 AbteilungsFenster^ abteilungsfenster;
 	public:	void setRegistrierungsfenster(RegistrierungsFenster^ registrierung) {
-		this->registrierungsfenster = registrierung;
-	}
+				this->registrierungsfenster = registrierung;
+			}
+			void setAbteilungsfenster(AbteilungsFenster^ abteilungsfenster) {
+				this->abteilungsfenster = abteilungsfenster;
+			}
+
 	private: System::Void btn_angestellte_Click(System::Object^  sender, System::EventArgs^  e) {
 		
 		registrierungsfenster->ShowDialog(this);
 	}
 	private: System::Void btn_abteilung_Click(System::Object^  sender, System::EventArgs^  e) {
+
+		abteilungsfenster->ShowDialog(this);
 	}
 	private: System::Void btn_feiertag_Click(System::Object^  sender, System::EventArgs^  e) {
 	}
