@@ -13,6 +13,7 @@
 #include "KalenderFenster.h"
 #include "UrlaubsFenster.h"
 #include "AenderungsbearbeitungsFenster.h"
+#include "AuswahlFenster.h"
 
 namespace Zeiterfassungssystem {
 
@@ -43,6 +44,7 @@ namespace Zeiterfassungssystem {
 		UrlaubsFenster^ urlaubsfenster;
 		KalenderFenster^ kalenderfenster;
 		AenderungsbearbeitungsFenster^ aenderungsfenster;
+		AuswahlFenster^ auswahlfenster;
 
 		Int32 sekunde;
 		Int32 minute;
@@ -93,6 +95,7 @@ namespace Zeiterfassungssystem {
 			kalenderfenster = gcnew KalenderFenster;
 			urlaubsfenster = gcnew UrlaubsFenster;
 			aenderungsfenster = gcnew AenderungsbearbeitungsFenster;
+			auswahlfenster = gcnew AuswahlFenster;
 		}
 
 	protected:
@@ -714,7 +717,8 @@ namespace Zeiterfassungssystem {
 	private: System::Void addBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		registrierungsfenster->setUnternehmen(unternehmen);
 		registrierungsfenster->setVorgesetzter(angestellterAkt);
-		System::Windows::Forms::DialogResult result = registrierungsfenster->ShowDialog(this);
+		auswahlfenster->setRegistrierungsfenster(registrierungsfenster);
+		auswahlfenster->ShowDialog(this);
 	}
 	private: System::Void editBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		bearbeitungsfenster->setUnternehmen(unternehmen);
