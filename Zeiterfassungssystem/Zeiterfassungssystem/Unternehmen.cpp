@@ -119,7 +119,10 @@ void Unternehmen::erstelleRegelFeiertage()
 	for (int i = 0; i < feiertageRegel->Length; i = i + 2) {
 		DateTime heute = DateTime::Today;
 		DateTime^ feiertag = gcnew DateTime(heute.Year, feiertageRegel[i + 1], feiertageRegel[i]);
-		feiertage->Add(*feiertag);
+		//Feiertag nur hinzufügen, wenn er noch nicht in der Liste existiert (z.B. durch manuelles Einfügen)
+		if (!feiertage->Contains(*feiertag)) {
+			feiertage->Add(*feiertag);
+		}
 	}
 }
 
@@ -130,4 +133,9 @@ void Unternehmen::loescheAlteFeiertage()
 			feiertage->RemoveAt(i);
 		}
 	}
+}
+
+Boolean Unternehmen::istFeiertag(DateTime tag) 
+{
+	return feiertage->Contains(tag);
 }

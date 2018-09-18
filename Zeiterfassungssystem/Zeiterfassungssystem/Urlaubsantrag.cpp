@@ -24,4 +24,3 @@ void Urlaubsantrag::setKommentarVorgesetzter(String^ kommentar)
 {
 	this->m_KommentarVorgesetzter = kommentar;
 }
-

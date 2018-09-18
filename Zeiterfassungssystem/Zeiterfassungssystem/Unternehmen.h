@@ -34,4 +34,5 @@ public:
 	void removeFeiertag(DateTime tag);
 	void erstelleRegelFeiertage();
 	void loescheAlteFeiertage();
+	Boolean istFeiertag(DateTime tag);
 };

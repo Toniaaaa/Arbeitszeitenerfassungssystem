@@ -264,3 +264,8 @@ void Angestellter::loescheAlleUrlaubstage()
 		listeUrlaubstage->RemoveAt(i);
 	}
 }
+
+Boolean Angestellter::istUrlaubstag(DateTime tag)
+{
+	return listeUrlaubstage->Contains(tag);
+}
