@@ -149,6 +149,7 @@
     <ClInclude Include="FeiertagsFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="FreierTag.h" />
     <ClInclude Include="KalenderFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -199,6 +200,7 @@
     <ClCompile Include="AuswahlFenster.cpp" />
     <ClCompile Include="BearbeitungsFenster.cpp" />
     <ClCompile Include="FeiertagsFenster.cpp" />
+    <ClCompile Include="FreierTag.cpp" />
     <ClCompile Include="KalenderFenster.cpp" />
     <ClCompile Include="LogInFenster.cpp" />
     <ClCompile Include="Mitarbeiter.cpp" />

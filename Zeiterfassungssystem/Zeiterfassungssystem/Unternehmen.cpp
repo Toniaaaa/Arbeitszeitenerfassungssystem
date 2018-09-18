@@ -10,7 +10,7 @@ using namespace System::IO;
 Unternehmen::Unternehmen()
 {
 	abteilungen = gcnew List<Abteilung^>;
-	feiertage = gcnew List<DateTime>;
+	feiertage = gcnew List<FreierTag^>;
 
 	Abteilung^ administration;
 	Vorgesetzter^ admin = gcnew Vorgesetzter("Admin", "istrator", administration, "1", "1234", 169, 28);
@@ -106,12 +106,12 @@ List<Abteilung^>^ Unternehmen::getAbteilungen()
 
 void Unternehmen::addFeiertag(DateTime tag)
 {
-	this->feiertage->Add(tag);
+	this->feiertage->Add(gcnew FreierTag(tag));
 }
 
 void Unternehmen::removeFeiertag(DateTime tag)
 {
-	feiertage->Remove(tag);
+	feiertage->Remove(gcnew FreierTag(tag));
 }
 
 void Unternehmen::erstelleRegelFeiertage()
@@ -120,8 +120,9 @@ void Unternehmen::erstelleRegelFeiertage()
 		DateTime heute = DateTime::Today;
 		DateTime^ feiertag = gcnew DateTime(heute.Year, feiertageRegel[i + 1], feiertageRegel[i]);
 		//Feiertag nur hinzufügen, wenn er noch nicht in der Liste existiert (z.B. durch manuelles Einfügen)
-		if (!feiertage->Contains(*feiertag)) {
-			feiertage->Add(*feiertag);
+		FreierTag^ neuerFeiertag = gcnew FreierTag(*feiertag);
+		if (!feiertage->Contains(neuerFeiertag)) {
+			feiertage->Add(neuerFeiertag);
 		}
 	}
 }
@@ -129,7 +130,7 @@ void Unternehmen::erstelleRegelFeiertage()
 void Unternehmen::loescheAlteFeiertage()
 {
 	for (int i = feiertage->Count - 1; i >= 0; i--) {
-		if (feiertage[i].Year < DateTime::Now.Year) {
+		if (feiertage[i]->getDatum().Year < DateTime::Now.Year) {
 			feiertage->RemoveAt(i);
 		}
 	}
@@ -137,5 +138,12 @@ void Unternehmen::loescheAlteFeiertage()
 
 Boolean Unternehmen::istFeiertag(DateTime tag) 
 {
-	return feiertage->Contains(tag);
+	Boolean istFeiertag = false;
+	for (int i = feiertage->Count - 1; i >= 0; i--) {
+		if (feiertage[i]->getDatum().Date == tag) {
+			istFeiertag = true;
+			break;
+		}
+	}
+	return istFeiertag;
 }

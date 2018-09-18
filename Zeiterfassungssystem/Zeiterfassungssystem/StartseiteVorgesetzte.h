@@ -1134,7 +1134,7 @@ namespace Zeiterfassungssystem {
 			 for (int i = 0; i < unternehmen->getFeiertage()->Count; i++) {
 				 //Kalenderwochen der Feiertage berechnen
 				 Int32 kWFeiertag;
-				 DateTime feiertag = unternehmen->getFeiertage()[i];
+				 DateTime feiertag = unternehmen->getFeiertage()[i]->getDatum();
 				 kWFeiertag = meinKalender->GetWeekOfYear(feiertag, *meineCWR, *meinErsterWochentag);
 				 //Prüfen, ob dieser Feiertag in der aktuellen Woche liegt.
 				 if (kWHeute == kWFeiertag) {
@@ -1144,7 +1144,7 @@ namespace Zeiterfassungssystem {
 			 for (int i = 0; i < angestellterAkt->getListeUrlaubstage()->Count; i++) {
 				 //Kalenderwochen der Urlaubstage berechnen
 				 Int32 kWUrlaubstag;
-				 DateTime urlaubstag = angestellterAkt->getListeUrlaubstage()[i];
+				 DateTime urlaubstag = angestellterAkt->getListeUrlaubstage()[i]->getDatum();
 				 kWUrlaubstag = meinKalender->GetWeekOfYear(urlaubstag, *meineCWR, *meinErsterWochentag);
 				 //Prüfen, ob dieser Urlaubstag in der aktuellen Woche liegt.
 				 if (kWHeute == kWUrlaubstag) {

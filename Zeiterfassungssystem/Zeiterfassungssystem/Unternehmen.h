@@ -1,4 +1,5 @@
 #pragma once
+#include "FreierTag.h"
 
 using namespace System;
 using namespace System::Collections::Generic;
@@ -11,7 +12,7 @@ ref class Unternehmen
 {
 private:
 	List<Abteilung^>^ abteilungen;
-	List<DateTime>^ feiertage;
+	List<FreierTag^>^ feiertage;
 	String^ file;
 
 	Unternehmen();
@@ -29,7 +30,7 @@ public:
 	List<Angestellter^>^ getAlleAngestellte();
 	Angestellter^ loginaccept(String^ personalnummer, String^ passwort);
 	List<Abteilung^>^ getAbteilungen();
-	inline List<DateTime>^ getFeiertage() { return feiertage; }
+	inline List<FreierTag^>^ getFeiertage() { return feiertage; }
 	void addFeiertag(DateTime tag);
 	void removeFeiertag(DateTime tag);
 	void erstelleRegelFeiertage();

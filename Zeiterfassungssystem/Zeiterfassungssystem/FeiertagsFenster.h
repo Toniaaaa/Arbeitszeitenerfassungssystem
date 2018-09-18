@@ -158,7 +158,7 @@ namespace Zeiterfassungssystem {
 			String^ hinzuText = "Sind Sie sicher, dass Sie folgendes Datum als neuen Feiertag hinzufügen möchten?\n\n" + neuerFeiertagDTP->Value.ToString("dddd, dd. MMMM yyyy");
 			if (MessageBox::Show(hinzuText, "Wirklich hinzufuegen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 				//Falls der Feiertag schon eingetragen ist, wird der Tag nicht noch einmal hinzugefügt:
-				if (unternehmen->getFeiertage()->Contains(neuerFeiertagDTP->Value.Date)) {
+				if (unternehmen->istFeiertag(neuerFeiertagDTP->Value.Date)) {
 					MessageBox::Show("Dieser Feiertag existiert bereits!", "Hinzufügen nicht möglich", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				}
 				//Feiertag wird hinzugefügt, falls er noch nicht im Unternehmen existiert
@@ -195,7 +195,7 @@ namespace Zeiterfassungssystem {
 			String^ hinzuText = "Sind Sie sicher, dass Sie folgendes Datum als Feiertag entfernen möchten?\n\n" + neuerFeiertagDTP->Value.ToString("dddd, dd. MMMM yyyy");
 			if (MessageBox::Show(hinzuText, "Wirklich entfernen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 				//Wenn der Feiertag, der entfernt werden soll, exisitiert, wird er entfernt
-				if (unternehmen->getFeiertage()->Contains(neuerFeiertagDTP->Value.Date)) {
+				if (unternehmen->istFeiertag(neuerFeiertagDTP->Value.Date)) {
 					unternehmen->removeFeiertag(neuerFeiertagDTP->Value.Date);
 					this->DialogResult = System::Windows::Forms::DialogResult::OK;
 				}
@@ -210,7 +210,7 @@ namespace Zeiterfassungssystem {
 	private: System::Void anzeigenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		String^ feiertageString = "Dies sind die Feiertag in Ihrem Unternehmen:\n\n";
 		for (int i = 0; i < unternehmen->getFeiertage()->Count; i++) {
-			feiertageString += unternehmen->getFeiertage()[i].ToString("dddd, dd. MMMM yyyy") + "\n";
+			feiertageString += unternehmen->getFeiertage()[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + "\n";
 		}
 		MessageBox::Show(feiertageString, "Ihre Feiertage", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
