@@ -95,6 +95,7 @@ public:
 	void speichereArbeitszeit(Int32 stunden, Int32 minuten, Boolean erreicht);
 	void nehmeUrlaub(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage);
 	Int32 berechneUrlaubstage(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage);
+	Int32 indexVon(DateTime tag);
 	Boolean istUrlaubstag(DateTime tag);
 	// Ereignislisteauswertungsmethodensammlung
 

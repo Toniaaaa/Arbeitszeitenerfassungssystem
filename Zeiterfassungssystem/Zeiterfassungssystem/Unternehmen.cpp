@@ -111,7 +111,12 @@ void Unternehmen::addFeiertag(DateTime tag)
 
 void Unternehmen::removeFeiertag(DateTime tag)
 {
-	feiertage->Remove(gcnew FreierTag(tag));
+	for (int i = feiertage->Count - 1; i >= 0; i--) {
+		if (feiertage[i]->getDatum() == tag) {
+			feiertage->RemoveAt(i);
+			break;
+		}
+	};
 }
 
 void Unternehmen::erstelleRegelFeiertage()
@@ -146,4 +151,16 @@ Boolean Unternehmen::istFeiertag(DateTime tag)
 		}
 	}
 	return istFeiertag;
+}
+
+Int32 Unternehmen::indexVon(DateTime tag)
+{
+	Int32 index = -1;
+	for (int i = feiertage->Count - 1; i >= 0; i--) {
+		if (feiertage[i]->getDatum().Date == tag) {
+			index = i;
+			break;
+		}
+	}
+	return index;
 }

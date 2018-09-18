@@ -36,4 +36,5 @@ public:
 	void erstelleRegelFeiertage();
 	void loescheAlteFeiertage();
 	Boolean istFeiertag(DateTime tag);
+	Int32 indexVon(DateTime tag);
 };

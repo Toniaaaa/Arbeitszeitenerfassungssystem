@@ -1017,7 +1017,7 @@ namespace Zeiterfassungssystem {
 			angestellterAkt->setUeberStunden(0);
 			angestellterAkt->setUeberMinuten(0);
 			//Falls in dieser Woche freie Tage vorhanden sind (Urlaub, Feiertage) wird die Arbeitszeit dieser Woche entsprechend angepasst.
-			freieTagePruefen(kWHeute, meinKalender, meineCWR, meinErsterWochentag);
+			freieTagePruefen();
 		}
 	}
 
@@ -1056,31 +1056,40 @@ namespace Zeiterfassungssystem {
 
 	}
 
-	void freieTagePruefen(Int32 kWHeute, Calendar^ meinKalender, CalendarWeekRule^ meineCWR, DayOfWeek^ meinErsterWochentag)
+	void freieTagePruefen()
 	{
 		Int32 anzFreieTage = 0;
 		Double TagesArbeitszeit = angestellterAkt->getWochensstunden() / 5;
 
+		CultureInfo^ meinCI = gcnew CultureInfo("de");
+		Calendar^ meinKalender = meinCI->Calendar;
+		CalendarWeekRule^ meineCWR = meinCI->DateTimeFormat->CalendarWeekRule;
+		DayOfWeek^ meinErsterWochentag = meinCI->DateTimeFormat->FirstDayOfWeek;
+
+		// Kalenderwoche von heute berechnen
+		DateTime^ heute = DateTime::Now.Date;
+		Int32 kWHeute = meinKalender->GetWeekOfYear(*heute, *meineCWR, *meinErsterWochentag);
+		DateTime^ tagDynamisch = heute;
+		Int32 kWDynamisch = kWHeute;
+
 		try {
-			for (int i = 0; i < unternehmen->getFeiertage()->Count; i++) {
-				//Kalenderwochen der Feiertage berechnen
-				Int32 kWFeiertag;
-				DateTime feiertag = unternehmen->getFeiertage()[i]->getDatum();
-				kWFeiertag = meinKalender->GetWeekOfYear(feiertag, *meineCWR, *meinErsterWochentag);
-				//Prüfen, ob dieser Feiertag in der aktuellen Woche liegt.
-				if (kWHeute == kWFeiertag) {
-					anzFreieTage++;
+			while (kWDynamisch == kWHeute) {
+				if (unternehmen->istFeiertag(*tagDynamisch)) {
+					Int32 index = unternehmen->indexVon(*tagDynamisch);
+					if (!unternehmen->getFeiertage()[index]->getEingerechnet()) {
+						anzFreieTage++;
+						unternehmen->getFeiertage()[index]->setEingerechnet(true);
+					}
 				}
-			}
-			for (int i = 0; i < angestellterAkt->getListeUrlaubstage()->Count; i++) {
-				//Kalenderwochen der Urlaubstage berechnen
-				Int32 kWUrlaubstag;
-				DateTime urlaubstag = angestellterAkt->getListeUrlaubstage()[i]->getDatum();
-				kWUrlaubstag = meinKalender->GetWeekOfYear(urlaubstag, *meineCWR, *meinErsterWochentag);
-				//Prüfen, ob dieser Urlaubstag in der aktuellen Woche liegt.
-				if (kWHeute == kWUrlaubstag) {
-					anzFreieTage++;
+				if (angestellterAkt->istUrlaubstag(*tagDynamisch)) {
+					Int32 index = angestellterAkt->indexVon(*tagDynamisch);
+					if (!angestellterAkt->getListeUrlaubstage()[index]->getEingerechnet()) {
+						anzFreieTage++;
+						angestellterAkt->getListeUrlaubstage()[index]->setEingerechnet(true);
+					}
 				}
+				tagDynamisch = tagDynamisch->AddDays(1.0);
+				kWDynamisch = meinKalender->GetWeekOfYear(*tagDynamisch, *meineCWR, *meinErsterWochentag);
 			}
 		}
 		catch (System::NullReferenceException ^e) {

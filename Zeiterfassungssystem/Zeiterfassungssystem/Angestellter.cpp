@@ -281,3 +281,15 @@ Boolean Angestellter::istUrlaubstag(DateTime tag)
 	}
 	return istUrlaubstag;
 }
+
+Int32 Angestellter::indexVon(DateTime tag)
+{
+	Int32 index = -1;
+	for (int i = listeUrlaubstage->Count - 1; i >= 0; i--) {
+		if (listeUrlaubstage[i]->getDatum().Date == tag) {
+			index = i;
+			break;
+		}
+	}
+	return index;
+}
