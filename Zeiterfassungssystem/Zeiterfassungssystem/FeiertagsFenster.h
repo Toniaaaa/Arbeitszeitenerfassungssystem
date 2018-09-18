@@ -94,7 +94,7 @@ namespace Zeiterfassungssystem {
 			this->hinzufuegenBtn->Location = System::Drawing::Point(12, 160);
 			this->hinzufuegenBtn->Name = L"hinzufuegenBtn";
 			this->hinzufuegenBtn->Size = System::Drawing::Size(122, 37);
-			this->hinzufuegenBtn->TabIndex = 8;
+			this->hinzufuegenBtn->TabIndex = 1;
 			this->hinzufuegenBtn->Text = L"Hinzufügen";
 			this->hinzufuegenBtn->UseVisualStyleBackColor = true;
 			this->hinzufuegenBtn->Click += gcnew System::EventHandler(this, &FeiertagsFenster::hinzufuegenBtn_Click);
@@ -104,7 +104,7 @@ namespace Zeiterfassungssystem {
 			this->abbrechenBtn->Location = System::Drawing::Point(150, 212);
 			this->abbrechenBtn->Name = L"abbrechenBtn";
 			this->abbrechenBtn->Size = System::Drawing::Size(122, 37);
-			this->abbrechenBtn->TabIndex = 9;
+			this->abbrechenBtn->TabIndex = 4;
 			this->abbrechenBtn->Text = L"Abbrechen";
 			this->abbrechenBtn->UseVisualStyleBackColor = true;
 			this->abbrechenBtn->Click += gcnew System::EventHandler(this, &FeiertagsFenster::abbrechenBtn_Click);
@@ -114,7 +114,7 @@ namespace Zeiterfassungssystem {
 			this->entfernenBtn->Location = System::Drawing::Point(150, 160);
 			this->entfernenBtn->Name = L"entfernenBtn";
 			this->entfernenBtn->Size = System::Drawing::Size(122, 37);
-			this->entfernenBtn->TabIndex = 10;
+			this->entfernenBtn->TabIndex = 2;
 			this->entfernenBtn->Text = L"Entfernen";
 			this->entfernenBtn->UseVisualStyleBackColor = true;
 			this->entfernenBtn->Click += gcnew System::EventHandler(this, &FeiertagsFenster::entfernenBtn_Click);
@@ -124,7 +124,7 @@ namespace Zeiterfassungssystem {
 			this->anzeigenBtn->Location = System::Drawing::Point(12, 212);
 			this->anzeigenBtn->Name = L"anzeigenBtn";
 			this->anzeigenBtn->Size = System::Drawing::Size(122, 37);
-			this->anzeigenBtn->TabIndex = 11;
+			this->anzeigenBtn->TabIndex = 3;
 			this->anzeigenBtn->Text = L"Feiertage anzeigen";
 			this->anzeigenBtn->UseVisualStyleBackColor = true;
 			this->anzeigenBtn->Click += gcnew System::EventHandler(this, &FeiertagsFenster::anzeigenBtn_Click);

@@ -185,7 +185,7 @@ namespace Zeiterfassungssystem {
 			this->gehenBtn->Location = System::Drawing::Point(581, 272);
 			this->gehenBtn->Name = L"gehenBtn";
 			this->gehenBtn->Size = System::Drawing::Size(200, 130);
-			this->gehenBtn->TabIndex = 1;
+			this->gehenBtn->TabIndex = 2;
 			this->gehenBtn->UseVisualStyleBackColor = true;
 			this->gehenBtn->Click += gcnew System::EventHandler(this, &StartseiteVorgesetzte::gehenBtn_Click);
 			// 
@@ -317,7 +317,7 @@ namespace Zeiterfassungssystem {
 			this->statistikBtn->Location = System::Drawing::Point(14, 535);
 			this->statistikBtn->Name = L"statistikBtn";
 			this->statistikBtn->Size = System::Drawing::Size(235, 76);
-			this->statistikBtn->TabIndex = 12;
+			this->statistikBtn->TabIndex = 3;
 			this->statistikBtn->UseVisualStyleBackColor = false;
 			this->statistikBtn->Click += gcnew System::EventHandler(this, &StartseiteVorgesetzte::statistikBtn_Click);
 			// 
@@ -332,7 +332,7 @@ namespace Zeiterfassungssystem {
 			this->urlaubBtn->Location = System::Drawing::Point(581, 535);
 			this->urlaubBtn->Name = L"urlaubBtn";
 			this->urlaubBtn->Size = System::Drawing::Size(235, 76);
-			this->urlaubBtn->TabIndex = 13;
+			this->urlaubBtn->TabIndex = 5;
 			this->urlaubBtn->UseVisualStyleBackColor = false;
 			this->urlaubBtn->Click += gcnew System::EventHandler(this, &StartseiteVorgesetzte::urlaubBtn_Click);
 			// 
@@ -346,7 +346,7 @@ namespace Zeiterfassungssystem {
 			this->kalenderBtn->Location = System::Drawing::Point(298, 535);
 			this->kalenderBtn->Name = L"kalenderBtn";
 			this->kalenderBtn->Size = System::Drawing::Size(235, 76);
-			this->kalenderBtn->TabIndex = 14;
+			this->kalenderBtn->TabIndex = 4;
 			this->kalenderBtn->UseVisualStyleBackColor = false;
 			this->kalenderBtn->Click += gcnew System::EventHandler(this, &StartseiteVorgesetzte::kalenderBtn_Click);
 			// 
@@ -397,7 +397,7 @@ namespace Zeiterfassungssystem {
 			this->pauseCbox->Location = System::Drawing::Point(289, 297);
 			this->pauseCbox->Name = L"pauseCbox";
 			this->pauseCbox->Size = System::Drawing::Size(240, 80);
-			this->pauseCbox->TabIndex = 18;
+			this->pauseCbox->TabIndex = 1;
 			this->pauseCbox->UseVisualStyleBackColor = true;
 			this->pauseCbox->CheckedChanged += gcnew System::EventHandler(this, &StartseiteVorgesetzte::pauseCbox_CheckedChanged);
 			// 
@@ -416,7 +416,7 @@ namespace Zeiterfassungssystem {
 			this->addBtn->Location = System::Drawing::Point(17, 629);
 			this->addBtn->Name = L"addBtn";
 			this->addBtn->Size = System::Drawing::Size(235, 76);
-			this->addBtn->TabIndex = 19;
+			this->addBtn->TabIndex = 6;
 			this->addBtn->UseVisualStyleBackColor = false;
 			this->addBtn->Click += gcnew System::EventHandler(this, &StartseiteVorgesetzte::addBtn_Click);
 			// 
@@ -430,7 +430,7 @@ namespace Zeiterfassungssystem {
 			this->editBtn->Location = System::Drawing::Point(298, 629);
 			this->editBtn->Name = L"editBtn";
 			this->editBtn->Size = System::Drawing::Size(235, 76);
-			this->editBtn->TabIndex = 20;
+			this->editBtn->TabIndex = 7;
 			this->editBtn->UseVisualStyleBackColor = false;
 			this->editBtn->Click += gcnew System::EventHandler(this, &StartseiteVorgesetzte::editBtn_Click);
 			// 
@@ -444,7 +444,7 @@ namespace Zeiterfassungssystem {
 			this->personalBtn->Location = System::Drawing::Point(581, 629);
 			this->personalBtn->Name = L"personalBtn";
 			this->personalBtn->Size = System::Drawing::Size(235, 76);
-			this->personalBtn->TabIndex = 21;
+			this->personalBtn->TabIndex = 8;
 			this->personalBtn->UseVisualStyleBackColor = false;
 			this->personalBtn->Click += gcnew System::EventHandler(this, &StartseiteVorgesetzte::personalBtn_Click);
 			// 
@@ -462,6 +462,7 @@ namespace Zeiterfassungssystem {
 			// 
 			// lbl_Status
 			// 
+			this->lbl_Status->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->lbl_Status->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lbl_Status->ForeColor = System::Drawing::SystemColors::InfoText;
@@ -479,7 +480,7 @@ namespace Zeiterfassungssystem {
 			this->logOutBtn->Location = System::Drawing::Point(19, 12);
 			this->logOutBtn->Name = L"logOutBtn";
 			this->logOutBtn->Size = System::Drawing::Size(122, 44);
-			this->logOutBtn->TabIndex = 22;
+			this->logOutBtn->TabIndex = 9;
 			this->logOutBtn->UseVisualStyleBackColor = true;
 			this->logOutBtn->Click += gcnew System::EventHandler(this, &StartseiteVorgesetzte::logOutBtn_Click);
 			// 
@@ -544,7 +545,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->kommenBtn);
 			this->Name = L"StartseiteVorgesetzte";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
-			this->Text = L"Zeiterfassung Imperium Startseite Vorgesetzte";
+			this->Text = L"Zeiterfassung Startseite Vorgesetzte";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &StartseiteVorgesetzte::StartseiteVorgesetzte_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &StartseiteVorgesetzte::StartseiteVorgesetzte_Load);
 			this->Shown += gcnew System::EventHandler(this, &StartseiteVorgesetzte::StartseiteVorgesetzte_Shown);

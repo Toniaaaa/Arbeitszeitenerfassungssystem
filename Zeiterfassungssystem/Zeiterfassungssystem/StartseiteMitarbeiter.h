@@ -170,7 +170,7 @@ namespace Zeiterfassungssystem {
 			this->gehenBtn->Location = System::Drawing::Point(581, 272);
 			this->gehenBtn->Name = L"gehenBtn";
 			this->gehenBtn->Size = System::Drawing::Size(200, 130);
-			this->gehenBtn->TabIndex = 1;
+			this->gehenBtn->TabIndex = 2;
 			this->gehenBtn->UseVisualStyleBackColor = true;
 			this->gehenBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::gehenBtn_Click);
 			// 
@@ -302,7 +302,7 @@ namespace Zeiterfassungssystem {
 			this->statistikBtn->Location = System::Drawing::Point(21, 530);
 			this->statistikBtn->Name = L"statistikBtn";
 			this->statistikBtn->Size = System::Drawing::Size(180, 65);
-			this->statistikBtn->TabIndex = 12;
+			this->statistikBtn->TabIndex = 3;
 			this->statistikBtn->UseVisualStyleBackColor = false;
 			this->statistikBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::statistikBtn_Click);
 			// 
@@ -317,7 +317,7 @@ namespace Zeiterfassungssystem {
 			this->urlaubBtn->Location = System::Drawing::Point(618, 530);
 			this->urlaubBtn->Name = L"urlaubBtn";
 			this->urlaubBtn->Size = System::Drawing::Size(180, 65);
-			this->urlaubBtn->TabIndex = 13;
+			this->urlaubBtn->TabIndex = 6;
 			this->urlaubBtn->UseVisualStyleBackColor = false;
 			this->urlaubBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::urlaubBtn_Click);
 			// 
@@ -331,7 +331,7 @@ namespace Zeiterfassungssystem {
 			this->kalenderBtn->Location = System::Drawing::Point(221, 530);
 			this->kalenderBtn->Name = L"kalenderBtn";
 			this->kalenderBtn->Size = System::Drawing::Size(180, 65);
-			this->kalenderBtn->TabIndex = 14;
+			this->kalenderBtn->TabIndex = 4;
 			this->kalenderBtn->UseVisualStyleBackColor = false;
 			this->kalenderBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::kalenderBtn_Click);
 			// 
@@ -382,7 +382,7 @@ namespace Zeiterfassungssystem {
 			this->pauseCbox->Location = System::Drawing::Point(289, 297);
 			this->pauseCbox->Name = L"pauseCbox";
 			this->pauseCbox->Size = System::Drawing::Size(240, 80);
-			this->pauseCbox->TabIndex = 18;
+			this->pauseCbox->TabIndex = 1;
 			this->pauseCbox->UseVisualStyleBackColor = true;
 			this->pauseCbox->CheckedChanged += gcnew System::EventHandler(this, &StartseiteMitarbeiter::pauseCbox_CheckedChanged);
 			// 
@@ -401,7 +401,7 @@ namespace Zeiterfassungssystem {
 			this->editBtn->Location = System::Drawing::Point(421, 530);
 			this->editBtn->Name = L"editBtn";
 			this->editBtn->Size = System::Drawing::Size(180, 65);
-			this->editBtn->TabIndex = 20;
+			this->editBtn->TabIndex = 5;
 			this->editBtn->UseVisualStyleBackColor = false;
 			this->editBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::editBtn_Click);
 			// 
@@ -419,6 +419,7 @@ namespace Zeiterfassungssystem {
 			// 
 			// lbl_Status
 			// 
+			this->lbl_Status->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->lbl_Status->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lbl_Status->ForeColor = System::Drawing::SystemColors::InfoText;
@@ -436,7 +437,7 @@ namespace Zeiterfassungssystem {
 			this->logOutBtn->Location = System::Drawing::Point(19, 12);
 			this->logOutBtn->Name = L"logOutBtn";
 			this->logOutBtn->Size = System::Drawing::Size(122, 44);
-			this->logOutBtn->TabIndex = 22;
+			this->logOutBtn->TabIndex = 7;
 			this->logOutBtn->UseVisualStyleBackColor = true;
 			this->logOutBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::logOutBtn_Click);
 			// 
@@ -499,7 +500,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->kommenBtn);
 			this->Name = L"StartseiteMitarbeiter";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
-			this->Text = L"Zeiterfassung Imperium Startseite Vorgesetzte";
+			this->Text = L"Zeiterfassung Startseite Mitarbeiter";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &StartseiteMitarbeiter::StartseiteMitarbeiter_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &StartseiteMitarbeiter::StartseiteMitarbeiter_Load);
 			this->Shown += gcnew System::EventHandler(this, &StartseiteMitarbeiter::StartseiteMitarbeiter_Shown);
