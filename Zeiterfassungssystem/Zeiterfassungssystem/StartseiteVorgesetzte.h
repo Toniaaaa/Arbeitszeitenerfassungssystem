@@ -756,8 +756,10 @@ namespace Zeiterfassungssystem {
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {
 
-		this->neueWoche();
 		this->neuesJahr();
+		this->neueWoche();
+		//Falls in dieser Woche freie Tage vorhanden sind (Urlaub, Feiertage) wird die Arbeitszeit dieser Woche entsprechend angepasst.
+		this->freieTagePruefen();
 
 		wochenZeitErreicht = angestellterAkt->getWochenZeitErreicht();
 
@@ -1085,8 +1087,6 @@ namespace Zeiterfassungssystem {
 			angestellterAkt->setArbeitsMinuten(0);
 			angestellterAkt->setUeberStunden(0);
 			angestellterAkt->setUeberMinuten(0);
-			//Falls in dieser Woche freie Tage vorhanden sind (Urlaub, Feiertage) wird die Arbeitszeit dieser Woche entsprechend angepasst.
-			freieTagePruefen(kWHeute, meinKalender, meineCWR, meinErsterWochentag);
 		}
 	}
 
@@ -1125,45 +1125,55 @@ namespace Zeiterfassungssystem {
 
 	}
 
-	 void freieTagePruefen(Int32 kWHeute, Calendar^ meinKalender, CalendarWeekRule^ meineCWR, DayOfWeek^ meinErsterWochentag)
-	 {
-		 Int32 anzFreieTage = 0;
-		 Double TagesArbeitszeit = angestellterAkt->getWochensstunden() / 5;
+	void freieTagePruefen()
+	{
+		Int32 anzFreieTage = 0;
 
-		 try {
-			 for (int i = 0; i < unternehmen->getFeiertage()->Count; i++) {
-				 //Kalenderwochen der Feiertage berechnen
-				 Int32 kWFeiertag;
-				 DateTime feiertag = unternehmen->getFeiertage()[i]->getDatum();
-				 kWFeiertag = meinKalender->GetWeekOfYear(feiertag, *meineCWR, *meinErsterWochentag);
-				 //Prüfen, ob dieser Feiertag in der aktuellen Woche liegt.
-				 if (kWHeute == kWFeiertag) {
+		CultureInfo^ meinCI = gcnew CultureInfo("de");
+		Calendar^ meinKalender = meinCI->Calendar;
+		CalendarWeekRule^ meineCWR = meinCI->DateTimeFormat->CalendarWeekRule;
+		DayOfWeek^ meinErsterWochentag = meinCI->DateTimeFormat->FirstDayOfWeek;
+
+		// Kalenderwoche von heute berechnen
+		DateTime^ heute = DateTime::Now.Date;
+		Int32 kWHeute = meinKalender->GetWeekOfYear(*heute, *meineCWR, *meinErsterWochentag);
+		DateTime^ tagDynamisch = heute;
+		Int32 kWDynamisch = kWHeute;
+
+		try {
+			while (kWDynamisch == kWHeute) {
+				if (unternehmen->istFeiertag(*tagDynamisch)) {
+					Int32 index = unternehmen->indexVon(*tagDynamisch);
+					if (!unternehmen->getFeiertage()[index]->getEingerechnet()) {
+						anzFreieTage++;
+						unternehmen->getFeiertage()[index]->setEingerechnet(true);
+					}
+				}
+				if (angestellterAkt->istUrlaubstag(*tagDynamisch)) {
+					Int32 index = angestellterAkt->indexVon(*tagDynamisch);
+					if (!angestellterAkt->getListeUrlaubstage()[index]->getEingerechnet()) {
 					 anzFreieTage++;
-				 }
-			 }
-			 for (int i = 0; i < angestellterAkt->getListeUrlaubstage()->Count; i++) {
-				 //Kalenderwochen der Urlaubstage berechnen
-				 Int32 kWUrlaubstag;
-				 DateTime urlaubstag = angestellterAkt->getListeUrlaubstage()[i]->getDatum();
-				 kWUrlaubstag = meinKalender->GetWeekOfYear(urlaubstag, *meineCWR, *meinErsterWochentag);
-				 //Prüfen, ob dieser Urlaubstag in der aktuellen Woche liegt.
-				 if (kWHeute == kWUrlaubstag) {
-					 anzFreieTage++;
-				 }
-			 }
-		 }
-		 catch (System::NullReferenceException ^e) {
-			 //Keine Aktion notwendig
-		 }
+						angestellterAkt->getListeUrlaubstage()[index]->setEingerechnet(true);
+					}
+				}
+				tagDynamisch = tagDynamisch->AddDays(1.0);
+				kWDynamisch = meinKalender->GetWeekOfYear(*tagDynamisch, *meineCWR, *meinErsterWochentag);
+			}
+		}
+		catch (System::NullReferenceException ^e) {
+			//Keine Aktion notwendig
+		}
 
-		 //Stunden und Minuten berechnen, die in dieser Woche durch die freien Tage weniger gearbeitet werden müssen
-		 Int32 wenigerStunden = TagesArbeitszeit * anzFreieTage;
-		 Int32 wenigerMinuten = ((TagesArbeitszeit * anzFreieTage) - wenigerStunden) * 60;
+		//Stunden und Minuten berechnen, die in dieser Woche durch die freien Tage weniger gearbeitet werden müssen
+		Double tagesArbeitszeit = (Double) angestellterAkt->getWochensstunden() / 5;
+		Double abzugArbeitszeit = tagesArbeitszeit * anzFreieTage;
+		Int32 wenigerStunden = (Int32) abzugArbeitszeit;
+		Int32 wenigerMinuten = (abzugArbeitszeit - wenigerStunden) * 60;
 
-		 //Diese Zeit von den ArbeitsStunden und Minuten dieser Woche abziehen
-		 angestellterAkt->setArbeitsStunden(angestellterAkt->getArbeitsStunden() - wenigerStunden);
-		 angestellterAkt->setArbeitsMinuten(angestellterAkt->getArbeitsMinuten() - wenigerMinuten);
+		//Diese Zeit von den ArbeitsStunden und Minuten dieser Woche abziehen
+		angestellterAkt->setArbeitsStunden(angestellterAkt->getArbeitsStunden() - wenigerStunden);
+		angestellterAkt->zieheMinutenAb(wenigerMinuten);
+	}
 
-	 }
 };
 }

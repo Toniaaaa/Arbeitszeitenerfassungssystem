@@ -730,6 +730,8 @@ namespace Zeiterfassungssystem {
 
 		this->neuesJahr();
 		this->neueWoche();
+		//Falls in dieser Woche freie Tage vorhanden sind (Urlaub, Feiertage) wird die Arbeitszeit dieser Woche entsprechend angepasst.
+		this->freieTagePruefen();
 
 		wochenZeitErreicht = angestellterAkt->getWochenZeitErreicht();
 
@@ -1016,8 +1018,6 @@ namespace Zeiterfassungssystem {
 			angestellterAkt->setArbeitsMinuten(0);
 			angestellterAkt->setUeberStunden(0);
 			angestellterAkt->setUeberMinuten(0);
-			//Falls in dieser Woche freie Tage vorhanden sind (Urlaub, Feiertage) wird die Arbeitszeit dieser Woche entsprechend angepasst.
-			freieTagePruefen();
 		}
 	}
 
@@ -1059,7 +1059,6 @@ namespace Zeiterfassungssystem {
 	void freieTagePruefen()
 	{
 		Int32 anzFreieTage = 0;
-		Double TagesArbeitszeit = angestellterAkt->getWochensstunden() / 5;
 
 		CultureInfo^ meinCI = gcnew CultureInfo("de");
 		Calendar^ meinKalender = meinCI->Calendar;
@@ -1097,13 +1096,14 @@ namespace Zeiterfassungssystem {
 		}
 
 		//Stunden und Minuten berechnen, die in dieser Woche durch die freien Tage weniger gearbeitet werden müssen
-		Double wenigerArbeitszeit = TagesArbeitszeit * anzFreieTage;
-		Int32 wenigerStunden = wenigerArbeitszeit;
-		Int32 wenigerMinuten = (wenigerArbeitszeit - wenigerStunden) * 60;
-		
+		Double tagesArbeitszeit = (Double)angestellterAkt->getWochensstunden() / 5;
+		Double abzugArbeitszeit = tagesArbeitszeit * anzFreieTage;
+		Int32 wenigerStunden = (Int32)abzugArbeitszeit;
+		Int32 wenigerMinuten = (abzugArbeitszeit - wenigerStunden) * 60;
+
 		//Diese Zeit von den ArbeitsStunden und Minuten dieser Woche abziehen
 		angestellterAkt->setArbeitsStunden(angestellterAkt->getArbeitsStunden() - wenigerStunden);
-		angestellterAkt->setArbeitsMinuten(angestellterAkt->getArbeitsMinuten() - wenigerMinuten);
+		angestellterAkt->zieheMinutenAb(wenigerMinuten);
 	}
 
 };

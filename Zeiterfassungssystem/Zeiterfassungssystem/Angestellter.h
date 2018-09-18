@@ -97,6 +97,7 @@ public:
 	Int32 berechneUrlaubstage(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage);
 	Int32 indexVon(DateTime tag);
 	Boolean istUrlaubstag(DateTime tag);
+	void zieheMinutenAb(Int32 minuten);
 	// Ereignislisteauswertungsmethodensammlung
 
 	DateTime^ getLetzterArbeitstag();

@@ -293,3 +293,11 @@ Int32 Angestellter::indexVon(DateTime tag)
 	}
 	return index;
 }
+
+void Angestellter::zieheMinutenAb(Int32 minuten) {
+	this->arbeitsMinuten -= minuten;
+	if (arbeitsMinuten < 0) {
+		this->arbeitsStunden -= (Int32)(-arbeitsMinuten / 60) + 1;
+		this->arbeitsMinuten = 60 - ((-arbeitsMinuten) % 60);
+	}
+}
