@@ -146,6 +146,9 @@
     <ClInclude Include="BearbeitungsFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="FeiertagsFenster.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="KalenderFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -195,6 +198,7 @@
     <ClCompile Include="Angestellter.cpp" />
     <ClCompile Include="AuswahlFenster.cpp" />
     <ClCompile Include="BearbeitungsFenster.cpp" />
+    <ClCompile Include="FeiertagsFenster.cpp" />
     <ClCompile Include="KalenderFenster.cpp" />
     <ClCompile Include="LogInFenster.cpp" />
     <ClCompile Include="Mitarbeiter.cpp" />
@@ -232,6 +236,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BearbeitungsFenster.resx">
       <DependentUpon>BearbeitungsFenster.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeiertagsFenster.resx">
+      <DependentUpon>FeiertagsFenster.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KalenderFenster.resx">
       <DependentUpon>KalenderFenster.h</DependentUpon>

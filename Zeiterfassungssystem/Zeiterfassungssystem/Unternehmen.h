@@ -33,5 +33,5 @@ public:
 	void addFeiertag(DateTime tag);
 	void removeFeiertag(DateTime tag);
 	void erstelleRegelFeiertage();
-	void loescheAlleFeiertage();
+	void loescheAlteFeiertage();
 };

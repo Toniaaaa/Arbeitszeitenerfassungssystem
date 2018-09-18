@@ -549,7 +549,9 @@ namespace Zeiterfassungssystem {
 				if (angestellterAkt->getPauseAnfang() != nullptr) {
 					this->pauseCbox->Image = Image::FromFile("Images/pauseIcon3.jpg");
 					this->pauseLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+					this->PausenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 					this->arbeitszeitLbl->ForeColor = System::Drawing::Color::Gray;
+					this->arbeitszeitSchriftLbl->ForeColor = System::Drawing::Color::Gray;
 					lbl_Status->Text = "Geniessen Sie Ihre Pause!";
 					angestellterAkt->setAktuellenStatus("Geniessen Sie Ihre Pause!");
 				}
@@ -562,7 +564,9 @@ namespace Zeiterfassungssystem {
 				angestellterAkt->fuegeEreignisHinzu(pausenende);
 				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon.jpg");
 				this->pauseLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+				this->PausenSchriftLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 				this->arbeitszeitLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+				this->arbeitszeitSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 				lbl_Status->Text = "Viel Erfolg beim Erledigen Ihrer Aufgaben!";
 				angestellterAkt->setAktuellenStatus("Viel Erfolg beim Erledigen Ihrer Aufgaben!");
 			}
@@ -805,6 +809,11 @@ namespace Zeiterfassungssystem {
 			//Timer wird gestartet
 			if (angestellterAkt->getPauseAnfang() != nullptr) {
 				timerPause->Start();
+				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon3.jpg");
+				this->pauseLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+				this->PausenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+				this->arbeitszeitLbl->ForeColor = System::Drawing::Color::Gray;
+				this->arbeitszeitSchriftLbl->ForeColor = System::Drawing::Color::Gray;
 			}
 			else {
 				timerArbeitszeit->Start();
@@ -1033,6 +1042,10 @@ namespace Zeiterfassungssystem {
 				angestellterAkt->removeEreignis(i);
 				i++;
 			}
+
+			//Feiertage werden für das neue Jahr gesetzt
+			unternehmen->loescheAlteFeiertage();
+			unternehmen->erstelleRegelFeiertage();
 		}
 
 		//Urlaubstage, die aus dem letzten Jahr stammen, verfallen, wenn sie nicht bis März genommen wurden
@@ -1040,9 +1053,6 @@ namespace Zeiterfassungssystem {
 			angestellterAkt->setUrlaubstageGespart(0);
 		}
 
-		//Feiertage werden für das neue Jahr gesetzt
-		unternehmen->loescheAlleFeiertage();
-		unternehmen->erstelleRegelFeiertage();
 	}
 
 	void freieTagePruefen(Int32 kWHeute, Calendar^ meinKalender, CalendarWeekRule^ meineCWR, DayOfWeek^ meinErsterWochentag)

@@ -123,9 +123,11 @@ void Unternehmen::erstelleRegelFeiertage()
 	}
 }
 
-void Unternehmen::loescheAlleFeiertage()
+void Unternehmen::loescheAlteFeiertage()
 {
 	for (int i = feiertage->Count - 1; i >= 0; i--) {
-		feiertage->RemoveAt(i);
+		if (feiertage[i].Year < DateTime::Now.Year) {
+			feiertage->RemoveAt(i);
+		}
 	}
 }
