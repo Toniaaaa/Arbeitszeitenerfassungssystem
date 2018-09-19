@@ -46,6 +46,7 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Button^  hinzufuegenBtn;
 	private: System::Windows::Forms::Button^  abbrechenBtn;
 	private: System::Windows::Forms::Button^  entfernenBtn;
+	private: System::Windows::Forms::Button^  anzeigenBtn;
 
 
 	private:
@@ -66,6 +67,7 @@ namespace Zeiterfassungssystem {
 			this->hinzufuegenBtn = (gcnew System::Windows::Forms::Button());
 			this->abbrechenBtn = (gcnew System::Windows::Forms::Button());
 			this->entfernenBtn = (gcnew System::Windows::Forms::Button());
+			this->anzeigenBtn = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// neuerFeiertagDTP
@@ -89,10 +91,10 @@ namespace Zeiterfassungssystem {
 			// 
 			// hinzufuegenBtn
 			// 
-			this->hinzufuegenBtn->Location = System::Drawing::Point(81, 158);
+			this->hinzufuegenBtn->Location = System::Drawing::Point(12, 160);
 			this->hinzufuegenBtn->Name = L"hinzufuegenBtn";
 			this->hinzufuegenBtn->Size = System::Drawing::Size(122, 37);
-			this->hinzufuegenBtn->TabIndex = 8;
+			this->hinzufuegenBtn->TabIndex = 1;
 			this->hinzufuegenBtn->Text = L"Hinzufügen";
 			this->hinzufuegenBtn->UseVisualStyleBackColor = true;
 			this->hinzufuegenBtn->Click += gcnew System::EventHandler(this, &FeiertagsFenster::hinzufuegenBtn_Click);
@@ -102,20 +104,30 @@ namespace Zeiterfassungssystem {
 			this->abbrechenBtn->Location = System::Drawing::Point(150, 212);
 			this->abbrechenBtn->Name = L"abbrechenBtn";
 			this->abbrechenBtn->Size = System::Drawing::Size(122, 37);
-			this->abbrechenBtn->TabIndex = 9;
+			this->abbrechenBtn->TabIndex = 4;
 			this->abbrechenBtn->Text = L"Abbrechen";
 			this->abbrechenBtn->UseVisualStyleBackColor = true;
 			this->abbrechenBtn->Click += gcnew System::EventHandler(this, &FeiertagsFenster::abbrechenBtn_Click);
 			// 
 			// entfernenBtn
 			// 
-			this->entfernenBtn->Location = System::Drawing::Point(12, 212);
+			this->entfernenBtn->Location = System::Drawing::Point(150, 160);
 			this->entfernenBtn->Name = L"entfernenBtn";
 			this->entfernenBtn->Size = System::Drawing::Size(122, 37);
-			this->entfernenBtn->TabIndex = 10;
+			this->entfernenBtn->TabIndex = 2;
 			this->entfernenBtn->Text = L"Entfernen";
 			this->entfernenBtn->UseVisualStyleBackColor = true;
 			this->entfernenBtn->Click += gcnew System::EventHandler(this, &FeiertagsFenster::entfernenBtn_Click);
+			// 
+			// anzeigenBtn
+			// 
+			this->anzeigenBtn->Location = System::Drawing::Point(12, 212);
+			this->anzeigenBtn->Name = L"anzeigenBtn";
+			this->anzeigenBtn->Size = System::Drawing::Size(122, 37);
+			this->anzeigenBtn->TabIndex = 3;
+			this->anzeigenBtn->Text = L"Feiertage anzeigen";
+			this->anzeigenBtn->UseVisualStyleBackColor = true;
+			this->anzeigenBtn->Click += gcnew System::EventHandler(this, &FeiertagsFenster::anzeigenBtn_Click);
 			// 
 			// FeiertagsFenster
 			// 
@@ -123,6 +135,7 @@ namespace Zeiterfassungssystem {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->ClientSize = System::Drawing::Size(284, 261);
+			this->Controls->Add(this->anzeigenBtn);
 			this->Controls->Add(this->entfernenBtn);
 			this->Controls->Add(this->abbrechenBtn);
 			this->Controls->Add(this->hinzufuegenBtn);
@@ -144,13 +157,15 @@ namespace Zeiterfassungssystem {
 		else {
 			String^ hinzuText = "Sind Sie sicher, dass Sie folgendes Datum als neuen Feiertag hinzufügen möchten?\n\n" + neuerFeiertagDTP->Value.ToString("dddd, dd. MMMM yyyy");
 			if (MessageBox::Show(hinzuText, "Wirklich hinzufuegen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-				unternehmen->addFeiertag(neuerFeiertagDTP->Value.Date);
-				this->DialogResult = System::Windows::Forms::DialogResult::OK;
-				String^ feiertageString = "Dies sind die Feiertag in Ihrem Unternehmen:\n\n";
-				for (int i = 0; i < unternehmen->getFeiertage()->Count; i++) {
-					feiertageString += unternehmen->getFeiertage()[i].ToString("dddd, dd. MMMM yyyy") + "\n";
+				//Falls der Feiertag schon eingetragen ist, wird der Tag nicht noch einmal hinzugefügt:
+				if (unternehmen->istFeiertag(neuerFeiertagDTP->Value.Date)) {
+					MessageBox::Show("Dieser Feiertag existiert bereits!", "Hinzufügen nicht möglich", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				}
-				MessageBox::Show(feiertageString, "Ihre Feiertage", MessageBoxButtons::OK, MessageBoxIcon::Information);
+				//Feiertag wird hinzugefügt, falls er noch nicht im Unternehmen existiert
+				else {
+					unternehmen->addFeiertag(neuerFeiertagDTP->Value.Date);
+					this->DialogResult = System::Windows::Forms::DialogResult::OK;
+				}
 			}
 		}
 	}
@@ -179,15 +194,25 @@ namespace Zeiterfassungssystem {
 		else {
 			String^ hinzuText = "Sind Sie sicher, dass Sie folgendes Datum als Feiertag entfernen möchten?\n\n" + neuerFeiertagDTP->Value.ToString("dddd, dd. MMMM yyyy");
 			if (MessageBox::Show(hinzuText, "Wirklich entfernen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-				unternehmen->removeFeiertag(neuerFeiertagDTP->Value.Date);
-				this->DialogResult = System::Windows::Forms::DialogResult::OK;
-				String^ feiertageString = "Dies sind die Feiertag in Ihrem Unternehmen:\n\n";
-				for (int i = 0; i < unternehmen->getFeiertage()->Count; i++) {
-					feiertageString += unternehmen->getFeiertage()[i].ToString("dddd, dd. MMMM yyyy") + "\n";
+				//Wenn der Feiertag, der entfernt werden soll, exisitiert, wird er entfernt
+				if (unternehmen->istFeiertag(neuerFeiertagDTP->Value.Date)) {
+					unternehmen->removeFeiertag(neuerFeiertagDTP->Value.Date);
+					this->DialogResult = System::Windows::Forms::DialogResult::OK;
 				}
-				MessageBox::Show(feiertageString, "Ihre Feiertage", MessageBoxButtons::OK, MessageBoxIcon::Information);
+				//Wenn der Feiertag, der entfernt werden soll, nicht exisitert, wird ein Fehler gemeldet
+				else {
+					MessageBox::Show("Dieser Feiertag existiert nicht!", "Entfernen nicht möglich", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				}
 			}
 		}
+	}
+
+	private: System::Void anzeigenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		String^ feiertageString = "Dies sind die Feiertag in Ihrem Unternehmen:\n\n";
+		for (int i = 0; i < unternehmen->getFeiertage()->Count; i++) {
+			feiertageString += unternehmen->getFeiertage()[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + "\n";
+		}
+		MessageBox::Show(feiertageString, "Ihre Feiertage", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
 };
 }

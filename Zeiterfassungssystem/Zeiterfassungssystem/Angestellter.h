@@ -2,6 +2,7 @@
 
 #include "Aenderungsantrag.h"
 #include "Urlaubsantrag.h"
+#include "FreierTag.h"
 
 using namespace System;
 using namespace System::Collections;
@@ -23,7 +24,7 @@ private:
 	Int32 urlaubstage;
 	Int32 urlaubstageGenommen;
 	Int32 urlaubstageGespart;
-	List<DateTime>^ listeUrlaubstage;
+	List<FreierTag^>^ listeUrlaubstage;
 	List<Ereignis^>^ listeEreignisse;
 	List<Double>^ listegesamtstunden;
 	List<String^>^ antragsInfos;
@@ -55,7 +56,7 @@ public:
 	inline Int32 getUeberMinuten() { return ueberMinuten; }
 	inline List<String^>^ getAntragsInfos() { return antragsInfos; }
 	inline Int32 getUrlaubstageGespart() { return urlaubstageGespart; }
-	inline List<DateTime>^ getListeUrlaubstage() { return listeUrlaubstage; }
+	inline List<FreierTag^>^ getListeUrlaubstage() { return listeUrlaubstage; }
 	
 	Int32 getRestUrlaub();
 	Ereignis^ getEreignis(Int32 index);
@@ -92,8 +93,11 @@ public:
 	void setAktuellenStatus(String^ status);
 	String^ getStatus();
 	void speichereArbeitszeit(Int32 stunden, Int32 minuten, Boolean erreicht);
-	void nehmeUrlaub(DateTime beginn, DateTime ende, List<DateTime>^ feiertage);
-	Int32 berechneUrlaubstage(DateTime beginn, DateTime ende, List<DateTime>^ feiertage);
+	void nehmeUrlaub(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage);
+	Int32 berechneUrlaubstage(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage);
+	Int32 indexVon(DateTime tag);
+	Boolean istUrlaubstag(DateTime tag);
+	void zieheMinutenAb(Int32 minuten);
 	// Ereignislisteauswertungsmethodensammlung
 
 	DateTime^ getLetzterArbeitstag();

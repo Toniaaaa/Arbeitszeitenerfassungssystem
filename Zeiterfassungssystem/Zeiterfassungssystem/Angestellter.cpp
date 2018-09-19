@@ -23,7 +23,7 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->ueberStunden = 0;
 	this->ueberMinuten = 0;
 	this->ueberStundenGesamt = 0.0;
-	this->listeUrlaubstage = gcnew List<DateTime>;
+	this->listeUrlaubstage = gcnew List<FreierTag^>;
 }
 
 Int32 Angestellter::getRestUrlaub() 
@@ -227,13 +227,13 @@ DateTime^ Angestellter::getLetzterArbeitstag()
 
 //Fügt die Anzahl der Urlaubstage den genommenen Tagen hinzu und reduziert damit den Resturlaub
 //Trägt alle Tage innerhalb der Zeitspanne, die kein Wochenende oder Feiertage sind, in die Liste der Urlaubstage ein. 
-void Angestellter::nehmeUrlaub(DateTime beginn, DateTime ende, List<DateTime>^ feiertage)
+void Angestellter::nehmeUrlaub(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage)
 {
 	while (beginn <= ende) {
 		//Prüfe, ob dieser Tag bereits ein Feiertag ist
 		Boolean istFeiertag = false;
 		for (int i = 0; i < feiertage->Count; i++) {
-			if (beginn == feiertage[i]) {
+			if (beginn == feiertage[i]->getDatum()) {
 				istFeiertag = true;
 				break;
 			}
@@ -241,7 +241,7 @@ void Angestellter::nehmeUrlaub(DateTime beginn, DateTime ende, List<DateTime>^ f
 		//Prüfe, ob dieser Tag ein Samstag oder Sonntag ist
 		if (!istFeiertag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
 			//Tag wird der Liste hinzugefügt und ein Tag den genommenen Urlaubstagen hinzugefügt.
-			listeUrlaubstage->Add(beginn);
+			listeUrlaubstage->Add(gcnew FreierTag(beginn));
 			urlaubstageGenommen++;
 		}
 		beginn = beginn.AddDays(1.0);
@@ -249,7 +249,7 @@ void Angestellter::nehmeUrlaub(DateTime beginn, DateTime ende, List<DateTime>^ f
 }
 
 //Berechnet die Anzahl der Tage in einem Intervall ohne Wochenenden und Feiertage
-Int32 Angestellter::berechneUrlaubstage(DateTime beginn, DateTime ende, List<DateTime>^ feiertage)
+Int32 Angestellter::berechneUrlaubstage(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage)
 {
 
 	Int32 anzUrlaubstage = 0;
@@ -258,7 +258,7 @@ Int32 Angestellter::berechneUrlaubstage(DateTime beginn, DateTime ende, List<Dat
 		//Prüfe, ob dieser Tag bereits ein Feiertag ist
 		Boolean istFeiertag = false;
 		for (int i = 0; i < feiertage->Count; i++) {
-			if (beginn == feiertage[i]) {
+			if (beginn == feiertage[i]->getDatum()) {
 				istFeiertag = true;
 				break;
 			}
@@ -277,17 +277,54 @@ Int32 Angestellter::berechneUrlaubstage(DateTime beginn, DateTime ende, List<Dat
 
 void Angestellter::addUrlaubstag(DateTime tag)
 {
-	listeUrlaubstage->Add(tag);
+	listeUrlaubstage->Add(gcnew FreierTag(tag));
 }
 
 void Angestellter::removeUrlaubstag(DateTime tag)
 {
-	listeUrlaubstage->Remove(tag);
+	for (int i = listeUrlaubstage->Count - 1; i >= 0; i--) {
+		if (listeUrlaubstage[i]->getDatum() == tag) {
+			listeUrlaubstage->RemoveAt(i);
+			break;
+		}
+	}
 }
 
 void Angestellter::loescheAlleUrlaubstage()
 {
 	for (int i = listeUrlaubstage->Count - 1; i >= 0; i--) {
 		listeUrlaubstage->RemoveAt(i);
+	}
+}
+
+Boolean Angestellter::istUrlaubstag(DateTime tag)
+{
+	Boolean istUrlaubstag = false;
+	for (int i = listeUrlaubstage->Count - 1; i >= 0; i--) {
+		if (listeUrlaubstage[i]->getDatum() == tag) {
+			istUrlaubstag = true;
+			break;
+		}
+	}
+	return istUrlaubstag;
+}
+
+Int32 Angestellter::indexVon(DateTime tag)
+{
+	Int32 index = -1;
+	for (int i = listeUrlaubstage->Count - 1; i >= 0; i--) {
+		if (listeUrlaubstage[i]->getDatum().Date == tag) {
+			index = i;
+			break;
+		}
+	}
+	return index;
+}
+
+void Angestellter::zieheMinutenAb(Int32 minuten) {
+	this->arbeitsMinuten -= minuten;
+	if (arbeitsMinuten < 0) {
+		this->arbeitsStunden -= (Int32)(-arbeitsMinuten / 60) + 1;
+		this->arbeitsMinuten = 60 - ((-arbeitsMinuten) % 60);
 	}
 }
