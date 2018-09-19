@@ -3,6 +3,7 @@
 #include "Angestellter.h"
 #include "Abteilung.h"
 #include "Vorgesetzter.h"
+#include "Mitarbeiter.h"
 
 namespace Zeiterfassungssystem {
 
@@ -417,10 +418,11 @@ namespace Zeiterfassungssystem {
 
 			}
 			if (txt_Rolle->Text->Equals("Vorgesetzter")) {
-				angestellter->getAbteilung()->setVorgesetzter(gcnew Vorgesetzter(txt_vorname->Text,txt_name->Text,angestellter->getAbteilung(),txt_passwort->Text, txt_arbeitsstunden->Text, Convert::ToInt32(txt_arbeitsstunden->Text), Convert::ToInt32(txt_urlaubstage->Text)));
-				for (int i = 0; i < angestellter->getAbteilung()->getAnzahlMitarbeiter(); i++) {
-					if (angestellte[i]->getPersonalnummer()->Equals(angestellter->getPersonalnummer())) {
-						angestellte[i]->getAbteilung()->removeMitarbeiter(i);
+				Abteilung^ abteilung = angestellter->getAbteilung();
+				abteilung->setVorgesetzter(gcnew Vorgesetzter(txt_vorname->Text,txt_name->Text,angestellter->getAbteilung(),txt_personalnummer->Text, txt_passwort->Text, Convert::ToInt32(txt_arbeitsstunden->Text), Convert::ToInt32(txt_urlaubstage->Text)));
+				for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
+					if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
+						abteilung->removeMitarbeiter(i);
 					}
 				}
 				

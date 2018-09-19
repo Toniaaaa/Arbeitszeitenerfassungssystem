@@ -782,7 +782,6 @@ namespace Zeiterfassungssystem {
 			pauseMinute = 0;
 			pauseStunde = 0;
 			angestellterAkt->setAktuellenStatus("Schön, dass Sie da sind!");
-			angestellterAkt->getStatus();
 
 		}
 		//Fall, dass der Timer nicht beendet wurde, bevor das Fenster geschlossen wurde, also der Timer im Hintergrund lief:
@@ -847,10 +846,6 @@ namespace Zeiterfassungssystem {
 				timerArbeitszeit->Start();
 			}
 		}
-
-		//Zeitpunkt des Einloggens speichern
-		Ereignis^ eingeloggt = gcnew Ereignis(EINGELOGGT, DateTime::Now);
-		angestellterAkt->fuegeEreignisHinzu(eingeloggt);
 
 		//Labels setzen:
 		ueberstundenLbl->Text = angestellterAkt->getUeberstundenGesamt() + " Stunden";

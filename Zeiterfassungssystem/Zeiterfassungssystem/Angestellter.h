@@ -102,8 +102,7 @@ public:
 	TimeSpan^ getAktuelleArbeitszeit();
 	TimeSpan^ getAktuellePausenzeit(); // liefert die Zeit der aktuell laufenden Pause
 	TimeSpan^ getPausezeit(); // liefert die Zeit der bisherigen Pausen seit letztem Arbeitsbeginn
-	//arbeitsblock speichert datetime anfang und ende, Timespan pausezeit, Timespan arbeitszeit
-	//getarbeitsblöcke gui zeigt die an 
+	TimeSpan^ berechneArbeitsstunden(Int32 anfangsEreignisIndex);
 
 private:
 	Int32 getArbeitsAnfangIndex();

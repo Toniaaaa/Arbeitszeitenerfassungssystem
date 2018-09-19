@@ -10,9 +10,16 @@ private:
 
 	//Membervariablen
 	Angestellter^ m_Antragsteller;
+
+	Int32 startIndex;
+	DateTime^ newStart;
+	DateTime^ newEnd;
+
+	//Löschen:
 	DateTime m_Tag;
 	DateTime m_Anfang;
 	DateTime m_Ende;
+
 	String^ m_Grund;
 	String^ m_KommentarAntragsteller;
 	String^ m_KommentarVorgesetzter;

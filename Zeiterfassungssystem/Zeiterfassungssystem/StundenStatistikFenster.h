@@ -17,6 +17,11 @@ namespace Zeiterfassungssystem {
 	/// </summary>
 	public ref class StundenStatistikFenster : public System::Windows::Forms::Form
 	{
+	private:
+		List<Int32>^ ereignisse;
+		Int32 selectedEreignis = -1;
+
+
 	public:
 		StundenStatistikFenster(void)
 		{
@@ -77,12 +82,13 @@ namespace Zeiterfassungssystem {
 			this->listView1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->listView1->GridLines = true;
 			this->listView1->Location = System::Drawing::Point(0, 0);
-			this->listView1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->listView1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->listView1->Name = L"listView1";
-			this->listView1->Size = System::Drawing::Size(1193, 568);
+			this->listView1->Size = System::Drawing::Size(1591, 699);
 			this->listView1->TabIndex = 0;
 			this->listView1->UseCompatibleStateImageBehavior = false;
 			this->listView1->View = System::Windows::Forms::View::Details;
+			this->listView1->ItemSelectionChanged += gcnew System::Windows::Forms::ListViewItemSelectionChangedEventHandler(this, &StundenStatistikFenster::listView1_ItemSelectionChanged);
 			// 
 			// clm_Arbeitsang
 			// 
@@ -111,14 +117,15 @@ namespace Zeiterfassungssystem {
 			// 
 			// StundenStatistikFenster
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1193, 568);
+			this->ClientSize = System::Drawing::Size(1591, 699);
 			this->Controls->Add(this->listView1);
-			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->Name = L"StundenStatistikFenster";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"StundenStatistikFenster";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &StundenStatistikFenster::StundenStatistikFenster_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &StundenStatistikFenster::StundenStatistikFenster_Load);
 			this->ResumeLayout(false);
 
@@ -133,33 +140,60 @@ namespace Zeiterfassungssystem {
 		}
 
 	private: System::Void StundenStatistikFenster_Load(System::Object^  sender, System::EventArgs^  e) {
-		for (int i = 0; i < angestellter->getAnzahlEreignisse() - 3; i++) {
-					ListViewItem^ item = gcnew ListViewItem();
-					item->Clone();
-					if (angestellter->getEreignis(i)->getTyp() == ARBEIT_START) {
-						item->Text = angestellter->getEreignis(i)->getTimestamp()->ToString();
-					}
-					if (angestellter->getEreignis(i + 1)->getTyp() == PAUSE_START) {
-						item->SubItems->Add(angestellter->getEreignis(i + 1)->getTimestamp()->ToString());
-					}
-					
-					if (angestellter->getEreignis(i +2)->getTyp() == PAUSE_ENDE) {
-						item->SubItems->Add(angestellter->getEreignis(i+2)->getTimestamp()->ToString());
-					}
-					
-					if (angestellter->getEreignis(i+3)->getTyp() == ARBEIT_ENDE) {
-						item->SubItems->Add(angestellter->getEreignis(i+3)->getTimestamp()->ToString());
-	
-						
-					
-						//item->SubItems->Add(Convert::ToString(angestellter->getGesamtstunden(i)));
-					}
+		ereignisse = gcnew List<Int32>;
+
+		ListViewItem^ item;
+		bool erstePause = true;
+		bool hattePause = false;
+		TimeSpan^ gesamtStunden = nullptr;
+		for (int i = 0; i < angestellter->getAnzahlEreignisse(); i++) {
+			
+			if (angestellter->getEreignis(i)->getTyp() == ARBEIT_START) {
+				item = gcnew ListViewItem();
+				listView1->Items->Add(item);
+				ereignisse->Add(i);
+				erstePause = true;
+
+				gesamtStunden = angestellter->berechneArbeitsstunden(i);
+
+				item->Text = angestellter->getEreignis(i)->getTimestamp()->ToString();
+			}
+			if (angestellter->getEreignis(i)->getTyp() == PAUSE_START) {
+				hattePause = true;
+				if (!erstePause) {
+					item = gcnew ListViewItem();
 					listView1->Items->Add(item);
+					ereignisse->Add(-1);
+					item->Text = "";
+				}
+
+				item->SubItems->Add(angestellter->getEreignis(i)->getTimestamp()->ToString());
+			}
 					
-				
+			if (angestellter->getEreignis(i)->getTyp() == PAUSE_ENDE) {
+				erstePause = false;
+				item->SubItems->Add(angestellter->getEreignis(i)->getTimestamp()->ToString());
+			}
+					
+			if (angestellter->getEreignis(i)->getTyp() == ARBEIT_ENDE) {
+				if (!hattePause) {
+					item->SubItems->Add("");
+					item->SubItems->Add("");
+				}
+				hattePause = false;
+				item->SubItems->Add(angestellter->getEreignis(i)->getTimestamp()->ToString());
+				item->SubItems->Add(gesamtStunden->ToString());
 			}
 		}
+	}
 			 
 	
-	};
+	private: System::Void StundenStatistikFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+		listView1->Items->Clear();
+	}
+
+	private: System::Void listView1_ItemSelectionChanged(System::Object^  sender, System::Windows::Forms::ListViewItemSelectionChangedEventArgs^  e) {
+		selectedEreignis = ereignisse[e->ItemIndex];
+	}
+};
 }

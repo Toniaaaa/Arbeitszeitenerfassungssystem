@@ -150,6 +150,36 @@ TimeSpan ^ Angestellter::getPausezeit()
 	return result;
 }
 
+TimeSpan ^ Angestellter::berechneArbeitsstunden(Int32 anfangsEreignisIndex)
+{
+	DateTime^ anfang = listeEreignisse[anfangsEreignisIndex]->getTimestamp();
+	TimeSpan^ gesamtPause = gcnew TimeSpan();
+	DateTime^ ende = DateTime::Now;
+
+	DateTime^ pausestart = nullptr;
+	for (int i = anfangsEreignisIndex + 1; i < getAnzahlEreignisse(); i++) {
+		if (listeEreignisse[i]->getTyp() == PAUSE_START) {
+			pausestart = listeEreignisse[i]->getTimestamp();
+		}
+		else if (listeEreignisse[i]->getTyp() == PAUSE_ENDE) {
+			TimeSpan^ pause = *(listeEreignisse[i]->getTimestamp()) - *(pausestart);
+			gesamtPause = TimeSpan::operator+(*gesamtPause, *pause);
+			pausestart = nullptr;
+		}
+		else if (listeEreignisse[i]->getTyp() == ARBEIT_ENDE) {
+			ende = listeEreignisse[i]->getTimestamp();
+			break;
+		}
+	}
+
+	if (pausestart != nullptr) {
+		TimeSpan^ pause = *ende - *pausestart;
+		gesamtPause = TimeSpan::operator+(*gesamtPause, *pause);
+	}
+
+	return TimeSpan::operator-(*ende - *anfang, *gesamtPause);
+}
+
 Int32 Angestellter::getArbeitsAnfangIndex()
 {
 	Int32 arbeitsanfang = -1;
@@ -188,14 +218,11 @@ void Angestellter::setUeberstundenGesamt(Int32 stunden, Int32 minuten)
 //Gibt den Zeitpunkt des letzten Einloggens zurück.
 DateTime^ Angestellter::getLetzterArbeitstag() 
 {
-	DateTime^ datum;
-	for (int i = getAnzahlEreignisse() - 1; i >= 0; i--) {
-		if (listeEreignisse[i]->getTyp() == EINGELOGGT) {
-			datum = listeEreignisse[i]->getTimestamp()->Date;
-			break;
-		}
+	DateTime^ result = nullptr;
+	if (listeEreignisse->Count > 0) {
+		result = listeEreignisse[listeEreignisse->Count - 1]->getTimestamp()->Date;
 	}
-	return datum;
+	return result;
 }
 
 //Fügt die Anzahl der Urlaubstage den genommenen Tagen hinzu und reduziert damit den Resturlaub
