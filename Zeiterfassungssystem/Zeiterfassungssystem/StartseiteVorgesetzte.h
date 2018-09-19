@@ -825,6 +825,7 @@ namespace Zeiterfassungssystem {
 
 	//WENN DIE SEITE FERTIG GELADEN WURDE
 	private: System::Void StartseiteVorgesetzte_Shown(System::Object^  sender, System::EventArgs^  e) {
+		angestellterAkt->setLetzterLogin(DateTime::Now);
 		this->pruefeAntraege();
 		this->pruefeInfos();
 	}

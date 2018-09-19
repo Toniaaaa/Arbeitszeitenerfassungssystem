@@ -84,7 +84,8 @@ public:
 	inline void setArbeitsMinuten(Int32 minuten) { this->arbeitsMinuten = minuten; }
 	inline void setUeberStunden(Int32 stunden) { this->ueberStunden = stunden; }
 	inline void setUeberMinuten(Int32 minuten) { this->ueberMinuten = minuten; }
-	inline void setGesamtstunden(Double gesamtstunden) { listegesamtstunden->Add(gesamtstunden); }
+	inline void setGesamtstunden(Double gesamtstunden) { this->listegesamtstunden->Add(gesamtstunden); }
+	inline void setLetzterLogin(DateTime jetzt) { this->letzterLogin = jetzt; }
 	void setUeberstundenGesamt(Int32 stunden, Int32 minuten);
 	virtual bool istVorgesetzter() = 0;
 	void fuegeEreignisHinzu(Ereignis^ ereignis);
