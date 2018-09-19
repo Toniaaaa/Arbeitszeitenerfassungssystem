@@ -3,6 +3,9 @@
 #include "Aenderungsantrag.h"
 #include "Urlaubsantrag.h"
 #include "FreierTag.h"
+#include "Kalender.h"
+#include "Ereignis.h"
+#include <ctime>
 
 using namespace System;
 using namespace System::Collections;
@@ -35,6 +38,8 @@ private:
 	Int32 ueberMinuten;
 	Boolean wochenZeitErreicht;
 	Double ueberStundenGesamt;
+	DateTime letzterLogin;
+	Kalender^ kalender;
 
 public:
 	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage);
@@ -57,6 +62,7 @@ public:
 	inline List<String^>^ getAntragsInfos() { return antragsInfos; }
 	inline Int32 getUrlaubstageGespart() { return urlaubstageGespart; }
 	inline List<FreierTag^>^ getListeUrlaubstage() { return listeUrlaubstage; }
+	inline DateTime getLetzterLogin() { return letzterLogin; }
 	
 	Int32 getRestUrlaub();
 	Ereignis^ getEreignis(Int32 index);
@@ -97,10 +103,11 @@ public:
 	Int32 berechneUrlaubstage(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage);
 	Int32 indexVon(DateTime tag);
 	Boolean istUrlaubstag(DateTime tag);
-	void zieheMinutenAb(Int32 minuten);
+	void zieheZeitAb(Int32 stunden, Int32 minuten);
+	TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten);
+	Boolean Angestellter::dieseWocheEingeloggt();
 	// Ereignislisteauswertungsmethodensammlung
 
-	DateTime^ getLetzterArbeitstag();
 	DateTime^ getArbeitsAnfang(); // null wenn arbeitstag (noch) nicht begonnen
 	DateTime^ getPauseAnfang(); // null wenn pause gerade nicht läuft
 	TimeSpan^ getAktuelleArbeitszeit();

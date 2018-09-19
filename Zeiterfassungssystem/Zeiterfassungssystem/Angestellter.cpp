@@ -1,5 +1,4 @@
 #include "Angestellter.h"
-#include "Ereignis.h"
 
 using namespace System::Windows::Forms;
 
@@ -24,6 +23,8 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->ueberMinuten = 0;
 	this->ueberStundenGesamt = 0.0;
 	this->listeUrlaubstage = gcnew List<FreierTag^>;
+	this->letzterLogin = DateTime::Now;
+	this->kalender = gcnew Kalender();
 }
 
 Int32 Angestellter::getRestUrlaub() 
@@ -215,16 +216,6 @@ void Angestellter::setUeberstundenGesamt(Int32 stunden, Int32 minuten)
 	ueberStundenGesamt += (stunden + minuten / 60);
 }
 
-//Gibt den Zeitpunkt des letzten Einloggens zurück.
-DateTime^ Angestellter::getLetzterArbeitstag() 
-{
-	DateTime^ result = nullptr;
-	if (listeEreignisse->Count > 0) {
-		result = listeEreignisse[listeEreignisse->Count - 1]->getTimestamp()->Date;
-	}
-	return result;
-}
-
 //Fügt die Anzahl der Urlaubstage den genommenen Tagen hinzu und reduziert damit den Resturlaub
 //Trägt alle Tage innerhalb der Zeitspanne, die kein Wochenende oder Feiertage sind, in die Liste der Urlaubstage ein. 
 void Angestellter::nehmeUrlaub(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage)
@@ -321,10 +312,73 @@ Int32 Angestellter::indexVon(DateTime tag)
 	return index;
 }
 
-void Angestellter::zieheMinutenAb(Int32 minuten) {
-	this->arbeitsMinuten -= minuten;
-	if (arbeitsMinuten < 0) {
-		this->arbeitsStunden -= (Int32)(-arbeitsMinuten / 60) + 1;
-		this->arbeitsMinuten = 60 - ((-arbeitsMinuten) % 60);
+Boolean Angestellter::dieseWocheEingeloggt() {
+	Boolean eingeloggt = false;
+	if (kalender->berechneKW(letzterLogin) == kalender->berechneKW(DateTime::Today)) {
+		eingeloggt = true;
 	}
+	return eingeloggt;
+}
+
+void Angestellter::zieheZeitAb(Int32 stunden, Int32 minuten) {
+
+	TimeSpan zeit = getReduzierteZeit(stunden, minuten);
+	wochenZeitErreicht = zeit.Seconds;
+
+	if (wochenZeitErreicht) {
+		ueberStunden = zeit.Hours + 24 * zeit.Days;
+		ueberMinuten = zeit.Minutes;
+		arbeitsStunden = 0;
+		arbeitsMinuten = 0;
+	}
+	else {
+		arbeitsMinuten = zeit.Minutes;
+		arbeitsStunden = zeit.Hours + 24 * zeit.Days;
+	}
+}
+
+/*Gibt eine um die angegebenen Stunden und Minuten reduzierte Arbeitszeit zurück. Wenn die Wochenarbeitszeit erreicht 
+wird, werden die Ueberstunden zurückgegeben, außerdem wird Sekunde = 1, sonst immer 0.*/
+TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
+	
+	TimeSpan^ reduzierteZeit;
+	Int32 arbeitsStd = arbeitsStunden;
+	Int32 arbeitsMin = arbeitsMinuten;
+	Int32 ueberStd = ueberStunden;
+	Int32 ueberMin = ueberMinuten;
+
+	//Fall: Es wurden bereits Überstunden gezählt (also Wochen-Arbeitszeit war schon erreicht)
+	if (wochenZeitErreicht) {
+		ueberStd += stunden;
+		if (ueberMin + minuten >= 60) {
+			ueberStd++;
+			ueberMin = ueberMin + minuten - 60;
+		}
+		else {
+			ueberMin += minuten;
+		}
+		reduzierteZeit = gcnew TimeSpan(ueberStd, ueberMin, 1);
+	}
+	//Fall: Es wurden noch keine Überstunden gezählt (also Wochen-Arbeitszeit noch nicht erreicht)
+	else {
+		if (arbeitsStd >= 0) {
+			arbeitsStd -= stunden;
+			if (arbeitsMin - minuten < 0) {
+				arbeitsStd--;
+				arbeitsMin = arbeitsMin - minuten + 60;
+			}
+			else {
+				arbeitsMin -= minuten;
+			}
+			reduzierteZeit = gcnew TimeSpan(arbeitsStd, arbeitsMin, 0);
+		}
+		//Fall: Die Wochen-Arbeitszeit wurde durch den Zeitabzug erreicht
+		else {
+			ueberStd = -arbeitsStd - 1; //-1, weil die Arbeitsstunden von 00:00 auf 1:01 springen. Mit -1 ist das korrigiert.
+			ueberMin = (arbeitsMin == 0) ? 0 : 60 - arbeitsMin;
+			reduzierteZeit = gcnew TimeSpan(ueberStd, ueberMin, 1);
+		}
+	}
+
+	return *reduzierteZeit;
 }
