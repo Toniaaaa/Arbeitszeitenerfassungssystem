@@ -105,7 +105,7 @@
     <ClInclude Include="Kalender.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="UrlaubLoeschenFenster.h">
+    <ClInclude Include="PersonalFensterMitarbeiter.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -191,7 +191,7 @@
     <ClCompile Include="Kalender.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="UrlaubLoeschenFenster.cpp">
+    <ClCompile Include="PersonalFensterMitarbeiter.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
