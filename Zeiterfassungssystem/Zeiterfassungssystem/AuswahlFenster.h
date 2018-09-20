@@ -139,10 +139,10 @@ namespace Zeiterfassungssystem {
 		System::Windows::Forms::DialogResult result = urlaubLoeschenfenster->ShowDialog(this);
 		if (result == System::Windows::Forms::DialogResult::OK) {
 			String^ urlaubLoeschenString = "Wollen Sie " + urlaubLoeschenfenster->p_Angestellter->getVorname() + " " + urlaubLoeschenfenster->p_Angestellter->getNachname() +
-				"wirklich alle Urlaubstage\n\nvon: " + urlaubLoeschenfenster->p_Anfang.ToString("dddd, dd. MMMM yyyy") + "\nbis: " + urlaubLoeschenfenster->p_Ende.ToString("dddd, dd. MMMM yyyy")
+				" wirklich alle Urlaubstage\n\nvon: " + urlaubLoeschenfenster->p_Anfang.ToString("dddd, dd. MMMM yyyy") + "\nbis: " + urlaubLoeschenfenster->p_Ende.ToString("dddd, dd. MMMM yyyy")
 				+ "\n\nentfernen?";
 			if (MessageBox::Show(urlaubLoeschenString, "Wirklich entfernen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-				urlaubLoeschenfenster->p_Angestellter->loescheUrlaubstage(urlaubLoeschenfenster->p_Anfang, urlaubLoeschenfenster->p_Ende);
+				urlaubLoeschenfenster->p_Angestellter->loescheUrlaubstage(urlaubLoeschenfenster->p_Anfang, urlaubLoeschenfenster->p_Ende, urlaubLoeschenfenster->p_Kommentar);
 			}
 		}
 		urlaubLoeschenfenster->clear();

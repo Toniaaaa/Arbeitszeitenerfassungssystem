@@ -309,14 +309,8 @@ namespace Zeiterfassungssystem {
 		vergleichDaten = DateTime::Compare(p_Anfang, p_Ende);
 		vergleichMitHeute = DateTime::Compare(DateTime::Today.Date, p_Anfang);
 
-		//Anfang und Ende müssen in einem Jahr liegen 
-		if (!p_Anfang.Year == p_Ende.Year) {
-			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			MessageBox::Show("Sie können keinen Urlaubsantrag über einen Jahreswechsel hinweg stellen!\nStellen Sie bitte ggf. zwei getrennte Anträge.\nBitte korrigieren Sie die Eingaben!", "Absenden nicht möglich!",
-				MessageBoxButtons::OK, MessageBoxIcon::Error);
-		}
 		//Anfang und Ende müssen in diesem Jahr liegen oder in einem der ersten drei Monate des nächsten Jahres
-		else if (!((p_Anfang.Year == DateTime::Now.Year) || ((p_Anfang.Year == (DateTime::Now.Year + 1)) && (p_Anfang.Month < 4)))) {
+		if (!((p_Anfang.Year == DateTime::Now.Year) || ((p_Anfang.Year == (DateTime::Now.Year + 1)) && (p_Anfang.Month < 4)))) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Sie können leider nur Urlaub für Termine bis März des nächsten Jahres beantragen!\nBitte korrigieren Sie die Eingaben!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);

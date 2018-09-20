@@ -497,10 +497,11 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 	this->zieheZeitAb(wenigerStunden, wenigerMinuten);
 }
 
-void Angestellter::loescheUrlaubstage(DateTime von, DateTime bis)
+void Angestellter::loescheUrlaubstage(DateTime von, DateTime bis, String^ kommentar)
 {
-	String^ urlaubEntferntString = "Alle Ihre Urlaubstage im Zeitraum \nvon: " + von.ToString("dddd, dd. MM yyyy") 
-		+ "\nbis: " + bis.ToString("dddd, dd. MM yyyy") + "\nwurden leider gestrichen.\nWenden Sie sich bei Fragen bitte an Ihren Vorgesetzten.";
+	String^ urlaubEntferntString = "Alle Ihre Urlaubstage im Zeitraum \nvon: " + von.ToString("dddd, dd. MMMM yyyy") 
+		+ "\nbis: " + bis.ToString("dddd, dd. MMMM yyyy") + "\nwurden leider gestrichen.\n\nKommentar: " + kommentar 
+		+ "\n\nBei Fragen wenden Sie sich bitte an Ihren Vorgesetzten.";
 	while (von <= bis) {
 		removeUrlaubstag(von);
 		von = von.AddDays(1.0);
