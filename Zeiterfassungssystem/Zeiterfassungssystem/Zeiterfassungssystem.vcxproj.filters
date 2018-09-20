@@ -102,6 +102,9 @@
     <ClInclude Include="FreierTag.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Kalender.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Angestellter.cpp">
@@ -180,6 +183,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="FreierTag.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Kalender.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

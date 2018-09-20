@@ -13,6 +13,7 @@
 #include "KalenderFenster.h"
 #include "UrlaubsFenster.h"
 #include "AenderungsantragsFenster.h"
+#include "Kalender.h"
 
 namespace Zeiterfassungssystem {
 
@@ -53,6 +54,7 @@ namespace Zeiterfassungssystem {
 		TimeSpan^ arbeitszeit;
 		TimeSpan^ pausenzeit;
 		Boolean wochenZeitErreicht;
+		Kalender^ kalender;
 
 	private: System::Windows::Forms::Timer^  timerUhr;
 	private: System::Windows::Forms::Label^  datumLbl;
@@ -68,9 +70,7 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Label^  resturlaubLbl;
 	private: System::Windows::Forms::CheckBox^  pauseCbox;
 	private: System::Windows::Forms::Timer^  timerPause;
-
 	private: System::Windows::Forms::Button^  editBtn;
-
 	private: System::Windows::Forms::Label^  nameLbl;
 	private: System::Windows::Forms::Label^  lbl_Status;
 	private: System::Windows::Forms::Button^  logOutBtn;
@@ -89,6 +89,7 @@ namespace Zeiterfassungssystem {
 			kalenderfenster = gcnew KalenderFenster;
 			urlaubsfenster = gcnew UrlaubsFenster;
 			aenderungsfenster = gcnew AenderungsantragsFenster;
+			kalender = gcnew Kalender();
 		}
 
 	protected:
@@ -705,24 +706,11 @@ namespace Zeiterfassungssystem {
 	private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
 
 		this->neuesJahr();
-		this->neueWoche();
+		angestellterAkt->neueWoche();
 		//Falls in dieser Woche freie Tage vorhanden sind (Urlaub, Feiertage) wird die Arbeitszeit dieser Woche entsprechend angepasst.
 		this->freieTagePruefen();
-
 		wochenZeitErreicht = angestellterAkt->getWochenZeitErreicht();
-
-		//Anzeige Noch-Arbeitszeit bzw. Überstunden wird gesetzt
-		if (wochenZeitErreicht) {
-			arbeitsStunden = angestellterAkt->getUeberStunden();
-			arbeitsMinuten = angestellterAkt->getUeberMinuten();
-			this->nochWochenstundenLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->nochWochenstundenSchriftLbl->Text = L"Überstunden";
-			this->nochWochenstundenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-		}
-		else {
-			arbeitsStunden = angestellterAkt->getArbeitsStunden();
-			arbeitsMinuten = angestellterAkt->getArbeitsMinuten();
-		}
+		this->setAnzeigeArbeitszeit();
 
 		if (angestellterAkt->getArbeitsAnfang() == nullptr) {
 
@@ -733,7 +721,6 @@ namespace Zeiterfassungssystem {
 			pauseMinute = 0;
 			pauseStunde = 0;
 			angestellterAkt->setAktuellenStatus("Schön, dass Sie da sind!");
-			angestellterAkt->getStatus();
 
 		}
 		//Fall, dass der Timer nicht beendet wurde, bevor das Fenster geschlossen wurde, also der Timer im Hintergrund lief:
@@ -750,40 +737,11 @@ namespace Zeiterfassungssystem {
 			pauseMinute = pausenzeit->Minutes;
 			pauseStunde = pausenzeit->Hours;
 
-			//Anzeige Noch-Arbeitszeit bzw. Überstunden wird gesetzt
-			//Fall: Es wurden bereits Überstunden gezählt (also Wochen-Arbeitszeit war schon erreicht)
-			if (wochenZeitErreicht) {
-				arbeitsStunden += stunde;
-				if (arbeitsMinuten + minute >= 60) {
-					arbeitsStunden++;
-					arbeitsMinuten = arbeitsMinuten + minute - 60;
-				}
-				else {
-					arbeitsMinuten += minute;
-				}
- 				
-			}
-			//Fall: Es wurden noch keine Überstunden gezählt (also Wochen-Arbeitszeit noch nicht erreicht)
-			else {
-				arbeitsStunden -= stunde;
-				if (arbeitsMinuten - minute < 0) {
-					arbeitsStunden--;
-					arbeitsMinuten = arbeitsMinuten - minute + 60;
-				}
-				else {
-					arbeitsMinuten -= minute;
-				}
-				
-				//Fall: Die Wochen-Arbeitszeit wurde erreicht, während das Fenster geschlossen war
-				if (arbeitsStunden < 0) {
-					wochenZeitErreicht = true;
-					this->nochWochenstundenLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-					this->nochWochenstundenSchriftLbl->Text = L"Überstunden";
-					this->nochWochenstundenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-					arbeitsStunden = -arbeitsStunden - 1; //-1, weil die Arbeitsstunden von 00:00 auf 1:01 springen. Mit -1 ist das korrigiert.
-					arbeitsMinuten = (arbeitsMinuten == 0) ? arbeitsMinuten : 60 - arbeitsMinuten;
-				}
-			}
+			TimeSpan abgelaufeneZeit = angestellterAkt->getReduzierteZeit(stunde, minute);
+			arbeitsStunden = abgelaufeneZeit.Hours;
+			arbeitsMinuten = abgelaufeneZeit.Minutes;
+			wochenZeitErreicht = abgelaufeneZeit.Seconds;
+			setAnzeigeArbeitszeit();
 
 			//Timer wird gestartet
 			if (angestellterAkt->getPauseAnfang() != nullptr) {
@@ -799,7 +757,7 @@ namespace Zeiterfassungssystem {
 			}
 		}
 
-		//Labels setzen
+		//Labels setzen:
 		ueberstundenLbl->Text = angestellterAkt->getUeberstundenGesamt() + " Stunden";
 		nochWochenstundenLbl->Text = uhrzeitString(arbeitsMinuten, arbeitsStunden) + " Stunden";
 		lbl_Status->Text = angestellterAkt->getStatus();
@@ -807,11 +765,11 @@ namespace Zeiterfassungssystem {
 		pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
 		nameLbl->Text = angestellterAkt->getVorname() + " " + angestellterAkt->getNachname();
 		resturlaubLbl->Text = angestellterAkt->getRestUrlaub() + " Tage";
-
 	}
 
 	//WENN DIE SEITE FERTIG GELADEN WURDE
 	private: System::Void StartseiteMitarbeiter_Shown(System::Object^  sender, System::EventArgs^  e) {
+		angestellterAkt->setLetzterLogin(DateTime::Now);
 		this->pruefeInfos();
 	}
 
@@ -951,79 +909,17 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
-	// Wenn eine neue Woche startet, wird die Arbeitszeit zurueckgesetzt
-	private: void neueWoche()
-	{
-		//Dafür müssen die Kalenderwochen des letzten Arbeitstags mit der KW von heute verglichen werden
-		CultureInfo^ meinCI = gcnew CultureInfo("de");
-		Calendar^ meinKalender = meinCI->Calendar;
-		CalendarWeekRule^ meineCWR = meinCI->DateTimeFormat->CalendarWeekRule;
-		DayOfWeek^ meinErsterWochentag = meinCI->DateTimeFormat->FirstDayOfWeek;
-
-		//Kalenderwoche von heute berechnen
-		DateTime^ heute = DateTime::Today;
-		Int32 kWHeute = meinKalender->GetWeekOfYear(*heute, *meineCWR, *meinErsterWochentag);
-
-		//Kalenderwoche vom letzten Arbeitstag berechnen
-		Int32 kWLetzterTag;
-		try {
-			DateTime^ letzterTag = angestellterAkt->getLetzterArbeitstag();
-			kWLetzterTag = meinKalender->GetWeekOfYear(*letzterTag, *meineCWR, *meinErsterWochentag);
-		}
-		catch (System::NullReferenceException ^e) {
-			DateTime^ letzterTag = DateTime::Today;
-			kWLetzterTag = meinKalender->GetWeekOfYear(*letzterTag, *meineCWR, *meinErsterWochentag);
-		}
-
-		//Kalenderwochen vergleichen und evtl. notwendige Werte zurücksetzen
-		if (kWHeute > kWLetzterTag) {
-			//Wenn der Mitarbeiter in der letzten Woche seine Arbeitszeit nicht erreicht hat, wird ihm das von seinen Überstunden wieder abgezogen
-			if (!angestellterAkt->getWochenZeitErreicht()) {
-				angestellterAkt->setUeberstundenGesamt(-(angestellterAkt->getArbeitsStunden()), -(angestellterAkt->getArbeitsMinuten()));
-			}
-			else {
-				angestellterAkt->setUeberstundenGesamt(angestellterAkt->getUeberStunden(), angestellterAkt->getUeberStunden());
-			}
-			//Wochenarbeitszeit wird wieder auf ihre Anfangswerte zurückgesetzt
-			angestellterAkt->setWochenZeitErreicht(false);
-			angestellterAkt->setArbeitsStunden(angestellterAkt->getWochensstunden());
-			angestellterAkt->setArbeitsMinuten(0);
-			angestellterAkt->setUeberStunden(0);
-			angestellterAkt->setUeberMinuten(0);
-		}
-	}
-
 	// Wenn eine neues Jahr startet, werden die Urlaubstage zurueckgesetzt
 	private: void neuesJahr() {
-
-		DateTime^ letzterTag = angestellterAkt->getLetzterArbeitstag();
-		DateTime^ heute = DateTime::Today;
-
 		//Wenn seit dem letzten Arbeitstag ein neues Jahr angefangen hat
-		if (letzterTag != nullptr && letzterTag->Year > heute->Year) {
-			//Urlaubstage verfallen nach 3 Monaten
-			angestellterAkt->setUrlaubstageGespart(angestellterAkt->getRestUrlaub());
-			angestellterAkt->setUrlaubstageGenommen(0);
-			//Angestellter wird informiert
-			MessageBox::Show("Sie haben noch " + angestellterAkt->getUrlaubstageGespart() + " Resturlaub aus dem vergangenen Jahr nicht genommen!\nDieser verfällt nach 3 Monaten!", 
-				"Achtung: Ihr Resturlaub verfällt", MessageBoxButtons::OK, MessageBoxIcon::Information);
-
-			//Gespeicherte Arbeitszeiten verfallen nach drei Jahren
-			Int32 i = 0;
-			//Kein Exception-Handling notwendig, da letzterArbeitstag kein Nullpointer sein kann (siehe oben) und daher auch schon mindesten ein Ereignis existieren muss.
-			while (heute->Year - angestellterAkt->getEreignis(i)->getTimestamp()->Year > 3) {
-				angestellterAkt->removeEreignis(i);
-				i++;
-			}
-
+		if (angestellterAkt->getLetzterLogin().Year > DateTime::Today.Year) {
+			//Urlaubstage werden zurueckgestellt
+			angestellterAkt->stelleUraubstageZurueck(3);
 			//Feiertage werden für das neue Jahr gesetzt
-			unternehmen->loescheAlteFeiertage();
-			unternehmen->erstelleRegelFeiertage();
-		}
-
-		//Urlaubstage, die aus dem letzten Jahr stammen, verfallen, wenn sie nicht bis März genommen wurden
-		if (angestellterAkt->getUrlaubstageGespart() != 0 && heute->Month >= 4) {
-			angestellterAkt->setUrlaubstageGespart(0);
+			unternehmen->stelleFeiertageZurueck(3);
+			//Angestellter wird über seine verbliebenen Urlaubstage Informiert.
+			MessageBox::Show("Sie haben noch " + angestellterAkt->getUrlaubstageGespart() + " Resturlaub aus dem vergangenen Jahr nicht genommen!\nDieser verfällt nach 3 Monaten!",
+				"Achtung: Ihr Resturlaub verfällt", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 
 	}
@@ -1032,14 +928,9 @@ namespace Zeiterfassungssystem {
 	{
 		Int32 anzFreieTage = 0;
 
-		CultureInfo^ meinCI = gcnew CultureInfo("de");
-		Calendar^ meinKalender = meinCI->Calendar;
-		CalendarWeekRule^ meineCWR = meinCI->DateTimeFormat->CalendarWeekRule;
-		DayOfWeek^ meinErsterWochentag = meinCI->DateTimeFormat->FirstDayOfWeek;
-
 		// Kalenderwoche von heute berechnen
 		DateTime^ heute = DateTime::Now.Date;
-		Int32 kWHeute = meinKalender->GetWeekOfYear(*heute, *meineCWR, *meinErsterWochentag);
+		Int32 kWHeute = kalender->berechneKW(*heute);
 		DateTime^ tagDynamisch = heute;
 		Int32 kWDynamisch = kWHeute;
 
@@ -1060,7 +951,7 @@ namespace Zeiterfassungssystem {
 					}
 				}
 				tagDynamisch = tagDynamisch->AddDays(1.0);
-				kWDynamisch = meinKalender->GetWeekOfYear(*tagDynamisch, *meineCWR, *meinErsterWochentag);
+				kWDynamisch = kalender->berechneKW(*tagDynamisch);
 			}
 		}
 		catch (System::NullReferenceException ^e) {
@@ -1074,8 +965,22 @@ namespace Zeiterfassungssystem {
 		Int32 wenigerMinuten = (abzugArbeitszeit - wenigerStunden) * 60;
 
 		//Diese Zeit von den ArbeitsStunden und Minuten dieser Woche abziehen
-		angestellterAkt->setArbeitsStunden(angestellterAkt->getArbeitsStunden() - wenigerStunden);
-		angestellterAkt->zieheMinutenAb(wenigerMinuten);
+		angestellterAkt->zieheZeitAb(wenigerStunden, wenigerMinuten);
+	}
+
+	void setAnzeigeArbeitszeit()
+	{
+		if (wochenZeitErreicht) {
+			arbeitsStunden = angestellterAkt->getUeberStunden();
+			arbeitsMinuten = angestellterAkt->getUeberMinuten();
+			this->nochWochenstundenLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+			this->nochWochenstundenSchriftLbl->Text = L"Überstunden";
+			this->nochWochenstundenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+		}
+		else {
+			arbeitsStunden = angestellterAkt->getArbeitsStunden();
+			arbeitsMinuten = angestellterAkt->getArbeitsMinuten();
+		}
 	}
 
 };

@@ -3,6 +3,9 @@
 #include "Aenderungsantrag.h"
 #include "Urlaubsantrag.h"
 #include "FreierTag.h"
+#include "Kalender.h"
+#include "Ereignis.h"
+#include <ctime>
 
 using namespace System;
 using namespace System::Collections;
@@ -21,8 +24,8 @@ private:
 	String^ personalnummer;
 	String^ passwort;
 	Int32 wochenstunden;
+	Int32 jahresurlaub;
 	Int32 urlaubstage;
-	Int32 urlaubstageGenommen;
 	Int32 urlaubstageGespart;
 	List<FreierTag^>^ listeUrlaubstage;
 	List<Ereignis^>^ listeEreignisse;
@@ -35,6 +38,8 @@ private:
 	Int32 ueberMinuten;
 	Boolean wochenZeitErreicht;
 	Double ueberStundenGesamt;
+	DateTime letzterLogin;
+	Kalender^ kalender;
 
 public:
 	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage);
@@ -57,6 +62,8 @@ public:
 	inline List<String^>^ getAntragsInfos() { return antragsInfos; }
 	inline Int32 getUrlaubstageGespart() { return urlaubstageGespart; }
 	inline List<FreierTag^>^ getListeUrlaubstage() { return listeUrlaubstage; }
+	inline DateTime getLetzterLogin() { return letzterLogin; }
+	inline Int32 getJahresurlaub() { return jahresurlaub; }
 	
 	Int32 getRestUrlaub();
 	Ereignis^ getEreignis(Int32 index);
@@ -71,14 +78,14 @@ public:
 	inline void setPasswort(String^ passwort) {this->passwort = passwort;}
 	inline void setWochenstunden(Int32 wochenstunden) {this->wochenstunden = wochenstunden;}
 	inline void setUrlaubstage(Int32 urlaubstage) {this->urlaubstage = urlaubstage;}
-	inline void setUrlaubstageGenommen(Int32 urlaubstage) { this->urlaubstageGenommen = urlaubstage; }
 	inline void setUrlaubstageGespart(Int32 urlaubstage) { this->urlaubstageGespart = urlaubstage; }
 	inline void setWochenZeitErreicht(Boolean erreicht) {this->wochenZeitErreicht = erreicht;}
 	inline void setArbeitsStunden(Int32 stunden) { this->arbeitsStunden = stunden; }
 	inline void setArbeitsMinuten(Int32 minuten) { this->arbeitsMinuten = minuten; }
 	inline void setUeberStunden(Int32 stunden) { this->ueberStunden = stunden; }
 	inline void setUeberMinuten(Int32 minuten) { this->ueberMinuten = minuten; }
-	inline void setGesamtstunden(Double gesamtstunden) { listegesamtstunden->Add(gesamtstunden); }
+	inline void setGesamtstunden(Double gesamtstunden) { this->listegesamtstunden->Add(gesamtstunden); }
+	inline void setLetzterLogin(DateTime jetzt) { this->letzterLogin = jetzt; }
 	void setUeberstundenGesamt(Int32 stunden, Int32 minuten);
 	virtual bool istVorgesetzter() = 0;
 	void fuegeEreignisHinzu(Ereignis^ ereignis);
@@ -97,10 +104,14 @@ public:
 	Int32 berechneUrlaubstage(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage);
 	Int32 indexVon(DateTime tag);
 	Boolean istUrlaubstag(DateTime tag);
-	void zieheMinutenAb(Int32 minuten);
+	void zieheZeitAb(Int32 stunden, Int32 minuten);
+	TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten);
+	Boolean Angestellter::dieseWocheEingeloggt();
+	void stelleUraubstageZurueck(Int32 jahre);
+	void neueWoche();
+
 	// Ereignislisteauswertungsmethodensammlung
 
-	DateTime^ getLetzterArbeitstag();
 	DateTime^ getArbeitsAnfang(); // null wenn arbeitstag (noch) nicht begonnen
 	DateTime^ getPauseAnfang(); // null wenn pause gerade nicht läuft
 	TimeSpan^ getAktuelleArbeitszeit();

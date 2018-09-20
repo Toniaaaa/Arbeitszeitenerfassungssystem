@@ -34,7 +34,7 @@ public:
 	void addFeiertag(DateTime tag);
 	void removeFeiertag(DateTime tag);
 	void erstelleRegelFeiertage();
-	void loescheAlteFeiertage();
+	void stelleFeiertageZurueck(Int32 jahre);
 	Boolean istFeiertag(DateTime tag);
 	Int32 indexVon(DateTime tag);
 };

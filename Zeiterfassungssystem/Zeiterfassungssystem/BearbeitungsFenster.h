@@ -340,7 +340,7 @@ namespace Zeiterfassungssystem {
 				txt_abteilung->Text = angestellte[i]->getAbteilung()->getAbteilungsnummer();
 				txt_passwort->Text = angestellte[i]->getPasswort();
 				txt_arbeitsstunden->Text = Convert::ToString(angestellte[i]->getWochensstunden());
-				txt_urlaubstage->Text = Convert::ToString(angestellte[i]->getUrlaubstage());
+				txt_urlaubstage->Text = Convert::ToString(angestellte[i]->getJahresurlaub());
 				if (!angestellte[i]->istVorgesetzter()) {
 					txt_Rolle->Text = "Mitarbeiter";
 				}
