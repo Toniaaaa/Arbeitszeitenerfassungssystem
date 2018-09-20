@@ -356,9 +356,7 @@ private: System::Void btn_AntragBestaetigen_Click(System::Object^  sender, Syste
 			textZumAntrag += "\n\nKommentar:\n" + p_Kommentar;
 		}
 		antrag->getAntragsteller()->addAntragsInfo(textZumAntrag);
-		if (antrag->getAnfang().Year == DateTime::Now.Year) {
-			antrag->getAntragsteller()->nehmeUrlaub(antrag->getAnfang(), antrag->getEnde(), unternehmen->getFeiertage());
-		}
+		antrag->getAntragsteller()->nehmeUrlaub(antrag->getAnfang(), antrag->getEnde(), unternehmen->getFeiertage());
 		this->DialogResult = System::Windows::Forms::DialogResult::OK;
 		this->Close();
 	}

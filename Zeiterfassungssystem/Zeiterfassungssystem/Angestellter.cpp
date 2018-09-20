@@ -29,7 +29,13 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 
 Int32 Angestellter::getRestUrlaub() 
 {
-	return urlaubstage - listeUrlaubstage->Count;
+	Int32 urlaubstageDiesesJahr = 0;
+	for (int i = 0; i < listeUrlaubstage->Count; i++) {
+		if (listeUrlaubstage[i]->getDatum().Year == DateTime::Now.Year) {
+			urlaubstageDiesesJahr++;
+		}
+	}
+	return urlaubstage - urlaubstageDiesesJahr;
 }
 
 Abteilung ^ Angestellter::getAbteilung()

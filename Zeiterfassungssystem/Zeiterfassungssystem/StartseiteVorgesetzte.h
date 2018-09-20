@@ -716,14 +716,13 @@ namespace Zeiterfassungssystem {
 				MessageBox::Show("Ihr Urlaubsantrag wurde nicht eingereicht!", "Antrag abgebrochen!",
 					MessageBoxButtons::OK, MessageBoxIcon::Error);
 			}
-
-			urlaubsfenster->clear(); //Textfelder wieder leeren
-
 		}
 		else {
 			MessageBox::Show("Urlaubsantrag konnte nicht erstellt werden!", "Erstellen fehlgeschlagen",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+
+		urlaubsfenster->clear(); //Textfelder wieder leeren
 	}
 
 	//REGISTRIERUNGSFENSTER
