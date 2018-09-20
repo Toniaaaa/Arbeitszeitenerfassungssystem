@@ -16,6 +16,7 @@
 #include "AuswahlFenster.h"
 #include "AbteilungsFenster.h"
 #include "FeiertagsFenster.h"
+#include "UrlaubLoeschenFenster.h"
 #include "Kalender.h"
 
 namespace Zeiterfassungssystem {
@@ -49,6 +50,7 @@ namespace Zeiterfassungssystem {
 		AuswahlFenster^ auswahlfenster;
 		AbteilungsFenster^ abteilungsfenster;
 		FeiertagsFenster^ feiertagsfenster;
+		UrlaubLoeschenFenster^ urlaubLoeschenFenster;
 
 		Int32 sekunde;
 		Int32 minute;
@@ -103,6 +105,7 @@ namespace Zeiterfassungssystem {
 			auswahlfenster = gcnew AuswahlFenster;
 			abteilungsfenster = gcnew AbteilungsFenster;
 			feiertagsfenster = gcnew FeiertagsFenster;
+			urlaubLoeschenFenster = gcnew UrlaubLoeschenFenster;
 			kalender = gcnew Kalender();
 		}
 
@@ -725,12 +728,13 @@ namespace Zeiterfassungssystem {
 		urlaubsfenster->clear(); //Textfelder wieder leeren
 	}
 
-	//REGISTRIERUNGSFENSTER
+	//AUSWAHLFENSTER
 	private: System::Void addBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		registrierungsfenster->setUnternehmen(unternehmen);
 		registrierungsfenster->setVorgesetzter(angestellterAkt);
+		urlaubLoeschenFenster->setUnternehmen(unternehmen);
 		feiertagsfenster->setUnternehmen(unternehmen);
-		auswahlfenster->setAbteilungsfenster(abteilungsfenster);
+		auswahlfenster->setUrlaubLoeschenfenster(urlaubLoeschenFenster);
 		auswahlfenster->setRegistrierungsfenster(registrierungsfenster);
 		auswahlfenster->setFeiertagsfenster(feiertagsfenster);
 		auswahlfenster->ShowDialog(this);
@@ -1016,8 +1020,6 @@ namespace Zeiterfassungssystem {
 				"Achtung: Ihr Resturlaub verfällt", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 	}
-
-	
 
 	void setAnzeigeArbeitszeit() 
 	{

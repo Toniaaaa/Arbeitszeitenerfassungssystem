@@ -96,6 +96,7 @@ public:
 	void addUrlaubstag(DateTime tag);
 	void removeUrlaubstag(DateTime tag);
 	void loescheAlleUrlaubstage();
+	void loescheUrlaubstage(DateTime von, DateTime bis);
 
 	//Hilfsmethoden
 	void setAktuellenStatus(String^ status);

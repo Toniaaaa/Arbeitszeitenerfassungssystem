@@ -301,8 +301,8 @@ namespace Zeiterfassungssystem {
 		this->unternehmen = unternehmen;
 	}
 
-	//Beim Klick auf "Einreichen" wird das Fenster geschlossen und OK gesendet, falls: Die Tage eingetragen wurden und die Zahl positiv ist,
-	//der Beginn nicht nach dem Ende liegt und der Beginn nicht in der Vergangenheit liegt.
+	//Beim Klick auf "Einreichen" wird das Fenster geschlossen und OK gesendet, falls:
+	//Der Beginn nicht nach dem Ende liegt und der Beginn nicht in der Vergangenheit liegt.
 	private: System::Void Einreichen_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		//Vergleich der Daten wird in Integern gespeichert

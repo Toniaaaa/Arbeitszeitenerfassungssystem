@@ -496,3 +496,11 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 	//Diese Zeit von den ArbeitsStunden und Minuten dieser Woche abziehen
 	this->zieheZeitAb(wenigerStunden, wenigerMinuten);
 }
+
+void Angestellter::loescheUrlaubstage(DateTime von, DateTime bis)
+{
+	while (von <= bis) {
+		removeUrlaubstag(von);
+		von = von.AddDays(1.0);
+	}
+}
