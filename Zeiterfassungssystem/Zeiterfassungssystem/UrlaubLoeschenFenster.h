@@ -240,6 +240,7 @@ namespace Zeiterfassungssystem {
 		{
 			this->urlaubBeginnDTP->Value == DateTime::Today.Date;
 			this->urlaubEndeDTP->Value == DateTime::Today.Date;
+			this->angestellterCBox->Items->Clear();
 		}
 
 		//Unternehmen wird gesetzt
@@ -292,7 +293,7 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void anzeigenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		if (angestellter != nullptr) {
-			String^ urlaubstageString = "Urlaubstage:\n\n";
+			String^ urlaubstageString = "Urlaubstage von " + angestellter->getVorname() + " " + angestellter->getNachname() + ":\n\n";
 			for (int i = 0; i < angestellter->getListeUrlaubstage()->Count; i++) {
 				if (angestellter->getListeUrlaubstage()[i]->getDatum().Year >= DateTime::Now.Year) {
 					urlaubstageString += angestellter->getListeUrlaubstage()[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + "\n";
