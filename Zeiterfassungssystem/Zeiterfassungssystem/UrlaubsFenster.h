@@ -357,16 +357,27 @@ namespace Zeiterfassungssystem {
 		sound->Play();*/
 		restUrlaub = angestellter->getRestUrlaub();
 		anzahlUrlaubstage = 1;
+		urlaubstageLbl->Text = "1 Tag";
 	}
 
 	private: System::Void urlaubBeginnDTP_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
 		anzahlUrlaubstage = angestellter->berechneUrlaubstage(p_Anfang, p_Ende, unternehmen->getFeiertage());
-		this->urlaubstageLbl->Text = Convert::ToString(anzahlUrlaubstage) + " Tage";
+		if (anzahlUrlaubstage == 1) {
+			this->urlaubstageLbl->Text = "1 Tag";
+		}
+		else {
+			this->urlaubstageLbl->Text = Convert::ToString(anzahlUrlaubstage) + " Tage";
+		}
 	}
 
 	private: System::Void urlaubEndeDTP_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
 		anzahlUrlaubstage = angestellter->berechneUrlaubstage(p_Anfang, p_Ende, unternehmen->getFeiertage());
-		this->urlaubstageLbl->Text = Convert::ToString(anzahlUrlaubstage) + " Tage";
+		if (anzahlUrlaubstage == 1) {
+			this->urlaubstageLbl->Text = "1 Tag";
+		}
+		else {
+			this->urlaubstageLbl->Text = Convert::ToString(anzahlUrlaubstage) + " Tage";
+		}
 	}
 
 	private: System::Void anzeigenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
