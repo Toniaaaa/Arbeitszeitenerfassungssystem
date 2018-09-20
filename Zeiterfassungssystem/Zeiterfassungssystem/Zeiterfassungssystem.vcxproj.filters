@@ -105,6 +105,9 @@
     <ClInclude Include="Kalender.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="PersonalFensterMitarbeiter.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Angestellter.cpp">
@@ -188,6 +191,9 @@
     <ClCompile Include="Kalender.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="PersonalFensterMitarbeiter.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LogInFenster.resx">
@@ -233,6 +239,9 @@
       <Filter>Ressourcendateien</Filter>
     </EmbeddedResource>
     <EmbeddedResource Include="FeiertagsFenster.resx">
+      <Filter>Ressourcendateien</Filter>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AenderungsantragsFenster.resx">
       <Filter>Ressourcendateien</Filter>
     </EmbeddedResource>
   </ItemGroup>

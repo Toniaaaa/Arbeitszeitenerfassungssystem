@@ -23,6 +23,7 @@ namespace Zeiterfassungssystem {
 		List<Int32>^ ereignisse;
 		Int32 selectedEreignis = -1;
 	private: System::Windows::Forms::Button^  btn_aendern;
+	private: System::Windows::Forms::Label^  label1;
 			 AenderungsantragsFenster^ aenderungsantrag;
 
 	public:
@@ -76,6 +77,7 @@ namespace Zeiterfassungssystem {
 			this->clm_Arbeitsende = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_Gesamt = (gcnew System::Windows::Forms::ColumnHeader());
 			this->btn_aendern = (gcnew System::Windows::Forms::Button());
+			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// listView1
@@ -131,11 +133,21 @@ namespace Zeiterfassungssystem {
 			this->btn_aendern->UseVisualStyleBackColor = true;
 			this->btn_aendern->Click += gcnew System::EventHandler(this, &StundenStatistikFenster::btn_aendern_Click);
 			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(1249, 581);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(46, 17);
+			this->label1->TabIndex = 2;
+			this->label1->Text = L"label1";
+			// 
 			// StundenStatistikFenster
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1591, 699);
+			this->Controls->Add(this->label1);
 			this->Controls->Add(this->btn_aendern);
 			this->Controls->Add(this->listView1);
 			this->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
@@ -145,6 +157,7 @@ namespace Zeiterfassungssystem {
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &StundenStatistikFenster::StundenStatistikFenster_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &StundenStatistikFenster::StundenStatistikFenster_Load);
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -169,6 +182,7 @@ namespace Zeiterfassungssystem {
 		bool erstePause = true;
 		bool hattePause = false;
 		TimeSpan^ gesamtStunden = nullptr;
+		TimeSpan^ gesamt = nullptr;
 		for (int i = 0; i < angestellter->getAnzahlEreignisse(); i++) {
 			
 			if (angestellter->getEreignis(i)->getTyp() == ARBEIT_START) {
@@ -206,8 +220,10 @@ namespace Zeiterfassungssystem {
 				hattePause = false;
 				item->SubItems->Add(angestellter->getEreignis(i)->getTimestamp()->ToString());
 				item->SubItems->Add(gesamtStunden->ToString());
+				gesamt += *gesamtStunden;
 			}
 		}
+		label1->Text = Convert::ToString(gesamt);
 	}
 			 
 	
