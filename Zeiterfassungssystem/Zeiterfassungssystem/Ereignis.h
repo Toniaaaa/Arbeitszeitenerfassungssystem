@@ -25,5 +25,6 @@ public:
 
 	EreignisTyp getTyp();
 	DateTime^ getTimestamp();
+	void setTimestamp(DateTime timestamp);
 };
 

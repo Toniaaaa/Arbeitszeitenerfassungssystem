@@ -232,6 +232,9 @@
     <EmbeddedResource Include="AbteilungsFenster.resx">
       <DependentUpon>AbteilungsFenster.h</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AenderungsantragsFenster.resx">
+      <DependentUpon>AenderungsantragsFenster.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AenderungsbearbeitungsFenster.resx">
       <DependentUpon>AenderungsbearbeitungsFenster.h</DependentUpon>
     </EmbeddedResource>

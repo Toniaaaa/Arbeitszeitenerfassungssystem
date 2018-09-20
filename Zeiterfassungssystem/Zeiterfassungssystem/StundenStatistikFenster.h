@@ -1,6 +1,8 @@
 #pragma once
 #include "Angestellter.h"
 #include "Ereignis.h"
+#include "AenderungsantragsFenster.h"
+#include "Vorgesetzter.h"
 
 
 namespace Zeiterfassungssystem {
@@ -20,12 +22,14 @@ namespace Zeiterfassungssystem {
 	private:
 		List<Int32>^ ereignisse;
 		Int32 selectedEreignis = -1;
-
+	private: System::Windows::Forms::Button^  btn_aendern;
+			 AenderungsantragsFenster^ aenderungsantrag;
 
 	public:
 		StundenStatistikFenster(void)
 		{
 			InitializeComponent();
+			aenderungsantrag = gcnew AenderungsantragsFenster;
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
@@ -71,6 +75,7 @@ namespace Zeiterfassungssystem {
 			this->clm_Pausenende = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_Arbeitsende = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_Gesamt = (gcnew System::Windows::Forms::ColumnHeader());
+			this->btn_aendern = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// listView1
@@ -89,6 +94,7 @@ namespace Zeiterfassungssystem {
 			this->listView1->UseCompatibleStateImageBehavior = false;
 			this->listView1->View = System::Windows::Forms::View::Details;
 			this->listView1->ItemSelectionChanged += gcnew System::Windows::Forms::ListViewItemSelectionChangedEventHandler(this, &StundenStatistikFenster::listView1_ItemSelectionChanged);
+			this->listView1->MouseDoubleClick += gcnew System::Windows::Forms::MouseEventHandler(this, &StundenStatistikFenster::listView1_MouseDoubleClick);
 			// 
 			// clm_Arbeitsang
 			// 
@@ -115,11 +121,22 @@ namespace Zeiterfassungssystem {
 			this->clm_Gesamt->Text = L"Gesamtstunden";
 			this->clm_Gesamt->Width = 160;
 			// 
+			// btn_aendern
+			// 
+			this->btn_aendern->Location = System::Drawing::Point(27, 544);
+			this->btn_aendern->Name = L"btn_aendern";
+			this->btn_aendern->Size = System::Drawing::Size(144, 54);
+			this->btn_aendern->TabIndex = 1;
+			this->btn_aendern->Text = L"Ändern";
+			this->btn_aendern->UseVisualStyleBackColor = true;
+			this->btn_aendern->Click += gcnew System::EventHandler(this, &StundenStatistikFenster::btn_aendern_Click);
+			// 
 			// StundenStatistikFenster
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1591, 699);
+			this->Controls->Add(this->btn_aendern);
 			this->Controls->Add(this->listView1);
 			this->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->Name = L"StundenStatistikFenster";
@@ -133,15 +150,21 @@ namespace Zeiterfassungssystem {
 #pragma endregion
 	private:
 		Angestellter ^ angestellter;
+		Vorgesetzter^ vorgesetzter;
 
 	public:
 		void setAktuellenAngestellten(Angestellter^ angestellter) {
 			this->angestellter = angestellter;
 		}
+		void setVorgesetzter(Vorgesetzter^ vorgesetzter) {
+			this->vorgesetzter = vorgesetzter;
+		}
+
 
 	private: System::Void StundenStatistikFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		ereignisse = gcnew List<Int32>;
-
+		aenderungsantrag->setStatistikFenster(this);
+		aenderungsantrag->setAntragssteller(angestellter);
 		ListViewItem^ item;
 		bool erstePause = true;
 		bool hattePause = false;
@@ -193,7 +216,24 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void listView1_ItemSelectionChanged(System::Object^  sender, System::Windows::Forms::ListViewItemSelectionChangedEventArgs^  e) {
+		
 		selectedEreignis = ereignisse[e->ItemIndex];
+		
+		
+			
+	}
+	private: System::Void listView1_MouseDoubleClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+
+	}
+	private: System::Void btn_aendern_Click(System::Object^  sender, System::EventArgs^  e) {
+		aenderungsantrag->setSelectedEreignis(selectedEreignis);
+		aenderungsantrag->ShowDialog(this);
+		
+		aenderungsantrag->clear(); //Textfelder wieder leeren
+
+
+
+
 	}
 };
 }
