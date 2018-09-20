@@ -304,6 +304,7 @@ namespace Zeiterfassungssystem {
 		Unternehmen ^ unternehmen;
 		Angestellter^ angestellter;
 		List<Angestellter^>^ angestellte = gcnew List<Angestellter^>;
+		Abteilung^ abteilung;
 		void clear() {
 			this->txt_name->Text = "";
 			this->txt_vorname->Text = "";
@@ -326,6 +327,9 @@ namespace Zeiterfassungssystem {
 		}
 
 	private: System::Void BearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+			txt_abteilung->Items->Add(unternehmen->getAbteilung(i)->getAbteilungsnummer());
+		}
 	}
 
 	private: System::Void txt_personalnummer_TextChanged(System::Object^  sender, System::EventArgs^  e) {
@@ -415,10 +419,9 @@ namespace Zeiterfassungssystem {
 					angestellter->setAbteilung(unternehmen->getAbteilung(k));
 
 				}
-
 			}
 			if (txt_Rolle->Text->Equals("Vorgesetzter")) {
-				Abteilung^ abteilung = angestellter->getAbteilung();
+				abteilung = angestellter->getAbteilung();
 				abteilung->setVorgesetzter(gcnew Vorgesetzter(txt_vorname->Text,txt_name->Text,angestellter->getAbteilung(),txt_personalnummer->Text, txt_passwort->Text, Convert::ToInt32(txt_arbeitsstunden->Text), Convert::ToInt32(txt_urlaubstage->Text)));
 				for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
 					if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
@@ -426,12 +429,12 @@ namespace Zeiterfassungssystem {
 					}
 				}
 				
+			MessageBox::Show("Erfolgreich", "Angestellten Daten erfolgreich geändert!", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			}
 			else {
-
+				MessageBox::Show("Sie können keinen Vorgesetzten zu Mitarbeiter ändern!", "Fehlgeschlagen!", MessageBoxButtons::OK, MessageBoxIcon::Information);
 				
 			}
-			MessageBox::Show("Erfolgreich", "Angestellten Daten erfolgreich geändert!", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			this->clear();
 
 		}
@@ -439,14 +442,16 @@ namespace Zeiterfassungssystem {
 	private: System::Void BearbeitungsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
 		this->clear();
 	}
-private: System::Void btn_loeschen_Click(System::Object^  sender, System::EventArgs^  e) {
+	private: System::Void btn_loeschen_Click(System::Object^  sender, System::EventArgs^  e) {
+		abteilung = angestellter->getAbteilung();
+		for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
+			if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
+				abteilung->removeMitarbeiter(i);
+			}
 
-	for (int i = 0; i < angestellter->getAbteilung()->getAnzahlMitarbeiter(); i++) {
-		if (angestellte[i]->getPersonalnummer()->Equals(getPersonalnummerVergleich())) {
-			angestellte[i]->getAbteilung()->removeMitarbeiter(i);
-			unternehmen->getAlleAngestellte()->RemoveAt(i);
 		}
+
+		
 	}
-}
 };
 }
