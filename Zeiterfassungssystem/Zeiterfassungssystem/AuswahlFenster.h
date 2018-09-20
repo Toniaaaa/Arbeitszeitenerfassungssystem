@@ -1,5 +1,5 @@
 #pragma once
-#include "RegistrierungsFenster.h"
+#include "BearbeitungsFenster.h"
 #include "FeiertagsFenster.h"
 #include "UrlaubLoeschenFenster.h"
 #include "Angestellter.h"
@@ -21,7 +21,7 @@ namespace Zeiterfassungssystem {
 
 	private: 
 		FeiertagsFenster^ feiertagsfenster;
-		RegistrierungsFenster^ registrierungsfenster;
+		BearbeitungsFenster^ bearbeitungsfenster;
 		UrlaubLoeschenFenster^ urlaubLoeschenfenster;
 
 	public:
@@ -72,7 +72,7 @@ namespace Zeiterfassungssystem {
 			this->btn_angestellte->Name = L"btn_angestellte";
 			this->btn_angestellte->Size = System::Drawing::Size(150, 75);
 			this->btn_angestellte->TabIndex = 0;
-			this->btn_angestellte->Text = L"Angestellten hinzufügen";
+			this->btn_angestellte->Text = L"Angestellten bearbeiten";
 			this->btn_angestellte->UseVisualStyleBackColor = true;
 			this->btn_angestellte->Click += gcnew System::EventHandler(this, &AuswahlFenster::btn_angestellte_Click);
 			// 
@@ -106,7 +106,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->btn_urlaub);
 			this->Controls->Add(this->btn_angestellte);
 			this->Name = L"AuswahlFenster";
-			this->Text = L"Hinzufügen";
+			this->Text = L"Bearbeiten";
 			this->ResumeLayout(false);
 
 		}
@@ -118,8 +118,8 @@ namespace Zeiterfassungssystem {
 		this->feiertagsfenster = feiertag;
 	}
 		
-	void setRegistrierungsfenster(RegistrierungsFenster^ registrierung) {
-		this->registrierungsfenster = registrierung;
+	void setBearbeitungsfenster(BearbeitungsFenster^ bearbeitung) {
+		this->bearbeitungsfenster = bearbeitung;
 	}
 			
 	void setUrlaubLoeschenfenster(UrlaubLoeschenFenster^ urlaubFenster) {
@@ -127,7 +127,7 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void btn_angestellte_Click(System::Object^  sender, System::EventArgs^  e) {
-		registrierungsfenster->ShowDialog(this);
+		bearbeitungsfenster->ShowDialog(this);
 	}
 
 	private: System::Void btn_feiertag_Click(System::Object^  sender, System::EventArgs^  e) {

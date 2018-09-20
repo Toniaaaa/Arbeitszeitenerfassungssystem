@@ -729,20 +729,22 @@ namespace Zeiterfassungssystem {
 	}
 
 	//AUSWAHLFENSTER
-	private: System::Void addBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		registrierungsfenster->setUnternehmen(unternehmen);
-		registrierungsfenster->setVorgesetzter(angestellterAkt);
+	private: System::Void editBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		bearbeitungsfenster->setUnternehmen(unternehmen);
 		urlaubLoeschenFenster->setUnternehmen(unternehmen);
 		feiertagsfenster->setUnternehmen(unternehmen);
 		auswahlfenster->setUrlaubLoeschenfenster(urlaubLoeschenFenster);
-		auswahlfenster->setRegistrierungsfenster(registrierungsfenster);
-		auswahlfenster->setFeiertagsfenster(feiertagsfenster);
+		auswahlfenster->setFeiertagsfenster(feiertagsfenster);;
+		auswahlfenster->setBearbeitungsfenster(bearbeitungsfenster);
 		auswahlfenster->ShowDialog(this);
+
 	}
-	private: System::Void editBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		bearbeitungsfenster->setUnternehmen(unternehmen);
-		bearbeitungsfenster->ShowDialog(this);
+	private: System::Void addBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		registrierungsfenster->setUnternehmen(unternehmen);
+		registrierungsfenster->setVorgesetzter(angestellterAkt);
+		registrierungsfenster->ShowDialog(this);
 	}
+
 	private: System::Void personalBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		personalfenster->setUnternehmen(unternehmen);
 		personalfenster->ShowDialog(this);
