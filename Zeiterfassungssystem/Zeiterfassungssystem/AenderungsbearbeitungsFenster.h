@@ -326,15 +326,23 @@ namespace Zeiterfassungssystem {
 		}
 #pragma endregion
 	private: List<Ereignis^>^ ereignisse;
-	public: void setEreignisListe(List<Ereignis^>^ ereignisse) {
-		this->ereignisse = ereignisse;
-	}
+			 Int32 ereignis = 0;
+			 //AenderungsantragsFenster^ aenderungsfenster;
+	public: 
+		void setEreignisListe(List<Ereignis^>^ ereignisse) {
+			this->ereignisse = ereignisse;
+		}
 
+		void setSelectedEreignis(Int32 ereignisIndex) {
+			this->ereignis = ereignis;
+		}
+
+		
 	public: System::Void AenderungsbearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		istOffen = true;
-		p_Tag = antrag->getTag();
-		p_Ankunft = antrag->getAnfang();
-		p_Gehen = antrag->getEnde();
+		p_Tag = antrag->getNewStart()->Date;
+		p_Ankunft = antrag->getNewStart();
+		p_Gehen = antrag->getNewEnd();
 		p_Kommentar = antrag->getKommentarAntragsteller();
 		p_Grund = antrag->getGrund();
 		p_Name = antrag->getAntragsteller()->getVorname() + " " + antrag->getAntragsteller()->getNachname();
@@ -416,24 +424,15 @@ namespace Zeiterfassungssystem {
 				textZumAntrag += "\n\nKommentar:\n" + p_Kommentar;
 			}
 			antrag->getAntragsteller()->addAntragsInfo(textZumAntrag);
-			for (int i = 0; i < antrag->getAntragsteller()->getAnzahlEreignisse(); i++) {
-				if (angestellter->getEreignis(i)->getTimestamp()->Equals(antrag->getTag())
-					&& angestellter->getEreignis(i)->getTyp() == ARBEIT_START) {
-					Ereignis^ arbeitsanfang = gcnew Ereignis(ARBEIT_START, antrag->getAnfang());
-					angestellter->fuegeEreignisHinzu(arbeitsanfang);
-					angestellter->removeEreignis(i);
-					break;
-				for (int j = i; j < antrag->getAntragsteller()->getAnzahlEreignisse(); j++) {
 
-					if (angestellter->getEreignis(j)->getTimestamp()->Equals(antrag->getTag())
-						&& angestellter->getEreignis(j)->getTyp() == ARBEIT_ENDE) {
-						Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, antrag->getEnde());
-						angestellter->fuegeEreignisHinzu(arbeitsende);
-						angestellter->removeEreignis(j);
-					}
-				}
+			antrag->getAntragsteller()->getEreignis(antrag->getStartIndex())->setTimestamp(*antrag->getNewStart());
+			for (int i = antrag->getStartIndex(); i < antrag->getAntragsteller()->getAnzahlEreignisse(); i++) {
+				if (antrag->getAntragsteller()->getEreignis(i)->getTyp() == ARBEIT_ENDE) {
+					antrag->getAntragsteller()->getEreignis(i)->setTimestamp(*antrag->getNewEnd());
+					break;
 				}
 			}
+
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			this->Close();
 		}

@@ -636,6 +636,7 @@ namespace Zeiterfassungssystem {
 		//statistikfenster->setAngestellterAkt(angestellterAkt);
 		//statistikfenster->ShowDialog(this);
 		statistik->setAktuellenAngestellten(angestellterAkt);
+		statistik->setVorgesetzter(angestellterAkt->getVorgesetzter());
 		statistik->ShowDialog(this);
 	}
 
@@ -687,32 +688,7 @@ namespace Zeiterfassungssystem {
 
 		//Wenn vom Änderungsfenster OK gegeben wird, wir zunächst eine Abfrage erzeugt, ob der Antrag so in Ordnung ist. Wenn der Mitarbeiter mit "Ja" bestätigt, wird ein neues Objekt 
 		//vom Typ Änderungsantrag erstellt. Bei "Nein" wird abgebrochen.
-		if (result == System::Windows::Forms::DialogResult::OK) {
-
-			//Der Aenderungsantrag als String
-			String^ aenderungString = "Sie wollen folgende Änderung beantragen:\n\nTag der Änderung: " + aenderungsfenster->p_Tag.ToString("dddd, dd. MMMM yyyy") + "\nNeuer Beginn: "
-				+ aenderungsfenster->p_Ankunft.ToString("HH:mm") + "\nNeues Ende: " + aenderungsfenster->p_Gehen.ToString("HH:mm") + "\nGrund: " + aenderungsfenster->p_Grund
-				+ "\nKommentar: " + aenderungsfenster->p_Kommentar + "\n\nWollen Sie diesen Antrag einreichen?";
-
-			if (MessageBox::Show(aenderungString, "Antrag einreichen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-				//Neuen Änderungsantrag aus Werten aus dem Änderungsfenster erstellen
-				Aenderungsantrag^ a = gcnew Aenderungsantrag(angestellterAkt, aenderungsfenster->p_Tag, aenderungsfenster->p_Ankunft, aenderungsfenster->p_Gehen, aenderungsfenster->p_Grund,
-					aenderungsfenster->p_Kommentar);
-				vorgesetzter->addAenderungsantrag(a);
-				MessageBox::Show("Änderungsantrag erfolgreich eingereicht!", "Antrag erfolgreich!", MessageBoxButtons::OK, MessageBoxIcon::Information);
-			}
-			else {
-				MessageBox::Show("Ihr Änderungsantrag wurde nicht eingereicht!", "Antrag abgebrochen!",
-					MessageBoxButtons::OK, MessageBoxIcon::Error);
-			}
-
-			aenderungsfenster->clear(); //Textfelder wieder leeren
-
-		}
-		else {
-			MessageBox::Show("Änderungsantrag konnte nicht erstellt werden!", "Erstellen fehlgeschlagen",
-				MessageBoxButtons::OK, MessageBoxIcon::Error);
-		}
+		
 	}
 
 	//LOGOUT

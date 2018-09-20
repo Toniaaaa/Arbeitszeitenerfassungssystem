@@ -15,3 +15,8 @@ DateTime^ Ereignis::getTimestamp()
 {
 	return timestamp;
 }
+
+void Ereignis::setTimestamp(DateTime timestamp)
+{
+	this->timestamp = timestamp;
+}

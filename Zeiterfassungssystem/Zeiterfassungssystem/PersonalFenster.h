@@ -193,7 +193,7 @@ namespace Zeiterfassungssystem {
 					try {
 						if (angestellte[i]->getStatus()->Equals("Viel Erfolg beim Erledigen Ihrer Aufgaben!")) {
 							item->Text = "arbeitet..";
-							item->ForeColor = System::Drawing::Color::SpringGreen;
+							item->BackColor = System::Drawing::Color::SpringGreen;
 						}
 						else if (angestellte[i]->getStatus()->Equals("Geniessen Sie Ihre Pause!")) {
 							item->Text = "in der Pause..";

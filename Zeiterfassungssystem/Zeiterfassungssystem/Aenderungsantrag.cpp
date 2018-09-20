@@ -1,11 +1,11 @@
 #include "Aenderungsantrag.h"
 
-Aenderungsantrag::Aenderungsantrag(Angestellter^ antragsteller, DateTime tag, DateTime anfang, DateTime ende, String^ grund, String^ kommentar)
+Aenderungsantrag::Aenderungsantrag(Angestellter^ antragsteller, Int32 startIndex, DateTime newStart, DateTime newEnd, String^ grund, String^ kommentar)
 {
 	this->m_Antragsteller = antragsteller;
-	this->m_Anfang = anfang;
-	this->m_Ende = ende;
-	this->m_Tag = tag;
+	this->startIndex = startIndex;
+	this->newStart = newStart;
+	this->newEnd = newEnd;
 	this->m_KommentarAntragsteller = kommentar;
 	this->m_Grund = grund;
 }

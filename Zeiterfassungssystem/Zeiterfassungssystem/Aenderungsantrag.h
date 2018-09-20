@@ -12,26 +12,21 @@ private:
 	Angestellter^ m_Antragsteller;
 
 	Int32 startIndex;
-	DateTime^ newStart;
-	DateTime^ newEnd;
-
-	//Löschen:
-	DateTime m_Tag;
-	DateTime m_Anfang;
-	DateTime m_Ende;
+	DateTime newStart;
+	DateTime newEnd;
 
 	String^ m_Grund;
 	String^ m_KommentarAntragsteller;
 	String^ m_KommentarVorgesetzter;
 
 public:
-	Aenderungsantrag(Angestellter^ antragsteller, DateTime tag, DateTime anfang, DateTime ende, String^ grund, String^ kommentar);
+	Aenderungsantrag(Angestellter^ antragsteller, Int32 startIndex, DateTime newStart, DateTime newEnd, String^ grund, String^ kommentar);
 	~Aenderungsantrag();
 
 	//Getter und Setter
-	inline DateTime getAnfang() { return m_Anfang; }
-	inline DateTime getEnde() { return m_Ende; }
-	inline DateTime getTag() { return m_Tag; }
+	inline Int32 getStartIndex() { return startIndex; }
+	inline DateTime^ getNewStart() { return newStart; }
+	inline DateTime^ getNewEnd() { return newEnd; }
 	inline String^ getGrund() { return m_Grund; }
 	inline String^ getKommentarAntragsteller() { return m_KommentarAntragsteller; }
 	inline String^ getKommentarVorgesetzter() { return m_KommentarVorgesetzter; }
