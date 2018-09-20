@@ -706,8 +706,9 @@ namespace Zeiterfassungssystem {
 		this->neuesJahr();
 		angestellterAkt->neueWoche();
 		//Falls in dieser Woche freie Tage vorhanden sind (Urlaub, Feiertage) wird die Arbeitszeit dieser Woche entsprechend angepasst.
-		this->freieTagePruefen();
+		angestellterAkt->freieTagePruefen(unternehmen);
 		wochenZeitErreicht = angestellterAkt->getWochenZeitErreicht();
+		//Anzeige Noch-Arbeitszeit bzw. Überstunden wird gesetzt
 		this->setAnzeigeArbeitszeit();
 
 		if (angestellterAkt->getArbeitsAnfang() == nullptr) {
@@ -920,50 +921,6 @@ namespace Zeiterfassungssystem {
 				"Achtung: Ihr Resturlaub verfällt", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 
-	}
-
-	void freieTagePruefen()
-	{
-		Int32 anzFreieTage = 0;
-
-		// Kalenderwoche von heute berechnen
-		DateTime^ heute = DateTime::Now.Date;
-		Int32 kWHeute = kalender->berechneKW(*heute);
-		DateTime^ tagDynamisch = heute;
-		Int32 kWDynamisch = kWHeute;
-
-		try {
-			while (kWDynamisch == kWHeute) {
-				if (unternehmen->istFeiertag(*tagDynamisch)) {
-					Int32 index = unternehmen->indexVon(*tagDynamisch);
-					if (!unternehmen->getFeiertage()[index]->getEingerechnet()) {
-						anzFreieTage++;
-						unternehmen->getFeiertage()[index]->setEingerechnet(true);
-					}
-				}
-				if (angestellterAkt->istUrlaubstag(*tagDynamisch)) {
-					Int32 index = angestellterAkt->indexVon(*tagDynamisch);
-					if (!angestellterAkt->getListeUrlaubstage()[index]->getEingerechnet()) {
-						anzFreieTage++;
-						angestellterAkt->getListeUrlaubstage()[index]->setEingerechnet(true);
-					}
-				}
-				tagDynamisch = tagDynamisch->AddDays(1.0);
-				kWDynamisch = kalender->berechneKW(*tagDynamisch);
-			}
-		}
-		catch (System::NullReferenceException ^e) {
-			//Keine Aktion notwendig
-		}
-
-		//Stunden und Minuten berechnen, die in dieser Woche durch die freien Tage weniger gearbeitet werden müssen
-		Double tagesArbeitszeit = (Double)angestellterAkt->getWochensstunden() / 5;
-		Double abzugArbeitszeit = tagesArbeitszeit * anzFreieTage;
-		Int32 wenigerStunden = (Int32)abzugArbeitszeit;
-		Int32 wenigerMinuten = (abzugArbeitszeit - wenigerStunden) * 60;
-
-		//Diese Zeit von den ArbeitsStunden und Minuten dieser Woche abziehen
-		angestellterAkt->zieheZeitAb(wenigerStunden, wenigerMinuten);
 	}
 
 	void setAnzeigeArbeitszeit()

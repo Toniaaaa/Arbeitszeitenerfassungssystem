@@ -452,3 +452,47 @@ void Angestellter::neueWoche()
 		ueberMinuten = 0;
 	}
 }
+
+void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
+{
+	Int32 anzFreieTage = 0;
+
+	// Kalenderwoche von heute berechnen
+	DateTime^ heute = DateTime::Now.Date;
+	Int32 kWHeute = kalender->berechneKW(*heute);
+	DateTime^ tagDynamisch = heute;
+	Int32 kWDynamisch = kWHeute;
+
+	try {
+		while (kWDynamisch == kWHeute) {
+			if (unternehmen->istFeiertag(*tagDynamisch)) {
+				Int32 index = unternehmen->indexVon(*tagDynamisch);
+				if (!unternehmen->getFeiertage()[index]->getEingerechnet()) {
+					anzFreieTage++;
+					unternehmen->getFeiertage()[index]->setEingerechnet(true);
+				}
+			}
+			if (this->istUrlaubstag(*tagDynamisch)) {
+				Int32 index = this->indexVon(*tagDynamisch);
+				if (!listeUrlaubstage[index]->getEingerechnet()) {
+					anzFreieTage++;
+					listeUrlaubstage[index]->setEingerechnet(true);
+				}
+			}
+			tagDynamisch = tagDynamisch->AddDays(1.0);
+			kWDynamisch = kalender->berechneKW(*tagDynamisch);
+		}
+	}
+	catch (System::NullReferenceException ^e) {
+		//Keine Aktion notwendig
+	}
+
+	//Stunden und Minuten berechnen, die in dieser Woche durch die freien Tage weniger gearbeitet werden müssen
+	Double tagesArbeitszeit = (Double) wochenstunden / 5;
+	Double abzugArbeitszeit = tagesArbeitszeit * anzFreieTage;
+	Int32 wenigerStunden = (Int32)abzugArbeitszeit;
+	Int32 wenigerMinuten = (abzugArbeitszeit - wenigerStunden) * 60;
+
+	//Diese Zeit von den ArbeitsStunden und Minuten dieser Woche abziehen
+	this->zieheZeitAb(wenigerStunden, wenigerMinuten);
+}

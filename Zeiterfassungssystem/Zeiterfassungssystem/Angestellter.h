@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Unternehmen.h"
 #include "Aenderungsantrag.h"
 #include "Urlaubsantrag.h"
 #include "FreierTag.h"
@@ -105,10 +106,11 @@ public:
 	Int32 indexVon(DateTime tag);
 	Boolean istUrlaubstag(DateTime tag);
 	void zieheZeitAb(Int32 stunden, Int32 minuten);
-	TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten);
-	Boolean Angestellter::dieseWocheEingeloggt();
+	TimeSpan getReduzierteZeit(Int32 stunden, Int32 minuten);
+	Boolean dieseWocheEingeloggt();
 	void stelleUraubstageZurueck(Int32 jahre);
 	void neueWoche();
+	void freieTagePruefen(Unternehmen^ unternehmen);
 
 	// Ereignislisteauswertungsmethodensammlung
 
