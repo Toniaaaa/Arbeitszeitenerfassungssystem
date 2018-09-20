@@ -379,7 +379,7 @@ namespace Zeiterfassungssystem {
 		if (angestellter->getListeUrlaubstage()->Count == 0) {
 			urlaubstageString += "Sie haben noch keine bestätigten Urlaubstage.\n";
 		}
-		urlaubstageString += "\nFeiertage:\n\n";
+		urlaubstageString += "\nFeiertage " + Convert::ToString(DateTime::Now.Year) + ":\n\n";
 		for (int i = 0; i < unternehmen->getFeiertage()->Count; i++) {
 			if (unternehmen->getFeiertage()[i]->getDatum().Year >= DateTime::Now.Year) {
 				urlaubstageString += unternehmen->getFeiertage()[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + "\n";
