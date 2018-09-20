@@ -235,8 +235,16 @@ void Angestellter::nehmeUrlaub(DateTime beginn, DateTime ende, List<FreierTag^>^
 				break;
 			}
 		}
+		//Prüfe, ob dieser Tag bereits ein genommener Urlaubstag ist
+		Boolean istUrlaubstag = false;
+		for (int i = 0; i < listeUrlaubstage->Count; i++) {
+			if (beginn == listeUrlaubstage[i]->getDatum()) {
+				istUrlaubstag = true;
+				break;
+			}
+		}
 		//Prüfe, ob dieser Tag ein Samstag oder Sonntag ist
-		if (!istFeiertag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
+		if (!istFeiertag && !istUrlaubstag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
 			//Tag wird der Liste hinzugefügt und ein Tag den genommenen Urlaubstagen hinzugefügt.
 			listeUrlaubstage->Add(gcnew FreierTag(beginn));
 			if (urlaubstageGespart > 0) {
@@ -261,8 +269,16 @@ Int32 Angestellter::berechneUrlaubstage(DateTime beginn, DateTime ende, List<Fre
 				break;
 			}
 		}
+		//Prüfe, ob dieser Tag bereits ein genommener Urlaubstag ist
+		Boolean istUrlaubstag = false;
+		for (int i = 0; i < listeUrlaubstage->Count; i++) {
+			if (beginn == listeUrlaubstage[i]->getDatum()) {
+				istUrlaubstag = true;
+				break;
+			}
+		}
 		//Prüfe, ob dieser Tag ein Samstag oder Sonntag ist
-		if (!istFeiertag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
+		if (!istFeiertag && !istUrlaubstag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
 			//Tag wird der Liste hinzugefügt und ein Tag den genommenen Urlaubstagen hinzugefügt.
 			anzUrlaubstage++;
 		}
