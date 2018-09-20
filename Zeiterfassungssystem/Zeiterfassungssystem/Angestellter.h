@@ -24,8 +24,8 @@ private:
 	String^ personalnummer;
 	String^ passwort;
 	Int32 wochenstunden;
+	Int32 jahresurlaub;
 	Int32 urlaubstage;
-	Int32 urlaubstageGenommen;
 	Int32 urlaubstageGespart;
 	List<FreierTag^>^ listeUrlaubstage;
 	List<Ereignis^>^ listeEreignisse;
@@ -63,6 +63,7 @@ public:
 	inline Int32 getUrlaubstageGespart() { return urlaubstageGespart; }
 	inline List<FreierTag^>^ getListeUrlaubstage() { return listeUrlaubstage; }
 	inline DateTime getLetzterLogin() { return letzterLogin; }
+	inline Int32 getJahresurlaub() { return jahresurlaub; }
 	
 	Int32 getRestUrlaub();
 	Ereignis^ getEreignis(Int32 index);
@@ -77,7 +78,6 @@ public:
 	inline void setPasswort(String^ passwort) {this->passwort = passwort;}
 	inline void setWochenstunden(Int32 wochenstunden) {this->wochenstunden = wochenstunden;}
 	inline void setUrlaubstage(Int32 urlaubstage) {this->urlaubstage = urlaubstage;}
-	inline void setUrlaubstageGenommen(Int32 urlaubstage) { this->urlaubstageGenommen = urlaubstage; }
 	inline void setUrlaubstageGespart(Int32 urlaubstage) { this->urlaubstageGespart = urlaubstage; }
 	inline void setWochenZeitErreicht(Boolean erreicht) {this->wochenZeitErreicht = erreicht;}
 	inline void setArbeitsStunden(Int32 stunden) { this->arbeitsStunden = stunden; }
@@ -107,6 +107,9 @@ public:
 	void zieheZeitAb(Int32 stunden, Int32 minuten);
 	TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten);
 	Boolean Angestellter::dieseWocheEingeloggt();
+	void stelleUraubstageZurueck(Int32 jahre);
+	void neueWoche();
+
 	// Ereignislisteauswertungsmethodensammlung
 
 	DateTime^ getArbeitsAnfang(); // null wenn arbeitstag (noch) nicht begonnen

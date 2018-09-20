@@ -11,7 +11,6 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->passwort = passwort;
 	this->wochenstunden = wochenstunden;
 	this->urlaubstage = urlaubstage;
-	this->urlaubstageGenommen = 0;
 	this->urlaubstageGespart = 0;
 	listeEreignisse = gcnew List<Ereignis^>;
 	listegesamtstunden = gcnew List<Double>;
@@ -25,11 +24,12 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->listeUrlaubstage = gcnew List<FreierTag^>;
 	this->letzterLogin = DateTime::Now;
 	this->kalender = gcnew Kalender();
+	this->jahresurlaub = urlaubstage;
 }
 
 Int32 Angestellter::getRestUrlaub() 
 {
-	return urlaubstage + urlaubstageGespart - urlaubstageGenommen;
+	return urlaubstage - listeUrlaubstage->Count;
 }
 
 Abteilung ^ Angestellter::getAbteilung()
@@ -233,7 +233,9 @@ void Angestellter::nehmeUrlaub(DateTime beginn, DateTime ende, List<FreierTag^>^
 		if (!istFeiertag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
 			//Tag wird der Liste hinzugefügt und ein Tag den genommenen Urlaubstagen hinzugefügt.
 			listeUrlaubstage->Add(gcnew FreierTag(beginn));
-			urlaubstageGenommen++;
+			if (urlaubstageGespart > 0) {
+				urlaubstageGespart--;
+			}
 		}
 		beginn = beginn.AddDays(1.0);
 	}
@@ -242,7 +244,6 @@ void Angestellter::nehmeUrlaub(DateTime beginn, DateTime ende, List<FreierTag^>^
 //Berechnet die Anzahl der Tage in einem Intervall ohne Wochenenden und Feiertage
 Int32 Angestellter::berechneUrlaubstage(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage)
 {
-
 	Int32 anzUrlaubstage = 0;
 
 	while (beginn <= ende) {
@@ -381,4 +382,51 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 	}
 
 	return *reduzierteZeit;
+}
+
+// Wenn eine neues Jahr startet, werden die Urlaubstage zurueckgesetzt
+void Angestellter::stelleUraubstageZurueck(Int32 jahre)
+{
+	DateTime^ heute = DateTime::Today;
+
+	//Wenn seit dem letzten Arbeitstag ein neues Jahr angefangen hat
+	if (letzterLogin.Year > heute->Year) {
+		//Urlaubstage verfallen nach 3 Monaten
+		urlaubstageGespart = this->getRestUrlaub();
+		urlaubstage = jahresurlaub + urlaubstageGespart;
+
+		//Gespeicherte Arbeitszeiten verfallen nach angegebener Zahl Jahren
+		Int32 i = 0;
+		//Kein Exception-Handling notwendig, da letzterLogin kein Nullpointer sein kann (siehe oben) und daher auch schon mindesten ein Ereignis existieren muss.
+		while (heute->Year - this->getEreignis(i)->getTimestamp()->Year > jahre) {
+			this->removeEreignis(i);
+			i++;
+		}
+	}
+
+	//Urlaubstage, die aus dem letzten Jahr stammen, verfallen, wenn sie nicht bis März genommen wurden
+	if (urlaubstageGespart != 0 && heute->Month >= 4) {
+		urlaubstage -= urlaubstageGespart;
+		urlaubstageGespart = 0;
+	}
+}
+// Wenn eine neue Woche startet, wird die Arbeitszeit zurueckgesetzt
+void Angestellter::neueWoche()
+{
+	//Prüfen, ob sich der Angestellte in dieser Woche schon eingeloggt hat. Wenn nicht: Zurücksetzen der Wochen-Arbeitszeit, da eine neue Woche begonnen hat.
+	if (!this->dieseWocheEingeloggt()) {
+		//Wenn der Mitarbeiter in der letzten Woche seine Arbeitszeit nicht erreicht hat, wird ihm das von seinen Überstunden wieder abgezogen
+		if (!wochenZeitErreicht) {
+			this->setUeberstundenGesamt(-arbeitsStunden, -arbeitsMinuten);
+		}
+		else {
+			this->setUeberstundenGesamt(ueberStunden, ueberMinuten);
+		}
+		//Wochenarbeitszeit wird wieder auf ihre Anfangswerte zurückgesetzt
+		wochenZeitErreicht = false;
+		arbeitsStunden = wochenstunden;
+		arbeitsMinuten = 0;
+		ueberStunden = 0;
+		ueberMinuten = 0;
+	}
 }

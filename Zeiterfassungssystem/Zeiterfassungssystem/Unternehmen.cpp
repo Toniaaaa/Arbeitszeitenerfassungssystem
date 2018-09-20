@@ -132,13 +132,14 @@ void Unternehmen::erstelleRegelFeiertage()
 	}
 }
 
-void Unternehmen::loescheAlteFeiertage()
+void Unternehmen::stelleFeiertageZurueck(Int32 jahre)
 {
 	for (int i = feiertage->Count - 1; i >= 0; i--) {
-		if (feiertage[i]->getDatum().Year < DateTime::Now.Year) {
+		if (feiertage[i]->getDatum().Year < (DateTime::Now.Year - 3)) {
 			feiertage->RemoveAt(i);
 		}
 	}
+	this->erstelleRegelFeiertage();
 }
 
 Boolean Unternehmen::istFeiertag(DateTime tag) 

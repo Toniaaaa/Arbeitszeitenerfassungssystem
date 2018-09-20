@@ -730,7 +730,7 @@ namespace Zeiterfassungssystem {
 	private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
 
 		this->neuesJahr();
-		this->neueWoche();
+		angestellterAkt->neueWoche();
 		//Falls in dieser Woche freie Tage vorhanden sind (Urlaub, Feiertage) wird die Arbeitszeit dieser Woche entsprechend angepasst.
 		this->freieTagePruefen();
 		wochenZeitErreicht = angestellterAkt->getWochenZeitErreicht();
@@ -933,58 +933,17 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
-	// Wenn eine neue Woche startet, wird die Arbeitszeit zurueckgesetzt
-	private: void neueWoche()
-	{
-		//Prüfen, ob sich der Angestellte in dieser Woche schon eingeloggt hat. Wenn nicht: Zurücksetzen der Wochen-Arbeitszeit, da eine neue Woche begonnen hat.
-		if (!angestellterAkt->dieseWocheEingeloggt()) {
-			//Wenn der Mitarbeiter in der letzten Woche seine Arbeitszeit nicht erreicht hat, wird ihm das von seinen Überstunden wieder abgezogen
-			if (!angestellterAkt->getWochenZeitErreicht()) {
-				angestellterAkt->setUeberstundenGesamt(-(angestellterAkt->getArbeitsStunden()), -(angestellterAkt->getArbeitsMinuten()));
-			}
-			else {
-				angestellterAkt->setUeberstundenGesamt(angestellterAkt->getUeberStunden(), angestellterAkt->getUeberStunden());
-			}
-			//Wochenarbeitszeit wird wieder auf ihre Anfangswerte zurückgesetzt
-			angestellterAkt->setWochenZeitErreicht(false);
-			angestellterAkt->setArbeitsStunden(angestellterAkt->getWochensstunden());
-			angestellterAkt->setArbeitsMinuten(0);
-			angestellterAkt->setUeberStunden(0);
-			angestellterAkt->setUeberMinuten(0);
-		}
-	}
-
 	// Wenn eine neues Jahr startet, werden die Urlaubstage zurueckgesetzt
 	private: void neuesJahr() {
-
-		DateTime^ letzterTag = angestellterAkt->getLetzterLogin();
-		DateTime^ heute = DateTime::Today;
-
 		//Wenn seit dem letzten Arbeitstag ein neues Jahr angefangen hat
-		if (letzterTag != nullptr && letzterTag->Year > heute->Year) {
-			//Urlaubstage verfallen nach 3 Monaten
-			angestellterAkt->setUrlaubstageGespart(angestellterAkt->getRestUrlaub());
-			angestellterAkt->setUrlaubstageGenommen(0);
-			//Angestellter wird informiert
-			MessageBox::Show("Sie haben noch " + angestellterAkt->getUrlaubstageGespart() + " Resturlaub aus dem vergangenen Jahr nicht genommen!\nDieser verfällt nach 3 Monaten!", 
-				"Achtung: Ihr Resturlaub verfällt", MessageBoxButtons::OK, MessageBoxIcon::Information);
-
-			//Gespeicherte Arbeitszeiten verfallen nach drei Jahren
-			Int32 i = 0;
-			//Kein Exception-Handling notwendig, da letzterLogin kein Nullpointer sein kann (siehe oben) und daher auch schon mindesten ein Ereignis existieren muss.
-			while (heute->Year - angestellterAkt->getEreignis(i)->getTimestamp()->Year > 3) {
-				angestellterAkt->removeEreignis(i);
-				i++;
-			}
-
+		if (angestellterAkt->getLetzterLogin().Year > DateTime::Today.Year) {
+			//Urlaubstage werden zurueckgestellt
+			angestellterAkt->stelleUraubstageZurueck(3);
 			//Feiertage werden für das neue Jahr gesetzt
-			unternehmen->loescheAlteFeiertage();
-			unternehmen->erstelleRegelFeiertage();
-		}
-
-		//Urlaubstage, die aus dem letzten Jahr stammen, verfallen, wenn sie nicht bis März genommen wurden
-		if (angestellterAkt->getUrlaubstageGespart() != 0 && heute->Month >= 4) {
-			angestellterAkt->setUrlaubstageGespart(0);
+			unternehmen->stelleFeiertageZurueck(3);
+			//Angestellter wird über seine verbliebenen Urlaubstage Informiert.
+			MessageBox::Show("Sie haben noch " + angestellterAkt->getUrlaubstageGespart() + " Resturlaub aus dem vergangenen Jahr nicht genommen!\nDieser verfällt nach 3 Monaten!",
+				"Achtung: Ihr Resturlaub verfällt", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 
 	}
