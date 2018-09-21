@@ -372,13 +372,13 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 
 	//Fall: Es wurden bereits Überstunden gezählt (also Wochen-Arbeitszeit war schon erreicht)
 	if (wochenZeitErreicht) {
-		ueberStd += stunden;
+		ueberStd -= stunden;
 		if (ueberMin + minuten >= 60) {
 			ueberStd++;
 			ueberMin = ueberMin + minuten - 60;
 		}
 		else {
-			ueberMin += minuten;
+			ueberMin -= minuten;
 		}
 		if (ueberStd >= 0) {
 			reduzierteZeit = reduzierteZeit = gcnew TimeSpan(ueberStd, ueberMin, 1);
