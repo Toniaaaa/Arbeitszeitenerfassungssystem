@@ -397,8 +397,9 @@ namespace Zeiterfassungssystem {
 		property String^ p_Grund
 		{
 			String^ get() {
-				
+				if (ausgewaehlt) {
 					return this->gruendeAuswahl->SelectedItem->ToString();
+				}
 			}
 		}
 
