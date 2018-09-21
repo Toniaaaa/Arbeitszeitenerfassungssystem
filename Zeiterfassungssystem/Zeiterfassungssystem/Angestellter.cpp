@@ -218,7 +218,7 @@ void Angestellter::speichereArbeitszeit(Int32 stunden, Int32 minuten, Boolean er
 
 void Angestellter::setUeberstundenGesamt(Int32 stunden, Int32 minuten) 
 {
-	ueberStundenGesamt += (stunden + minuten / 60);
+	ueberStundenGesamt += stunden + (minuten / 60);
 }
 
 //Fügt die Anzahl der Urlaubstage den genommenen Tagen hinzu und reduziert damit den Resturlaub

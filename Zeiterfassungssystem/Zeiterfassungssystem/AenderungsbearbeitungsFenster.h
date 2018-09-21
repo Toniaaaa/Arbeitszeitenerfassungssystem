@@ -476,18 +476,19 @@ namespace Zeiterfassungssystem {
 					gesamtstundenNeu = antrag->getAntragsteller()->berechneArbeitsstunden(i);
 				}
 			}
+
+			Int32 stundenAlt = gesamtstundenAlt->Hours;
+			Int32 stundenNeu = gesamtstundenNeu->Hours;
+			Int32 differenzStunden = stundenAlt - stundenNeu;
+			Int32 minutenAlt = gesamtstundenAlt->Minutes;
+			Int32 minutenNeu = gesamtstundenNeu->Minutes;
+			Int32 differenzMinuten = minutenAlt - minutenNeu;
+
 			if (kalender->berechneKW(DateTime::Today.Date) == kalender->berechneKW(antrag->getNewStart())) {
-				Int32 stundenAlt = gesamtstundenAlt->Hours;
-				Int32 stundenNeu = gesamtstundenNeu->Hours;
-				Int32 differenzStunden = stundenAlt - stundenNeu;
-				Int32 minutenAlt = gesamtstundenAlt->Minutes;
-				Int32 minutenNeu = gesamtstundenNeu->Minutes;
-				Int32 differenzMinuten= minutenAlt - minutenNeu;
 				antrag->getAntragsteller()->zieheZeitAb(differenzStunden, differenzMinuten);
-				
 			}
 			else {
-
+				angestellter->setUeberstundenGesamt(-differenzStunden, -differenzMinuten);
 			}
 			
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
