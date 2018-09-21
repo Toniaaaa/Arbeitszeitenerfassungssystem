@@ -459,7 +459,7 @@ namespace Zeiterfassungssystem {
 			MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 			//Hier werden die alten gesamtstunden berechnet
 			for (int i = 0; i < angestellter->getAnzahlEreignisse(); i++) {
-				if (antrag->getOldStart()) {
+				if (angestellter->getEreignis(i)->getTimestamp()->Equals(antrag->getOldStart())) {
 					gesamtstundenAlt = antrag->getAntragsteller()->berechneArbeitsstunden(i);
 				}
 			}
@@ -476,17 +476,17 @@ namespace Zeiterfassungssystem {
 			
 			//HIER BITTE GUCKEN
 			for (int i = 0; i < angestellter->getAnzahlEreignisse(); i++) {
-				if (antrag->getNewStart()) {
+				if (angestellter->getEreignis(i)->getTimestamp()->Equals(antrag->getNewStart())) {
 					gesamtstundenNeu = antrag->getAntragsteller()->berechneArbeitsstunden(i);
 				}
 			}
 			if (kalender->berechneKW(antrag->getOldStart()) == kalender->berechneKW(antrag->getNewStart())) {
 				Int32 stundenAlt = gesamtstundenAlt->Hours;
 				Int32 stundenNeu = gesamtstundenNeu->Hours;
-				Int32 differenzStunden = stundenNeu - stundenAlt;
+				Int32 differenzStunden = stundenAlt - stundenNeu;
 				Int32 minutenAlt = gesamtstundenAlt->Minutes;
 				Int32 minutenNeu = gesamtstundenNeu->Minutes;
-				Int32 differenzMinuten= minutenNeu - minutenAlt;
+				Int32 differenzMinuten= minutenAlt - minutenNeu;
 				antrag->getAntragsteller()->zieheZeitAb(differenzStunden, differenzMinuten);
 				
 			}

@@ -192,6 +192,7 @@ namespace Zeiterfassungssystem {
 				erstePause = true;
 
 				gesamtStunden = angestellter->berechneArbeitsstunden(i);
+				//gesamt = gesamt->operator+(gesamtStunden);
 
 				item->Text = angestellter->getEreignis(i)->getTimestamp()->ToString();
 			}
@@ -220,7 +221,6 @@ namespace Zeiterfassungssystem {
 				hattePause = false;
 				item->SubItems->Add(angestellter->getEreignis(i)->getTimestamp()->ToString());
 				item->SubItems->Add(gesamtStunden->ToString());
-				gesamt += *gesamtStunden;
 			}
 		}
 		label1->Text = Convert::ToString(gesamt);
