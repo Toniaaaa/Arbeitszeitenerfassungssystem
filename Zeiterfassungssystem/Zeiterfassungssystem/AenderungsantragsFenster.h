@@ -22,9 +22,11 @@ namespace Zeiterfassungssystem {
 
 	private:
 
-		Angestellter ^ antragsteller;
-		StundenStatistikFenster^ stundenstatistik;
-		Int32 ereignisIndex;
+	Angestellter ^ antragsteller;
+	StundenStatistikFenster^ stundenstatistik;
+	Int32 ereignisIndex;
+	Ereignis^ ereignis;
+	Ereignis^ ereignisende;
 
 	private: System::Windows::Forms::TextBox^  kommentarTxt;
 	private: System::Windows::Forms::Label^  gehenLbl;
@@ -38,12 +40,7 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Label^  label5;
 	private: System::Windows::Forms::Label^  grundLbl;
 	private: System::Windows::Forms::Label^  label2;
-
-
-
 	private: System::Windows::Forms::ComboBox^  gruendeAuswahl;
-
-
 
 	public:
 		AenderungsantragsFenster(void)
@@ -416,44 +413,26 @@ namespace Zeiterfassungssystem {
 			this->gehenStdTxt->Text = "";
 			this->gehenMinuteTxt->Text = "";
 			this->kommentarTxt->Text = "";
-			this->gruendeAuswahl->ResetCursor();
+			this->gruendeAuswahl->Items->Clear();
 		}
 		
-		//Beim Klick auf "Einreichen" wird das Fenster geschlossen und OK gesendet, falls: Die Tage eingetragen wurden und die Zahl positiv ist,
-		//der Beginn nicht nach dem Ende liegt und der Beginn nicht in der Vergangenheit liegt.
+	//Beim Klick auf "Einreichen" wird das Fenster geschlossen und OK gesendet, falls: Die Tage eingetragen wurden und die Zahl positiv ist,
+	//der Beginn nicht nach dem Ende liegt und der Beginn nicht in der Vergangenheit liegt.
 	private: System::Void Einreichen_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-
-		//Vergleich der Daten wird in einem Integer32 gespeichert
+	//Vergleich der Daten wird in einem Integer32 gespeichert
 	//	int vergleichMitHeute = DateTime::Compare(p_Tag, DateTime::Today.Date);
 
-		if (this->ankunftStdTxt->Text->Length == 0) {
+		if (this->ankunftStdTxt->Text->Length == 0 || this->ankunftMinuteTxt->Text->Length == 0 || this->gehenStdTxt->Text->Length == 0 || gehenMinuteTxt->Text->Length == 0) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
-		else if (this->ankunftMinuteTxt->Text->Length == 0) {
-			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Absenden nicht möglich!",
-				MessageBoxButtons::OK, MessageBoxIcon::Error);
-		}
-		else if (this->gehenStdTxt->Text->Length == 0) {
-			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Absenden nicht möglich!",
-				MessageBoxButtons::OK, MessageBoxIcon::Error);
-		}
-		else if (this->gehenMinuteTxt->Text->Length == 0) {
-			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Absenden nicht möglich!",
-				MessageBoxButtons::OK, MessageBoxIcon::Error);
-		}
-		
 		else {
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			
-			
-			DateTime^ dateTag = p_Ankunft;
-			DateTime datum = dateTag->Date;
+			//DateTime^ dateTag = p_Ankunft;
+			DateTime datum = p_Ankunft.Date;
 			Vorgesetzter^ vorgesetzter = antragsteller->getAbteilung()->getVorgesetzter();
 			//Der Aenderungsantrag als String
 			String^ aenderungString = "Sie wollen folgende Änderung beantragen:\n\nTag der Änderung: " + datum.ToString("dddd, dd. MMMM yyyy") + "\nNeuer Beginn: "
@@ -462,7 +441,7 @@ namespace Zeiterfassungssystem {
 
 			if (MessageBox::Show(aenderungString, "Antrag einreichen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 				//Neuen Änderungsantrag aus Werten aus dem Änderungsfenster erstellen
-				Aenderungsantrag^ a = gcnew Aenderungsantrag(antragsteller, ereignisIndex, p_Ankunft, p_Gehen, p_Grund,
+				Aenderungsantrag^ a = gcnew Aenderungsantrag(antragsteller, ereignisIndex, p_Ankunft, p_Gehen, *ereignis->getTimestamp(), *ereignisende->getTimestamp(), p_Grund,
 					p_Kommentar);
 					vorgesetzter->addAenderungsantrag(a);
 				MessageBox::Show("Änderungsantrag erfolgreich eingereicht!", "Antrag erfolgreich!", MessageBoxButtons::OK, MessageBoxIcon::Information);
@@ -481,13 +460,12 @@ namespace Zeiterfassungssystem {
 	private: System::Void abbrechenBtn_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		this->Close();
-		
 	}
 
 	private: System::Void AenderungsantragsFenster_Load(System::Object^  sender, System::EventArgs^  e)
 	{
 	
-		Ereignis^ ereignis = antragsteller->getEreignis(ereignisIndex);
+		ereignis = antragsteller->getEreignis(ereignisIndex);
 		Int32 minute = ereignis->getTimestamp()->Minute;
 		Int32 stunde = ereignis->getTimestamp()->Hour;
 		DateTime datum = ereignis->getTimestamp()->Date;
@@ -496,7 +474,7 @@ namespace Zeiterfassungssystem {
 		ankunftMinuteTxt->Text = Convert::ToString(minute);
 		for (int i = ereignisIndex; i < antragsteller->getAnzahlEreignisse(); i++) {
 			if (antragsteller->getEreignis(i)->getTyp() == ARBEIT_ENDE) {
-				Ereignis^ ereignisende = antragsteller->getEreignis(i);
+				ereignisende = antragsteller->getEreignis(i);
 				Int32 minuteende = ereignisende->getTimestamp()->Minute;
 				Int32 stundeende = ereignisende->getTimestamp()->Hour;
 				gehenStdTxt->Text = Convert::ToString(stundeende);

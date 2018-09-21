@@ -513,3 +513,42 @@ void Angestellter::loescheUrlaubstage(DateTime von, DateTime bis, String^ kommen
 		+ "\n\nBei Fragen wenden Sie sich bitte an Ihren Vorgesetzten.";
 	antragsInfos->Add(urlaubEntferntString);
 }
+
+String^ Angestellter::freieTageAnzeigen(List<FreierTag^>^ feiertage) {
+	String^ urlaubstageString = feiertage!=nullptr ? "Ihre Urlaubstage:\n\n" : "Urlaubstage von " + vorname + " " + nachname + ":\n\n";
+	for (int i = 0; i < listeUrlaubstage->Count; i++) {
+		if (listeUrlaubstage[i]->getDatum().Year >= DateTime::Now.Year) {
+			urlaubstageString += listeUrlaubstage[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + "\n";
+		}
+	}
+	if (listeUrlaubstage->Count == 0) {
+		urlaubstageString += "Sie haben noch keine bestätigten Urlaubstage.\n";
+	}
+	if (feiertage != nullptr) {
+		urlaubstageString += "\nFeiertage " + Convert::ToString(DateTime::Now.Year) + ":\n\n";
+		for (int i = 0; i < feiertage->Count; i++) {
+			if (feiertage[i]->getDatum().Year == DateTime::Now.Year) {
+				urlaubstageString += feiertage[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + "\n";
+			}
+		}
+	}
+	return urlaubstageString;
+}
+
+void Angestellter::aenderungAntwort(String^ tag, String^ kommentar, Boolean bestaetigt) {
+	
+	String^ textZumAntrag;
+	if (bestaetigt) {
+		textZumAntrag = "Ihr Änderungsantrag betreffend " + tag + " wurde bestätigt und wird korrigiert.";
+		if (kommentar->Length > 0) {
+			textZumAntrag += "\n\nKommentar:\n" + kommentar;
+		}
+	}
+	else {
+		textZumAntrag = "Ihr Änderungsantrag betreffend " + tag + " wurde abgelehnt.";
+		if (kommentar->Length > 0) {
+			textZumAntrag += "\n\nKommentar:\n" + kommentar;
+		}
+	}
+	addAntragsInfo(textZumAntrag);
+}

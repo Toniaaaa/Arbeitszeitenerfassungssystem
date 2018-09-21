@@ -165,3 +165,13 @@ Int32 Unternehmen::indexVon(DateTime tag)
 	}
 	return index;
 }
+
+String^ Unternehmen::feiertageAnzeigen() {
+	String^ feiertageString = "Dies sind die Feiertag in Ihrem Unternehmen:\n\n";
+	for (int i = 0; i < feiertage->Count; i++) {
+		if (feiertage[i]->getDatum().Year >= DateTime::Now.Year) {
+			feiertageString += feiertage[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + "\n";
+		}
+	}
+	return feiertageString;
+}

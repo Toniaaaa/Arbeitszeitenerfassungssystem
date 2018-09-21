@@ -375,21 +375,7 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void anzeigenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		String^ urlaubstageString = "Ihre Urlaubstage:\n\n";
-		for (int i = 0; i < angestellter->getListeUrlaubstage()->Count; i++) {
-			if (angestellter->getListeUrlaubstage()[i]->getDatum().Year >= DateTime::Now.Year) {
-				urlaubstageString += angestellter->getListeUrlaubstage()[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + "\n";
-			}
-		}
-		if (angestellter->getListeUrlaubstage()->Count == 0) {
-			urlaubstageString += "Sie haben noch keine bestätigten Urlaubstage.\n";
-		}
-		urlaubstageString += "\nFeiertage " + Convert::ToString(DateTime::Now.Year) + ":\n\n";
-		for (int i = 0; i < unternehmen->getFeiertage()->Count; i++) {
-			if (unternehmen->getFeiertage()[i]->getDatum().Year == DateTime::Now.Year) {
-				urlaubstageString += unternehmen->getFeiertage()[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + "\n";
-			}
-		}
+		String^ urlaubstageString = angestellter->freieTageAnzeigen(unternehmen->getFeiertage());
 		MessageBox::Show(urlaubstageString, "Ihre freien Tage", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
 

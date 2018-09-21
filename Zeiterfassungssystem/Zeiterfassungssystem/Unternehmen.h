@@ -37,4 +37,5 @@ public:
 	void stelleFeiertageZurueck(Int32 jahre);
 	Boolean istFeiertag(DateTime tag);
 	Int32 indexVon(DateTime tag);
+	String^ feiertageAnzeigen();
 };

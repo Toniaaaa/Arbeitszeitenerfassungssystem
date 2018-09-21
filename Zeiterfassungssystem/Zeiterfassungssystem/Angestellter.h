@@ -97,6 +97,8 @@ public:
 	void removeUrlaubstag(DateTime tag);
 	void loescheAlleUrlaubstage();
 	void loescheUrlaubstage(DateTime von, DateTime bis, String^ kommentar);
+	String^ freieTageAnzeigen(List<FreierTag^>^ feiertage);
+	void aenderungAntwort(String^ tag, String^ kommentar, Boolean bestaetigt);
 
 	//Hilfsmethoden
 	void setAktuellenStatus(String^ status);
