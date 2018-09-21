@@ -27,13 +27,10 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Label^  kommentarAntragstellerLbl;
 	private: System::Windows::Forms::Label^  grundLbl;
 	private: System::Windows::Forms::Label^  grundLblTxt;
-
-
 	private: System::Windows::Forms::Label^  gehenAltLbl;
 	private: System::Windows::Forms::Label^  ankunftAltLbl;
 	private: System::Windows::Forms::Label^  ankunftAltLblTxt;
 	private: System::Windows::Forms::Label^  gehenAltLblTxt;
-
 	private: System::Windows::Forms::Label^  kommentarLbl2;
 
 	public:
@@ -474,13 +471,12 @@ namespace Zeiterfassungssystem {
 				}
 			}
 			
-			//HIER BITTE GUCKEN
 			for (int i = 0; i < angestellter->getAnzahlEreignisse(); i++) {
 				if (antrag->getNewStart()) {
 					gesamtstundenNeu = antrag->getAntragsteller()->berechneArbeitsstunden(i);
 				}
 			}
-			if (kalender->berechneKW(antrag->getOldStart()) == kalender->berechneKW(antrag->getNewStart())) {
+			if (kalender->berechneKW(DateTime::Today.Date) == kalender->berechneKW(antrag->getNewStart())) {
 				Int32 stundenAlt = gesamtstundenAlt->Hours;
 				Int32 stundenNeu = gesamtstundenNeu->Hours;
 				Int32 differenzStunden = stundenNeu - stundenAlt;

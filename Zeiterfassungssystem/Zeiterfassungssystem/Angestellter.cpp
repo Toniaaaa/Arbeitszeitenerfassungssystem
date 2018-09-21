@@ -153,7 +153,6 @@ TimeSpan ^ Angestellter::getPausezeit()
 			result = TimeSpan::operator+(*result, *pause);
 		}
 	}
-
 	return result;
 }
 

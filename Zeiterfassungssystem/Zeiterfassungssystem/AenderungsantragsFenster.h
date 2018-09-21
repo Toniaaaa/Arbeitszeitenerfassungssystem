@@ -27,6 +27,7 @@ namespace Zeiterfassungssystem {
 	Int32 ereignisIndex;
 	Ereignis^ ereignis;
 	Ereignis^ ereignisende;
+	Boolean ausgewaehlt;
 
 	private: System::Windows::Forms::TextBox^  kommentarTxt;
 	private: System::Windows::Forms::Label^  gehenLbl;
@@ -288,6 +289,7 @@ namespace Zeiterfassungssystem {
 			this->gruendeAuswahl->Name = L"gruendeAuswahl";
 			this->gruendeAuswahl->Size = System::Drawing::Size(265, 24);
 			this->gruendeAuswahl->TabIndex = 5;
+			this->gruendeAuswahl->SelectedIndexChanged += gcnew System::EventHandler(this, &AenderungsantragsFenster::gruendeAuswahl_SelectedIndexChanged);
 			// 
 			// label2
 			// 
@@ -429,6 +431,11 @@ namespace Zeiterfassungssystem {
 			MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+		else if (!ausgewaehlt) {
+			this->DialogResult = System::Windows::Forms::DialogResult::None;
+			MessageBox::Show("Bitte waehlen Sie einen Grund für Ihren Antrag aus!", "Absenden nicht möglich!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 		else {
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			
@@ -466,6 +473,7 @@ namespace Zeiterfassungssystem {
 	private: System::Void AenderungsantragsFenster_Load(System::Object^  sender, System::EventArgs^  e)
 	{
 		try {
+			ausgewaehlt = false;
 			ereignis = antragsteller->getEreignis(ereignisIndex);
 			Int32 minute = ereignis->getTimestamp()->Minute;
 			Int32 stunde = ereignis->getTimestamp()->Hour;
@@ -499,6 +507,10 @@ namespace Zeiterfassungssystem {
 			
 	private: System::Void AenderungsantragsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
 		gruendeAuswahl->Items->Clear();
+	}
+
+	private: System::Void gruendeAuswahl_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+		ausgewaehlt = true;
 	}
 };
 }
