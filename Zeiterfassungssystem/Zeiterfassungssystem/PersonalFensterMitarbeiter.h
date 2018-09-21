@@ -70,8 +70,9 @@ namespace Zeiterfassungssystem {
 			this->listView1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->listView1->GridLines = true;
 			this->listView1->Location = System::Drawing::Point(0, 0);
+			this->listView1->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->listView1->Name = L"listView1";
-			this->listView1->Size = System::Drawing::Size(622, 290);
+			this->listView1->Size = System::Drawing::Size(700, 362);
 			this->listView1->TabIndex = 0;
 			this->listView1->UseCompatibleStateImageBehavior = false;
 			this->listView1->View = System::Windows::Forms::View::Details;
@@ -93,12 +94,14 @@ namespace Zeiterfassungssystem {
 			// 
 			// PersonalFensterMitarbeiter
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(622, 290);
+			this->ClientSize = System::Drawing::Size(700, 362);
 			this->Controls->Add(this->listView1);
+			this->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->Name = L"PersonalFensterMitarbeiter";
 			this->Text = L"PersonalFensterMitarbeiter";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &PersonalFensterMitarbeiter::PersonalFensterMitarbeiter_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &PersonalFensterMitarbeiter::PersonalFensterMitarbeiter_Load_1);
 			this->ResumeLayout(false);
 
@@ -111,7 +114,10 @@ namespace Zeiterfassungssystem {
 		this->unternehmenAkt = unternehmen;
 	}
 
-	
+	public: void clear() {
+		listView1->Items->Clear();
+	}
+
 	private: System::Void PersonalFensterMitarbeiter_Load_1(System::Object^  sender, System::EventArgs^  e) {
 		List<Angestellter^>^ angestellte = unternehmenAkt->getAlleAngestellte();
 		listView1->Refresh();
@@ -143,13 +149,15 @@ namespace Zeiterfassungssystem {
 					item->ForeColor = System::Drawing::Color::Red;
 				}
 
-
-
 				item->SubItems->Add(angestellte[i]->getNachname());
 				item->SubItems->Add(angestellte[i]->getVorname());
 				listView1->Items->Add(item);
 			}
 		}
+	}
+
+	private: System::Void PersonalFensterMitarbeiter_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+		this->clear();
 	}
 };
 }

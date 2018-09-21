@@ -22,10 +22,11 @@ namespace Zeiterfassungssystem {
 	private:
 		List<Int32>^ ereignisse;
 		Int32 selectedEreignis = -1;
+		AenderungsantragsFenster^ aenderungsantrag;
+
 	private: System::Windows::Forms::Button^  btn_aendern;
 	private: System::Windows::Forms::Label^  label1;
-			 AenderungsantragsFenster^ aenderungsantrag;
-
+			 
 	public:
 		StundenStatistikFenster(void)
 		{
@@ -49,9 +50,6 @@ namespace Zeiterfassungssystem {
 		}
 	private: System::Windows::Forms::ListView^  listView1;
 	private: System::Windows::Forms::ColumnHeader^  clm_Arbeitsang;
-
-	protected:
-
 	private: System::Windows::Forms::ColumnHeader^  clm_pausenanfang;
 	private: System::Windows::Forms::ColumnHeader^  clm_Pausenende;
 	private: System::Windows::Forms::ColumnHeader^  clm_Arbeitsende;
@@ -234,22 +232,16 @@ namespace Zeiterfassungssystem {
 	private: System::Void listView1_ItemSelectionChanged(System::Object^  sender, System::Windows::Forms::ListViewItemSelectionChangedEventArgs^  e) {
 		
 		selectedEreignis = ereignisse[e->ItemIndex];
-		
-		
 			
 	}
 	private: System::Void listView1_MouseDoubleClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 
 	}
 	private: System::Void btn_aendern_Click(System::Object^  sender, System::EventArgs^  e) {
+
 		aenderungsantrag->setSelectedEreignis(selectedEreignis);
 		aenderungsantrag->ShowDialog(this);
-		
 		aenderungsantrag->clear(); //Textfelder wieder leeren
-
-
-
-
 	}
 };
 }
