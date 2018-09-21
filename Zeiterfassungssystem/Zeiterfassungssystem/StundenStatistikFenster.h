@@ -242,7 +242,12 @@ namespace Zeiterfassungssystem {
 
 	}
 	private: System::Void btn_aendern_Click(System::Object^  sender, System::EventArgs^  e) {
-		aenderungsantrag->setSelectedEreignis(selectedEreignis);
+		if (selectedEreignis >= 0) {
+			aenderungsantrag->setSelectedEreignis(selectedEreignis);
+		}
+		else {
+			MessageBox::Show("Bitte wählen Sie eine zuändernde Zeile aus!", "Keine Auswahl getroffen!", MessageBoxButtons::OK, MessageBoxIcon::Information);
+		}
 		aenderungsantrag->ShowDialog(this);
 		
 		aenderungsantrag->clear(); //Textfelder wieder leeren

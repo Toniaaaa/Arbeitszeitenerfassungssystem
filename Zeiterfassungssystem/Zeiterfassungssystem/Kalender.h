@@ -9,6 +9,6 @@ ref class Kalender
 public:
 	Kalender();
 	~Kalender();
-	Int32 berechneKW(DateTime tag);
+	Int32 berechneKW(DateTime^ tag);
 };
 

@@ -2,7 +2,7 @@
 #include "Aenderungsantrag.h"
 #include "Angestellter.h"
 #include "Ereignis.h"
-
+#include "Kalender.h"
 namespace Zeiterfassungssystem {
 
 	using namespace System;
@@ -348,6 +348,9 @@ namespace Zeiterfassungssystem {
 	private: List<Ereignis^>^ ereignisse;
 			 Int32 ereignis = 0;
 			 //AenderungsantragsFenster^ aenderungsfenster;
+			 Kalender^ kalender;
+			 TimeSpan^ gesamtstundenAlt = nullptr;
+			 TimeSpan^ gesamtstundenNeu = nullptr;
 	public: 
 		void setEreignisListe(List<Ereignis^>^ ereignisse) {
 			this->ereignisse = ereignisse;
@@ -454,7 +457,14 @@ namespace Zeiterfassungssystem {
 		Angestellter^ angestellter = antrag->getAntragsteller();
 		if (MessageBox::Show("Änderungsantrag wirklich bestätigen?", "Antrag bestätigen?", MessageBoxButtons::YesNo,
 			MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-			
+			//Hier werden die alten gesamtstunden berechnet
+			for (int i = 0; i < angestellter->getAnzahlEreignisse(); i++) {
+				if (antrag->getOldStart()) {
+					gesamtstundenAlt = antrag->getAntragsteller()->berechneArbeitsstunden(i);
+				}
+			}
+
+
 			antrag->getAntragsteller()->aenderungAntwort(tagLblTxt->Text, p_Kommentar, true);
 			antrag->getAntragsteller()->getEreignis(antrag->getStartIndex())->setTimestamp(*antrag->getNewStart());
 			for (int i = antrag->getStartIndex(); i < antrag->getAntragsteller()->getAnzahlEreignisse(); i++) {
@@ -463,7 +473,27 @@ namespace Zeiterfassungssystem {
 					break;
 				}
 			}
+			
+			//HIER BITTE GUCKEN
+			for (int i = 0; i < angestellter->getAnzahlEreignisse(); i++) {
+				if (antrag->getNewStart()) {
+					gesamtstundenNeu = antrag->getAntragsteller()->berechneArbeitsstunden(i);
+				}
+			}
+			if (kalender->berechneKW(antrag->getOldStart()) == kalender->berechneKW(antrag->getNewStart())) {
+				Int32 stundenAlt = gesamtstundenAlt->Hours;
+				Int32 stundenNeu = gesamtstundenNeu->Hours;
+				Int32 differenzStunden = stundenNeu - stundenAlt;
+				Int32 minutenAlt = gesamtstundenAlt->Minutes;
+				Int32 minutenNeu = gesamtstundenNeu->Minutes;
+				Int32 differenzMinuten= minutenNeu - minutenAlt;
+				antrag->getAntragsteller()->zieheZeitAb(differenzStunden, differenzMinuten);
+				
+			}
+			else {
 
+			}
+			
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			this->Close();
 		}

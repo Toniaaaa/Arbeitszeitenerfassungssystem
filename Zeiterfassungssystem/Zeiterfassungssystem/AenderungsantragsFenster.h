@@ -326,6 +326,7 @@ namespace Zeiterfassungssystem {
 			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"AenderungsantragsFenster";
 			this->Text = L"Aenderungsantrag";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &AenderungsantragsFenster::AenderungsantragsFenster_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &AenderungsantragsFenster::AenderungsantragsFenster_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -423,7 +424,7 @@ namespace Zeiterfassungssystem {
 	//Vergleich der Daten wird in einem Integer32 gespeichert
 	//	int vergleichMitHeute = DateTime::Compare(p_Tag, DateTime::Today.Date);
 
-		if (this->ankunftStdTxt->Text->Length == 0 || this->ankunftMinuteTxt->Text->Length == 0 || this->gehenStdTxt->Text->Length == 0 || gehenMinuteTxt->Text->Length == 0) {
+		if (this->ankunftStdTxt->Text->Length == 0 || this->ankunftMinuteTxt->Text->Length == 0 || this->gehenStdTxt->Text->Length == 0 || gehenMinuteTxt->Text->Length == 0 || (p_Grund == nullptr && p_Kommentar == nullptr)) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
@@ -491,5 +492,8 @@ namespace Zeiterfassungssystem {
 		
 	}
 			
-	};
+	private: System::Void AenderungsantragsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+		gruendeAuswahl->Items->Clear();
+	}
+};
 }
