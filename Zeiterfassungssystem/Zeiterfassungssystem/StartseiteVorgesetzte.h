@@ -689,21 +689,10 @@ namespace Zeiterfassungssystem {
 			MessageBox::Show("Bitte beginnen Sie zuerst Ihre Arbeitszeit, bevor Sie gehen!", "Kein Ende möglich",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
-
-		//Hier Fehler im Speichern des Balkens (Timespan in Int)
-		/*
-		DateTime^ heute = DateTime::Now;
-		DateTime^ onlydate = heute->Date;
-		TimeSpan^ timespan = angestellterAkt->getAktuelleArbeitszeit();
-		statistikfenster->chart1->Series["Arbeitsstunden"]->Points->AddXY(onlydate, timespan);
-		*/
-
 	}
 
 	//STATISTIKFENSTER
 	private: System::Void statistikBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		//statistikfenster->setAngestellterAkt(angestellterAkt);
-		//statistikfenster->ShowDialog(this);
 		statistik->setAktuellenAngestellten(angestellterAkt);
 		statistik->ShowDialog(this);
 	}

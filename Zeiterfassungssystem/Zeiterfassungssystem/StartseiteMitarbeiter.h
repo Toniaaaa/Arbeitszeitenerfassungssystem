@@ -645,8 +645,6 @@ namespace Zeiterfassungssystem {
 
 	//STATISTIKFENSTER
 	private: System::Void statistikBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		//statistikfenster->setAngestellterAkt(angestellterAkt);
-		//statistikfenster->ShowDialog(this);
 		statistik->setAktuellenAngestellten(angestellterAkt);
 		statistik->setVorgesetzter(angestellterAkt->getVorgesetzter());
 		statistik->ShowDialog(this);
