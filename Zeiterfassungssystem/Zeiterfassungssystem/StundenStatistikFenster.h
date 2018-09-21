@@ -234,9 +234,7 @@ namespace Zeiterfassungssystem {
 	private: System::Void listView1_ItemSelectionChanged(System::Object^  sender, System::Windows::Forms::ListViewItemSelectionChangedEventArgs^  e) {
 		
 		selectedEreignis = ereignisse[e->ItemIndex];
-		
-		
-			
+	
 	}
 	private: System::Void listView1_MouseDoubleClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 
@@ -244,17 +242,12 @@ namespace Zeiterfassungssystem {
 	private: System::Void btn_aendern_Click(System::Object^  sender, System::EventArgs^  e) {
 		if (selectedEreignis >= 0) {
 			aenderungsantrag->setSelectedEreignis(selectedEreignis);
+			aenderungsantrag->ShowDialog(this);
 		}
 		else {
-			MessageBox::Show("Bitte wählen Sie eine zuändernde Zeile aus!", "Keine Auswahl getroffen!", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			MessageBox::Show("Bitte wählen Sie eine zu ändernde Zeile aus!", "Keine Auswahl getroffen!", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
-		aenderungsantrag->ShowDialog(this);
-		
 		aenderungsantrag->clear(); //Textfelder wieder leeren
-
-
-
-
 	}
 };
 }

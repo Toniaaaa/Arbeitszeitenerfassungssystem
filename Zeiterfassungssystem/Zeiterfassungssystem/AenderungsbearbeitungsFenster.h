@@ -357,7 +357,6 @@ namespace Zeiterfassungssystem {
 			this->ereignis = ereignis;
 		}
 
-		
 	public: System::Void AenderungsbearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		istOffen = true;
 		p_Tag = antrag->getNewStart()->Date;
