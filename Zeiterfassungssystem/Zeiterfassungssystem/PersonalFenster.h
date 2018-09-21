@@ -242,11 +242,7 @@ namespace Zeiterfassungssystem {
 	}
 
 	void clear() {
-		for (int i = 0; i < unternehmenAkt->getAlleAngestellte()->Count; i++) {
-			if (unternehmenAkt->getAlleAngestellte() != nullptr) {
-				listView1->Items->RemoveAt(0);
-			}
-		}
+		listView1->Items->Clear();
 	}
 			 
 	private: System::Void PersonalFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {

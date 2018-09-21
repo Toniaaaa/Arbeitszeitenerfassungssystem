@@ -380,19 +380,27 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 		else {
 			ueberMin += minuten;
 		}
-		reduzierteZeit = gcnew TimeSpan(ueberStd, ueberMin, 1);
+		if (ueberStd >= 0) {
+			reduzierteZeit = reduzierteZeit = gcnew TimeSpan(ueberStd, ueberMin, 1);
+		}
+		//Fall: Die Wochen-Arbeitszeit wurde durch den Zeitabzug doch nicht erreicht
+		else {
+			arbeitsStd = -ueberStd - 1; //-1, weil die Arbeitsstunden von 00:00 auf 1:01 springen. Mit -1 ist das korrigiert.
+			arbeitsMin = (ueberMin == 0) ? 0 : 60 - ueberMin;
+			reduzierteZeit = gcnew TimeSpan(arbeitsStd, arbeitsMin, 0);
+		}
 	}
 	//Fall: Es wurden noch keine Überstunden gezählt (also Wochen-Arbeitszeit noch nicht erreicht)
 	else {
+		arbeitsStd -= stunden;
+		if (arbeitsMin - minuten < 0) {
+			arbeitsStd--;
+			arbeitsMin = arbeitsMin - minuten + 60;
+		}
+		else {
+			arbeitsMin -= minuten;
+		}
 		if (arbeitsStd >= 0) {
-			arbeitsStd -= stunden;
-			if (arbeitsMin - minuten < 0) {
-				arbeitsStd--;
-				arbeitsMin = arbeitsMin - minuten + 60;
-			}
-			else {
-				arbeitsMin -= minuten;
-			}
 			reduzierteZeit = gcnew TimeSpan(arbeitsStd, arbeitsMin, 0);
 		}
 		//Fall: Die Wochen-Arbeitszeit wurde durch den Zeitabzug erreicht

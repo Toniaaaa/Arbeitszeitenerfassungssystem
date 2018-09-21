@@ -465,31 +465,36 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void AenderungsantragsFenster_Load(System::Object^  sender, System::EventArgs^  e)
 	{
-	
-		ereignis = antragsteller->getEreignis(ereignisIndex);
-		Int32 minute = ereignis->getTimestamp()->Minute;
-		Int32 stunde = ereignis->getTimestamp()->Hour;
-		DateTime datum = ereignis->getTimestamp()->Date;
-		label2->Text = datum.ToString("dddd, dd. MMMM yyyy");
-		ankunftStdTxt->Text = Convert::ToString(stunde);
-		ankunftMinuteTxt->Text = Convert::ToString(minute);
-		for (int i = ereignisIndex; i < antragsteller->getAnzahlEreignisse(); i++) {
-			if (antragsteller->getEreignis(i)->getTyp() == ARBEIT_ENDE) {
-				ereignisende = antragsteller->getEreignis(i);
-				Int32 minuteende = ereignisende->getTimestamp()->Minute;
-				Int32 stundeende = ereignisende->getTimestamp()->Hour;
-				gehenStdTxt->Text = Convert::ToString(stundeende);
-				gehenMinuteTxt->Text = Convert::ToString(minuteende);
-				break;
+		try {
+			ereignis = antragsteller->getEreignis(ereignisIndex);
+			Int32 minute = ereignis->getTimestamp()->Minute;
+			Int32 stunde = ereignis->getTimestamp()->Hour;
+			DateTime datum = ereignis->getTimestamp()->Date;
+			label2->Text = datum.ToString("dddd, dd. MMMM yyyy");
+			ankunftStdTxt->Text = Convert::ToString(stunde);
+			ankunftMinuteTxt->Text = Convert::ToString(minute);
+			for (int i = ereignisIndex; i < antragsteller->getAnzahlEreignisse(); i++) {
+				if (antragsteller->getEreignis(i)->getTyp() == ARBEIT_ENDE) {
+					ereignisende = antragsteller->getEreignis(i);
+					Int32 minuteende = ereignisende->getTimestamp()->Minute;
+					Int32 stundeende = ereignisende->getTimestamp()->Hour;
+					gehenStdTxt->Text = Convert::ToString(stundeende);
+					gehenMinuteTxt->Text = Convert::ToString(minuteende);
+					break;
+				}
 			}
+			//Fügt der ComboBox gruendeAuswahl verschieden Gründe hinzu, die für den Änderungsantrag hinzugefügt werden
+			gruendeAuswahl->Items->Add("Krankheit");
+			gruendeAuswahl->Items->Add("Fehler beim LogOut");
+			gruendeAuswahl->Items->Add("Fehler beim LogIn");
+			gruendeAuswahl->Items->Add("Computer-Absturz");
+			gruendeAuswahl->Items->Add("Sonstiges (siehe Kommentar)");
+			}
+		catch (ArgumentOutOfRangeException ^e) {
+			this->Close();
+			this->clear();
+			MessageBox::Show("Bitte wählen Sie einen Tag aus, den sie gerne ändern möchten!", "Kein Tag ausgewählt", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 		}
-		//Fügt der ComboBox gruendeAuswahl verschieden Gründe hinzu, die für den Änderungsantrag hinzugefügt werden
-		gruendeAuswahl->Items->Add("Krankheit");
-		gruendeAuswahl->Items->Add("Fehler beim LogOut");
-		gruendeAuswahl->Items->Add("Fehler beim LogIn");
-		gruendeAuswahl->Items->Add("Computer-Absturz");
-		gruendeAuswahl->Items->Add("Sonstiges (siehe Kommentar)");
-		
 	}
 			
 	private: System::Void AenderungsantragsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
