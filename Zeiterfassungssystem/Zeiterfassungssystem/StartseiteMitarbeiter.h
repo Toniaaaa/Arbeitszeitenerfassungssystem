@@ -56,6 +56,7 @@ namespace Zeiterfassungssystem {
 		TimeSpan^ pausenzeit;
 		Boolean wochenZeitErreicht;
 		Kalender^ kalender;
+		bool ausgeloggt;
 
 	private: System::Windows::Forms::Timer^  timerUhr;
 	private: System::Windows::Forms::Label^  datumLbl;
@@ -558,6 +559,7 @@ namespace Zeiterfassungssystem {
 			timerArbeitszeit->Start();
 			lbl_Status->Text = "Viel Erfolg beim Erledigen Ihrer Aufgaben!";
 			angestellterAkt->setAktuellenStatus("Viel Erfolg beim Erledigen Ihrer Aufgaben!");
+			ausgeloggt = false;
 		}
 		else {
 			MessageBox::Show("Bitte beenden Sie Ihren Arbeitstag, bevor Sie einen neuen beginnen!", "Kein Start möglich",
@@ -581,6 +583,7 @@ namespace Zeiterfassungssystem {
 					this->arbeitszeitSchriftLbl->ForeColor = System::Drawing::Color::Gray;
 					lbl_Status->Text = "Geniessen Sie Ihre Pause!";
 					angestellterAkt->setAktuellenStatus("Geniessen Sie Ihre Pause!");
+					ausgeloggt = false;
 				}
 			}
 			else {
@@ -596,6 +599,7 @@ namespace Zeiterfassungssystem {
 				this->arbeitszeitSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 				lbl_Status->Text = "Viel Erfolg beim Erledigen Ihrer Aufgaben!";
 				angestellterAkt->setAktuellenStatus("Viel Erfolg beim Erledigen Ihrer Aufgaben!");
+				ausgeloggt = false;
 			}
 		}
 		else {
@@ -616,7 +620,7 @@ namespace Zeiterfassungssystem {
 			//Sicherheitsabfrage, ob der Mitarbeiter wirklich gehen moechte
 			if (MessageBox::Show("Sind Sie sicher, dass Sie Ihren Arbeitstag beenden möchten?", "Wirklich gehen?", MessageBoxButtons::YesNo,
 				MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-
+				ausgeloggt = true;
 				//Timer stoppen
 				timerArbeitszeit->Stop();
 				timerPause->Stop();
@@ -722,6 +726,7 @@ namespace Zeiterfassungssystem {
 			MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 			//Falls der Angestellte gerade die Pause aktiviert hat, wird diese zunächst beendet
 			Application::Restart();
+		
 		}
 	}
 
@@ -859,7 +864,20 @@ namespace Zeiterfassungssystem {
 	private: System::Void timerUhr_Tick(System::Object^  sender, System::EventArgs^  e) {
 		uhrzeitLbl->Text = DateTime::Now.ToString("HH:mm:ss");
 		datumLbl->Text = DateTime::Now.ToString("dddd, dd. MMMM yyyy");
-	}
+		//hier habe ich was geändert
+		DateTime zeit;
+		Int32 stunde = Convert::ToInt32("23");
+		Int32 minute = Convert::ToInt32("39");
+		zeit = zeit.AddHours(stunde);
+		zeit = zeit.AddMinutes(minute);
+		DateTime aktuell = DateTime::Now;
+		if (!ausgeloggt) {
+
+			if (DateTime::Now.Equals(zeit)) {
+				Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
+			}
+		}
+		}
 
 	//TIMER PAUSE
 	private: System::Void timerPause_Tick(System::Object^  sender, System::EventArgs^  e) {
