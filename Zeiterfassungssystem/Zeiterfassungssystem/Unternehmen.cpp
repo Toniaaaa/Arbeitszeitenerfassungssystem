@@ -17,7 +17,8 @@ Unternehmen::Unternehmen()
 	administration = gcnew Abteilung("1", admin);
 	admin->setAbteilung(administration);
 	abteilungen->Add(administration);
-	this->erstelleRegelFeiertage();
+	this->erstelleRegelFeiertage(DateTime::Now.Year);
+	this->erstelleRegelFeiertage((DateTime::Now.Year + 1));
 }
 
 Unternehmen^ Unternehmen::ladeUnternehmen(String^ file) {
@@ -119,11 +120,10 @@ void Unternehmen::removeFeiertag(DateTime tag)
 	};
 }
 
-void Unternehmen::erstelleRegelFeiertage()
+void Unternehmen::erstelleRegelFeiertage(Int32 jahr)
 {
 	for (int i = 0; i < feiertageRegel->Length; i = i + 2) {
-		DateTime heute = DateTime::Today;
-		DateTime^ feiertag = gcnew DateTime(heute.Year, feiertageRegel[i + 1], feiertageRegel[i]);
+		DateTime^ feiertag = gcnew DateTime(jahr, feiertageRegel[i + 1], feiertageRegel[i]);
 		//Feiertag nur hinzufügen, wenn er noch nicht in der Liste existiert (z.B. durch manuelles Einfügen)
 		FreierTag^ neuerFeiertag = gcnew FreierTag(*feiertag);
 		if (!feiertage->Contains(neuerFeiertag)) {
@@ -139,7 +139,7 @@ void Unternehmen::stelleFeiertageZurueck(Int32 jahre)
 			feiertage->RemoveAt(i);
 		}
 	}
-	this->erstelleRegelFeiertage();
+	this->erstelleRegelFeiertage((DateTime::Now.Year + 1));
 }
 
 Boolean Unternehmen::istFeiertag(DateTime tag) 
@@ -164,4 +164,14 @@ Int32 Unternehmen::indexVon(DateTime tag)
 		}
 	}
 	return index;
+}
+
+String^ Unternehmen::feiertageAnzeigen() {
+	String^ feiertageString = "Dies sind die Feiertag in Ihrem Unternehmen:\n\n";
+	for (int i = 0; i < feiertage->Count; i++) {
+		if (feiertage[i]->getDatum().Year >= DateTime::Now.Year) {
+			feiertageString += feiertage[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + "\n";
+		}
+	}
+	return feiertageString;
 }

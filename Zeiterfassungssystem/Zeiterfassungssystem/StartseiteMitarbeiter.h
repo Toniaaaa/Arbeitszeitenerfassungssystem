@@ -765,7 +765,12 @@ namespace Zeiterfassungssystem {
 			arbeitsStunden = abgelaufeneZeit.Hours;
 			arbeitsMinuten = abgelaufeneZeit.Minutes;
 			wochenZeitErreicht = abgelaufeneZeit.Seconds;
-			setAnzeigeArbeitszeit();
+
+			if (wochenZeitErreicht) {
+				this->nochWochenstundenLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+				this->nochWochenstundenSchriftLbl->Text = L"Überstunden";
+				this->nochWochenstundenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+			}
 
 			//Timer wird gestartet
 			if (angestellterAkt->getPauseAnfang() != nullptr) {

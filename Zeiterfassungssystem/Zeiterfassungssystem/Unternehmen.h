@@ -33,8 +33,9 @@ public:
 	inline List<FreierTag^>^ getFeiertage() { return feiertage; }
 	void addFeiertag(DateTime tag);
 	void removeFeiertag(DateTime tag);
-	void erstelleRegelFeiertage();
+	void erstelleRegelFeiertage(Int32 jahr);
 	void stelleFeiertageZurueck(Int32 jahre);
 	Boolean istFeiertag(DateTime tag);
 	Int32 indexVon(DateTime tag);
+	String^ feiertageAnzeigen();
 };

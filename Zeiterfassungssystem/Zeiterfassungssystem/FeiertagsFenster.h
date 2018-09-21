@@ -205,12 +205,7 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void anzeigenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		String^ feiertageString = "Dies sind die Feiertag in Ihrem Unternehmen:\n\n";
-		for (int i = 0; i < unternehmen->getFeiertage()->Count; i++) {
-			if (unternehmen->getFeiertage()[i]->getDatum().Year >= DateTime::Now.Year) {
-				feiertageString += unternehmen->getFeiertage()[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + "\n";
-			}
-		}
+		String^ feiertageString = unternehmen->feiertageAnzeigen();
 		MessageBox::Show(feiertageString, "Ihre Feiertage", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
 };

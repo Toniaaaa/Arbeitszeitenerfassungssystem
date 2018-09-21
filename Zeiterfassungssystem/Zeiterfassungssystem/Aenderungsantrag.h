@@ -14,13 +14,14 @@ private:
 	Int32 startIndex;
 	DateTime newStart;
 	DateTime newEnd;
+	DateTime oldStart;
+	DateTime oldEnd;
 
 	String^ m_Grund;
 	String^ m_KommentarAntragsteller;
-	String^ m_KommentarVorgesetzter;
 
 public:
-	Aenderungsantrag(Angestellter^ antragsteller, Int32 startIndex, DateTime newStart, DateTime newEnd, String^ grund, String^ kommentar);
+	Aenderungsantrag(Angestellter^ antragsteller, Int32 startIndex, DateTime newStart, DateTime newEnd, DateTime oldStart, DateTime oldEnd, String^ grund, String^ kommentar);
 	~Aenderungsantrag();
 
 	//Getter und Setter
@@ -29,8 +30,7 @@ public:
 	inline DateTime^ getNewEnd() { return newEnd; }
 	inline String^ getGrund() { return m_Grund; }
 	inline String^ getKommentarAntragsteller() { return m_KommentarAntragsteller; }
-	inline String^ getKommentarVorgesetzter() { return m_KommentarVorgesetzter; }
 	inline Angestellter^ getAntragsteller() { return m_Antragsteller; }
-	
-	void setKommentarVorgesetzter(String^ kommentar);
+	inline DateTime^ getOldStart() { return oldStart; }
+	inline DateTime^ getOldEnd() { return oldEnd; }
 };
