@@ -68,11 +68,11 @@ namespace Zeiterfassungssystem {
 					this->clm_Vorname
 			});
 			this->listView1->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->listView1->FullRowSelect = true;
 			this->listView1->GridLines = true;
 			this->listView1->Location = System::Drawing::Point(0, 0);
-			this->listView1->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->listView1->Name = L"listView1";
-			this->listView1->Size = System::Drawing::Size(700, 362);
+			this->listView1->Size = System::Drawing::Size(622, 290);
 			this->listView1->TabIndex = 0;
 			this->listView1->UseCompatibleStateImageBehavior = false;
 			this->listView1->View = System::Windows::Forms::View::Details;
@@ -94,11 +94,10 @@ namespace Zeiterfassungssystem {
 			// 
 			// PersonalFensterMitarbeiter
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
+			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(700, 362);
+			this->ClientSize = System::Drawing::Size(622, 290);
 			this->Controls->Add(this->listView1);
-			this->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->Name = L"PersonalFensterMitarbeiter";
 			this->Text = L"PersonalFensterMitarbeiter";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &PersonalFensterMitarbeiter::PersonalFensterMitarbeiter_FormClosing);
@@ -121,10 +120,11 @@ namespace Zeiterfassungssystem {
 	private: System::Void PersonalFensterMitarbeiter_Load_1(System::Object^  sender, System::EventArgs^  e) {
 		List<Angestellter^>^ angestellte = unternehmenAkt->getAlleAngestellte();
 		listView1->Refresh();
-
+		//Der passende Status und die zugehörige Farbe werden gesucht und Item damit befuellt
 		for (int i = 0; i < unternehmenAkt->getAlleAngestellte()->Count; i++) {
 			if (unternehmenAkt->getAlleAngestellte() != nullptr) {
 				ListViewItem^ item = gcnew ListViewItem();
+				item->Clone();
 				try {
 					if (angestellte[i]->getStatus()->Equals("Viel Erfolg beim Erledigen Ihrer Aufgaben!")) {
 						item->Text = "arbeitet..";
@@ -148,6 +148,7 @@ namespace Zeiterfassungssystem {
 					item->ForeColor = System::Drawing::Color::Red;
 				}
 
+				//Auch der Name und Vorname wird befüllt
 				item->SubItems->Add(angestellte[i]->getNachname());
 				item->SubItems->Add(angestellte[i]->getVorname());
 				listView1->Items->Add(item);

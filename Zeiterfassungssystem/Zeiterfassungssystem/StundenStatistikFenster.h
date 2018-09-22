@@ -24,6 +24,7 @@ namespace Zeiterfassungssystem {
 		Int32 selectedEreignis = -1;
 	private: System::Windows::Forms::Button^  btn_aendern;
 	private: System::Windows::Forms::Label^  label1;
+
 			 AenderungsantragsFenster^ aenderungsantrag;
 
 	public:
@@ -136,7 +137,11 @@ namespace Zeiterfassungssystem {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(1249, 581);
+			this->label1->BackColor = System::Drawing::SystemColors::Window;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label1->ForeColor = System::Drawing::SystemColors::MenuHighlight;
+			this->label1->Location = System::Drawing::Point(1383, 563);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(46, 17);
 			this->label1->TabIndex = 2;
@@ -175,44 +180,57 @@ namespace Zeiterfassungssystem {
 
 
 	private: System::Void StundenStatistikFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+
+		//Liste an ereignissen um passenden Index fuer das Aenderungsfenster zu finden
 		ereignisse = gcnew List<Int32>;
 		aenderungsantrag->setStatistikFenster(this);
 		aenderungsantrag->setAntragssteller(angestellter);
 		ListViewItem^ item;
+
+		//wenn noch keine Pause vorhanden erste pause wahr 
 		bool erstePause = true;
+		//noch keine Pause also false
 		bool hattePause = false;
+		//zum speichern der gesamtstunden
 		TimeSpan^ gesamtStunden = nullptr;
-		TimeSpan^ gesamt = nullptr;
+		TimeSpan^ gesamt = gcnew TimeSpan;
+
+		//Laufe ueber ereignisse fuege diese an die richtigen Items und speicher index
 		for (int i = 0; i < angestellter->getAnzahlEreignisse(); i++) {
-			
+
 			if (angestellter->getEreignis(i)->getTyp() == ARBEIT_START) {
 				item = gcnew ListViewItem();
 				listView1->Items->Add(item);
+				//index in liste gespeichert
 				ereignisse->Add(i);
 				erstePause = true;
-
+				//berechne gesamtarbeitstunden
 				gesamtStunden = angestellter->berechneArbeitsstunden(i);
-				//gesamt = gesamt->operator+(gesamtStunden);
-
+				gesamt = TimeSpan::operator+(*gesamt, *gesamtStunden);
 				item->Text = angestellter->getEreignis(i)->getTimestamp()->ToString();
 			}
 			if (angestellter->getEreignis(i)->getTyp() == PAUSE_START) {
 				hattePause = true;
+				//wenn es nicht die erste pause dann fuege es in naechste zeile ein. fuege -1 hinzu da pausen nicht veraendert 
+				//werden koennen
 				if (!erstePause) {
 					item = gcnew ListViewItem();
 					listView1->Items->Add(item);
 					ereignisse->Add(-1);
+					//da Pause arbeitsanfang leer
 					item->Text = "";
 				}
 
 				item->SubItems->Add(angestellter->getEreignis(i)->getTimestamp()->ToString());
 			}
-					
+
+			//wenn pause ende erste pause vorbei
 			if (angestellter->getEreignis(i)->getTyp() == PAUSE_ENDE) {
 				erstePause = false;
 				item->SubItems->Add(angestellter->getEreignis(i)->getTimestamp()->ToString());
 			}
-					
+
+			//Wenn arbeitsende dann pausen auch leer nur arbeitsende und gesamtstunden hinzufuegen
 			if (angestellter->getEreignis(i)->getTyp() == ARBEIT_ENDE) {
 				if (!hattePause) {
 					item->SubItems->Add("");
@@ -223,7 +241,7 @@ namespace Zeiterfassungssystem {
 				item->SubItems->Add(gesamtStunden->ToString());
 			}
 		}
-		label1->Text = Convert::ToString(gesamt);
+		label1->Text = gesamt->TotalHours.ToString("0.00" + " Stunden gesamt");
 	}
 			 
 	

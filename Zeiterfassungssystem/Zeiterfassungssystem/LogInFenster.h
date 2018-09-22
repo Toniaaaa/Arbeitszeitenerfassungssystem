@@ -211,6 +211,9 @@ namespace Zeiterfassungssystem {
 	private: System::Void logInButton_Click(System::Object^  sender, System::EventArgs^  e) {
 		String^ passwort = getKennwort();
 		
+		/*LogIndaten werden überprüft, ebenfalls die rolle des Angestellten damit sich passendes Fenster öffnet
+		* Unternehmen wird uebergeben
+		*/
 		String^ personalnummer = getBenutzername();
 	    angestellter = unternehmen->loginaccept(personalnummer, passwort);
 		if (angestellter != nullptr && angestellter->istVorgesetzter() == false) {

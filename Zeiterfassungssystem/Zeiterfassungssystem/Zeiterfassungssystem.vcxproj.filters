@@ -51,9 +51,6 @@
     <ClInclude Include="PasswortAendernFenster.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="StatistikFenster.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="AenderungsantragsFenster.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -105,6 +102,12 @@
     <ClInclude Include="Kalender.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="PersonalFensterMitarbeiter.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="UrlaubLoeschenFenster.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Angestellter.cpp">
@@ -132,9 +135,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="PasswortAendernFenster.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="StatistikFenster.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="AenderungsantragsFenster.cpp">
@@ -188,6 +188,12 @@
     <ClCompile Include="Kalender.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="PersonalFensterMitarbeiter.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="UrlaubLoeschenFenster.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LogInFenster.resx">
@@ -236,6 +242,12 @@
       <Filter>Ressourcendateien</Filter>
     </EmbeddedResource>
     <EmbeddedResource Include="AenderungsantragsFenster.resx">
+      <Filter>Ressourcendateien</Filter>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PersonalFensterMitarbeiter.resx">
+      <Filter>Ressourcendateien</Filter>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UrlaubLoeschenFenster.resx">
       <Filter>Ressourcendateien</Filter>
     </EmbeddedResource>
   </ItemGroup>

@@ -234,13 +234,13 @@ namespace Zeiterfassungssystem {
 		}
 #pragma endregion
 	private: System::Void registrierungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
-
+		//Abteilungen werden zur Auswahl hinzugefuegt
 		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
 			txt_abteilung->Items->Add(unternehmen->getAbteilung(i)->getAbteilungsnummer());
 		}
 
 	}
-			 //Getter zun Datenaustausch
+	//Getter zun Datenaustausch
 	public:
 		String ^ getName() {
 			return this->txt_name->Text;
@@ -303,6 +303,7 @@ namespace Zeiterfassungssystem {
 	private: System::Void btn_mitarbeiter_hinzufuegen_Click(System::Object^  sender, System::EventArgs^  e) {
 		bool fehler = false;
 		int parse;
+		Vorgesetzter^ neuerMitarbeiter;
 		//Eingabepprüfung im Eventhandler
 		if (this->txt_name->Text->Length == 0) {
 
@@ -343,6 +344,7 @@ namespace Zeiterfassungssystem {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			fehler = true;
 		}
+		//Wenn Abteilung noch nicht existiert und Rolle mitarbeiter sein soll kommt ein Hinweis da es keine Abteilung ohne Vorgesetzten geben kann
 		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
 			if (!(getAbteilung()->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer())) && getRolle()->Equals("Mitarbeiter")) {
 				System::Windows::Forms::MessageBox::Show("Die Abteilung existiert noch nicht, fügen Sie zuerst einen Vorgesetzten hinzu!", "Fehlgeschlagen!",
@@ -352,6 +354,7 @@ namespace Zeiterfassungssystem {
 			}
 
 		}
+		//Personalnummer wird verglichen mit bestehenden gleiche Personalnummer ist nicht möglich
 		for (int i = 0; i < unternehmen->getAlleAngestellte()->Count; i++) {
 			if (getPersonalnummer()->Equals(unternehmen->getAlleAngestellte()[i]->getPersonalnummer())) {
 				System::Windows::Forms::MessageBox::Show("Die Personalnummer existiert schon, bitte geben Sie eine neue ein!", "Fehlgeschlagen!",
@@ -369,13 +372,13 @@ namespace Zeiterfassungssystem {
 		else {
 			if (this->txt_Rolle->SelectedItem->ToString()->Equals("Mitarbeiter")) {
 				Abteilung^ abteilung = nullptr;
-
+				//Abteilung im Unternehmen wird ausgerufen wenn passender Abteilungsname ausgewáehlt
 				for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
 					if (unternehmen->getAbteilung(i)->getAbteilungsnummer()->Equals(getAbteilung())) {
 						abteilung = unternehmen->getAbteilung(i);
 					}
 				}
-
+				//da Rolle Mitarbeiter ausgewaehlt wird ein neuer mitarbeiter mit eingegebenen Daten erstellt und zur Abteilung und Unternehmen hinzugefuegt
 				Mitarbeiter^ mitarbeiter = gcnew Mitarbeiter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), vorgesetzter);
 				mitarbeiter->setAbteilung(abteilung);
 				abteilung->fuegeMitarbeiterHinzu(mitarbeiter);
@@ -383,8 +386,9 @@ namespace Zeiterfassungssystem {
 				this->Close();
 			}
 			else {
+				//Wenn Rolle Vorgesetzter gewaehlt wird neuer Vorgesetzter mit passender Abteilung erstellt
 				Abteilung^ abteilung = gcnew Abteilung(txt_abteilung->Text, nullptr);
-				Vorgesetzter^ neuerMitarbeiter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text));
+				neuerMitarbeiter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text));
 				abteilung->setVorgesetzter(neuerMitarbeiter);
 				
 				unternehmen->addAbteilung(abteilung);

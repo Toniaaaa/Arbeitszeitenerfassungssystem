@@ -473,15 +473,18 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void AenderungsantragsFenster_Load(System::Object^  sender, System::EventArgs^  e)
 	{
+		//Hier werden die Textboxen mit den ausgewählten Start Uhrzeiten befüllt 
 		try {
 			ausgewaehlt = false;
 			ereignis = antragsteller->getEreignis(ereignisIndex);
 			Int32 minute = ereignis->getTimestamp()->Minute;
 			Int32 stunde = ereignis->getTimestamp()->Hour;
 			DateTime datum = ereignis->getTimestamp()->Date;
+			//das Datum wird ins Label geschrieben 
 			label2->Text = datum.ToString("dddd, dd. MMMM yyyy");
 			ankunftStdTxt->Text = Convert::ToString(stunde);
 			ankunftMinuteTxt->Text = Convert::ToString(minute);
+			//Laufe weiter bis zum passenden Arbeitsende und befülle End Textboxen passend, dann stopp
 			for (int i = ereignisIndex; i < antragsteller->getAnzahlEreignisse(); i++) {
 				if (antragsteller->getEreignis(i)->getTyp() == ARBEIT_ENDE) {
 					ereignisende = antragsteller->getEreignis(i);
@@ -507,10 +510,12 @@ namespace Zeiterfassungssystem {
 	}
 			
 	private: System::Void AenderungsantragsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+		//Items werden bereinigt damit sie nicht immer wieder dahinter gehängt werden
 		gruendeAuswahl->Items->Clear();
 	}
 
 	private: System::Void gruendeAuswahl_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+		//Wenn Grund ausgewählt setze variable auf wahr
 		ausgewaehlt = true;
 	}
 };

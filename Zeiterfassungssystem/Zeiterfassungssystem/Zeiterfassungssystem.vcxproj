@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -129,9 +129,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Abteilung.h" />
-    <ClInclude Include="AbteilungsFenster.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
     <ClInclude Include="Aenderungsantrag.h" />
     <ClInclude Include="AenderungsantragsFenster.h">
       <FileType>CppForm</FileType>
@@ -177,9 +174,6 @@
     <ClInclude Include="StartseiteVorgesetzte.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="StatistikFenster.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
     <ClInclude Include="StundenStatistikFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -199,7 +193,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Abteilung.cpp" />
-    <ClCompile Include="AbteilungsFenster.cpp" />
     <ClCompile Include="Aenderungsantrag.cpp" />
     <ClCompile Include="AenderungsantragsFenster.cpp" />
     <ClCompile Include="AenderungsbearbeitungsFenster.cpp" />
@@ -218,7 +211,6 @@
     <ClCompile Include="RegistrierungsFenster.cpp" />
     <ClCompile Include="StartseiteMitarbeiter.cpp" />
     <ClCompile Include="StartseiteVorgesetzte.cpp" />
-    <ClCompile Include="StatistikFenster.cpp" />
     <ClCompile Include="StundenStatistikFenster.cpp" />
     <ClCompile Include="UrlaubLoeschenFenster.cpp" />
     <ClCompile Include="Urlaubsantrag.cpp" />
@@ -237,9 +229,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AbteilungsFenster.resx">
-      <DependentUpon>AbteilungsFenster.h</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="AenderungsantragsFenster.resx">
       <DependentUpon>AenderungsantragsFenster.h</DependentUpon>
     </EmbeddedResource>
@@ -277,9 +266,6 @@
     <EmbeddedResource Include="StartseiteVorgesetzte.resx">
       <DependentUpon>StartseiteVorgesetzte.h</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StatistikFenster.resx">
-      <DependentUpon>StatistikFenster.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StundenStatistikFenster.resx">
       <DependentUpon>StundenStatistikFenster.h</DependentUpon>

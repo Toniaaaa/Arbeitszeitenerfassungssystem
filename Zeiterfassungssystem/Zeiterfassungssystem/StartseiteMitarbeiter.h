@@ -1,7 +1,6 @@
 #pragma once
 
 #include <ctime>
-#include "Statistikfenster.h"
 #include "Vorgesetzter.h"
 #include "Unternehmen.h"
 #include "RegistrierungsFenster.h"
@@ -36,7 +35,6 @@ namespace Zeiterfassungssystem {
 		Unternehmen ^ unternehmen;
 		Mitarbeiter^ angestellterAkt;
 		Vorgesetzter^ vorgesetzter;
-		StatistikFenster^ statistikfenster;
 		StundenStatistikFenster^ statistik;
 		BearbeitungsFenster^ bearbeitungsfenster;
 		UrlaubsFenster^ urlaubsfenster;
@@ -85,7 +83,6 @@ namespace Zeiterfassungssystem {
 		StartseiteMitarbeiter(void)
 		{
 			InitializeComponent();
-			statistikfenster = gcnew StatistikFenster;
 			statistik = gcnew StundenStatistikFenster;
 			bearbeitungsfenster = gcnew BearbeitungsFenster;
 			kalenderfenster = gcnew KalenderFenster;
@@ -838,7 +835,6 @@ namespace Zeiterfassungssystem {
 			angestellterAkt->setAktuellenStatus("Schönen Feierabend!");
 			Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
 			angestellterAkt->fuegeEreignisHinzu(arbeitsende);
-			statistikfenster->setTimespan(angestellterAkt->getAktuelleArbeitszeit());//HIER RICHTIG???
 			MessageBox::Show(arbeitsEndeText, "Arbeitstag beendet", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 	}

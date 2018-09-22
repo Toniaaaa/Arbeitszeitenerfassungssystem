@@ -100,7 +100,6 @@ namespace Zeiterfassungssystem {
 			this->listView1->UseCompatibleStateImageBehavior = false;
 			this->listView1->View = System::Windows::Forms::View::Details;
 			this->listView1->VirtualListSize = 8;
-			this->listView1->SelectedIndexChanged += gcnew System::EventHandler(this, &PersonalFenster::listView1_SelectedIndexChanged);
 			// 
 			// clm_Status
 			// 
@@ -182,10 +181,16 @@ namespace Zeiterfassungssystem {
 					this->unternehmenAkt = unternehmen;
 				}
 	
+			//Items werden geleert
+	private:void clear() {
+				listView1->Items->Clear();
+			}
+			 
 	private: System::Void PersonalFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		List<Angestellter^>^ angestellte = unternehmenAkt->getAlleAngestellte();
 		listView1->Refresh();
 
+		//Der passende Status und die zugehörige Farbe werden gesucht und Item damit befuellt
  		for (int i = 0; i < unternehmenAkt->getAlleAngestellte()->Count; i++) {
 				if (unternehmenAkt->getAlleAngestellte() != nullptr) {
 					ListViewItem^ item = gcnew ListViewItem();
@@ -213,6 +218,7 @@ namespace Zeiterfassungssystem {
 						item->ForeColor = System::Drawing::Color::Red;
 					}
 
+					//Auch alle anderen Items werden befuellt mit den Daten der Angestellten
 					String^ arbeitsMinutenString = Convert::ToString(angestellte[i]->getArbeitsMinuten());
 					if (angestellte[i]->getArbeitsMinuten() < 10) {
 						arbeitsMinutenString = "0" + Convert::ToString(angestellte[i]->getArbeitsMinuten());
@@ -234,22 +240,13 @@ namespace Zeiterfassungssystem {
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getUeberStunden()) + ":" + ueberMinutenString);
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getUeberstundenGesamt()));
 					listView1->Items->Add(item);
-
 			}
 
 		} 
 		
 	}
-
-	void clear() {
-		listView1->Items->Clear();
-	}
-			 
 	private: System::Void PersonalFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
 		this->clear();
 	}
-			 
-private: System::Void listView1_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
-}
 };
 }
