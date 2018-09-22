@@ -1101,14 +1101,14 @@ namespace Zeiterfassungssystem {
 		TimeSpan^ richtigeArbeitszeit;
 
 		for (int i = angestellterAkt->getAnzahlEreignisse() - 1; i >= 0; i--) {
-			if (angestellterAkt->getEreignis(i)->getTimestamp()->Equals(tag)) {
-				TimeSpan^ richtigeArbeitszeit = angestellterAkt->berechneArbeitsstunden(i);
+			if (angestellterAkt->getEreignis(i)->getTyp() == ARBEIT_START) {
+				richtigeArbeitszeit = angestellterAkt->berechneArbeitsstunden(i);
 			}
 		}
 
 		angestellterAkt->zieheZeitAb(richtigeArbeitszeit->Hours, richtigeArbeitszeit->Minutes);
 		angestellterAkt->setAktuellenStatus("Schön, dass Sie da sind!");
-		String^ text = "Ihr Arbeitstag wurde nach dem letzten Start leider nicht beendet. Er endete daher automatisch um 23:59 Uhr.\nSie haben daher " + stunde + " Stunden und " + minute + " Minuten gearbeitet.";
+		String^ text = "Ihr Arbeitstag wurde nach dem letzten Start leider nicht beendet. Er endete daher automatisch um 23:59 Uhr.\nSie haben daher " + richtigeArbeitszeit->Hours + " Stunden und " + richtigeArbeitszeit->Minutes + " Minuten gearbeitet.";
 
 		MessageBox::Show(text, "Arbeitstag beendet", MessageBoxButtons::OK, MessageBoxIcon::Information);
 
@@ -1118,6 +1118,8 @@ namespace Zeiterfassungssystem {
 		pauseSekunde = 0;
 		pauseMinute = 0;
 		pauseStunde = 0;
+
+		this->setAnzeigeArbeitszeit();
 	}
 };
 }

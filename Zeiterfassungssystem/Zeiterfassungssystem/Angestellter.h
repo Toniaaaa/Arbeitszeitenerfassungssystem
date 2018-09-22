@@ -114,6 +114,7 @@ public:
 	void stelleUraubstageZurueck(Int32 jahre);
 	void neueWoche();
 	void freieTagePruefen(Unternehmen^ unternehmen);
+	Int32 getArbeitsAnfangIndex();
 
 	// Ereignislisteauswertungsmethodensammlung
 
@@ -124,6 +125,4 @@ public:
 	TimeSpan^ getPausezeit(); // liefert die Zeit der bisherigen Pausen seit letztem Arbeitsbeginn
 	TimeSpan^ berechneArbeitsstunden(Int32 anfangsEreignisIndex);
 
-private:
-	Int32 getArbeitsAnfangIndex();
 };
