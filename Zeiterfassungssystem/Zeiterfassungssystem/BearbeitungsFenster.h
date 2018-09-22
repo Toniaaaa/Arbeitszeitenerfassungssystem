@@ -361,6 +361,8 @@ namespace Zeiterfassungssystem {
 	private: System::Void btn_mitarbeiter_hinzufuegen_Click(System::Object^  sender, System::EventArgs^  e) {
 		bool fehler = false;
 		int parse;
+		Vorgesetzter^ vorgesetzter;
+		Abteilung^ abteilung;
 		//Eingabepprüfung im Eventhandler
 		if (this->txt_name->Text->Length == 0) {
 
@@ -401,13 +403,23 @@ namespace Zeiterfassungssystem {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			fehler = true;
 		}
+		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+			if (!(txt_abteilung->Text->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer())) && txt_Rolle->Text->Equals("Mitarbeiter")) {
+				System::Windows::Forms::MessageBox::Show("Die Abteilung existiert noch nicht, fügen Sie zuerst einen Vorgesetzten hinzu!", "Fehlgeschlagen!",
+					MessageBoxButtons::OK, MessageBoxIcon::Error);
+				this->clear();
+				fehler = true;
+			}
+
+		}
+
 		//ÄNDERUNG
 		if (fehler) {
 			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehler!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 		else {
-			
+
 			angestellter->setNachname(txt_name->Text);
 			angestellter->setVorname(txt_vorname->Text);
 			angestellter->setPersonalnummer(txt_personalnummer->Text);
@@ -419,18 +431,35 @@ namespace Zeiterfassungssystem {
 					angestellter->setAbteilung(unternehmen->getAbteilung(k));
 
 				}
+				/*else {
+					MessageBox::Show("Die Abteilung hat noch keinen Vorgesetzten", "Fehlgeschlagen!", MessageBoxButtons::OK, MessageBoxIcon::Information);
+				}*/
 			}
+
 			if (txt_Rolle->Text->Equals("Vorgesetzter")) {
+				for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+					if (!(txt_abteilung->Text->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer()))) {
+						Abteilung^ abteilungNeu = gcnew Abteilung(txt_abteilung->Text, vorgesetzter);
+						angestellter->setAbteilung(abteilungNeu);
+					}
+				}
+					
 				abteilung = angestellter->getAbteilung();
-				abteilung->setVorgesetzter(gcnew Vorgesetzter(txt_vorname->Text,txt_name->Text,angestellter->getAbteilung(),txt_personalnummer->Text, txt_passwort->Text, Convert::ToInt32(txt_arbeitsstunden->Text), Convert::ToInt32(txt_urlaubstage->Text)));
+				vorgesetzter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, angestellter->getAbteilung(), txt_personalnummer->Text, txt_passwort->Text, Convert::ToInt32(txt_arbeitsstunden->Text), Convert::ToInt32(txt_urlaubstage->Text));
+				abteilung->setVorgesetzter(vorgesetzter);
+				unternehmen->addAbteilung(abteilung);
 				for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
 					if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
 						abteilung->removeMitarbeiter(i);
 					}
 				}
-				
-			MessageBox::Show("Erfolgreich", "Angestellten Daten erfolgreich geändert!", MessageBoxButtons::OK, MessageBoxIcon::Information);
-			}
+
+
+			
+		
+		MessageBox::Show("Erfolgreich", "Angestellten Daten erfolgreich geändert!", MessageBoxButtons::OK, MessageBoxIcon::Information);
+	}
+	
 			else {
 				MessageBox::Show("Sie können keinen Vorgesetzten zu Mitarbeiter ändern!", "Fehlgeschlagen!", MessageBoxButtons::OK, MessageBoxIcon::Information);
 				

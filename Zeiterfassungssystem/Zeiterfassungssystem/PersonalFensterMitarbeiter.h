@@ -125,7 +125,6 @@ namespace Zeiterfassungssystem {
 		for (int i = 0; i < unternehmenAkt->getAlleAngestellte()->Count; i++) {
 			if (unternehmenAkt->getAlleAngestellte() != nullptr) {
 				ListViewItem^ item = gcnew ListViewItem();
-				item->Clone();
 				try {
 					if (angestellte[i]->getStatus()->Equals("Viel Erfolg beim Erledigen Ihrer Aufgaben!")) {
 						item->Text = "arbeitet..";
