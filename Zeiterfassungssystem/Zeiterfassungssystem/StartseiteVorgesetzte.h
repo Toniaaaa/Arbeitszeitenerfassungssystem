@@ -669,12 +669,8 @@ namespace Zeiterfassungssystem {
 				pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
 				lbl_Status->Text = "Schönen Feierabend!";
 				angestellterAkt->setAktuellenStatus("Schönen Feierabend!");
-				TimeSpan^ time = angestellterAkt->getAktuelleArbeitszeit();
-				Double gesamt = time->TotalHours;
-				//angestellterAkt->setGesamtstunden(gesamt);
 				Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
 				angestellterAkt->fuegeEreignisHinzu(arbeitsende);
-				statistikfenster->setTimespan(angestellterAkt->getAktuelleArbeitszeit()); //HIER RICHTIG???
 				MessageBox::Show(text, "Arbeitstag beendet", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			}
 		}
@@ -682,21 +678,10 @@ namespace Zeiterfassungssystem {
 			MessageBox::Show("Bitte beginnen Sie zuerst Ihre Arbeitszeit, bevor Sie gehen!", "Kein Ende möglich",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
-
-		//Hier Fehler im Speichern des Balkens (Timespan in Int)
-		/*
-		DateTime^ heute = DateTime::Now;
-		DateTime^ onlydate = heute->Date;
-		TimeSpan^ timespan = angestellterAkt->getAktuelleArbeitszeit();
-		statistikfenster->chart1->Series["Arbeitsstunden"]->Points->AddXY(onlydate, timespan);
-		*/
-
 	}
 
 	//STATISTIKFENSTER
 	private: System::Void statistikBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		//statistikfenster->setAngestellterAkt(angestellterAkt);
-		//statistikfenster->ShowDialog(this);
 		statistik->setAktuellenAngestellten(angestellterAkt);
 		statistik->ShowDialog(this);
 	}
@@ -797,40 +782,11 @@ namespace Zeiterfassungssystem {
 		}
 		//Fall, dass der Timer nicht beendet wurde, bevor das Fenster geschlossen wurde, also der Timer im Hintergrund lief:
 		else {
-
-			// gerade arbeitszeit
-			TimeSpan^ arbeitszeit = angestellterAkt->getAktuelleArbeitszeit();
-			sekunde = arbeitszeit->Seconds;
-			minute = arbeitszeit->Minutes;
-			stunde = arbeitszeit->Hours;
-
-			TimeSpan^ pausenzeit = angestellterAkt->getPausezeit();
-			pauseSekunde = pausenzeit->Seconds;
-			pauseMinute = pausenzeit->Minutes;
-			pauseStunde = pausenzeit->Hours;
-
-			TimeSpan abgelaufeneZeit = angestellterAkt->getReduzierteZeit(stunde, minute);
-			arbeitsStunden = abgelaufeneZeit.Hours + 24 * abgelaufeneZeit.Days;
-			arbeitsMinuten = abgelaufeneZeit.Minutes;
-			wochenZeitErreicht = abgelaufeneZeit.Seconds;
-
-			if (wochenZeitErreicht) {
-				this->nochWochenstundenLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-				this->nochWochenstundenSchriftLbl->Text = L"Überstunden";
-				this->nochWochenstundenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			}
-
-			//Timer wird gestartet
-			if (angestellterAkt->getPauseAnfang() != nullptr) {
-				timerPause->Start();
-				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon3.jpg");
-				this->pauseLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-				this->PausenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-				this->arbeitszeitLbl->ForeColor = System::Drawing::Color::Gray;
-				this->arbeitszeitSchriftLbl->ForeColor = System::Drawing::Color::Gray;
+			if (angestellterAkt->getLetzterLogin().Date == DateTime::Now.Date) {
+				this->nochEingeloggt();
 			}
 			else {
-				timerArbeitszeit->Start();
+				this->neuerTag();
 			}
 		}
 
@@ -901,6 +857,38 @@ namespace Zeiterfassungssystem {
 		if (sekunde == 0 && minute % interval == 0) {
 			this->pruefeAntraege();
 			this->pruefeInfos();
+		}
+
+		//Überprüfung, ob es 23:59:59 Uhr ist. Wenn ja, wird der Arbeitstag beendet.
+		if (DateTime::Now.Second == 59 && DateTime::Now.Minute == 59 && DateTime::Now.Hour == 23) {
+			if (angestellterAkt->getPauseAnfang() != nullptr) {
+				Ereignis^ pausenende = gcnew Ereignis(PAUSE_ENDE, DateTime::Now);
+				angestellterAkt->fuegeEreignisHinzu(pausenende);
+				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon.jpg");
+				this->pauseLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+				this->PausenSchriftLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+				this->arbeitszeitLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+				this->arbeitszeitSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+			}
+			//Timer stoppen
+			timerArbeitszeit->Stop();
+			timerPause->Stop();
+			angestellterAkt->speichereArbeitszeit(arbeitsStunden, arbeitsMinuten, wochenZeitErreicht);
+			String^ arbeitsEndeText = "Sie wurden an Ende des Tages automatisch ausgeloggt!\nSie haben heute " + stunde + " Stunden und " + minute + " Minuten gearbeitet.";
+
+			pauseSekunde = 0;
+			pauseMinute = 0;
+			pauseStunde = 0;
+			sekunde = 0;
+			minute = 0;
+			stunde = 0;
+			arbeitszeitLbl->Text = uhrzeitString(sekunde, minute, stunde);
+			pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
+			lbl_Status->Text = "Schönen Feierabend!";
+			angestellterAkt->setAktuellenStatus("Schönen Feierabend!");
+			Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
+			angestellterAkt->fuegeEreignisHinzu(arbeitsende);
+			MessageBox::Show(arbeitsEndeText, "Arbeitstag beendet", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 	}
 
@@ -1054,6 +1042,73 @@ namespace Zeiterfassungssystem {
 			arbeitsStunden = angestellterAkt->getArbeitsStunden();
 			arbeitsMinuten = angestellterAkt->getArbeitsMinuten();
 		}
+	}
+
+	void nochEingeloggt() {
+		// gerade arbeitszeit
+		TimeSpan^ arbeitszeit = angestellterAkt->getAktuelleArbeitszeit();
+		sekunde = arbeitszeit->Seconds;
+		minute = arbeitszeit->Minutes;
+		stunde = arbeitszeit->Hours;
+
+		TimeSpan^ pausenzeit = angestellterAkt->getPausezeit();
+		pauseSekunde = pausenzeit->Seconds;
+		pauseMinute = pausenzeit->Minutes;
+		pauseStunde = pausenzeit->Hours;
+
+		TimeSpan abgelaufeneZeit = angestellterAkt->getReduzierteZeit(stunde, minute);
+		arbeitsStunden = abgelaufeneZeit.Hours + 24 * abgelaufeneZeit.Days;
+		arbeitsMinuten = abgelaufeneZeit.Minutes;
+		wochenZeitErreicht = abgelaufeneZeit.Seconds;
+
+		if (wochenZeitErreicht) {
+			this->nochWochenstundenLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+			this->nochWochenstundenSchriftLbl->Text = L"Überstunden";
+			this->nochWochenstundenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+		}
+
+		//Timer wird gestartet
+		if (angestellterAkt->getPauseAnfang() != nullptr) {
+			timerPause->Start();
+			this->pauseCbox->Image = Image::FromFile("Images/pauseIcon3.jpg");
+			this->pauseLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+			this->PausenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+			this->arbeitszeitLbl->ForeColor = System::Drawing::Color::Gray;
+			this->arbeitszeitSchriftLbl->ForeColor = System::Drawing::Color::Gray;
+		}
+		else {
+			timerArbeitszeit->Start();
+		}
+	}
+
+	void neuerTag() {
+
+		DateTime^ tag = angestellterAkt->getArbeitsAnfang();
+		DateTime^ autoEnde = gcnew DateTime(tag->Year, tag->Month, tag->Day, 23, 59, 59, 0);
+		Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, autoEnde);
+		angestellterAkt->fuegeEreignisHinzu(arbeitsende);
+		TimeSpan^ richtigeArbeitszeit;
+
+		for (int i = angestellterAkt->getAnzahlEreignisse() - 1; i >= 0; i--) {
+			if (angestellterAkt->getEreignis(i)->getTyp() == ARBEIT_START) {
+				richtigeArbeitszeit = angestellterAkt->berechneArbeitsstunden(i);
+			}
+		}
+
+		angestellterAkt->zieheZeitAb(richtigeArbeitszeit->Hours, richtigeArbeitszeit->Minutes);
+		angestellterAkt->setAktuellenStatus("Schön, dass Sie da sind!");
+		String^ text = "Ihr Arbeitstag wurde nach dem letzten Start leider nicht beendet. Er endete daher automatisch um 23:59 Uhr.\nSie haben daher " + richtigeArbeitszeit->Hours + " Stunden und " + richtigeArbeitszeit->Minutes + " Minuten gearbeitet.";
+
+		MessageBox::Show(text, "Arbeitstag beendet", MessageBoxButtons::OK, MessageBoxIcon::Information);
+
+		sekunde = 0;
+		minute = 0;
+		stunde = 0;
+		pauseSekunde = 0;
+		pauseMinute = 0;
+		pauseStunde = 0;
+
+		this->setAnzeigeArbeitszeit();
 	}
 };
 }

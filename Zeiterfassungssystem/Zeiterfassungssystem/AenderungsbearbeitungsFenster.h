@@ -357,7 +357,6 @@ namespace Zeiterfassungssystem {
 			this->ereignis = ereignis;
 		}
 
-		
 	public: System::Void AenderungsbearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		istOffen = true;
 		p_Tag = antrag->getNewStart()->Date;
@@ -460,7 +459,6 @@ namespace Zeiterfassungssystem {
 					gesamtstundenAlt = antrag->getAntragsteller()->berechneArbeitsstunden(i);
 				}
 			}
-
 
 			antrag->getAntragsteller()->aenderungAntwort(tagLblTxt->Text, p_Kommentar, true);
 			antrag->getAntragsteller()->getEreignis(antrag->getStartIndex())->setTimestamp(*antrag->getNewStart());
