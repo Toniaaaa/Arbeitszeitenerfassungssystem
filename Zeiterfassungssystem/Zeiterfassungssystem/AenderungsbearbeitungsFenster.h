@@ -344,7 +344,6 @@ namespace Zeiterfassungssystem {
 #pragma endregion
 	private: List<Ereignis^>^ ereignisse;
 			 Int32 ereignis = 0;
-			 //AenderungsantragsFenster^ aenderungsfenster;
 			 Kalender^ kalender;
 			 TimeSpan^ gesamtstundenAlt = nullptr;
 			 TimeSpan^ gesamtstundenNeu = nullptr;
@@ -453,13 +452,13 @@ namespace Zeiterfassungssystem {
 		Angestellter^ angestellter = antrag->getAntragsteller();
 		if (MessageBox::Show("Änderungsantrag wirklich bestätigen?", "Antrag bestätigen?", MessageBoxButtons::YesNo,
 			MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-			//Hier werden die alten gesamtstunden berechnet
+			//Hier werden die alten gesamtstunden berechnet die zur Berechnung der Wochen bzw Ueberstunden gebraucht werden
 			for (int i = 0; i < angestellter->getAnzahlEreignisse(); i++) {
 				if (angestellter->getEreignis(i)->getTimestamp()->Equals(antrag->getOldStart())) {
 					gesamtstundenAlt = antrag->getAntragsteller()->berechneArbeitsstunden(i);
 				}
 			}
-
+			//Die alten Ereignisse werden mit den Zeiten des Antrages überschrieben 
 			antrag->getAntragsteller()->aenderungAntwort(tagLblTxt->Text, p_Kommentar, true);
 			antrag->getAntragsteller()->getEreignis(antrag->getStartIndex())->setTimestamp(*antrag->getNewStart());
 			for (int i = antrag->getStartIndex(); i < antrag->getAntragsteller()->getAnzahlEreignisse(); i++) {
@@ -468,13 +467,13 @@ namespace Zeiterfassungssystem {
 					break;
 				}
 			}
-			
+			//Hier werden die neuen gesamtstunden berechnet damit diese mit den alten verglichen werden können
 			for (int i = 0; i < angestellter->getAnzahlEreignisse(); i++) {
 				if (angestellter->getEreignis(i)->getTimestamp()->Equals(antrag->getNewStart())) {
 					gesamtstundenNeu = antrag->getAntragsteller()->berechneArbeitsstunden(i);
 				}
 			}
-
+			//Der Timespan der gesamtstunden wird in stunden und minuten getrennt um Wochen und Ueberstunden anzupassen
 			Int32 stundenAlt = gesamtstundenAlt->Hours;
 			Int32 stundenNeu = gesamtstundenNeu->Hours;
 			Int32 differenzStunden = stundenAlt - stundenNeu;
@@ -482,9 +481,11 @@ namespace Zeiterfassungssystem {
 			Int32 minutenNeu = gesamtstundenNeu->Minutes;
 			Int32 differenzMinuten = minutenAlt - minutenNeu;
 
+			//Wenn es sich um die aktuelle woche handelt werden aktuelle Wochenstunden und Ueberstunden angepasst
 			if (kalender->berechneKW(DateTime::Today.Date) == kalender->berechneKW(antrag->getNewStart())) {
 				antrag->getAntragsteller()->zieheZeitAb(differenzStunden, differenzMinuten);
 			}
+			//ansonsten die ueberstunden gesamt
 			else {
 				angestellter->setUeberstundenGesamt(-differenzStunden, -differenzMinuten);
 			}

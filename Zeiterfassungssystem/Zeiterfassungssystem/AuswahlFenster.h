@@ -113,7 +113,7 @@ namespace Zeiterfassungssystem {
 #pragma endregion
 
 	public:	
-
+	//Setter für die verschiedenen Fenster 
 	void setFeiertagsfenster(FeiertagsFenster^ feiertag) {
 		this->feiertagsfenster = feiertag;
 	}

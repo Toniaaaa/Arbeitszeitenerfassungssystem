@@ -260,8 +260,7 @@ namespace Zeiterfassungssystem {
 		}
 
 	}
-			 //Bei Klick auf den Button wird das Fenster geschlossen
-
+    //Bei Klick auf den Button wird das Fenster geschlossen
 	private: System::Void btn_abbrechen_Click_1(System::Object^  sender, System::EventArgs^  e) {
 		this->Close();
 	}

@@ -305,6 +305,9 @@ namespace Zeiterfassungssystem {
 		Angestellter^ angestellter;
 		List<Angestellter^>^ angestellte = gcnew List<Angestellter^>;
 		Abteilung^ abteilung;
+		String^ rolle;
+
+		//clear Methoden zum bereinigen der Textboxen
 		void clear() {
 			this->txt_name->Text = "";
 			this->txt_vorname->Text = "";
@@ -327,15 +330,12 @@ namespace Zeiterfassungssystem {
 		}
 
 	private: System::Void BearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
-		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
-			txt_abteilung->Items->Add(unternehmen->getAbteilung(i)->getAbteilungsnummer());
-		}
 	}
 
 	private: System::Void txt_personalnummer_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+		//Wenn man anfaengt die Personalnummer zu schreiben wird diese abgeglichen und die Textbooxen werden mit den anderen
+		//Daten automatisch befüllt
 		angestellte = unternehmen->getAlleAngestellte();
-		
-
 		for (int i = 0; i < angestellte->Count; i++) {
 			if (angestellte[i]->getPersonalnummer()->Equals(getPersonalnummerVergleich())) {
 				setAngestellten(angestellte[i]);
@@ -345,11 +345,18 @@ namespace Zeiterfassungssystem {
 				txt_passwort->Text = angestellte[i]->getPasswort();
 				txt_arbeitsstunden->Text = Convert::ToString(angestellte[i]->getWochensstunden());
 				txt_urlaubstage->Text = Convert::ToString(angestellte[i]->getJahresurlaub());
+				//Abteilungsauswahl wird mit passenden Abteilungen befüllt 
+				for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+					txt_abteilung->Items->Add(unternehmen->getAbteilung(i)->getAbteilungsnummer());
+				}
+
 				if (!angestellte[i]->istVorgesetzter()) {
 					txt_Rolle->Text = "Mitarbeiter";
+					rolle = "Mitarbeiter";
 				}
 				else {
 					txt_Rolle->Text = "Vorgesetzter";
+					rolle = "Vorgesetzter";
 				}
 
 
@@ -361,6 +368,8 @@ namespace Zeiterfassungssystem {
 	private: System::Void btn_mitarbeiter_hinzufuegen_Click(System::Object^  sender, System::EventArgs^  e) {
 		bool fehler = false;
 		int parse;
+		Vorgesetzter^ vorgesetzter;
+		Abteilung^ abteilung;
 		//Eingabepprüfung im Eventhandler
 		if (this->txt_name->Text->Length == 0) {
 
@@ -401,13 +410,23 @@ namespace Zeiterfassungssystem {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			fehler = true;
 		}
+		/*for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+			if (!(txt_abteilung->Text->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer())) && txt_Rolle->Text->Equals("Mitarbeiter")) {
+				System::Windows::Forms::MessageBox::Show("Die Abteilung existiert noch nicht, fügen Sie zuerst einen Vorgesetzten hinzu!", "Fehlgeschlagen!",
+					MessageBoxButtons::OK, MessageBoxIcon::Error);
+				txt_abteilung->Text = "";
+				fehler = true;
+			}
+
+		}*/
+
 		//ÄNDERUNG
 		if (fehler) {
 			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehler!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 		else {
-			
+
 			angestellter->setNachname(txt_name->Text);
 			angestellter->setVorname(txt_vorname->Text);
 			angestellter->setPersonalnummer(txt_personalnummer->Text);
@@ -419,20 +438,46 @@ namespace Zeiterfassungssystem {
 					angestellter->setAbteilung(unternehmen->getAbteilung(k));
 
 				}
+				else if (txt_Rolle->Text->Equals("Mitarbeiter")) {
+					MessageBox::Show("Die Abteilung hat noch keinen Vorgesetzten", "Fehlgeschlagen!", MessageBoxButtons::OK, MessageBoxIcon::Information);
+				}
 			}
-			if (txt_Rolle->Text->Equals("Vorgesetzter")) {
+
+			if (txt_Rolle->Text->Equals("Vorgesetzter") && rolle->Equals("Mitarbeiter")) {
+				for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+					if (!(txt_abteilung->Text->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer()))) {
+						Abteilung^ abteilungNeu = gcnew Abteilung(txt_abteilung->Text, vorgesetzter);
+						angestellter->setAbteilung(abteilungNeu);
+					}
+				}
+					
 				abteilung = angestellter->getAbteilung();
-				abteilung->setVorgesetzter(gcnew Vorgesetzter(txt_vorname->Text,txt_name->Text,angestellter->getAbteilung(),txt_personalnummer->Text, txt_passwort->Text, Convert::ToInt32(txt_arbeitsstunden->Text), Convert::ToInt32(txt_urlaubstage->Text)));
+				vorgesetzter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, angestellter->getAbteilung(), txt_personalnummer->Text, txt_passwort->Text, Convert::ToInt32(txt_arbeitsstunden->Text), Convert::ToInt32(txt_urlaubstage->Text));
+				abteilung->setVorgesetzter(vorgesetzter);
+				unternehmen->addAbteilung(abteilung);
 				for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
 					if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
 						abteilung->removeMitarbeiter(i);
 					}
 				}
-				
-			MessageBox::Show("Erfolgreich", "Angestellten Daten erfolgreich geändert!", MessageBoxButtons::OK, MessageBoxIcon::Information);
-			}
+
+				if (txt_Rolle->Text->Equals("Vorgesetzter") && rolle->Equals("Vorgesetzter")) {
+					for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+						if (!(txt_abteilung->Text->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer()))) {
+							angestellter = vorgesetzter;
+							Abteilung^ abteilungNeu = gcnew Abteilung(txt_abteilung->Text, vorgesetzter);
+							angestellter->setAbteilung(abteilungNeu);
+							unternehmen->addAbteilung(abteilung);
+						}
+					}
+				}
+			
+		
+		MessageBox::Show("Erfolgreich", "Angestellten Daten erfolgreich geändert!", MessageBoxButtons::OK, MessageBoxIcon::Information);
+	}
+	
 			else {
-				MessageBox::Show("Sie können keinen Vorgesetzten zu Mitarbeiter ändern!", "Fehlgeschlagen!", MessageBoxButtons::OK, MessageBoxIcon::Information);
+				
 				
 			}
 			this->clear();
@@ -441,8 +486,10 @@ namespace Zeiterfassungssystem {
 	}
 	private: System::Void BearbeitungsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
 		this->clear();
+		txt_abteilung->Items->Clear();
 	}
 	private: System::Void btn_loeschen_Click(System::Object^  sender, System::EventArgs^  e) {
+		//Wenn loeschen button geklickt wird der passende Mitarbeiter aus der abteilung geloescht
 		abteilung = angestellter->getAbteilung();
 		for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
 			if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {

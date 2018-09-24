@@ -99,6 +99,7 @@ DateTime ^ Angestellter::getArbeitsAnfang()
 
 DateTime ^ Angestellter::getPauseAnfang()
 {
+	//Wenn letztes Ereignis in der liste pausestart ist dann gebe dabvon den TimeStamp zurueck
 	DateTime^ pauseanfang = nullptr;
 
 	if (getAnzahlEreignisse() > 0 && listeEreignisse[getAnzahlEreignisse() - 1]->getTyp() == PAUSE_START) {
@@ -109,12 +110,15 @@ DateTime ^ Angestellter::getPauseAnfang()
 
 TimeSpan ^ Angestellter::getAktuelleArbeitszeit()
 {
+	//berechnet anhand des Arbeitsanfang index die aktuelle Arbeitszeit bis zu dem Aufruf zeitpunkt
 	Int32 arbeitsanfang = getArbeitsAnfangIndex();
 
+	//Wenn es einen Arbeitsanfang gibt dann ziehe von dem aktuellen Zeitstempel den arbeitsanfang ab
 	TimeSpan^ result = nullptr;
 	if (arbeitsanfang != -1) {
 		result = DateTime::Now - *(listeEreignisse[arbeitsanfang]->getTimestamp());
 
+		//Zudem noch die Pausezeit abziehen
 		TimeSpan^ pause = getPausezeit();
 		result = TimeSpan::operator-(*result, *pause);
 	}
@@ -123,6 +127,7 @@ TimeSpan ^ Angestellter::getAktuelleArbeitszeit()
 
 TimeSpan ^ Angestellter::getAktuellePausenzeit()
 {
+	//gibt akuelle Pausenzeit zurueck
 	return DateTime::Now - *getPauseAnfang();
 }
 
@@ -131,14 +136,17 @@ TimeSpan ^ Angestellter::getPausezeit()
 	Int32 index = getArbeitsAnfangIndex();
 	TimeSpan^ result = nullptr;
 
+	//wenn es einen Index gibt dann erstelle neuen TimeSpan
 	if (index != -1) {
 		result = gcnew TimeSpan();
 
+		//Naechster Pausenstart wird gesucht und zwischengespeichert
 		DateTime^ pausestart = nullptr;
 		for (int i = index + 1; i < getAnzahlEreignisse(); i++) {
 			if (listeEreignisse[i]->getTyp() == PAUSE_START) {
 				pausestart = listeEreignisse[i]->getTimestamp();
 			}
+			//Wenn Pauseende vorhanden dann berechne Gesamtpause
 			else if (listeEreignisse[i]->getTyp() == PAUSE_ENDE) {
 				TimeSpan^ pause = *(listeEreignisse[i]->getTimestamp()) - *(pausestart);
 				result = TimeSpan::operator+(*result, *pause);
@@ -146,6 +154,7 @@ TimeSpan ^ Angestellter::getPausezeit()
 			}
 		}
 
+		//hier wird die aktuelle zeit bis zum aufrufzeitpunkt berechnet wenn noch kein pausenende
 		if (pausestart != nullptr) {
 			TimeSpan^ pause = DateTime::Now - *(pausestart);
 			result = TimeSpan::operator+(*result, *pause);
@@ -156,41 +165,51 @@ TimeSpan ^ Angestellter::getPausezeit()
 
 TimeSpan ^ Angestellter::berechneArbeitsstunden(Int32 anfangsEreignisIndex)
 {
+	//der anfang ist das DateTime beim uebergebenen anfangsindex
 	DateTime^ anfang = listeEreignisse[anfangsEreignisIndex]->getTimestamp();
 	TimeSpan^ gesamtPause = gcnew TimeSpan();
+	//ende erstmal auf now
 	DateTime^ ende = DateTime::Now;
 
 	DateTime^ pausestart = nullptr;
+
+	//wenn noch kein pausenende  vorhanden dann nehme TimeStamps aus Liste und nehme das als ende
 	for (int i = anfangsEreignisIndex + 1; i < getAnzahlEreignisse(); i++) {
 		if (listeEreignisse[i]->getTyp() == PAUSE_START) {
 			pausestart = listeEreignisse[i]->getTimestamp();
 		}
+		//wenn pause ende vorhanden dann berechne gesamtpause
 		else if (listeEreignisse[i]->getTyp() == PAUSE_ENDE) {
 			TimeSpan^ pause = *(listeEreignisse[i]->getTimestamp()) - *(pausestart);
 			gesamtPause = TimeSpan::operator+(*gesamtPause, *pause);
 			pausestart = nullptr;
 		}
+		//stopp wenn arbeitsende gefunden
 		else if (listeEreignisse[i]->getTyp() == ARBEIT_ENDE) {
 			ende = listeEreignisse[i]->getTimestamp();
 			break;
 		}
 	}
 
+	//wenn es einen pausenstart gibt dann berechne pause mit ende als endpunkt
 	if (pausestart != nullptr) {
 		TimeSpan^ pause = *ende - *pausestart;
 		gesamtPause = TimeSpan::operator+(*gesamtPause, *pause);
 	}
-
+	//gebe berechnete zeit zurueck
 	return TimeSpan::operator-(*ende - *anfang, *gesamtPause);
 }
 
 Int32 Angestellter::getArbeitsAnfangIndex()
 {
+	//Zu anfang index -1 
 	Int32 arbeitsanfang = -1;
+	//durchlaufe liste rueckwaerts wenn letztes ereignis arbeitsende dann stopp
 	for (int i = getAnzahlEreignisse() - 1; i >= 0; i--) {
 		if (listeEreignisse[i]->getTyp() == ARBEIT_ENDE) {
 			break;
 		}
+		//wenn letztes ereignis arbeitsstart dann gebe den index zurueck
 		if (listeEreignisse[i]->getTyp() == ARBEIT_START) {
 			arbeitsanfang = i;
 			break;
