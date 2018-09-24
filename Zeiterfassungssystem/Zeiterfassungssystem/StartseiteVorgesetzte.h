@@ -650,7 +650,6 @@ namespace Zeiterfassungssystem {
 				//Timer stoppen
 				timerArbeitszeit->Stop();
 				timerPause->Stop();
-				angestellterAkt->speichereArbeitszeit(arbeitsStunden, arbeitsMinuten, wochenZeitErreicht);
 				String^ text = "Ihr Arbeitstag wurde erfolgreich beendet!\nSie haben heute " + stunde + " Stunden und " + minute + " Minuten gearbeitet.";
 				
 				pauseSekunde = 0;
@@ -665,6 +664,7 @@ namespace Zeiterfassungssystem {
 				angestellterAkt->setAktuellenStatus("Schönen Feierabend!");
 				Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
 				angestellterAkt->fuegeEreignisHinzu(arbeitsende);
+				angestellterAkt->speichereArbeitszeit();
 				MessageBox::Show(text, "Arbeitstag beendet", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			}
 		}
@@ -867,7 +867,6 @@ namespace Zeiterfassungssystem {
 			//Timer stoppen
 			timerArbeitszeit->Stop();
 			timerPause->Stop();
-			angestellterAkt->speichereArbeitszeit(arbeitsStunden, arbeitsMinuten, wochenZeitErreicht);
 			String^ arbeitsEndeText = "Sie wurden an Ende des Tages automatisch ausgeloggt!\nSie haben heute " + stunde + " Stunden und " + minute + " Minuten gearbeitet.";
 
 			pauseSekunde = 0;
@@ -882,6 +881,7 @@ namespace Zeiterfassungssystem {
 			angestellterAkt->setAktuellenStatus("Schönen Feierabend!");
 			Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
 			angestellterAkt->fuegeEreignisHinzu(arbeitsende);
+			angestellterAkt->speichereArbeitszeit();
 			MessageBox::Show(arbeitsEndeText, "Arbeitstag beendet", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 	}
@@ -1077,23 +1077,9 @@ namespace Zeiterfassungssystem {
 
 	void neuerTag() {
 
-		DateTime^ tag = angestellterAkt->getArbeitsAnfang();
-		DateTime^ autoEnde = gcnew DateTime(tag->Year, tag->Month, tag->Day, 23, 59, 59, 0);
-		Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, autoEnde);
-		angestellterAkt->fuegeEreignisHinzu(arbeitsende);
-		TimeSpan^ richtigeArbeitszeit;
-
-		for (int i = angestellterAkt->getAnzahlEreignisse() - 1; i >= 0; i--) {
-			if (angestellterAkt->getEreignis(i)->getTyp() == ARBEIT_START) {
-				richtigeArbeitszeit = angestellterAkt->berechneArbeitsstunden(i);
-			}
-		}
-
-		angestellterAkt->zieheZeitAb(richtigeArbeitszeit->Hours, richtigeArbeitszeit->Minutes);
-		angestellterAkt->setAktuellenStatus("Schön, dass Sie da sind!");
+		TimeSpan^ richtigeArbeitszeit = angestellterAkt->neuerTag();
 		String^ text = "Ihr Arbeitstag wurde nach dem letzten Start leider nicht beendet. Er endete daher automatisch um 23:59 Uhr.\nSie haben daher " + richtigeArbeitszeit->Hours + " Stunden und " + richtigeArbeitszeit->Minutes + " Minuten gearbeitet.";
-
-		MessageBox::Show(text, "Arbeitstag beendet", MessageBoxButtons::OK, MessageBoxIcon::Information);
+		MessageBox::Show(text, "Arbeitstag auomatisch beendet", MessageBoxButtons::OK, MessageBoxIcon::Information);
 
 		sekunde = 0;
 		minute = 0;

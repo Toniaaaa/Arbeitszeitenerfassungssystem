@@ -25,9 +25,11 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->jahresurlaub = urlaubstage;
 }
 
+//Gibt den restlichen Jahresurlaub zurück, den der Angestellte noch nicht eingereicht hat.
 Int32 Angestellter::getRestUrlaub() 
 {
 	Int32 urlaubstageDiesesJahr = 0;
+	//Die Urlaubstage, die für dieses Jahr schon verplant sind, werden gezählt.
 	for (int i = 0; i < listeUrlaubstage->Count; i++) {
 		if (listeUrlaubstage[i]->getDatum().Year == DateTime::Now.Year) {
 			urlaubstageDiesesJahr++;
@@ -36,26 +38,7 @@ Int32 Angestellter::getRestUrlaub()
 	return urlaubstage - urlaubstageDiesesJahr;
 }
 
-Abteilung ^ Angestellter::getAbteilung()
-{
-	return abteilung;
-}
-
-Ereignis ^ Angestellter::getEreignis(Int32 index)
-{
-	return listeEreignisse[index];
-}
-
-Int32 Angestellter::getAnzahlEreignisse()
-{
-	return listeEreignisse->Count;
-}
-
-Int32 Angestellter::getAnzahlArbeitstage()
-{
-	return 0; // TODO
-}
-
+//Fuegt der Liste von Ereignissen ein Ereignis hinzu
 void Angestellter::fuegeEreignisHinzu(Ereignis^ ereignis)
 {
 	listeEreignisse->Add(ereignis);
@@ -66,6 +49,7 @@ void Angestellter::removeEreignis(Int32 index)
 	listeEreignisse->RemoveAt(index);
 }
 
+//Fuegt der Liste von Antragsinfos eine Info hinzu
 void Angestellter::addAntragsInfo(String^ info)
 {
 	antragsInfos->Add(info);
@@ -76,16 +60,7 @@ void Angestellter::removeAntragsInfo(Int32 index)
 	antragsInfos->RemoveAt(index);
 }
 
-void Angestellter::setAktuellenStatus(String ^ status)
-{
-	this->status = status;
-}
-
-String ^ Angestellter::getStatus()
-{
-	return status;
-}
-
+//Gibt die DateTime des Arbeitanfangs zurück, falls der Arbeitstag noch nicht beendet wurde. Sonst wird der nullptr zurückgegeben.
 DateTime ^ Angestellter::getArbeitsAnfang()
 {
 	Int32 index = getArbeitsAnfangIndex();
@@ -97,17 +72,19 @@ DateTime ^ Angestellter::getArbeitsAnfang()
 	}
 }
 
+//Gibt den TimeStamp (DateTime) des Pausenstarts zurück, falls gerade eine Pause läuft, sonst nullptr zurück.
 DateTime ^ Angestellter::getPauseAnfang()
 {
-	//Wenn letztes Ereignis in der liste pausestart ist dann gebe dabvon den TimeStamp zurueck
 	DateTime^ pauseanfang = nullptr;
-
+	//Wenn letztes Ereignis in der liste pausestart ist dann gebe davon den TimeStamp zurueck
 	if (getAnzahlEreignisse() > 0 && listeEreignisse[getAnzahlEreignisse() - 1]->getTyp() == PAUSE_START) {
 		pauseanfang = listeEreignisse[getAnzahlEreignisse() - 1]->getTimestamp();
 	}
 	return pauseanfang;
 }
 
+/*Gibt die Arbeitszeit eines begonnenen Arbeitstages (also seit letzten Ereignis ARBEIT_START) als TimeSpan zurück, falls ein Arbeitstag noch nicht beednet wurde,
+indem die Zeitdifferenz der aktuellen DateTime und des Arbeitsanfangs berechnet wird und eventuelle Pausen abgezogen werden. Ansonsten den nullptr zurück.*/
 TimeSpan ^ Angestellter::getAktuelleArbeitszeit()
 {
 	//berechnet anhand des Arbeitsanfang index die aktuelle Arbeitszeit bis zu dem Aufruf zeitpunkt
@@ -125,12 +102,15 @@ TimeSpan ^ Angestellter::getAktuelleArbeitszeit()
 	return result;
 }
 
+/*Gibt die Zeiteit einer begonnenen Pause (also seit letzten Ereignis PAUSE-START) als TimeSpan zurück, falls eine Pause noch nicht beednet wurde,
+indem die Zeitdifferenz der aktuellen DateTime und des Pausenanfangs berechnet wird. Ansonsten den nullptr zurück.*/
 TimeSpan ^ Angestellter::getAktuellePausenzeit()
 {
 	//gibt akuelle Pausenzeit zurueck
 	return DateTime::Now - *getPauseAnfang();
 }
 
+//Berechnet die gesamtzeit der Pausen des aktuellen Arbeitstags und gibt diese als TimeSpan zurück
 TimeSpan ^ Angestellter::getPausezeit()
 {
 	Int32 index = getArbeitsAnfangIndex();
@@ -163,6 +143,7 @@ TimeSpan ^ Angestellter::getPausezeit()
 	return result;
 }
 
+//Berechnet die Arbeitszeit des Tages seit einem vorgegebenen Arbeitsanfangs (anfangsEreignisIndex) bis zum Ende dieses Tages und gibt sie als TimeSpan zurück.
 TimeSpan ^ Angestellter::berechneArbeitsstunden(Int32 anfangsEreignisIndex)
 {
 	//der anfang ist das DateTime beim uebergebenen anfangsindex
@@ -200,6 +181,8 @@ TimeSpan ^ Angestellter::berechneArbeitsstunden(Int32 anfangsEreignisIndex)
 	return TimeSpan::operator-(*ende - *anfang, *gesamtPause);
 }
 
+/*Sucht den Index des letzten Arbeitsanfangs (also letztes Ereignis ARBEIT_START) in der Ereignisliste und gibt sie zurück, falls der Arbeitstag noch
+nicht beendet wurde und gibt diesen zurück. Ansonsten wird -1 zurückgegeben.*/
 Int32 Angestellter::getArbeitsAnfangIndex()
 {
 	//Zu anfang index -1 
@@ -218,19 +201,32 @@ Int32 Angestellter::getArbeitsAnfangIndex()
 	return arbeitsanfang;
 }
 
-void Angestellter::speichereArbeitszeit(Int32 stunden, Int32 minuten, Boolean erreicht)
+/*Sucht den Index des Arbeitsanfangs (also Ereignis ARBEIT_START) des letzten BEENDETEN Arbeitstages in der Ereignisliste und gibt diesen zurück. 
+Ansonsten wird -1 zurückgegeben.*/
+Int32 Angestellter::getArbeitsAnfangIndexNachArbeitstag()
 {
-	wochenZeitErreicht = erreicht;
-	if (erreicht) {
-		arbeitsStunden = 0;
-		arbeitsMinuten = 0;
-		ueberStunden = stunden;
-		ueberMinuten = minuten;
+	//Zu anfang index -1 
+	Int32 arbeitsanfang = -1;
+	//durchlaufe liste rueckwaerts wenn letztes ereignis arbeitsende dann stopp
+	for (int i = getAnzahlEreignisse() - 2; i >= 0; i--) {
+		if (listeEreignisse[i]->getTyp() == ARBEIT_ENDE) {
+			break;
+		}
+		//wenn letztes ereignis arbeitsstart dann gebe den index zurueck
+		if (listeEreignisse[i]->getTyp() == ARBEIT_START) {
+			arbeitsanfang = i;
+			break;
+		}
 	}
-	else {
-		arbeitsStunden = stunden;
-		arbeitsMinuten = minuten;
-	}
+	return arbeitsanfang;
+}
+
+//Zeiht die Arbeitszeit des letzten beendeten Arbeitstags von der WochenArbeitszeit ab.
+void Angestellter::speichereArbeitszeit()
+{
+	Int32 arbeitsAnfangHeute = getArbeitsAnfangIndexNachArbeitstag();
+	TimeSpan^ arbeitsZeitHeute = berechneArbeitsstunden(arbeitsAnfangHeute);
+	zieheZeitAb(arbeitsZeitHeute->Hours, arbeitsZeitHeute->Minutes);
 }
 
 void Angestellter::setUeberstundenGesamt(Int32 stunden, Int32 minuten) 
@@ -238,8 +234,8 @@ void Angestellter::setUeberstundenGesamt(Int32 stunden, Int32 minuten)
 	ueberStundenGesamt += stunden + (minuten / 60);
 }
 
-//Fügt die Anzahl der Urlaubstage den genommenen Tagen hinzu und reduziert damit den Resturlaub
-//Trägt alle Tage innerhalb der Zeitspanne, die kein Wochenende oder Feiertage sind, in die Liste der Urlaubstage ein. 
+/*Trägt alle Tage innerhalb der Zeitspanne, die kein Wochenende oder Feiertage sind und noch nicht in der Liste der Urlaubstage stehen, 
+in die Liste der Urlaubstage ein.*/
 void Angestellter::nehmeUrlaub(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage)
 {
 	while (beginn <= ende) {
@@ -304,12 +300,13 @@ Int32 Angestellter::berechneUrlaubstage(DateTime beginn, DateTime ende, List<Fre
 	return anzUrlaubstage;
 }
 
-
+//Fügt der Liste der Urlaubstage einen Tag (DateTime) hinzu.
 void Angestellter::addUrlaubstag(DateTime tag)
 {
 	listeUrlaubstage->Add(gcnew FreierTag(tag));
 }
 
+//Entfernt einen bestimmten Urlaubstag, dessen Datum mit der übergebenen DateTime übereinstimmt, aus der Liste der Urlaubstage
 void Angestellter::removeUrlaubstag(DateTime tag)
 {
 	for (int i = listeUrlaubstage->Count - 1; i >= 0; i--) {
@@ -320,6 +317,7 @@ void Angestellter::removeUrlaubstag(DateTime tag)
 	}
 }
 
+//Loescht ALLE Einträge aus der Liste der Urlaubstage
 void Angestellter::loescheAlleUrlaubstage()
 {
 	for (int i = listeUrlaubstage->Count - 1; i >= 0; i--) {
@@ -327,6 +325,7 @@ void Angestellter::loescheAlleUrlaubstage()
 	}
 }
 
+//Prüft, ob das Datum eines Eintrag in der Liste der Urlaubstage mit der übergebenen DateTime übereinstimmt. 
 Boolean Angestellter::istUrlaubstag(DateTime tag)
 {
 	Boolean istUrlaubstag = false;
@@ -339,6 +338,7 @@ Boolean Angestellter::istUrlaubstag(DateTime tag)
 	return istUrlaubstag;
 }
 
+//Gibt den Index eines Urlaubstags zurück, falls dieser in der Liste der Urlaubstage vorhanden ist.
 Int32 Angestellter::indexVon(DateTime tag)
 {
 	Int32 index = -1;
@@ -351,6 +351,7 @@ Int32 Angestellter::indexVon(DateTime tag)
 	return index;
 }
 
+//Prüft, ob der angestellte in dieser Woche bereits eingeloggt war, indem die Kalenderwoche des letzten Logins mit der KW von heute verglichen wird.
 Boolean Angestellter::dieseWocheEingeloggt() {
 	Boolean eingeloggt = false;
 	if (kalender->berechneKW(letzterLogin) == kalender->berechneKW(DateTime::Today)) {
@@ -359,6 +360,7 @@ Boolean Angestellter::dieseWocheEingeloggt() {
 	return eingeloggt;
 }
 
+//Zieht die übergebene Anzahl von Stunden und Minuten von der noch offenen WochenArbeitszeit ab.
 void Angestellter::zieheZeitAb(Int32 stunden, Int32 minuten) {
 
 	TimeSpan zeit = getReduzierteZeit(stunden, minuten);
@@ -376,8 +378,8 @@ void Angestellter::zieheZeitAb(Int32 stunden, Int32 minuten) {
 	}
 }
 
-/*Gibt eine um die angegebenen Stunden und Minuten reduzierte Arbeitszeit zurück. Wenn die Wochenarbeitszeit erreicht 
-wird, werden die Ueberstunden zurückgegeben, außerdem wird Sekunde = 1, sonst immer 0.*/
+/*Gibt eine um die angegebenen Stunden und Minuten reduzierte Arbeitszeit zurück, ohne diese zu verändern. 
+Wenn die Wochenarbeitszeit erreicht wird, werden die Ueberstunden zurückgegeben, außerdem wird Sekunde = 1, sonst immer 0.*/
 TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 	
 	TimeSpan^ reduzierteZeit;
@@ -386,12 +388,13 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 	Int32 ueberStd = ueberStunden;
 	Int32 ueberMin = ueberMinuten;
 
-	//Fall: Es wurden bereits Überstunden gezählt (also Wochen-Arbeitszeit war schon erreicht)
+	/*1. Fall: Es wurden bereits Überstunden gezählt (also Wochen-Arbeitszeit war schon erreicht). Die übergebenen Stunden und Minuten 
+	werden von den Überstunden subtrahiert.*/
 	if (wochenZeitErreicht) {
 		ueberStd -= stunden;
-		if (ueberMin + minuten >= 60) {
-			ueberStd++;
-			ueberMin = ueberMin + minuten - 60;
+		if (ueberMin - minuten < 0) {
+			ueberStd--;
+			ueberMin = ueberMin - minuten + 60;
 		}
 		else {
 			ueberMin -= minuten;
@@ -399,14 +402,14 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 		if (ueberStd >= 0) {
 			reduzierteZeit = reduzierteZeit = gcnew TimeSpan(ueberStd, ueberMin, 1);
 		}
-		//Fall: Die Wochen-Arbeitszeit wurde durch den Zeitabzug doch nicht erreicht
+		//2. Fall: Die Wochen-Arbeitszeit wurde durch den Zeitabzug doch nicht mehr erreicht
 		else {
 			arbeitsStd = -ueberStd - 1; //-1, weil die Arbeitsstunden von 00:00 auf 1:01 springen. Mit -1 ist das korrigiert.
 			arbeitsMin = (ueberMin == 0) ? 0 : 60 - ueberMin;
 			reduzierteZeit = gcnew TimeSpan(arbeitsStd, arbeitsMin, 0);
 		}
 	}
-	//Fall: Es wurden noch keine Überstunden gezählt (also Wochen-Arbeitszeit noch nicht erreicht)
+	//3. Fall: Es wurden noch keine Überstunden gezählt (also Wochen-Arbeitszeit noch nicht erreicht)
 	else {
 		arbeitsStd -= stunden;
 		if (arbeitsMin - minuten < 0) {
@@ -430,7 +433,8 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 	return *reduzierteZeit;
 }
 
-// Wenn eine neues Jahr startet, werden die Urlaubstage zurueckgesetzt
+/*Wenn eine neues Jahr startet, werden die Urlaubstage zurueckgesetzt. Resturlaub aus dem vergangenen Jahr wird 3 Monate lang gespeichert
+und kann noch genommen werden.*/
 void Angestellter::stelleUraubstageZurueck(Int32 jahre)
 {
 	DateTime^ heute = DateTime::Today;
@@ -456,6 +460,7 @@ void Angestellter::stelleUraubstageZurueck(Int32 jahre)
 		urlaubstageGespart = 0;
 	}
 }
+
 // Wenn eine neue Woche startet, wird die Arbeitszeit zurueckgesetzt
 void Angestellter::neueWoche()
 {
@@ -477,6 +482,29 @@ void Angestellter::neueWoche()
 	}
 }
 
+//Wenn ein Tag aufgrund der Überschreitung der 23:59 Uhr-Grenze automatisch beendet werden musste
+TimeSpan^ Angestellter::neuerTag() {
+
+	DateTime^ tag = this->getArbeitsAnfang();
+	//Das Arbeitsende wird mit dem Datum des Arbeitsanfangs auf 23:59:59 gesetzt und als ARBEIT_ENDE-Ereignis in die Liste gespeichert. 
+	DateTime^ autoEnde = gcnew DateTime(tag->Year, tag->Month, tag->Day, 23, 59, 59, 0);
+	Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, autoEnde);
+	this->fuegeEreignisHinzu(arbeitsende);
+
+	//Die Arbeitszeit dieses Arbeitstages wird berechnet...
+	TimeSpan^ richtigeArbeitszeit;
+	Int32 index = getArbeitsAnfangIndexNachArbeitstag();
+	richtigeArbeitszeit = this->berechneArbeitsstunden(index);
+
+	//...und dann von der Wochen-Arbeitszeit abgezogen.
+	this->zieheZeitAb(richtigeArbeitszeit->Hours, richtigeArbeitszeit->Minutes);
+	this->setAktuellenStatus("Schön, dass Sie da sind!");
+
+	return richtigeArbeitszeit;
+}
+
+/*Prüft, ob in dieser Woche freie Tage (Urlaubs- oder Feiertage vorhanden sind, die noch nicht in die Wochenarbeitszeit eingerechnet wurde.
+Falls ja, werden diese noch eingerechnet und als eingerechnet markiert (über Boolean).*/
 void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 {
 	Int32 anzFreieTage = 0;
@@ -487,8 +515,11 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 	DateTime^ tagDynamisch = heute;
 	Int32 kWDynamisch = kWHeute;
 
+	//Exception-Handling, weil evtl. eine Null-Reference-Exception auftreten kann.
 	try {
+		//Solangen der Tag in der aktuellen Woche liegt, wird gepürft.
 		while (kWDynamisch == kWHeute) {
+			//Prüfe: Ist der Tag ein Feiertag
 			if (unternehmen->istFeiertag(*tagDynamisch)) {
 				Int32 index = unternehmen->indexVon(*tagDynamisch);
 				if (!unternehmen->getFeiertage()[index]->getEingerechnet()) {
@@ -496,6 +527,7 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 					unternehmen->getFeiertage()[index]->setEingerechnet(true);
 				}
 			}
+			//Prüfe: Ist der Tag ein Urlaubstag
 			if (this->istUrlaubstag(*tagDynamisch)) {
 				Int32 index = this->indexVon(*tagDynamisch);
 				if (!listeUrlaubstage[index]->getEingerechnet()) {
@@ -521,11 +553,15 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 	this->zieheZeitAb(wenigerStunden, wenigerMinuten);
 }
 
+/*Entfernt Urlaubstage in einem bestimten Zeitraum (Datum von - Datum bis) aus der Liste der Urlaubstage und erstellt eine Nachricht
+für den Betroffenen Angestellten, die alle Urlaubstage enthält, die entfernt wurden.*/
 void Angestellter::loescheUrlaubstage(DateTime von, DateTime bis, String^ kommentar)
 {
 	String^ urlaubEntferntString = "Ihre Urlaubstage\n\n";
+	//Alle Tage im Zeitraum von - bis werden durchlaufen
 	while (von <= bis) {
 		for (int i = 0; i < listeUrlaubstage->Count; i++) {
+			//Urlaubstage in diesem Zeitraum werden aus der Liste entfernt und zur Nachricht hinzugefügt
 			if (listeUrlaubstage[i]->getDatum().Equals(von)) {
 				removeUrlaubstag(von);
 				urlaubEntferntString += von.ToString("dddd, dd. MMMM yyyy") + "\n";
@@ -538,19 +574,25 @@ void Angestellter::loescheUrlaubstage(DateTime von, DateTime bis, String^ kommen
 	antragsInfos->Add(urlaubEntferntString);
 }
 
+/*Gibt einen String^ zurück, der das Datum mit Wochentag aller Urlaubstage eines Angestellten und aller Feiertage dieses Jahr getrennt ausgibt.*/
 String^ Angestellter::freieTageAnzeigen(List<FreierTag^>^ feiertage) {
 	String^ urlaubstageString = feiertage!=nullptr ? "Ihre Urlaubstage:\n\n" : "Urlaubstage von " + vorname + " " + nachname + ":\n\n";
+	//Die Liste der Urlaubstage wird durchlaufen
 	for (int i = 0; i < listeUrlaubstage->Count; i++) {
+		//Alle Urlaubstage aus diesem oder späteren Jahren werden dem String hinzugefügt
 		if (listeUrlaubstage[i]->getDatum().Year >= DateTime::Now.Year) {
 			urlaubstageString += listeUrlaubstage[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + "\n";
 		}
 	}
+	//Wenn für dieses Jahr keine Urlaubstage in der Liste stehen:
 	if (listeUrlaubstage->Count == 0) {
 		urlaubstageString += "Sie haben noch keine bestätigten Urlaubstage.\n";
 	}
 	if (feiertage != nullptr) {
 		urlaubstageString += "\nFeiertage " + Convert::ToString(DateTime::Now.Year) + ":\n\n";
+		//Liste der Feiertage wird durchlaufen
 		for (int i = 0; i < feiertage->Count; i++) {
+			//Alle Feiertag dieses Jahres werden dem String hinzugefügt
 			if (feiertage[i]->getDatum().Year == DateTime::Now.Year) {
 				urlaubstageString += feiertage[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + "\n";
 			}
@@ -559,20 +601,23 @@ String^ Angestellter::freieTageAnzeigen(List<FreierTag^>^ feiertage) {
 	return urlaubstageString;
 }
 
+//Es wird eine Nachricht zu einem Änderungsantrag als Antwort erstellt und den AntragsInfos hinzugefügt
 void Angestellter::aenderungAntwort(String^ tag, String^ kommentar, Boolean bestaetigt) {
 	
 	String^ textZumAntrag;
+	//Fall: Änderungsantrag wurde bestätigt
 	if (bestaetigt) {
 		textZumAntrag = "Ihr Änderungsantrag betreffend " + tag + " wurde bestätigt und wird korrigiert.";
 		if (kommentar->Length > 0) {
 			textZumAntrag += "\n\nKommentar:\n" + kommentar;
 		}
 	}
+	//Fall: Änderungsantrag wurde abgelehnt
 	else {
 		textZumAntrag = "Ihr Änderungsantrag betreffend " + tag + " wurde abgelehnt.";
 		if (kommentar->Length > 0) {
 			textZumAntrag += "\n\nKommentar:\n" + kommentar;
 		}
 	}
-	addAntragsInfo(textZumAntrag);
+	this->addAntragsInfo(textZumAntrag);
 }

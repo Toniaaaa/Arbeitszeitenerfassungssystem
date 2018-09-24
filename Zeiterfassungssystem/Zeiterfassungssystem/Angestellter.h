@@ -48,7 +48,6 @@ public:
 	//Getter
 	inline String^ getVorname() {return vorname;}
 	inline String^ getNachname() {return nachname;}
-	Abteilung^ getAbteilung();
 	inline String^ getPersonalnummer() {return personalnummer;}
 	inline String^ getPasswort() {return passwort;};
 	inline Int32 getWochensstunden() {return wochenstunden;}
@@ -65,11 +64,12 @@ public:
 	inline List<FreierTag^>^ getListeUrlaubstage() { return listeUrlaubstage; }
 	inline DateTime getLetzterLogin() { return letzterLogin; }
 	inline Int32 getJahresurlaub() { return jahresurlaub; }
-	
+	inline Abteilung^ getAbteilung() { return abteilung; }
+	inline Ereignis^ getEreignis(Int32 index) { return listeEreignisse[index]; }
+	inline Int32 getAnzahlEreignisse() { return listeEreignisse->Count; }
+	inline String^ getStatus() { return status; }
+
 	Int32 getRestUrlaub();
-	Ereignis^ getEreignis(Int32 index);
-	Int32 getAnzahlEreignisse();
-	Int32 getAnzahlArbeitstage();
 
 	//Setter
 	inline void setVorname(String^ vorname) {this->vorname = vorname;}
@@ -87,8 +87,12 @@ public:
 	inline void setUeberMinuten(Int32 minuten) { this->ueberMinuten = minuten; }
 	inline void setGesamtstunden(Double gesamtstunden) { this->listegesamtstunden->Add(gesamtstunden); }
 	inline void setLetzterLogin(DateTime jetzt) { this->letzterLogin = jetzt; }
-	void setUeberstundenGesamt(Int32 stunden, Int32 minuten);
+	inline void setAktuellenStatus(String^ status) { this->status = status; }
 	virtual bool istVorgesetzter() = 0;
+	
+	void setUeberstundenGesamt(Int32 stunden, Int32 minuten);
+
+	//Hinzufügen zu und entfernen aus Listen:
 	void fuegeEreignisHinzu(Ereignis^ ereignis);
 	void removeEreignis(Int32 index);
 	void addAntragsInfo(String^ info);
@@ -97,13 +101,11 @@ public:
 	void removeUrlaubstag(DateTime tag);
 	void loescheAlleUrlaubstage();
 	void loescheUrlaubstage(DateTime von, DateTime bis, String^ kommentar);
-	String^ freieTageAnzeigen(List<FreierTag^>^ feiertage);
-	void aenderungAntwort(String^ tag, String^ kommentar, Boolean bestaetigt);
 
-	//Hilfsmethoden
-	void setAktuellenStatus(String^ status);
-	String^ getStatus();
-	void speichereArbeitszeit(Int32 stunden, Int32 minuten, Boolean erreicht);
+	//Weitere Methoden:
+	void aenderungAntwort(String^ tag, String^ kommentar, Boolean bestaetigt);
+	String^ freieTageAnzeigen(List<FreierTag^>^ feiertage);
+	void speichereArbeitszeit();
 	void nehmeUrlaub(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage);
 	Int32 berechneUrlaubstage(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage);
 	Int32 indexVon(DateTime tag);
@@ -113,11 +115,12 @@ public:
 	Boolean dieseWocheEingeloggt();
 	void stelleUraubstageZurueck(Int32 jahre);
 	void neueWoche();
+	TimeSpan^ neuerTag();
 	void freieTagePruefen(Unternehmen^ unternehmen);
 	Int32 getArbeitsAnfangIndex();
+	Int32 getArbeitsAnfangIndexNachArbeitstag();
 
 	// Ereignislisteauswertungsmethodensammlung
-
 	DateTime^ getArbeitsAnfang(); // null wenn arbeitstag (noch) nicht begonnen
 	DateTime^ getPauseAnfang(); // null wenn pause gerade nicht läuft
 	TimeSpan^ getAktuelleArbeitszeit();
