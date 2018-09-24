@@ -1,7 +1,5 @@
 #include "Angestellter.h"
 
-using namespace System::Windows::Forms;
-
 Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32 wochenstunden, Int32 urlaubstage)
 {
 	this->vorname = vorname;
