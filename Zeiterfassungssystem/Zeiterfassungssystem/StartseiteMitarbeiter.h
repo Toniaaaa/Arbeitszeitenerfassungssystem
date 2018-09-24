@@ -32,9 +32,12 @@ namespace Zeiterfassungssystem {
 	public ref class StartseiteMitarbeiter : public System::Windows::Forms::Form
 	{
 	private:
+		//Beteiligte Personen/Unternehmen
 		Unternehmen ^ unternehmen;
 		Mitarbeiter^ angestellterAkt;
 		Vorgesetzter^ vorgesetzter;
+
+		//Unterfenster
 		StundenStatistikFenster^ statistik;
 		BearbeitungsFenster^ bearbeitungsfenster;
 		UrlaubsFenster^ urlaubsfenster;
@@ -42,17 +45,22 @@ namespace Zeiterfassungssystem {
 		AenderungsantragsFenster^ aenderungsfenster;
 		PersonalFensterMitarbeiter^ personalfenster;
 
+		//Für den Arbeitszeit-Timer:
 		Int32 sekunde;
 		Int32 minute;
 		Int32 stunde;
+		//Für den Pausentimer:
 		Int32 pauseSekunde;
 		Int32 pauseMinute;
 		Int32 pauseStunde;
+		//Für den Noch-Wochenstunden-Timer:
 		Int32 arbeitsStunden;
 		Int32 arbeitsMinuten;
+		//Zum Berechnen von Zeitspannen:
 		TimeSpan^ arbeitszeit;
 		TimeSpan^ pausenzeit;
 		Boolean wochenZeitErreicht;
+		//Zum Berechnen von Kalenderwochen:
 		Kalender^ kalender;
 
 	private: System::Windows::Forms::Timer^  timerUhr;
@@ -422,7 +430,7 @@ namespace Zeiterfassungssystem {
 			this->personalBtn->Size = System::Drawing::Size(240, 80);
 			this->personalBtn->TabIndex = 5;
 			this->personalBtn->UseVisualStyleBackColor = false;
-			this->personalBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::editBtn_Click);
+			this->personalBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::personalBtn_Click);
 			// 
 			// nameLbl
 			// 
@@ -533,6 +541,9 @@ namespace Zeiterfassungssystem {
 		}
 
 #pragma endregion
+
+	//Setter für die Personen / Unternehmen:
+
 	public: void setUnternehmen(Unternehmen^ unternehmen)
 	{
 		this->unternehmen = unternehmen;
@@ -543,11 +554,8 @@ namespace Zeiterfassungssystem {
 		this->vorgesetzter = angestellter->getVorgesetzter();
 	}
 
-	public: Angestellter ^ getVorgesetzter() {
-		return angestellterAkt;
-	}
-
-	//KOMMEN
+	/*KOMMEN-BUTTON
+	Es wird ein Ereignis ARBEIT-START mit der aktuellen DateTime erstellt, der Status gesetzt und der Arbeitszeit-Timer gesartet.*/
 	private: System::Void kommenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		if (angestellterAkt->getArbeitsAnfang() == nullptr) {
 			Ereignis^ arbeitsanfang = gcnew Ereignis(ARBEIT_START, DateTime::Now);
@@ -562,53 +570,72 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
-	//PAUSE
+	/*PAUSE-BUTTON
+	Die Pause wird gestartet oder beendet, je nachdem, ob schon eine Pause läuft. Dafür werden die Timer entsprechend gestartet bzw. beendet.
+	Außerdem wird ein PAUSE-START oder ein PAUSE_ENDE Ereignis erstellt und es werden die Farben der Darstellung geändert.*/
 	private: System::Void pauseCbox_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+		//Wenn der Arbeitstag schon läuft
 		if (angestellterAkt->getArbeitsAnfang() != nullptr) {
+			//Wenn schon eine Pause läuft
 			if (angestellterAkt->getPauseAnfang() == nullptr) {
+				//Timer werden gestartet bzw. gestoppt
 				timerArbeitszeit->Stop();
 				timerPause->Start();
+				//Ereignis erstellen
 				Ereignis^ pausenanfang = gcnew Ereignis(PAUSE_START, DateTime::Now);
 				angestellterAkt->fuegeEreignisHinzu(pausenanfang);
+				//Wenn jetzt eine Pause gestartet wurde:
 				if (angestellterAkt->getPauseAnfang() != nullptr) {
+					//Farben der Timer-Darstellungen werden geändert. Der Pause-Button wird grau
 					this->pauseCbox->Image = Image::FromFile("Images/pauseIcon3.jpg");
 					this->pauseLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 					this->PausenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 					this->arbeitszeitLbl->ForeColor = System::Drawing::Color::Gray;
 					this->arbeitszeitSchriftLbl->ForeColor = System::Drawing::Color::Gray;
+					//Status wird geändert
 					lbl_Status->Text = "Geniessen Sie Ihre Pause!";
 					angestellterAkt->setAktuellenStatus("Geniessen Sie Ihre Pause!");
 				}
 			}
+			//Wenn die Pause schon läuft:
 			else {
-				//angestellterAkt->getAktuelleArbeitszeit();
+				//Timer werden gestoppt bzw. gestartet:
 				timerArbeitszeit->Start();
 				timerPause->Stop();
+				//Ereignis PAUSE_ENDE wird erstellt:
 				Ereignis^ pausenende = gcnew Ereignis(PAUSE_ENDE, DateTime::Now);
 				angestellterAkt->fuegeEreignisHinzu(pausenende);
+				//Farben der Timer Darstellung werden wieder zurückgesetzt und Pause-Button wird wieder blau
 				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon.jpg");
 				this->pauseLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 				this->PausenSchriftLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 				this->arbeitszeitLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 				this->arbeitszeitSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+				//Status wird wieder gesetzt
 				lbl_Status->Text = "Viel Erfolg beim Erledigen Ihrer Aufgaben!";
 				angestellterAkt->setAktuellenStatus("Viel Erfolg beim Erledigen Ihrer Aufgaben!");
 			}
 		}
+		//Fall:Arbeitszeit noch gar nicht gestartet:
 		else {
+			//Info-Nachricht: Wenn keine Arbeitszeit gestartet wurde, kann auch keine Pause begonnen werden.
 			MessageBox::Show("Bitte beginnen Sie zuerst Ihre Arbeitszeit, bevor Sie eine Pause starten!", "Keine Pause möglich",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
 	
-	//GEHEN
+	/*GEHEN-BUTTON
+	Der Arbeitstag wird beendet und so abgespeichert*/
 	private: System::Void gehenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		//Fall: Wenn noch eine Pause läuft
 		if (angestellterAkt->getPauseAnfang() != nullptr) {
+			//Kein Beenden eines Arbeitstags möglich, während noch eine Pause läuft
 			MessageBox::Show("Bitte beenden Sie zuerst Ihre Pause, bevor Sie gehen!", "Kein Ende möglich",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
 		}
 
+		//Fall: Ein Arbeitstag wurde begonnen
 		if (angestellterAkt->getArbeitsAnfang() != nullptr) {
 			//Sicherheitsabfrage, ob der Mitarbeiter wirklich gehen moechte
 			if (MessageBox::Show("Sind Sie sicher, dass Sie Ihren Arbeitstag beenden möchten?", "Wirklich gehen?", MessageBoxButtons::YesNo,
@@ -618,6 +645,7 @@ namespace Zeiterfassungssystem {
 				timerPause->Stop();
 				String^ arbeitsEndeText = "Ihr Arbeitstag wurde erfolgreich beendet!\nSie haben heute " + stunde + " Stunden und " + minute + " Minuten gearbeitet.";
 
+				//Zurückstellen der Timer Anzeigen von Pause und Arbeitszeit
 				pauseSekunde = 0;
 				pauseMinute = 0;
 				pauseStunde = 0;
@@ -626,34 +654,44 @@ namespace Zeiterfassungssystem {
 				stunde = 0;
 				arbeitszeitLbl->Text = uhrzeitString(sekunde, minute, stunde);
 				pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
+				//Status setzen
 				lbl_Status->Text = "Schönen Feierabend!";
 				angestellterAkt->setAktuellenStatus("Schönen Feierabend!");
+				//Ereignis ARBEIT_ENDE erstellen
 				Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
 				angestellterAkt->fuegeEreignisHinzu(arbeitsende);
+				//Noch-Wochnzeit speichern
 				angestellterAkt->speichereArbeitszeit();
+				//Bestätigungsnachricht ausgeben
 				MessageBox::Show(arbeitsEndeText, "Arbeitstag beendet", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			}
 		}
+		//Fall: Es wurde noch gar kein Arbeitstag begonnen
 		else {
 			MessageBox::Show("Bitte beginnen Sie zuerst Ihre Arbeitszeit, bevor Sie gehen!", "Kein Ende möglich",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
 
-	//STATISTIKFENSTER
+	//STATISTIKFENSTER-BUTTON
 	private: System::Void statistikBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		//Das Statistikfenster wird geöffnet und die notwendigen Attribute werden gesetzt.
 		statistik->setAktuellenAngestellten(angestellterAkt);
 		statistik->setVorgesetzter(angestellterAkt->getVorgesetzter());
 		statistik->ShowDialog(this);
 	}
 
-	//KALENDERFENSTER
+	//KALENDERFENSTER-BUTTON
 	private: System::Void kalenderBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		//Der Kalender wird geöffnet
 		kalenderfenster->ShowDialog(this);
 	}
 
-	//URLAUBSFENSTER
+	/*URLAUB-BUTTON
+	Öffnet ein Urlaubs-Fenster mit einem Antrag auf Urlaub, der ausgefüllt werden kann. Wenn dieser in Ordnung ist und bestätigt wird,
+	wird ein Objekt vom Typ Urlaubsantrag erstellt und dem Vorgesetzten in seine Liste von Urlaubsanträgen hinzugefügt.*/
 	private: System::Void urlaubBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		//Urlaubsfenster wird geöffnet und die notwendigen Attribute werden gesetzt
 		urlaubsfenster->setAngestellter(angestellterAkt);
 		urlaubsfenster->setUnternehmen(unternehmen);
 		System::Windows::Forms::DialogResult result = urlaubsfenster->ShowDialog(this);
@@ -665,7 +703,9 @@ namespace Zeiterfassungssystem {
 			//Der Urlaubsantrag als String
 			String^ urlaubString = "Beginn: " + urlaubsfenster->p_Anfang.ToString("dddd, dd. MMMM yyyy") + "\nEnde: " + urlaubsfenster->p_Ende.ToString("dddd, dd. MMMM yyyy") +
 				"\nUrlaubstage: " + urlaubsfenster->p_Tage.ToString() + "\nKommentar: " + urlaubsfenster->p_Kommentar + "\n";
-
+			
+			//Sicherheitsabfrage mit Zusammenfassung des Antrags
+			//Fall: Mit Ja geantwortet
 			if (MessageBox::Show("Sie wollen folgenden Urlaub beantragen:\n\n" + urlaubString + "\nWollen Sie diesen Antrag einreichen?", "Antrag einreichen?", MessageBoxButtons::YesNo,
 				MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 				//Neuen Urlaubsantrag aus Werten aus dem Urlaubsfenster erstellen
@@ -674,34 +714,35 @@ namespace Zeiterfassungssystem {
 				MessageBox::Show("Urlaubsantrag erfolgreich eingereicht!", "Antrag erfolgreich!",
 					MessageBoxButtons::OK, MessageBoxIcon::Information);
 			}
+			//Fall: Mit Nein geantwortet
 			else {
 				MessageBox::Show("Ihr Urlaubsantrag wurde nicht eingereicht!", "Antrag abgebrochen!",
 					MessageBoxButtons::OK, MessageBoxIcon::Error);
 			}
 		}
+		//Falls das Urlaubsfenster kein OK zurückgibt:
 		else {
 			MessageBox::Show("Urlaubsantrag konnte nicht erstellt werden!", "Erstellen fehlgeschlagen",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
-		urlaubsfenster->clear(); //Textfelder wieder leeren
+		
+		//Textfelder wieder leeren
+		urlaubsfenster->clear(); 
 	}
 
-	//AENDERUNGSANTRAG ERSTELLEN
-	private: System::Void editBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+	//PERSONAL-BUTTON
+	private: System::Void personalBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		//Personalfenster wird geöffnet und Unternehmen wird als Attribut übergeben
 		personalfenster->setUnternehmen(unternehmen);
 		System::Windows::Forms::DialogResult result = personalfenster->ShowDialog(this);
-
-		//Wenn vom Änderungsfenster OK gegeben wird, wir zunächst eine Abfrage erzeugt, ob der Antrag so in Ordnung ist. Wenn der Mitarbeiter mit "Ja" bestätigt, wird ein neues Objekt 
-		//vom Typ Änderungsantrag erstellt. Bei "Nein" wird abgebrochen.
-		
 	}
 
-	//LOGOUT
+	//LOGOUT-BUTTON
 	private: System::Void logOutBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		//Falls der Angestellte den Arbeitstag noch nicht beendet hat, wird eine Sicherheitsabfrage ausgelöst
+		//Es wird eine Sicherheitsfrage gestellt, ob wirklich ausgeloggt werden soll
 		if (MessageBox::Show("Wollen Sie sich wirklich ausloggen?", "Wirklich ausloggen?", MessageBoxButtons::YesNo,
 			MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-			//Falls der Angestellte gerade die Pause aktiviert hat, wird diese zunächst beendet
+			//Das LogIn-Fenster wird wieder neu gestartet, falls mit Ja geantwortet wird
 			Application::Restart();
 		
 		}
@@ -710,31 +751,40 @@ namespace Zeiterfassungssystem {
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
 
+		//Es wird geprüft, ob ein neues Jahr oder eine neue Woche angefangen hat
 		this->neuesJahr();
 		angestellterAkt->neueWoche();
 		//Falls in dieser Woche freie Tage vorhanden sind (Urlaub, Feiertage) wird die Arbeitszeit dieser Woche entsprechend angepasst.
 		angestellterAkt->freieTagePruefen(unternehmen);
+		//Wurde die Wochen-Arbeitszeit bereits erreicht
 		wochenZeitErreicht = angestellterAkt->getWochenZeitErreicht();
 		//Anzeige Noch-Arbeitszeit bzw. Überstunden wird gesetzt
 		this->setAnzeigeArbeitszeit();
 
+		//Fall: Wenn der Arbeitstag noch läuft, gibt es KEINEN Arbeitsanfang, der noch nicht beendet wurde.
 		if (angestellterAkt->getArbeitsAnfang() == nullptr) {
 
+			//Timer-Zeiten werden auf 0 gesetzt
 			sekunde = 0;
 			minute = 0;
 			stunde = 0;
 			pauseSekunde = 0;
 			pauseMinute = 0;
 			pauseStunde = 0;
+			//Status wird gesetzt
 			angestellterAkt->setAktuellenStatus("Schön, dass Sie da sind!");
 
 		}
 		//Fall, dass der Timer nicht beendet wurde, bevor das Fenster geschlossen wurde, also der Timer im Hintergrund lief:
 		else {
+			//Fall: Letzter Login war heute:
 			if (angestellterAkt->getLetzterLogin().Date == DateTime::Now.Date) {
+				//Anzeigen werden so gesetzt, dass der Arbeitstag weiter läuft und nicht beendet wurde
 				this->nochEingeloggt();
 			}
+			//Fall: Letzter Login ist länger her
 			else {
+				//Es hat ein neuer Tag angefangen: Zwangslogout um 23:59:59 Uhr
 				this->neuerTag();
 			}
 		}
@@ -751,25 +801,29 @@ namespace Zeiterfassungssystem {
 
 	//WENN DIE SEITE FERTIG GELADEN WURDE
 	private: System::Void StartseiteMitarbeiter_Shown(System::Object^  sender, System::EventArgs^  e) {
+		//Login-Zeitpunkt speichern
 		angestellterAkt->setLetzterLogin(DateTime::Now);
+		//Prüfen, ob es neue Info-Nachrichten gibt
 		this->pruefeInfos();
 	}
 
 	//SEITE WIRD GESCHLOSSEN
 	private: System::Void StartseiteMitarbeiter_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
-		angestellterAkt->setWochenZeitErreicht(wochenZeitErreicht); //Es wird gespeichert, ob die Wochen-Arbeitszeit bereits erreicht wurde.
-		unternehmen->speichern(); //Unternehmen wird gespeichert
+		//Es wird gespeichert, ob die Wochen-Arbeitszeit bereits erreicht wurde.
+		angestellterAkt->setWochenZeitErreicht(wochenZeitErreicht);
+		//Unternehmen wird gespeichert
+		unternehmen->speichern(); 
 		Application::Exit();
 	}
 
-	//TIMER ARBEITSZEIT
+	/*TIMER ARBEITSZEIT
+	Gibt die Arbeitszeit Sekundengenau aus. Lässt außerdem die Noch-Wochen-Arbeitszeit minutengenau rückwärts laufen*/
 	private: System::Void timerArbeitszeit_Tick(System::Object^  sender, System::EventArgs^  e) {
 
 		sekunde++;
 
 		//Wenn die Wochen-Arbeitszeit überschritten wird, wird der Wert auf True gesetzt. 
 		//Dadurch läuft der Abeitszeit-Timer vorwärts und ändert die Farbe.
-
 		if (arbeitsStunden == 0 && arbeitsMinuten == 0 && sekunde == 60) {
 			wochenZeitErreicht = true;
 			this->nochWochenstundenLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
@@ -777,9 +831,11 @@ namespace Zeiterfassungssystem {
 			this->nochWochenstundenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 		}
 
+		//Umschalten: Wenn 60 Sekunden erreicht sind, wird eine Minute gezählt und die Sekunde auf 0 gesetzt. Analoger Ablauf für Minuten und Stunden
 		if (sekunde == 60) {
 			sekunde = 0;
 			minute++;
+			//Falls die Wochenzeit erreicht wurde, läuft der Noch-Timer vorwärts (zählt Überstunden) ansonsten rückwärts
 			arbeitsMinuten = wochenZeitErreicht ? arbeitsMinuten + 1 : arbeitsMinuten - 1;
 			if (minute == 60) {
 				minute = 0;
@@ -797,6 +853,7 @@ namespace Zeiterfassungssystem {
 			}
 		}
 
+		//Zeiten auf dem Labels anzeigen
 		arbeitszeitLbl->Text = uhrzeitString(sekunde, minute, stunde);
 		nochWochenstundenLbl->Text = uhrzeitString(arbeitsMinuten, arbeitsStunden) + " Stunden";
 
@@ -808,6 +865,7 @@ namespace Zeiterfassungssystem {
 
 		//Überprüfung, ob es 23:59:59 Uhr ist. Wenn ja, wird der Arbeitstag beendet.
 		if (DateTime::Now.Second == 59 && DateTime::Now.Minute == 59 && DateTime::Now.Hour == 23) {
+			//Falls noch eine Pause läuft
 			if (angestellterAkt->getPauseAnfang() != nullptr) {
 				Ereignis^ pausenende = gcnew Ereignis(PAUSE_ENDE, DateTime::Now);
 				angestellterAkt->fuegeEreignisHinzu(pausenende);
@@ -822,6 +880,7 @@ namespace Zeiterfassungssystem {
 			timerPause->Stop();
 			String^ arbeitsEndeText = "Sie wurden an Ende des Tages automatisch ausgeloggt!\nSie haben heute " + stunde + " Stunden und " + minute + " Minuten gearbeitet.";
 
+			//Werte und Anzeigen werden wieder auf 0 gestellt
 			pauseSekunde = 0;
 			pauseMinute = 0;
 			pauseStunde = 0;
@@ -841,13 +900,16 @@ namespace Zeiterfassungssystem {
 
 	//TIMER UHR
 	private: System::Void timerUhr_Tick(System::Object^  sender, System::EventArgs^  e) {
+		//Datum und Uhrzeit werden Sekundengenau angeigt
 		uhrzeitLbl->Text = DateTime::Now.ToString("HH:mm:ss");
 		datumLbl->Text = DateTime::Now.ToString("dddd, dd. MMMM yyyy");
 	}
 
-	//TIMER PAUSE
+	/*TIMER ARBEITSZEIT
+	Gibt die Pausenzeit des Tages Sekundengenau aus.*/
 	private: System::Void timerPause_Tick(System::Object^  sender, System::EventArgs^  e) {
 
+		//Umschalten: Wenn 60 Sekunden erreicht sind, wird eine Minute gezählt und die Sekunde auf 0 gesetzt. Analoger Ablauf für Minuten und Stunde
 		pauseSekunde++;
 		if (pauseSekunde == 60) {
 			pauseSekunde = 0;
@@ -858,12 +920,14 @@ namespace Zeiterfassungssystem {
 			}
 		}
 
+		//Ausgabe auf Label
 		pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
-
 	}
 
+	//Gibt Sekunden, Minuten und Sekunden in Format HH:MM:SS als String^ zurück
 	private: String^ uhrzeitString(Int32 sekunde, Int32 minute, Int32 stunde) {
 		String^ sek;
+		//Falls Sekundenzahl einstellig, wird eine 0 davor gesetzt
 		if (sekunde < 10) {
 			sek = "0" + Convert::ToString(sekunde);
 		}
@@ -871,6 +935,7 @@ namespace Zeiterfassungssystem {
 			sek = Convert::ToString(sekunde);
 		}
 
+		//Falls Minutenzahl einstellig, wird eine 0 davor gesetzt
 		String^ min;
 		if (minute < 10) {
 			min = "0" + Convert::ToString(minute);
@@ -879,6 +944,7 @@ namespace Zeiterfassungssystem {
 			min = Convert::ToString(minute);
 		}
 
+		//Falls Stundenzahl einstellig, wird eine 0 davor gesetztstd;
 		String^ std;
 		if (stunde < 10) {
 			std = "0" + Convert::ToString(stunde);
@@ -887,11 +953,14 @@ namespace Zeiterfassungssystem {
 			std = Convert::ToString(stunde);
 		}
 
+		//Rückgabe im gewünschten Format
 		return std + ":" + min + ":" + sek;
 	}
 
+	//Gibt Minuten und Sekunden in Format HH:MM als String^ zurück
 	private: String^ uhrzeitString(Int32 minute, Int32 stunde) {
 
+		//Falls Minutenzahl einstellig, wird eine 0 davor gesetzt
 		String^ min;
 		if (minute < 10) {
 			min = "0" + Convert::ToString(minute);
@@ -900,6 +969,7 @@ namespace Zeiterfassungssystem {
 			min = Convert::ToString(minute);
 		}
 
+		//Falls Stundenzahl einstellig, wird eine 0 davor gesetzt
 		String^ std;
 		if (stunde < 10) {
 			std = "0" + Convert::ToString(stunde);
@@ -908,13 +978,17 @@ namespace Zeiterfassungssystem {
 			std = Convert::ToString(stunde);
 		}
 
+		//Rückgabe im gewünschten Format
 		return std + ":" + min;
 	}
 
+	//Prüft, ob Liste mit Info-Nachrichten leer ist. Falls nicht, werden die Nachrichten als MessageBox ausgegeben
 	private: void pruefeInfos() {
-		//Es wird geprüft, ob zu den gestellten Anträgen neue Informationen vorhanden sind. Diese werden ggf. als MessageBox ausgegeben.
+		//Es wird geprüft, ob zu den gestellten Anträgen neue Informationen vorhanden sind (!=0)
 		Int32 anzAntragsInfos = angestellterAkt->getAntragsInfos()->Count;
+		//Ausführen, solange noch Nachrichten vorhanden sind
 		while (anzAntragsInfos > 0) {
+			//Info ausgeben und aus Liste entfernen
 			String^ antragString = angestellterAkt->getAntragsInfos()[anzAntragsInfos - 1];
 			angestellterAkt->removeAntragsInfo(--anzAntragsInfos);
 			resturlaubLbl->Text = angestellterAkt->getRestUrlaub() + " Tage";
@@ -937,8 +1011,10 @@ namespace Zeiterfassungssystem {
 
 	}
 
+	//Werte für die Anzeige der Noch-Arbeitszeit werden aus dem Angestellten-Objekt gelesen und für die Darstellung des Timers gesetzt
 	void setAnzeigeArbeitszeit()
 	{
+		//Fall: Wochenzeit schon erreicht: Überstunden vorwärts zählen
 		if (wochenZeitErreicht) {
 			arbeitsStunden = angestellterAkt->getUeberStunden();
 			arbeitsMinuten = angestellterAkt->getUeberMinuten();
@@ -946,29 +1022,37 @@ namespace Zeiterfassungssystem {
 			this->nochWochenstundenSchriftLbl->Text = L"Überstunden";
 			this->nochWochenstundenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 		}
+		//Fall: Wochenzeit noch nicht erreicht: Arbeitszeit rückwärts zählen
 		else {
 			arbeitsStunden = angestellterAkt->getArbeitsStunden();
 			arbeitsMinuten = angestellterAkt->getArbeitsMinuten();
 		}
 	}
 
+	//Setzt Werte für die Darstellung der Timer so, dass der Arbeitstag weiterläuft, als wäre die Seite immer geöffnet gewesen
 	void nochEingeloggt() {
-		// gerade arbeitszeit
+
+		//Arbeitszeit wird aus dem Angestellten-Objekt gelesen (als Differenz des Arbeitsanfangs mit der aktuellen Zeit abzüglich der Pausen)
 		TimeSpan^ arbeitszeit = angestellterAkt->getAktuelleArbeitszeit();
 		sekunde = arbeitszeit->Seconds;
 		minute = arbeitszeit->Minutes;
 		stunde = arbeitszeit->Hours;
 
+		//Pausenzeit wird aus Objekt gelesen
 		TimeSpan^ pausenzeit = angestellterAkt->getPausezeit();
 		pauseSekunde = pausenzeit->Seconds;
 		pauseMinute = pausenzeit->Minutes;
 		pauseStunde = pausenzeit->Hours;
 
+		//Werte für Noch-Arbeitszeit-Timer werden gesetzte
+		//TimeSpan gibt die Noch-Wochen-Arbeitszeit um die aktuelle Arbeitszeit reduziert an
 		TimeSpan abgelaufeneZeit = angestellterAkt->getReduzierteZeit(stunde, minute);
 		arbeitsStunden = abgelaufeneZeit.Hours + 24 * abgelaufeneZeit.Days;
 		arbeitsMinuten = abgelaufeneZeit.Minutes;
+		//Der Sekundenwert des TimeSpans gibt mit 1 oder 0 an, ob die Wochenzeit erreicht wurde
 		wochenZeitErreicht = abgelaufeneZeit.Seconds;
 
+		//Farben der Timer-Darstellungen ändern, falls schon Überstunden gezählt werden
 		if (wochenZeitErreicht) {
 			this->nochWochenstundenLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->nochWochenstundenSchriftLbl->Text = L"Überstunden";
@@ -976,32 +1060,39 @@ namespace Zeiterfassungssystem {
 		}
 
 		//Timer wird gestartet
+		//Fall: Es läuft gerade eine Pause
 		if (angestellterAkt->getPauseAnfang() != nullptr) {
+			//Pausentimer-Starten
 			timerPause->Start();
+			//Farben des Pausebuttons und der Anzeigen anders setzen
 			this->pauseCbox->Image = Image::FromFile("Images/pauseIcon3.jpg");
 			this->pauseLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->PausenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->arbeitszeitLbl->ForeColor = System::Drawing::Color::Gray;
 			this->arbeitszeitSchriftLbl->ForeColor = System::Drawing::Color::Gray;
 		}
+		//Fall: Es läuft keine Pause
 		else {
 			timerArbeitszeit->Start();
 		}
 	}
 
+	//Führt ein Zwangs-Ende eines Arbeitstages wegen Überschreitung der 23:59-Uhr-Grenze durch
 	void neuerTag() {
 
+		//Beendet den Arbeitstag um 23:59 Uhr des Tages, an dem er begonnen wurde
 		TimeSpan^ richtigeArbeitszeit = angestellterAkt->neuerTag();
+		//Gibt eine Nachricht aus
 		String^ text = "Ihr Arbeitstag wurde nach dem letzten Start leider nicht beendet. Er endete daher automatisch um 23:59 Uhr.\nSie haben daher " + richtigeArbeitszeit->Hours + " Stunden und " + richtigeArbeitszeit->Minutes + " Minuten gearbeitet.";
 		MessageBox::Show(text, "Arbeitstag auomatisch beendet", MessageBoxButtons::OK, MessageBoxIcon::Information);
 
+		//Werte für die Anzeigen werden zurückgesetzt
 		sekunde = 0;
 		minute = 0;
 		stunde = 0;
 		pauseSekunde = 0;
 		pauseMinute = 0;
 		pauseStunde = 0;
-
 		this->setAnzeigeArbeitszeit();
 	}
 
