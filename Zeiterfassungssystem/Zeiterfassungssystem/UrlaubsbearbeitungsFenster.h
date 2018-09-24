@@ -32,9 +32,6 @@ namespace Zeiterfassungssystem {
 		{
 			InitializeComponent();
 			istOffen = false;
-			//
-			//TODO: Konstruktorcode hier hinzufügen.
-			//
 		}
 
 	protected:
@@ -284,16 +281,19 @@ namespace Zeiterfassungssystem {
 	}
 	
 public:
+	//Urlaubsantrag setzen
 	void setUrlaubsantrag(Urlaubsantrag^ antrag)
 	{
 		this->antrag = antrag;
 	}
 
+	//Unternehmen setzen
 	void setUnternehmen(Unternehmen^ unternehmen)
 	{
 		this->unternehmen = unternehmen;
 	}
 
+	//Properties um Werte für diese Seite zu setzen oder auszulesen
 	property DateTime^ p_Ende
 	{
 		void set(DateTime^ p_Ende) {
@@ -325,6 +325,7 @@ public:
 	property String^ p_Kommentar
 	{
 		void set(String^ p_Kommentar) {
+			//Fall: Kein Kommentar eingegeben
 			if (p_Kommentar->Length == 0) {
 				this->lbl_kommentarText->Text = "-----";
 			}
@@ -341,46 +342,62 @@ public:
 		return istOffen;
 	}
 
+	//Textfeld leeren
 	void clear() 
 	{
 		this->txt_Kommentar->Text = "";
 	}
 
-private: System::Void btn_AntragBestaetigen_Click(System::Object^  sender, System::EventArgs^  e) 
-{
-	if (MessageBox::Show("Urlaubsantrag wirklich bestätigen?", "Antrag bestätigen?", MessageBoxButtons::YesNo,
-		MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-		antrag->setKommentarVorgesetzter(p_Kommentar);
-		textZumAntrag = "Ihr Urlaubsantrag über " + antrag->getTage() + " Tage\nvom " + lbl_anfang->Text + "\nbis " + lbl_ende->Text + "\nwurde bestätigt.\nViel Spaß in Ihrem Urlaub.";
-		if (p_Kommentar->Length > 0) {
-			textZumAntrag += "\n\nKommentar:\n" + p_Kommentar;
+	//BESTÄTIGEN-BUTTON
+	private: System::Void btn_AntragBestaetigen_Click(System::Object^  sender, System::EventArgs^  e) 
+	{
+		//Sicherheitsabfrage mit Zusammenfassung des Antrags, ob dieser wirklich bestätigt werden soll
+		//Fall: Antwort mit Ja
+		if (MessageBox::Show("Urlaubsantrag wirklich bestätigen?", "Antrag bestätigen?", MessageBoxButtons::YesNo,
+			MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+			//Neuer Antworttext wird erstellt
+			antrag->setKommentarVorgesetzter(p_Kommentar);
+			textZumAntrag = "Ihr Urlaubsantrag über " + antrag->getTage() + " Tage\nvom " + lbl_anfang->Text + "\nbis " + lbl_ende->Text + "\nwurde bestätigt.\nViel Spaß in Ihrem Urlaub.";
+			if (p_Kommentar->Length > 0) {
+				textZumAntrag += "\n\nKommentar:\n" + p_Kommentar;
+			}
+			//Info-Nachricht wird dem Antragsteller übermittelt
+			antrag->getAntragsteller()->addAntragsInfo(textZumAntrag);
+			//Urlaubstage werden dem Antragsteller eingetragen
+			antrag->getAntragsteller()->nehmeUrlaub(antrag->getAnfang(), antrag->getEnde(), unternehmen->getFeiertage());
+			//Es wird OK gesendet und die Seite geschlossen
+			this->DialogResult = System::Windows::Forms::DialogResult::OK;
+			this->Close();
 		}
-		antrag->getAntragsteller()->addAntragsInfo(textZumAntrag);
-		antrag->getAntragsteller()->nehmeUrlaub(antrag->getAnfang(), antrag->getEnde(), unternehmen->getFeiertage());
-		this->DialogResult = System::Windows::Forms::DialogResult::OK;
-		this->Close();
 	}
-}
 
-private: System::Void btn_AntragAblehnen_Click(System::Object^  sender, System::EventArgs^  e) 
-{
-	if (MessageBox::Show("Urlaubsantrag wirklich ablehnen?", "Antrag ablehnen?", MessageBoxButtons::YesNo,
-		MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-		antrag->setKommentarVorgesetzter(p_Kommentar);
-		textZumAntrag = "Ihr Urlaubsantrag über " + antrag->getTage() + " Tage\nvom " + lbl_anfang->Text + "\nbis " + lbl_ende->Text + "\nwurde leider abgelehnt.";
-		if (p_Kommentar->Length > 0) {
-			textZumAntrag += "\n\nKommentar:\n" + p_Kommentar;
+	//ABLEHNEN-BUTTON
+	private: System::Void btn_AntragAblehnen_Click(System::Object^  sender, System::EventArgs^  e) 
+	{
+		//Sicherheitsabfrage mit Zusammenfassung des Antrags, ob dieser wirklich bestätigt werden soll
+		//Fall: Antwort mit Ja
+		if (MessageBox::Show("Urlaubsantrag wirklich ablehnen?", "Antrag ablehnen?", MessageBoxButtons::YesNo,
+			MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+			//Neuer Antworttext wird erstellt
+			antrag->setKommentarVorgesetzter(p_Kommentar);
+			textZumAntrag = "Ihr Urlaubsantrag über " + antrag->getTage() + " Tage\nvom " + lbl_anfang->Text + "\nbis " + lbl_ende->Text + "\nwurde leider abgelehnt.";
+			if (p_Kommentar->Length > 0) {
+				textZumAntrag += "\n\nKommentar:\n" + p_Kommentar;
+			}
+			//Info-Nachricht wird dem Antragsteller übermittelt
+			antrag->getAntragsteller()->addAntragsInfo(textZumAntrag);
+			//Es wird OK gesendet und die Seite geschlossen
+			this->DialogResult = System::Windows::Forms::DialogResult::OK;
+			this->Close();
 		}
-		antrag->getAntragsteller()->addAntragsInfo(textZumAntrag);
-		this->DialogResult = System::Windows::Forms::DialogResult::OK;
-		this->Close();
 	}
-}
 
-private: System::Void UrlaubsanfragenbearbeitungsFenster_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) 
-{
-	istOffen = false;
-}
+	//Wenn das Fenster geschlossen wurde
+	private: System::Void UrlaubsanfragenbearbeitungsFenster_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) 
+	{
+		//Wird auf False gesetzt.
+		istOffen = false;
+	}
 };
 
 }

@@ -574,7 +574,8 @@ void Angestellter::loescheUrlaubstage(DateTime von, DateTime bis, String^ kommen
 	antragsInfos->Add(urlaubEntferntString);
 }
 
-/*Gibt einen String^ zurück, der das Datum mit Wochentag aller Urlaubstage eines Angestellten und aller Feiertage dieses Jahr getrennt ausgibt.*/
+/*Gibt einen String^ zurück, der das Datum mit Wochentag aller Urlaubstage eines Angestellten und (falls true übergeben wird) aller Feiertage dieses Jahr getrennt 
+ausgibt. Bei Übergabe von false nur die Urlaubs- ohne Feiertage*/
 String^ Angestellter::freieTageAnzeigen(List<FreierTag^>^ feiertage) {
 	String^ urlaubstageString = feiertage!=nullptr ? "Ihre Urlaubstage:\n\n" : "Urlaubstage von " + vorname + " " + nachname + ":\n\n";
 	//Die Liste der Urlaubstage wird durchlaufen

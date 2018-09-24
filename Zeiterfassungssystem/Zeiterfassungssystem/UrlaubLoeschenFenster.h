@@ -94,15 +94,15 @@ namespace Zeiterfassungssystem {
 			// 
 			// urlaubsabtragLbl
 			// 
-			this->urlaubsabtragLbl->AutoSize = true;
 			this->urlaubsabtragLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->urlaubsabtragLbl->Location = System::Drawing::Point(148, 58);
+			this->urlaubsabtragLbl->Location = System::Drawing::Point(1, 57);
 			this->urlaubsabtragLbl->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->urlaubsabtragLbl->Name = L"urlaubsabtragLbl";
-			this->urlaubsabtragLbl->Size = System::Drawing::Size(359, 55);
+			this->urlaubsabtragLbl->Size = System::Drawing::Size(649, 55);
 			this->urlaubsabtragLbl->TabIndex = 2;
-			this->urlaubsabtragLbl->Text = L"Urlaub löschen";
+			this->urlaubsabtragLbl->Text = L"Urlaub löschen im Zeitraum";
+			this->urlaubsabtragLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// loeschenBtn
 			// 
@@ -123,9 +123,9 @@ namespace Zeiterfassungssystem {
 			this->urlaubBeginnLbl->Location = System::Drawing::Point(33, 229);
 			this->urlaubBeginnLbl->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->urlaubBeginnLbl->Name = L"urlaubBeginnLbl";
-			this->urlaubBeginnLbl->Size = System::Drawing::Size(199, 29);
+			this->urlaubBeginnLbl->Size = System::Drawing::Size(220, 29);
 			this->urlaubBeginnLbl->TabIndex = 5;
-			this->urlaubBeginnLbl->Text = L"Erster Urlaubstag";
+			this->urlaubBeginnLbl->Text = L"Erster Tag Zeiraum";
 			// 
 			// urlaubEndeDTP
 			// 
@@ -154,9 +154,9 @@ namespace Zeiterfassungssystem {
 			this->label1->Location = System::Drawing::Point(34, 298);
 			this->label1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(207, 29);
+			this->label1->Size = System::Drawing::Size(234, 29);
 			this->label1->TabIndex = 11;
-			this->label1->Text = L"Letzter Urlaubstag";
+			this->label1->Text = L"Letzter Tag Zeitraum";
 			// 
 			// anzeigenBtn
 			// 
@@ -290,22 +290,27 @@ namespace Zeiterfassungssystem {
 		vergleichDaten = DateTime::Compare(p_Anfang, p_Ende);
 		vergleichMitHeute = DateTime::Compare(DateTime::Today.Date, p_Anfang);
 
+		//Fall: Zeitraum-Ende liegt vor Zeitraum-Beginn
 		if (vergleichDaten > 0) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			MessageBox::Show("Das Urlaubsende muss nach dem Urlaubsbeginn liegen!\nBitte korrigieren Sie die Eingaben!", "Absenden nicht möglich!",
+			MessageBox::Show("Das Ende des Zeitraums muss nach dem Beginn liegen!\nBitte korrigieren Sie die Eingaben!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+		//Fall: Beginn liegt in der Vergangenheit
 		else if (vergleichMitHeute > 0) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			MessageBox::Show("Der Urlaubsbeginn darf nicht in der Vergangenheit liegen!\nBitte korrigieren Sie die Eingaben!", "Absenden nicht möglich!",
+			MessageBox::Show("Sie können keinen Urlaub in der Vergangenheit löschen!\nBitte korrigieren Sie die Eingaben!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+		//Fall: Kein Angestellter ausgewählt
 		else if (angestellter = nullptr) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Bitte wählen Sie einen Angestellten aus!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+		//Alles OK
 		else {
+			//OK senden und Fenster schließen
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			this->Close(); //Fenster wird nur geschlossen, wenn alle Angaben gemacht wurden und OK sind.
 		}
@@ -317,25 +322,33 @@ namespace Zeiterfassungssystem {
 		this->DialogResult = System::Windows::Forms::DialogResult::Cancel;
 	}
 
+	//Wenn das Fenster geladen wird
 	private: System::Void UrlaubLoeschenFenster_Load(System::Object^  sender, System::EventArgs^  e)
 	{
+		//Alle Angestellten des Unternehmens werden zur Combobox hinzugefügt
 		for (int i = 0; i < unternehmen->getAlleAngestellte()->Count; i++) {
 			angestellterCBox->Items->Add(unternehmen->getAlleAngestellte()[i]->getVorname() + " " + unternehmen->getAlleAngestellte()[i]->getNachname());
 		}
 	}
 
+	//ANZEIGEN-BUTTON
 	private: System::Void anzeigenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		//Fall: Angestellter ausgewählt
 		if (angestellter != nullptr) {
+			//Alle Urlaubstage der ausgewählten Person OHNE Feiertage anzeigen
 			String^ urlaubstageString = angestellter->freieTageAnzeigen(nullptr);
 			MessageBox::Show(urlaubstageString, "Ihre freien Tage", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
+		//Fall: KEIN Angestellter ausgewählt
 		else {
 			MessageBox::Show("Bitte wählen Sie einen Angestellten aus!", "Anzeigen nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
 
+	//In der Combobox wurde ein Angestellter ausgewählt
 	private: System::Void angestellterCBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+		//Der Angestellte wird gesetzt als der in der Combobox ausgewählte
 		angestellter = unternehmen->getAlleAngestellte()[angestellterCBox->SelectedIndex];
 	}
 };

@@ -23,9 +23,6 @@ namespace Zeiterfassungssystem {
 		FeiertagsFenster(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Konstruktorcode hier hinzufügen.
-			//
 		}
 
 	protected:
@@ -144,17 +141,43 @@ namespace Zeiterfassungssystem {
 
 		}
 #pragma endregion
-	private: System::Void hinzufuegenBtn_Click(System::Object^  sender, System::EventArgs^  e) 
+
+	//ABBRECHEN-BUTTON
+	private: System::Void abbrechenBtn_Click(System::Object^  sender, System::EventArgs^  e) 
 	{
+		//Fenster wird geschlossen und CANCEL gesendet
+		this->DialogResult = System::Windows::Forms::DialogResult::Cancel;
+	}
+
+	//Setze Unternehmen
+	public: void setUnternehmen(Unternehmen^ unternehmen)
+	{
+		this->unternehmen = unternehmen;
+	}
+
+	//Anzeige zurücksetzen
+	public: void clear() 
+	{
+		this->neuerFeiertagDTP->Value = DateTime::Today;
+	}
+
+	//HINZUFÜGEN-BUTTON
+	private: System::Void hinzufuegenBtn_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		//Fall: Ausgewählter Tag liegt NICHT in der Zukunft
 		if (this->neuerFeiertagDTP->Value.Date <= DateTime::Today) {
+			//Feiertag kann nicht hinzugefügt werden
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Bitte wählen Sie ein Datum in der Zukunft!", "Hinzufügen nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+		//Fall: Ausgewählter Tag liegt in der Zukunft
 		else {
+			//Sicherheitsabfrage mit nochmaliger Anzeige des Feiertages
 			String^ hinzuText = "Sind Sie sicher, dass Sie folgendes Datum als neuen Feiertag hinzufügen möchten?\n\n" + neuerFeiertagDTP->Value.ToString("dddd, dd. MMMM yyyy");
+			//Fall: Antort Ja
 			if (MessageBox::Show(hinzuText, "Wirklich hinzufuegen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-				//Falls der Feiertag schon eingetragen ist, wird der Tag nicht noch einmal hinzugefügt:
+				//Falls der Feiertag schon eingetragen ist, wird der Tag NICHT noch einmal hinzugefügt
 				if (unternehmen->istFeiertag(neuerFeiertagDTP->Value.Date)) {
 					MessageBox::Show("Dieser Feiertag existiert bereits!", "Hinzufügen nicht möglich", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				}
@@ -167,29 +190,20 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
-	private: System::Void abbrechenBtn_Click(System::Object^  sender, System::EventArgs^  e) 
-	{
-		this->DialogResult = System::Windows::Forms::DialogResult::Cancel;
-	}
-
-	public: void setUnternehmen(Unternehmen^ unternehmen)
-	{
-		this->unternehmen = unternehmen;
-	}
-
-	public: void clear() 
-	{
-		this->neuerFeiertagDTP->Value = DateTime::Today;
-	}
-
+	//ENTFERNEN-BUTTON
 	private: System::Void entfernenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+
+		//Fall: Ausgewählter Tag liegt NICHT in der Zukunft
 		if (this->neuerFeiertagDTP->Value.Date <= DateTime::Today) {
+			//Feiertag kann nicht entfernt werden
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Bitte wählen Sie ein Datum in der Zukunft!", "Entfernen nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 		else {
+			//Sicherheitsabfrage mit nochmaliger Anzeige des Feiertages
 			String^ hinzuText = "Sind Sie sicher, dass Sie folgendes Datum als Feiertag entfernen möchten?\n\n" + neuerFeiertagDTP->Value.ToString("dddd, dd. MMMM yyyy");
+			//Fall: Antwort ist Ja
 			if (MessageBox::Show(hinzuText, "Wirklich entfernen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 				//Wenn der Feiertag, der entfernt werden soll, exisitiert, wird er entfernt
 				if (unternehmen->istFeiertag(neuerFeiertagDTP->Value.Date)) {
@@ -204,7 +218,9 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
+	//ANZEIGEN Button
 	private: System::Void anzeigenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		//Alle Feiertage des Unternehmens, die in der Liste sind und in diesem Jahr oder einem zukünftigen Jahr liegen, werden aufgelistet
 		String^ feiertageString = unternehmen->feiertageAnzeigen();
 		MessageBox::Show(feiertageString, "Ihre Feiertage", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}

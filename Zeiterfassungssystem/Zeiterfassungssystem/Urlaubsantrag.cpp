@@ -2,6 +2,7 @@
 
 using namespace System;
 
+//Konstruktor
 Urlaubsantrag::Urlaubsantrag(Angestellter^ antragsteller, DateTime anfang, DateTime ende, Int32 tage, String^ kommentarAntragsteller) {
 	this->m_Antragsteller = antragsteller;
 	this->m_Anfang = anfang;
@@ -10,6 +11,7 @@ Urlaubsantrag::Urlaubsantrag(Angestellter^ antragsteller, DateTime anfang, DateT
 	this->m_KommentarAntragsteller = kommentarAntragsteller;
 }
 
+//Destruktor
 Urlaubsantrag::~Urlaubsantrag() {
 
 }

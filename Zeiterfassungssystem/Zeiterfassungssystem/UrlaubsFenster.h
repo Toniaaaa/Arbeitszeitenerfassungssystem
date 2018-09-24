@@ -290,12 +290,13 @@ namespace Zeiterfassungssystem {
 		this->kommentarTxt->Text = "";
 	}
 
-	//Angestellter wird gesetzt:
+	//Angestellter wird gesetzt
 	void setAngestellter(Angestellter^ angestellterUebergabe)
 	{
 		this->angestellter = angestellterUebergabe;
 	}
 
+	//Unternehmen wird gesetzt
 	void setUnternehmen(Unternehmen^ unternehmen)
 	{
 		this->unternehmen = unternehmen;
@@ -315,47 +316,58 @@ namespace Zeiterfassungssystem {
 			MessageBox::Show("Sie können leider nur Urlaub für Termine bis März des nächsten Jahres beantragen!\nBitte korrigieren Sie die Eingaben!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+		//Fall: Urlaubsende liegt vor Urlaubsbeginn
 		else if (vergleichDaten > 0) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Ihr Urlaubsende darf nicht vor Ihrem Urlaubsbeginn liegen!\nBitte korrigieren Sie die Eingaben!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+		//Fall: Urlaubsbeginn liegt in der Vergangenheit
 		else if (vergleichMitHeute > 0) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Ihr Urlaubsbeginn darf nicht in der Vergangenheit liegen!\nBitte korrigieren Sie die Eingaben!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+		//Fall: Urlaub ist länger als der Resturlaub es zulässt
 		else if (p_Tage > restUrlaub) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Ihre gewuenschten Urlaubstage ueberschreiten Ihren Resturlaub!\nBitte korrigieren Sie die Eingaben!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+		//Alles ist OK
 		else {
+			//OK senden und Fenster schließen
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			this->Close(); //Fenster wird nur geschlossen, wenn alle Angaben gemacht wurden und OK sind.
 		}
 
 	}
 
-	//Wenn abbrechen gedrueckt schliesse Fenster
+	//ABBRECHEN-BUTTON
 	private: System::Void abbrechenBtn_Click(System::Object^  sender, System::EventArgs^  e)
 	{
+		//Fenster wird geschlossen und Cancel gesendet
 		this->DialogResult = System::Windows::Forms::DialogResult::Cancel;
 	}
 
-	//Waehrend Fenster laed spiele Musik
+	//Waehrend Fenster laed
 	private: System::Void UrlaubsFenster_Load(System::Object^  sender, System::EventArgs^  e)
 	{
+		//Spiele Musik
 		/*sound->SoundLocation = "Sounds/lacucarachaKurz.wav";
 		sound->Load();
 		sound->Play();*/
+		//Setze Werte für Anzeige und Berechnung
 		restUrlaub = angestellter->getRestUrlaub();
 		anzahlUrlaubstage = 1;
 		urlaubstageLbl->Text = "1 Tag";
 	}
 
+	//Wenn die Auswahl in der Beginn-Combobox geändert wurde
 	private: System::Void urlaubBeginnDTP_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
+		//Anzahl der Urlabstage im gewählten Intervall wird berechnet (ohne Wochenenden und Feiertage)
 		anzahlUrlaubstage = angestellter->berechneUrlaubstage(p_Anfang, p_Ende, unternehmen->getFeiertage());
+		//Anzeige der Urlaubstage setzen
 		if (anzahlUrlaubstage == 1) {
 			this->urlaubstageLbl->Text = "1 Tag";
 		}
@@ -364,8 +376,11 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
+	//Wenn die Auswahl in der Ende-Combobox geändert wurde
 	private: System::Void urlaubEndeDTP_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
+		//Anzahl der Urlabstage im gewählten Intervall wird berechnet (ohne Wochenenden und Feiertage)
 		anzahlUrlaubstage = angestellter->berechneUrlaubstage(p_Anfang, p_Ende, unternehmen->getFeiertage());
+		//Anzeige der Urlaubstage setzen
 		if (anzahlUrlaubstage == 1) {
 			this->urlaubstageLbl->Text = "1 Tag";
 		}
@@ -374,7 +389,9 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
+	//ANZEIGEN-BUTTON
 	private: System::Void anzeigenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		//Urlaubs- und Feiertage für diesen Nutzer werden angezeigt
 		String^ urlaubstageString = angestellter->freieTageAnzeigen(unternehmen->getFeiertage());
 		MessageBox::Show(urlaubstageString, "Ihre freien Tage", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
