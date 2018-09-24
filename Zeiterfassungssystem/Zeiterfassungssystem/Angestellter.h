@@ -7,6 +7,7 @@
 #include "Kalender.h"
 #include "Ereignis.h"
 #include <ctime>
+#include "FreierTagComparer.h"
 
 using namespace System;
 using namespace System::Collections;
@@ -41,6 +42,7 @@ private:
 	Double ueberStundenGesamt;
 	DateTime letzterLogin;
 	Kalender^ kalender;
+	FreierTagComparer^ vergleichen;
 
 public:
 	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage);

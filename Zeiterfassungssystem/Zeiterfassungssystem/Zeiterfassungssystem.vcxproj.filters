@@ -90,9 +90,6 @@
     <ClInclude Include="AuswahlFenster.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="AbteilungsFenster.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="FeiertagsFenster.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -106,6 +103,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="UrlaubLoeschenFenster.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="FreierTagComparer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -176,9 +176,6 @@
     <ClCompile Include="AuswahlFenster.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="AbteilungsFenster.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="FeiertagsFenster.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -194,15 +191,15 @@
     <ClCompile Include="UrlaubLoeschenFenster.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="FreierTagComparer.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LogInFenster.resx">
       <Filter>Ressourcendateien</Filter>
     </EmbeddedResource>
     <EmbeddedResource Include="StartseiteMitarbeiter.resx">
-      <Filter>Ressourcendateien</Filter>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StatistikFenster.resx">
       <Filter>Ressourcendateien</Filter>
     </EmbeddedResource>
     <EmbeddedResource Include="RegistrierungsFenster.resx">
@@ -233,9 +230,6 @@
       <Filter>Ressourcendateien</Filter>
     </EmbeddedResource>
     <EmbeddedResource Include="AuswahlFenster.resx">
-      <Filter>Ressourcendateien</Filter>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AbteilungsFenster.resx">
       <Filter>Ressourcendateien</Filter>
     </EmbeddedResource>
     <EmbeddedResource Include="FeiertagsFenster.resx">

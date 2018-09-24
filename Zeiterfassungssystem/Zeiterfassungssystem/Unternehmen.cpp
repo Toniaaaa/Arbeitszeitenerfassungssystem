@@ -19,6 +19,7 @@ Unternehmen::Unternehmen()
 	abteilungen->Add(administration);
 	this->erstelleRegelFeiertage(DateTime::Now.Year);
 	this->erstelleRegelFeiertage((DateTime::Now.Year + 1));
+	this->vergleichen = gcnew FreierTagComparer();
 }
 
 Unternehmen^ Unternehmen::ladeUnternehmen(String^ file) {
@@ -107,7 +108,10 @@ List<Abteilung^>^ Unternehmen::getAbteilungen()
 
 void Unternehmen::addFeiertag(DateTime tag)
 {
+	//Fügt einen Feiertag zur Liste hinzu (Datum aus dem übergebene Parameter)
 	this->feiertage->Add(gcnew FreierTag(tag));
+	//Sortiert die Feiertagsliste nach Datum
+	feiertage->Sort(vergleichen);
 }
 
 void Unternehmen::removeFeiertag(DateTime tag)

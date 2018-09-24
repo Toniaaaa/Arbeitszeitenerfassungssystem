@@ -23,6 +23,7 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->letzterLogin = DateTime::Now;
 	this->kalender = gcnew Kalender();
 	this->jahresurlaub = urlaubstage;
+	this->vergleichen = gcnew FreierTagComparer;
 }
 
 //Gibt den restlichen Jahresurlaub zurück, den der Angestellte noch nicht eingereicht hat.
@@ -303,7 +304,10 @@ Int32 Angestellter::berechneUrlaubstage(DateTime beginn, DateTime ende, List<Fre
 //Fügt der Liste der Urlaubstage einen Tag (DateTime) hinzu.
 void Angestellter::addUrlaubstag(DateTime tag)
 {
+	//Fügt einen neuen Urlaubstag mit dem übergebenen Datum hinzu... 
 	listeUrlaubstage->Add(gcnew FreierTag(tag));
+	//...und sortiert die Liste der Urlaubstage nach dem Datum der Urlaubstage
+	listeUrlaubstage->Sort(vergleichen);
 }
 
 //Entfernt einen bestimmten Urlaubstag, dessen Datum mit der übergebenen DateTime übereinstimmt, aus der Liste der Urlaubstage

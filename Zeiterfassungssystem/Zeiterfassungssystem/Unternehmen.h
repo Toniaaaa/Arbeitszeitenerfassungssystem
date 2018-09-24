@@ -1,5 +1,6 @@
 #pragma once
 #include "FreierTag.h"
+#include"FreierTagComparer.h"
 
 using namespace System;
 using namespace System::Collections::Generic;
@@ -14,7 +15,7 @@ private:
 	List<Abteilung^>^ abteilungen;
 	List<FreierTag^>^ feiertage;
 	String^ file;
-
+	FreierTagComparer^ vergleichen;
 	Unternehmen();
 
 public:
