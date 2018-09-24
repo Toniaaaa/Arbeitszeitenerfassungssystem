@@ -80,7 +80,7 @@ public:
 	inline void setPersonalnummer(String^ personalnummer) {this->personalnummer = personalnummer;}
 	inline void setPasswort(String^ passwort) {this->passwort = passwort;}
 	inline void setWochenstunden(Int32 wochenstunden) {this->wochenstunden = wochenstunden;}
-	inline void setUrlaubstage(Int32 urlaubstage) {this->urlaubstage = urlaubstage;}
+	inline void setUrlaubstage(Int32 urlaubstage); {this->urlaubstage = urlaubstage;}
 	inline void setUrlaubstageGespart(Int32 urlaubstage) { this->urlaubstageGespart = urlaubstage; }
 	inline void setWochenZeitErreicht(Boolean erreicht) {this->wochenZeitErreicht = erreicht;}
 	inline void setArbeitsStunden(Int32 stunden) { this->arbeitsStunden = stunden; }

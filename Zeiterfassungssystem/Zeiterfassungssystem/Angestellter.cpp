@@ -84,8 +84,7 @@ DateTime ^ Angestellter::getPauseAnfang()
 	return pauseanfang;
 }
 
-/*Gibt die Arbeitszeit eines begonnenen Arbeitstages (also seit letzten Ereignis ARBEIT_START) als TimeSpan zurück, falls ein Arbeitstag noch nicht beednet wurde,
-indem die Zeitdifferenz der aktuellen DateTime und des Arbeitsanfangs berechnet wird und eventuelle Pausen abgezogen werden. Ansonsten den nullptr zurück.*/
+//Gibt die aktuelle Arbeitszeit zurueck, berechnet durch differenz von Now und arbeitsanfangszeitpunkt, pausen werden mit abgezogen.
 TimeSpan ^ Angestellter::getAktuelleArbeitszeit()
 {
 	//berechnet anhand des Arbeitsanfang index die aktuelle Arbeitszeit bis zu dem Aufruf zeitpunkt
@@ -103,8 +102,7 @@ TimeSpan ^ Angestellter::getAktuelleArbeitszeit()
 	return result;
 }
 
-/*Gibt die Zeiteit einer begonnenen Pause (also seit letzten Ereignis PAUSE-START) als TimeSpan zurück, falls eine Pause noch nicht beednet wurde,
-indem die Zeitdifferenz der aktuellen DateTime und des Pausenanfangs berechnet wird. Ansonsten den nullptr zurück.*/
+//Gibt die aktuelle Pausenzeit ab Pausenanfang zurueck ansonsten nullptr
 TimeSpan ^ Angestellter::getAktuellePausenzeit()
 {
 	//gibt akuelle Pausenzeit zurueck
@@ -144,7 +142,7 @@ TimeSpan ^ Angestellter::getPausezeit()
 	return result;
 }
 
-//Berechnet die Arbeitszeit des Tages seit einem vorgegebenen Arbeitsanfangs (anfangsEreignisIndex) bis zum Ende dieses Tages und gibt sie als TimeSpan zurück.
+//Berechnet die gesamte Arbeitszeit ab bestimmten Arbeitsanfangs (anfangsEreignisIndex) bis zum Ende dieses Tages und gibt sie als TimeSpan zurück.
 TimeSpan ^ Angestellter::berechneArbeitsstunden(Int32 anfangsEreignisIndex)
 {
 	//der anfang ist das DateTime beim uebergebenen anfangsindex
@@ -183,7 +181,8 @@ TimeSpan ^ Angestellter::berechneArbeitsstunden(Int32 anfangsEreignisIndex)
 }
 
 /*Sucht den Index des letzten Arbeitsanfangs (also letztes Ereignis ARBEIT_START) in der Ereignisliste und gibt sie zurück, falls der Arbeitstag noch
-nicht beendet wurde und gibt diesen zurück. Ansonsten wird -1 zurückgegeben.*/
+* nicht beendet wurde und gibt diesen zurück. Ansonsten wird -1 zurückgegeben.
+*/
 Int32 Angestellter::getArbeitsAnfangIndex()
 {
 	//Zu anfang index -1 

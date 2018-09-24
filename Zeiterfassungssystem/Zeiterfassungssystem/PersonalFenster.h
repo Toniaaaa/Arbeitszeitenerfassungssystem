@@ -233,7 +233,7 @@ namespace Zeiterfassungssystem {
 					item->SubItems->Add(angestellte[i]->getVorname());
 					item->SubItems->Add(angestellte[i]->getPersonalnummer());
 					item->SubItems->Add(angestellte[i]->getAbteilung()->getAbteilungsnummer());
-					item->SubItems->Add(Convert::ToString(angestellte[i]->getJahresurlaub()));
+					item->SubItems->Add(Convert::ToString(angestellte[i]->getUrlaubstage()));
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getRestUrlaub()));
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getWochensstunden()));
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getArbeitsStunden() + ":" + arbeitsMinutenString));

@@ -515,7 +515,6 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void gruendeAuswahl_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
-		//Wenn Grund ausgewählt setze variable auf wahr
 		ausgewaehlt = true;
 	}
 };
