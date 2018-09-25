@@ -20,7 +20,6 @@ private:
 
 public:
 	static String^ SPEICHERORT = "Rebellion.dat";
-	static array<Int32>^ feiertageRegel = {1, 1, 1, 5, 3, 10, 25, 12, 26, 12};
 	static Unternehmen^ ladeUnternehmen(String^ file);
 	void speichern();
 
