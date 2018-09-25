@@ -304,5 +304,8 @@
     <Image Include="Images\editIconklein.jpg">
       <Filter>Quelldateien\Images</Filter>
     </Image>
+    <Image Include="Images\PersonalIconKlein.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
   </ItemGroup>
 </Project>

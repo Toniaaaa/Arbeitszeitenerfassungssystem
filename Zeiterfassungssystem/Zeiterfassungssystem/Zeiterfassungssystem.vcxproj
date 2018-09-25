@@ -298,6 +298,7 @@
     <Image Include="Images\pauseIcon2.jpg" />
     <Image Include="Images\pauseIcon3.jpg" />
     <Image Include="Images\PersonalIcon2.jpg" />
+    <Image Include="Images\PersonalIconKlein.jpg" />
     <Image Include="Images\statistikIcon.jpg" />
     <Image Include="Images\statistikIconKlein.jpg" />
     <Image Include="Images\urlaubIcon2.jpg" />
