@@ -106,28 +106,28 @@ public:
 
 	//Weitere Methoden:
 	void aenderungAntwort(String^ tag, String^ kommentar, Boolean bestaetigt);
-	String^ freieTageAnzeigen(List<FreierTag^>^ feiertage);
-	void speichereArbeitszeit();
-	void nehmeUrlaub(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage);
-	Int32 berechneUrlaubstage(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage);
-	Int32 indexVon(DateTime tag);
-	Boolean istUrlaubstag(DateTime tag);
-	void zieheZeitAb(Int32 stunden, Int32 minuten);
-	TimeSpan getReduzierteZeit(Int32 stunden, Int32 minuten);
-	Boolean dieseWocheEingeloggt();
-	void stelleUraubstageZurueck(Int32 jahre);
-	void neueWoche();
-	TimeSpan^ neuerTag();
-	void freieTagePruefen(Unternehmen^ unternehmen);
-	Int32 getArbeitsAnfangIndex();
-	Int32 getArbeitsAnfangIndexNachArbeitstag();
+	String^ freieTageAnzeigen(List<FreierTag^>^ feiertage); //Gibt Aufzählung aller Feier- und Urlaubstage zurück
+	void speichereArbeitszeit();//Speichert die gesamte Arbeitszeit eines abgeschlossenen Tages in den noch-ArbeitsStunden und Minuten
+	void nehmeUrlaub(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage); //Fügt die Tage innerhalb des Zeitraums zu der listeUrlaubstage hinzu, solange die keine Feiertage oder Wochenenden sind
+	Int32 berechneUrlaubstage(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage); //Berechnet die Anzahl der Urlaubstage innerhalb eines Zeitraums ohne Wochenenden und Feiertage
+	Int32 indexVon(DateTime tag); //Gibt den Index eines Tages in der listeUrlaubstage zurück
+	Boolean istUrlaubstag(DateTime tag); //Gibt zurück, ob der Paramter ein Urlaubstag ist oder nicht
+	void zieheZeitAb(Int32 stunden, Int32 minuten); //Zieht Zeit von der Noch-Arbeitszeit ab bzw. addiert Überstunden, wenn die Wochen-Arbeitszeit erreicht ist
+	TimeSpan getReduzierteZeit(Int32 stunden, Int32 minuten); //Gibt die Noch-Arbeitszeit um die übergebene Zeit reduziert zurück, ohne sie zu ändern
+	Boolean dieseWocheEingeloggt(); //Gibt zurück, ob der letzte Login in dieser Woche war
+	void stelleUraubstageZurueck(Int32 jahre); //Lösche Urlaubstage, die älter als die übergebene Zahl Jahre sind, und fuegt die festen, regelmäßige Urlaubstage des nächsten Jahres hinzu
+	void neueWoche(); //Stellt alle Werte für den Beginn einer neuen Woche ein
+	TimeSpan^ neuerTag(); //Beendet einen Arbeitstag nachträglich um 23:59 Uhr des Tages, an dem er begonnen wurde
+	void freieTagePruefen(Unternehmen^ unternehmen); //Prüft, ob in dieser Woche ein noch nicht eingerechneter freier Tag vorhanden ist und rechnet die noch-Wochenarbeitszeit entsprechend um
+	Int32 getArbeitsAnfangIndex(); //Gibt den Index des Arbeitsanfangs des aktuell noch nicht beendeten Arbeitstages in der Ereignisliste oder den Nullpointer (falls kein Arbeitstag läuft) zurück
+	Int32 getArbeitsAnfangIndexNachArbeitstag(); //Gibt den Arbeitsanfang eines gerade beendeten Arbeitstages zurück
 
 	// Ereignislisteauswertungsmethodensammlung
 	DateTime^ getArbeitsAnfang(); // null wenn arbeitstag (noch) nicht begonnen
 	DateTime^ getPauseAnfang(); // null wenn pause gerade nicht läuft
 	TimeSpan^ getAktuelleArbeitszeit();
 	TimeSpan^ getAktuellePausenzeit(); // liefert die Zeit der aktuell laufenden Pause
-	TimeSpan^ getPausezeit(); // liefert die Zeit der bisherigen Pausen seit letztem Arbeitsbeginn
-	TimeSpan^ berechneArbeitsstunden(Int32 anfangsEreignisIndex);
-
+	TimeSpan^ getPausezeit(Boolean tagBeendet); // liefert die Zeit der bisherigen Pausen seit letztem Arbeitsbeginn
+	TimeSpan^ berechneArbeitsstunden(Int32 anfangsEreignisIndex); //Berechnet die Arbeitszeit eines Arbeitstages ab dem übergebenen Index in der Ereignisliste ohne Pausen
+	TimeSpan^ genugPause(); //Prüft, ob am gerade beendeten Arbeitstag genug Pause gemacht wurde
 };

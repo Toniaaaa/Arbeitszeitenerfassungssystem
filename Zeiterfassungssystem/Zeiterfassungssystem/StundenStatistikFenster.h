@@ -32,9 +32,6 @@ namespace Zeiterfassungssystem {
 		{
 			InitializeComponent();
 			aenderungsantrag = gcnew AenderungsantragsFenster;
-			//
-			//TODO: Konstruktorcode hier hinzufügen.
-			//
 		}
 
 	protected:

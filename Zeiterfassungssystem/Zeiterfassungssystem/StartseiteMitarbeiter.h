@@ -638,8 +638,14 @@ namespace Zeiterfassungssystem {
 				//Ereignis ARBEIT_ENDE erstellen
 				Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
 				angestellterAkt->fuegeEreignisHinzu(arbeitsende);
-				//Noch-Wochnzeit speichern
+				//Noch-Wochenzeit speichern
 				angestellterAkt->speichereArbeitszeit();
+				//Falls zu wenig Pause gemacht wurde, wird eine Information angezeigt
+				if (*angestellterAkt->genugPause() > *(gcnew TimeSpan(0, 0, 0))) {
+					String^ pauseNachricht = "Sie haben heute " + Convert::ToString(angestellterAkt->genugPause()->Minutes) + " Minuten zu wenig Pause gemacht.\n\nBitte beachten Sie, dass sie "
+						+ "\n\nab 6 Stunden Arbeit 30 min und\nab 9 Stunden Arbeit 45 min\n\nPause machen müssen! Vielen Dank!";
+					MessageBox::Show(pauseNachricht, "Zu wenig Pause", MessageBoxButtons::OK, MessageBoxIcon::Information);
+				}
 				//Bestätigungsnachricht ausgeben
 				MessageBox::Show(arbeitsEndeText, "Arbeitstag beendet", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			}
@@ -867,11 +873,21 @@ namespace Zeiterfassungssystem {
 			stunde = 0;
 			arbeitszeitLbl->Text = uhrzeitString(sekunde, minute, stunde);
 			pauseLbl->Text = uhrzeitString(pauseSekunde, pauseMinute, pauseStunde);
+			//Status setzen
 			lbl_Status->Text = "Schönen Feierabend!";
 			angestellterAkt->setAktuellenStatus("Schönen Feierabend!");
+			//Ereignis ARBEIT_ENDE erstellen
 			Ereignis^ arbeitsende = gcnew Ereignis(ARBEIT_ENDE, DateTime::Now);
 			angestellterAkt->fuegeEreignisHinzu(arbeitsende);
+			//Noch-Wochenzeit speichern
 			angestellterAkt->speichereArbeitszeit();
+			//Falls zu wenig Pause gemacht wurde, wird eine Information angezeigt
+			if (*angestellterAkt->genugPause() > *(gcnew TimeSpan(0, 0, 0))) {
+				String^ pauseNachricht = "Sie haben heute " + Convert::ToString(angestellterAkt->genugPause()->Minutes) + " Minuten zu wenig Pause gemacht.\n\nBitte beachten Sie, dass sie "
+					+ "\n\nab 6 Stunden Arbeit 30 min und\nab 9 Stunden Arbeit 45 min\n\nPause machen müssen! Vielen Dank!";
+				MessageBox::Show(pauseNachricht, "Zu wenig Pause", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			}
+			//Bestätigungsnachricht ausgeben
 			MessageBox::Show(arbeitsEndeText, "Arbeitstag beendet", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 	}
@@ -1017,7 +1033,7 @@ namespace Zeiterfassungssystem {
 		stunde = arbeitszeit->Hours;
 
 		//Pausenzeit wird aus Objekt gelesen
-		TimeSpan^ pausenzeit = angestellterAkt->getPausezeit();
+		TimeSpan^ pausenzeit = angestellterAkt->getPausezeit(false);
 		pauseSekunde = pausenzeit->Seconds;
 		pauseMinute = pausenzeit->Minutes;
 		pauseStunde = pausenzeit->Hours;
