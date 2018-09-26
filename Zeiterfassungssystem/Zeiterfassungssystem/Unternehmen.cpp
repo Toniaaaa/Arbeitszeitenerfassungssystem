@@ -13,11 +13,11 @@ Unternehmen::Unternehmen()
 	abteilungen = gcnew List<Abteilung^>;
 	feiertage = gcnew List<FreierTag^>;
 
-	Abteilung^ administration;
-	Vorgesetzter^ admin = gcnew Vorgesetzter("Admin", "istrator", administration, "1", "1234", 169, 28);
-	administration = gcnew Abteilung("1", admin);
-	admin->setAbteilung(administration);
-	abteilungen->Add(administration);
+	//Abteilung^ administration;
+	//Vorgesetzter^ admin = gcnew Vorgesetzter("Admin", "istrator", administration, "1", "1234", 169, 28);
+	//administration = gcnew Abteilung("1", admin);
+	//admin->setAbteilung(administration);
+	//abteilungen->Add(administration);
 	this->erstelleRegelFeiertage(DateTime::Now.Year);
 	this->erstelleRegelFeiertage((DateTime::Now.Year + 1));
 	this->vergleichen = gcnew FreierTagComparer();
@@ -52,7 +52,14 @@ void Unternehmen::speichern()
 //Gibt die Anzahl der Elemente in der Abteilungsliste zurück
 Int32 Unternehmen::getAnzahlAbteilungen()
 {
-	return abteilungen->Count;
+	Int32 anzAbt;
+	try {
+		anzAbt = abteilungen->Count;
+	}
+	catch (NullReferenceException ^e) {
+		anzAbt = 0;
+	}
+	return anzAbt;
 }
 
 //Gibt eine Abteilung aus der Abteilungsliste an der Stelle index zurück
@@ -115,7 +122,14 @@ Angestellter ^ Unternehmen::loginaccept(String ^ personalnummer, String ^ passwo
 
 List<Abteilung^>^ Unternehmen::getAbteilungen()
 {
-	return abteilungen;
+	List<Abteilung^>^ abteilungRueckgabe;
+	try {
+		abteilungRueckgabe = abteilungen;
+	}
+	catch (NullReferenceException ^e) {
+		abteilungRueckgabe = nullptr;
+	}
+	return abteilungRueckgabe;
 }
 
 //Fügt einen Feiertag zur Liste hinzu (Datum aus dem übergebene Parameter)

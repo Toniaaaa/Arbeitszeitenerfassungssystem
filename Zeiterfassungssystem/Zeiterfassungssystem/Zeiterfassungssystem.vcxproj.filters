@@ -108,6 +108,9 @@
     <ClInclude Include="FreierTagComparer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="BegruessungsFenster.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Angestellter.cpp">
@@ -192,6 +195,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="FreierTagComparer.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="BegruessungsFenster.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

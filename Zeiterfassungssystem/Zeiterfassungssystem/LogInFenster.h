@@ -5,6 +5,7 @@
 #include "PasswortAendernFenster.h"
 #include "StartseiteVorgesetzte.h"
 #include "PersonalFenster.h"
+#include "BegruessungsFenster.h"
 
 namespace Zeiterfassungssystem {
 
@@ -34,6 +35,7 @@ namespace Zeiterfassungssystem {
 		PersonalFenster^ personalfenster;
 		Angestellter^ angestellter;
 		bool loginGedrueckt = false;
+		BegruessungsFenster^ begruessung;
 		
 	public:
 		LoginFenster(void)
@@ -41,9 +43,15 @@ namespace Zeiterfassungssystem {
 			InitializeComponent();
 			sound = gcnew SoundPlayer();
 			unternehmen = Unternehmen::ladeUnternehmen(Unternehmen::SPEICHERORT);
+			if (unternehmen->getAlleAngestellte()->Count == 0) {
+				begruessung = gcnew BegruessungsFenster;
+				begruessung->setUnternehmen(unternehmen);
+				begruessung->ShowDialog(this);
+			}
 			startseitemitarbeiter = gcnew StartseiteMitarbeiter();
 			startseitevorgesetzte = gcnew StartseiteVorgesetzte();
 			passwortaendernseite = gcnew PasswortAendernFenster();
+			begruessung = gcnew BegruessungsFenster();
 		}
 
 	protected:
@@ -62,7 +70,6 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Button^  logInButton;
 	private: System::Windows::Forms::Label^  BenutzernameLabel;
 	private: System::Windows::Forms::Label^  KennwortLabel;
-
 	private: System::Windows::Forms::Button^  passwortvergessenButton;
 	private: System::Windows::Forms::TextBox^  txt_Benutzername;
 

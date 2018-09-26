@@ -91,7 +91,7 @@ namespace Zeiterfassungssystem {
 			this->btn_AntragBestaetigen->Margin = System::Windows::Forms::Padding(2, 3, 2, 3);
 			this->btn_AntragBestaetigen->Name = L"btn_AntragBestaetigen";
 			this->btn_AntragBestaetigen->Size = System::Drawing::Size(109, 40);
-			this->btn_AntragBestaetigen->TabIndex = 0;
+			this->btn_AntragBestaetigen->TabIndex = 1;
 			this->btn_AntragBestaetigen->Text = L"Bestätigen";
 			this->btn_AntragBestaetigen->UseVisualStyleBackColor = true;
 			this->btn_AntragBestaetigen->Click += gcnew System::EventHandler(this, &UrlaubsanfragenbearbeitungsFenster::btn_AntragBestaetigen_Click);
@@ -102,7 +102,7 @@ namespace Zeiterfassungssystem {
 			this->btn_AntragAblehnen->Margin = System::Windows::Forms::Padding(2, 3, 2, 3);
 			this->btn_AntragAblehnen->Name = L"btn_AntragAblehnen";
 			this->btn_AntragAblehnen->Size = System::Drawing::Size(115, 40);
-			this->btn_AntragAblehnen->TabIndex = 1;
+			this->btn_AntragAblehnen->TabIndex = 2;
 			this->btn_AntragAblehnen->Text = L"Ablehnen";
 			this->btn_AntragAblehnen->UseVisualStyleBackColor = true;
 			this->btn_AntragAblehnen->Click += gcnew System::EventHandler(this, &UrlaubsanfragenbearbeitungsFenster::btn_AntragAblehnen_Click);
@@ -205,7 +205,7 @@ namespace Zeiterfassungssystem {
 			this->txt_Kommentar->Location = System::Drawing::Point(17, 292);
 			this->txt_Kommentar->Name = L"txt_Kommentar";
 			this->txt_Kommentar->Size = System::Drawing::Size(304, 20);
-			this->txt_Kommentar->TabIndex = 12;
+			this->txt_Kommentar->TabIndex = 0;
 			// 
 			// lbl_Kommentar
 			// 

@@ -96,7 +96,7 @@ TimeSpan ^ Angestellter::getAktuelleArbeitszeit()
 		result = DateTime::Now - *(listeEreignisse[arbeitsanfang]->getTimestamp());
 
 		//Zudem noch die Pausezeit abziehen
-		TimeSpan^ pause = getPausezeit();
+		TimeSpan^ pause = getPausezeit(false);
 		result = TimeSpan::operator-(*result, *pause);
 	}
 	return result;
@@ -110,36 +110,78 @@ TimeSpan ^ Angestellter::getAktuellePausenzeit()
 }
 
 //Berechnet die gesamtzeit der Pausen des aktuellen Arbeitstags und gibt diese als TimeSpan zurück
-TimeSpan ^ Angestellter::getPausezeit()
+TimeSpan ^ Angestellter::getPausezeit(Boolean tagBeendet)
 {
-	Int32 index = getArbeitsAnfangIndex();
 	TimeSpan^ result = nullptr;
 
+	if (!tagBeendet) {
+	Int32 index = getArbeitsAnfangIndex();
 	//wenn es einen Index gibt dann erstelle neuen TimeSpan
-	if (index != -1) {
-		result = gcnew TimeSpan();
+		if (index != -1) {
+			result = gcnew TimeSpan();
 
-		//Naechster Pausenstart wird gesucht und zwischengespeichert
-		DateTime^ pausestart = nullptr;
-		for (int i = index + 1; i < getAnzahlEreignisse(); i++) {
-			if (listeEreignisse[i]->getTyp() == PAUSE_START) {
-				pausestart = listeEreignisse[i]->getTimestamp();
+			//Naechster Pausenstart wird gesucht und zwischengespeichert
+			DateTime^ pausestart = nullptr;
+			for (int i = index + 1; i < getAnzahlEreignisse(); i++) {
+				if (listeEreignisse[i]->getTyp() == PAUSE_START) {
+					pausestart = listeEreignisse[i]->getTimestamp();
+				}
+				//Wenn Pauseende vorhanden dann berechne Gesamtpause
+				else if (listeEreignisse[i]->getTyp() == PAUSE_ENDE) {
+					TimeSpan^ pause = *(listeEreignisse[i]->getTimestamp()) - *(pausestart);
+					result = TimeSpan::operator+(*result, *pause);
+					pausestart = nullptr;
+				}
 			}
-			//Wenn Pauseende vorhanden dann berechne Gesamtpause
-			else if (listeEreignisse[i]->getTyp() == PAUSE_ENDE) {
-				TimeSpan^ pause = *(listeEreignisse[i]->getTimestamp()) - *(pausestart);
+
+			//hier wird die aktuelle zeit bis zum aufrufzeitpunkt berechnet wenn noch kein pausenende
+			if (pausestart != nullptr) {
+				TimeSpan^ pause = DateTime::Now - *(pausestart);
 				result = TimeSpan::operator+(*result, *pause);
-				pausestart = nullptr;
 			}
 		}
+	}
+	else {
+		Int32 index = getArbeitsAnfangIndexNachArbeitstag();
+		//wenn es einen Index gibt dann erstelle neuen TimeSpan
+		if (index != -1) {
+			result = gcnew TimeSpan();
 
-		//hier wird die aktuelle zeit bis zum aufrufzeitpunkt berechnet wenn noch kein pausenende
-		if (pausestart != nullptr) {
-			TimeSpan^ pause = DateTime::Now - *(pausestart);
-			result = TimeSpan::operator+(*result, *pause);
+			//Naechster Pausenstart wird gesucht und zwischengespeichert
+			DateTime^ pausestart = nullptr;
+			for (int i = index + 1; i < getAnzahlEreignisse(); i++) {
+				if (listeEreignisse[i]->getTyp() == PAUSE_START) {
+					pausestart = listeEreignisse[i]->getTimestamp();
+				}
+				//Wenn Pauseende vorhanden dann berechne Gesamtpause
+				else if (listeEreignisse[i]->getTyp() == PAUSE_ENDE) {
+					TimeSpan^ pause = *(listeEreignisse[i]->getTimestamp()) - *(pausestart);
+					result = TimeSpan::operator+(*result, *pause);
+					pausestart = nullptr;
+				}
+			}
 		}
 	}
 	return result;
+}
+
+//Gibt die Pausenzeit zurück, die noch zur gesetzlich vorgeschriebenen Pause fehlt.
+TimeSpan^ Angestellter::genugPause() 
+{
+	TimeSpan^ fehlendePause = gcnew TimeSpan(0, 0, 0);
+	//berechnet heutige Arbeitszeit
+	TimeSpan^ arbeit = berechneArbeitsstunden(getArbeitsAnfangIndexNachArbeitstag());
+	//berechnet heutige Pausen
+	TimeSpan^ pausen = getPausezeit(true);
+	//Fall: Es wurden mehr als 9 Stunden gearbeitet
+	if (*arbeit > *(gcnew TimeSpan(9, 0, 0))) {
+		fehlendePause = TimeSpan::operator-(*(gcnew TimeSpan(0, 30, 0)), *pausen);
+	}
+	//Fall: Es wurden zwichen 6 und 9 Stunden gearbeitet
+	else if (*arbeit > *(gcnew TimeSpan(6, 0, 0))) {
+		fehlendePause = TimeSpan::operator-(*(gcnew TimeSpan(0, 45, 0)), *pausen);
+	} 
+	return fehlendePause;
 }
 
 //Berechnet die gesamte Arbeitszeit ab bestimmten Arbeitsanfangs (anfangsEreignisIndex) bis zum Ende dieses Tages und gibt sie als TimeSpan zurück.
