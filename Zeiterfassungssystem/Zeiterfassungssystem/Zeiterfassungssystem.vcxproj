@@ -143,6 +143,9 @@
     <ClInclude Include="BearbeitungsFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="BegruessungsFenster.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="FeiertagsFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -200,6 +203,7 @@
     <ClCompile Include="Angestellter.cpp" />
     <ClCompile Include="AuswahlFenster.cpp" />
     <ClCompile Include="BearbeitungsFenster.cpp" />
+    <ClCompile Include="BegruessungsFenster.cpp" />
     <ClCompile Include="FeiertagsFenster.cpp" />
     <ClCompile Include="FreierTag.cpp" />
     <ClCompile Include="FreierTagComparer.cpp" />
@@ -242,6 +246,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BearbeitungsFenster.resx">
       <DependentUpon>BearbeitungsFenster.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BegruessungsFenster.resx">
+      <DependentUpon>BegruessungsFenster.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FeiertagsFenster.resx">
       <DependentUpon>FeiertagsFenster.h</DependentUpon>

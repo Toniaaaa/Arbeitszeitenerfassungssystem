@@ -14,7 +14,6 @@ namespace Zeiterfassungssystem {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Text::RegularExpressions;
-	ref class StartseiteVorgesetzte;
 	/// <summary>
 	/// Zusammenfassung für RegistrierungsFenster
 	/// </summary>
@@ -23,9 +22,8 @@ namespace Zeiterfassungssystem {
 	{
 	private:
 		Unternehmen ^ unternehmen;
-		StartseiteVorgesetzte^ startseitevorgesetzte;
 	private: System::Windows::Forms::TextBox^  txt_name;
-			 Vorgesetzter^ vorgesetzter;
+		Vorgesetzter^ vorgesetzter;
 
 
 	public:
@@ -33,9 +31,6 @@ namespace Zeiterfassungssystem {
 		RegistrierungsFenster(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Konstruktorcode hier hinzufügen.
-			//
 		}
 
 	protected:
@@ -235,8 +230,10 @@ namespace Zeiterfassungssystem {
 #pragma endregion
 	private: System::Void registrierungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		//Abteilungen werden zur Auswahl hinzugefuegt
-		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
-			txt_abteilung->Items->Add(unternehmen->getAbteilung(i)->getAbteilungsnummer());
+		if (unternehmen->getAbteilungen() != nullptr) {
+			for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+				txt_abteilung->Items->Add(unternehmen->getAbteilung(i)->getAbteilungsnummer());
+			}
 		}
 
 	}
@@ -290,10 +287,6 @@ namespace Zeiterfassungssystem {
 			this->txt_urlaubstage->Text = "";
 			this->txt_abteilung->Text = "";
 			this->txt_Rolle->Text = "";
-		}
-
-		void setStartseiteVorgesetzte(StartseiteVorgesetzte^ startseiteVorgesetzte) {
-			this->startseitevorgesetzte = startseiteVorgesetzte;
 		}
 
 	public: void setUnternehmen(Unternehmen^ unternehmen) {
