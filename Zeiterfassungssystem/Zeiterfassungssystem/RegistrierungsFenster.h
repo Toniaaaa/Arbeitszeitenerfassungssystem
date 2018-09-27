@@ -352,15 +352,15 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void btn_mitarbeiter_hinzufuegen_Click(System::Object^  sender, System::EventArgs^  e) {
 		bool fehlerleer = false;
-		bool fehlerAbteilung = false;
+		bool abteilungOK = false;
 		bool fehlerPersonal = false;
 		int parse;
 		Vorgesetzter^ neuerMitarbeiter;
 
 		//Wenn Abteilung noch nicht existiert und Rolle mitarbeiter sein soll kommt ein Hinweis da es keine Abteilung ohne Vorgesetzten geben kann
 		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
-			if (!(getAbteilung()->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer())) && getRolle()->Equals("Mitarbeiter")) {
-				fehlerAbteilung = true;
+			if ((getAbteilung()->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer())) && getRolle()->Equals("Mitarbeiter")) {
+				abteilungOK = true;
 			}
 		}
 
@@ -419,7 +419,7 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			fehlerleer = true;
 		}
-		else if (fehlerAbteilung) {
+		else if (!abteilungOK) {
 			System::Windows::Forms::MessageBox::Show("Die Abteilung existiert noch nicht, fügen Sie zuerst einen Vorgesetzten hinzu!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_abteilung->Text = "";

@@ -16,7 +16,6 @@ private:
 	DateTime newEnd;
 	DateTime oldStart;
 	DateTime oldEnd;
-
 	String^ m_Grund;
 	String^ m_KommentarAntragsteller;
 
