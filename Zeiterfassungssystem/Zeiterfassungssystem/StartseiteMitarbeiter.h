@@ -23,7 +23,6 @@ namespace Zeiterfassungssystem {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Globalization;
-	using namespace System::Diagnostics;
 	//zum lesen und schreiben
 	using namespace System::Runtime::Serialization::Formatters::Binary;
 	using namespace System::IO;
@@ -390,9 +389,9 @@ namespace Zeiterfassungssystem {
 			this->pauseCbox->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->pauseCbox->Appearance = System::Windows::Forms::Appearance::Button;
 			this->pauseCbox->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pauseCbox.Image")));
-			this->pauseCbox->Location = System::Drawing::Point(289, 297);
+			this->pauseCbox->Location = System::Drawing::Point(293, 297);
 			this->pauseCbox->Name = L"pauseCbox";
-			this->pauseCbox->Size = System::Drawing::Size(240, 80);
+			this->pauseCbox->Size = System::Drawing::Size(235, 80);
 			this->pauseCbox->TabIndex = 1;
 			this->pauseCbox->UseVisualStyleBackColor = true;
 			this->pauseCbox->CheckedChanged += gcnew System::EventHandler(this, &StartseiteMitarbeiter::pauseCbox_CheckedChanged);
@@ -445,7 +444,7 @@ namespace Zeiterfassungssystem {
 			// logOutBtn
 			// 
 			this->logOutBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"logOutBtn.Image")));
-			this->logOutBtn->Location = System::Drawing::Point(19, 12);
+			this->logOutBtn->Location = System::Drawing::Point(26, 12);
 			this->logOutBtn->Name = L"logOutBtn";
 			this->logOutBtn->Size = System::Drawing::Size(122, 44);
 			this->logOutBtn->TabIndex = 7;
@@ -483,7 +482,7 @@ namespace Zeiterfassungssystem {
 			this->IntroductionBtn->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
 			this->IntroductionBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->IntroductionBtn->Location = System::Drawing::Point(767, 12);
+			this->IntroductionBtn->Location = System::Drawing::Point(751, 14);
 			this->IntroductionBtn->Name = L"IntroductionBtn";
 			this->IntroductionBtn->Size = System::Drawing::Size(47, 44);
 			this->IntroductionBtn->TabIndex = 26;
@@ -751,8 +750,8 @@ namespace Zeiterfassungssystem {
 	/*?-BUTTON
 	Startet den PDF-Reader des Systems und öffnet die Anleitung zum Programm*/
 	private: System::Void IntroductionBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		ProcessStartInfo^ startInfo = gcnew ProcessStartInfo("DokumentationProjekt.pdf");
-		Process::Start(startInfo);
+		Diagnostics::ProcessStartInfo^ startInfo = gcnew Diagnostics::ProcessStartInfo("DokumentationProjekt.pdf");
+		Diagnostics::Process::Start(startInfo);
 	}
 
 	//WÄHREND SEITE LÄD

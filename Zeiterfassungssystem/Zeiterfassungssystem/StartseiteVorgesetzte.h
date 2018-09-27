@@ -25,7 +25,6 @@ namespace Zeiterfassungssystem {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-	using namespace System::Diagnostics;
 	//zum lesen und schreiben
 	using namespace System::Runtime::Serialization::Formatters::Binary;
 	using namespace System::IO;
@@ -181,9 +180,9 @@ namespace Zeiterfassungssystem {
 			// 
 			this->kommenBtn->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->kommenBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"kommenBtn.Image")));
-			this->kommenBtn->Location = System::Drawing::Point(45, 266);
+			this->kommenBtn->Location = System::Drawing::Point(46, 271);
 			this->kommenBtn->Name = L"kommenBtn";
-			this->kommenBtn->Size = System::Drawing::Size(200, 141);
+			this->kommenBtn->Size = System::Drawing::Size(200, 130);
 			this->kommenBtn->TabIndex = 0;
 			this->kommenBtn->UseVisualStyleBackColor = true;
 			this->kommenBtn->Click += gcnew System::EventHandler(this, &StartseiteVorgesetzte::kommenBtn_Click);
@@ -192,9 +191,9 @@ namespace Zeiterfassungssystem {
 			// 
 			this->gehenBtn->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->gehenBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"gehenBtn.Image")));
-			this->gehenBtn->Location = System::Drawing::Point(584, 266);
+			this->gehenBtn->Location = System::Drawing::Point(588, 271);
 			this->gehenBtn->Name = L"gehenBtn";
-			this->gehenBtn->Size = System::Drawing::Size(200, 141);
+			this->gehenBtn->Size = System::Drawing::Size(200, 130);
 			this->gehenBtn->TabIndex = 2;
 			this->gehenBtn->UseVisualStyleBackColor = true;
 			this->gehenBtn->Click += gcnew System::EventHandler(this, &StartseiteVorgesetzte::gehenBtn_Click);
@@ -404,7 +403,7 @@ namespace Zeiterfassungssystem {
 			this->pauseCbox->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pauseCbox.Image")));
 			this->pauseCbox->Location = System::Drawing::Point(294, 296);
 			this->pauseCbox->Name = L"pauseCbox";
-			this->pauseCbox->Size = System::Drawing::Size(240, 80);
+			this->pauseCbox->Size = System::Drawing::Size(235, 80);
 			this->pauseCbox->TabIndex = 1;
 			this->pauseCbox->UseVisualStyleBackColor = true;
 			this->pauseCbox->CheckedChanged += gcnew System::EventHandler(this, &StartseiteVorgesetzte::pauseCbox_CheckedChanged);
@@ -485,7 +484,7 @@ namespace Zeiterfassungssystem {
 			// logOutBtn
 			// 
 			this->logOutBtn->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"logOutBtn.Image")));
-			this->logOutBtn->Location = System::Drawing::Point(14, 12);
+			this->logOutBtn->Location = System::Drawing::Point(25, 12);
 			this->logOutBtn->Name = L"logOutBtn";
 			this->logOutBtn->Size = System::Drawing::Size(122, 44);
 			this->logOutBtn->TabIndex = 9;
@@ -523,7 +522,7 @@ namespace Zeiterfassungssystem {
 			this->IntroductionBtn->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
 			this->IntroductionBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->IntroductionBtn->Location = System::Drawing::Point(772, 17);
+			this->IntroductionBtn->Location = System::Drawing::Point(756, 12);
 			this->IntroductionBtn->Name = L"IntroductionBtn";
 			this->IntroductionBtn->Size = System::Drawing::Size(47, 44);
 			this->IntroductionBtn->TabIndex = 27;
@@ -814,8 +813,8 @@ namespace Zeiterfassungssystem {
 	/*?-BUTTON
 	Startet den PDF-Reader des Systems und öffnet die Anleitung zum Programm*/
 	private: System::Void IntroductionBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		ProcessStartInfo^ startInfo = gcnew ProcessStartInfo("DokumentationProjekt.pdf");
-		Process::Start(startInfo);
+		Diagnostics::ProcessStartInfo^ startInfo = gcnew Diagnostics::ProcessStartInfo("DokumentationProjekt.pdf");
+		Diagnostics::Process::Start(startInfo);
 	}
 
 	//WÄHREND SEITE LÄD

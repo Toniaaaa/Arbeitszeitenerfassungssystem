@@ -85,7 +85,7 @@ namespace Zeiterfassungssystem {
 			this->addBtn->Name = L"addBtn";
 			this->addBtn->Size = System::Drawing::Size(205, 100);
 			this->addBtn->TabIndex = 1;
-			this->addBtn->Text = L"Nutzer hinzufügen";
+			this->addBtn->Text = L"Administrator registrieren";
 			this->addBtn->UseVisualStyleBackColor = true;
 			this->addBtn->Click += gcnew System::EventHandler(this, &BegruessungsFenster::addBtn_Click);
 			// 
