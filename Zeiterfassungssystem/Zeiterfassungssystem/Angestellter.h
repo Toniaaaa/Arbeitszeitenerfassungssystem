@@ -43,9 +43,10 @@ private:
 	DateTime letzterLogin;
 	Kalender^ kalender;
 	FreierTagComparer^ vergleichen;
+	Boolean istAdmin;
 
 public:
-	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage);
+	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage, Boolean istAdmin);
 
 	//Getter
 	inline String^ getVorname() {return vorname;}
@@ -70,6 +71,7 @@ public:
 	inline Ereignis^ getEreignis(Int32 index) { return listeEreignisse[index]; }
 	inline Int32 getAnzahlEreignisse() { return listeEreignisse->Count; }
 	inline String^ getStatus() { return status; }
+	inline Boolean getIstAdmin() { return istAdmin; }
 
 	Int32 getRestUrlaub();
 

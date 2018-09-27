@@ -1,6 +1,6 @@
 #include "Angestellter.h"
 
-Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32 wochenstunden, Int32 urlaubstage)
+Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32 wochenstunden, Int32 urlaubstage, Boolean istAdmin)
 {
 	this->vorname = vorname;
 	this->nachname = nachname;
@@ -24,6 +24,7 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->kalender = gcnew Kalender();
 	this->jahresurlaub = urlaubstage;
 	this->vergleichen = gcnew FreierTagComparer;
+	this->istAdmin = istAdmin;
 }
 
 //Gibt den restlichen Jahresurlaub zurück, den der Angestellte noch nicht eingereicht hat.

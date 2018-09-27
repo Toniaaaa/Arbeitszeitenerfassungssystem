@@ -15,7 +15,7 @@ private:
 	List<Urlaubsantrag^>^ listeUrlaubsantraege;
 
 public:
-	Vorgesetzter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage);
+	Vorgesetzter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage, Boolean istAdmin);
 
 	void addUrlaubsantrag(Urlaubsantrag^ neuerAntrag);
 	void removeUrlaubsantrag(Int32 index);
