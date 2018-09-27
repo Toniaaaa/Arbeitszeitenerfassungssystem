@@ -1,8 +1,8 @@
 #include "Mitarbeiter.h"
 
 //Konstruktor
-Mitarbeiter::Mitarbeiter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32 wochenstunden, Int32 urlaubstage, Vorgesetzter^ vorgesetzter) :
-	Angestellter(vorname, nachname, abteilung, personalnummer, passwort, wochenstunden, urlaubstage)
+Mitarbeiter::Mitarbeiter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32 wochenstunden, Int32 urlaubstage, Vorgesetzter^ vorgesetzter, Boolean istAdmin) :
+	Angestellter(vorname, nachname, abteilung, personalnummer, passwort, wochenstunden, urlaubstage, istAdmin)
 {
 	this->vorgesetzter = vorgesetzter;
 }
