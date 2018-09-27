@@ -469,7 +469,7 @@ namespace Zeiterfassungssystem {
 				}
 					
 				abteilung = angestellter->getAbteilung();
-				vorgesetzter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, angestellter->getAbteilung(), txt_personalnummer->Text, txt_passwort->Text, Convert::ToInt32(txt_arbeitsstunden->Text), Convert::ToInt32(txt_urlaubstage->Text));
+				vorgesetzter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, angestellter->getAbteilung(), txt_personalnummer->Text, txt_passwort->Text, Convert::ToInt32(txt_arbeitsstunden->Text), Convert::ToInt32(txt_urlaubstage->Text), false);
 				abteilung->setVorgesetzter(vorgesetzter);
 				unternehmen->addAbteilung(abteilung);
 				for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {

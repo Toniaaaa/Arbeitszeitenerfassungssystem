@@ -141,7 +141,7 @@ namespace Zeiterfassungssystem {
 			// txt_Rolle
 			// 
 			this->txt_Rolle->FormattingEnabled = true;
-			this->txt_Rolle->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Mitarbeiter", L"Vorgesetzter" });
+			this->txt_Rolle->Items->AddRange(gcnew cli::array< System::Object^  >(1) { L"Mitarbeiter" });
 			this->txt_Rolle->Location = System::Drawing::Point(161, 361);
 			this->txt_Rolle->Name = L"txt_Rolle";
 			this->txt_Rolle->Size = System::Drawing::Size(349, 24);
@@ -288,10 +288,13 @@ namespace Zeiterfassungssystem {
 		//Fall: Das Unternehmen ist neu
 		if (unternehmen->getAlleAngestellte()->Count == 0) {
 			//Der erste Mitarbeiter muss der Administrator sein
-			txt_Rolle->Items->RemoveAt(1);
 			txt_Rolle->Items->RemoveAt(0);
 			txt_Rolle->Items->Add("Administrator");
 			txt_abteilung->Text = "Administration";
+		}
+		else if (vorgesetzter != nullptr && vorgesetzter->getIstAdmin()) {
+			txt_Rolle->Items->Add("Administrator");
+			txt_Rolle->Items->Add("Vorgesetzter");
 		}
 	}
 	//Getter zun Datenaustausch
@@ -359,7 +362,7 @@ namespace Zeiterfassungssystem {
 
 		//Wenn Abteilung noch nicht existiert und Rolle mitarbeiter sein soll kommt ein Hinweis da es keine Abteilung ohne Vorgesetzten geben kann
 		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
-			if ((getAbteilung()->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer())) && getRolle()->Equals("Mitarbeiter")) {
+			if (((getAbteilung()->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer())) && getRolle()->Equals("Mitarbeiter")) || getRolle()->Equals("Vorgesetzter") || getRolle()->Equals("Administrator")) {
 				abteilungOK = true;
 			}
 		}
@@ -419,7 +422,7 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			fehlerleer = true;
 		}
-		else if (!abteilungOK) {
+		else if (!unternehmen->getAlleAngestellte()->Count == 0 && !abteilungOK) {
 			System::Windows::Forms::MessageBox::Show("Die Abteilung existiert noch nicht, fügen Sie zuerst einen Vorgesetzten hinzu!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_abteilung->Text = "";
@@ -478,7 +481,11 @@ namespace Zeiterfassungssystem {
 			else {
 				//Wenn Rolle Vorgesetzter (oder Administrator) gewaehlt wird neuer Vorgesetzter mit passender Abteilung erstellt
 				Abteilung^ abteilung = gcnew Abteilung(txt_abteilung->Text, nullptr);
-				neuerMitarbeiter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text));
+				Boolean admin = false;
+				if (this->txt_Rolle->SelectedItem->ToString()->Equals("Administrator")) {
+					admin = true;
+				}
+				neuerMitarbeiter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), admin);
 				abteilung->setVorgesetzter(neuerMitarbeiter);
 				
 				unternehmen->addAbteilung(abteilung);
