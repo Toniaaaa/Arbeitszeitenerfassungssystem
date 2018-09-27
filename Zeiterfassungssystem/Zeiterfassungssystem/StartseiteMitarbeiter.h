@@ -23,6 +23,7 @@ namespace Zeiterfassungssystem {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Globalization;
+	using namespace System::Diagnostics;
 	//zum lesen und schreiben
 	using namespace System::Runtime::Serialization::Formatters::Binary;
 	using namespace System::IO;
@@ -78,12 +79,12 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::CheckBox^  pauseCbox;
 	private: System::Windows::Forms::Timer^  timerPause;
 	private: System::Windows::Forms::Button^  personalBtn;
-
 	private: System::Windows::Forms::Label^  nameLbl;
 	private: System::Windows::Forms::Label^  lbl_Status;
 	private: System::Windows::Forms::Button^  logOutBtn;
 	private: System::Windows::Forms::Label^  ueberstundenSchriftLbl;
 	private: System::Windows::Forms::Label^  ueberstundenLbl;
+	private: System::Windows::Forms::Button^  IntroductionBtn;
 
 	private: System::Windows::Forms::Label^  uhrzeitLbl;
 
@@ -159,6 +160,7 @@ namespace Zeiterfassungssystem {
 			this->logOutBtn = (gcnew System::Windows::Forms::Button());
 			this->ueberstundenSchriftLbl = (gcnew System::Windows::Forms::Label());
 			this->ueberstundenLbl = (gcnew System::Windows::Forms::Label());
+			this->IntroductionBtn = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// kommenBtn
@@ -476,6 +478,19 @@ namespace Zeiterfassungssystem {
 			this->ueberstundenLbl->Text = L"0,0 Stunden";
 			this->ueberstundenLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
+			// IntroductionBtn
+			// 
+			this->IntroductionBtn->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->IntroductionBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->IntroductionBtn->Location = System::Drawing::Point(767, 12);
+			this->IntroductionBtn->Name = L"IntroductionBtn";
+			this->IntroductionBtn->Size = System::Drawing::Size(47, 44);
+			this->IntroductionBtn->TabIndex = 26;
+			this->IntroductionBtn->Text = L"\?";
+			this->IntroductionBtn->UseVisualStyleBackColor = true;
+			this->IntroductionBtn->Click += gcnew System::EventHandler(this, &StartseiteMitarbeiter::IntroductionBtn_Click);
+			// 
 			// StartseiteMitarbeiter
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -484,6 +499,7 @@ namespace Zeiterfassungssystem {
 			this->AutoSize = true;
 			this->BackColor = System::Drawing::SystemColors::MenuHighlight;
 			this->ClientSize = System::Drawing::Size(826, 691);
+			this->Controls->Add(this->IntroductionBtn);
 			this->Controls->Add(this->ueberstundenLbl);
 			this->Controls->Add(this->ueberstundenSchriftLbl);
 			this->Controls->Add(this->logOutBtn);
@@ -730,6 +746,13 @@ namespace Zeiterfassungssystem {
 			Application::Restart();
 		
 		}
+	}
+
+	/*?-BUTTON
+	Startet den PDF-Reader des Systems und öffnet die Anleitung zum Programm*/
+	private: System::Void IntroductionBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		ProcessStartInfo^ startInfo = gcnew ProcessStartInfo("DokumentationProjekt.pdf");
+		Process::Start(startInfo);
 	}
 
 	//WÄHREND SEITE LÄD
@@ -1089,6 +1112,5 @@ namespace Zeiterfassungssystem {
 		pauseStunde = 0;
 		this->setAnzeigeArbeitszeit();
 	}
-
 };
 }
