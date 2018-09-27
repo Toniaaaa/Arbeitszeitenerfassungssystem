@@ -5,6 +5,7 @@
 #include "Ereignis.h"
 #include "AenderungsbearbeitungsFenster.h"
 #include "Vorgesetzter.h"
+#include <ctype.h>
 
 namespace Zeiterfassungssystem {
 	using namespace System;
@@ -426,11 +427,27 @@ namespace Zeiterfassungssystem {
 	{
 	//Vergleich der Daten wird in einem Integer32 gespeichert
 	//	int vergleichMitHeute = DateTime::Compare(p_Tag, DateTime::Today.Date);
-
+		int parse = 0;
 
 		if (this->ankunftStdTxt->Text->Length == 0 || this->ankunftMinuteTxt->Text->Length == 0 || this->gehenStdTxt->Text->Length == 0 || gehenMinuteTxt->Text->Length == 0 || (p_Grund == nullptr && p_Kommentar == nullptr)) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Absenden nicht möglich!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+		else if (!Int32::TryParse(ankunftStdTxt->Text, parse)) {
+			MessageBox::Show("Bitte geben Sie eine Zahl ein!", "Stunden angefangen",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+		else if (!Int32::TryParse(ankunftMinuteTxt->Text, parse)) {
+			MessageBox::Show("Bitte geben Sie eine Zahl ein!", "Minuten angefangen",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+		else if (!Int32::TryParse(gehenStdTxt->Text, parse)) {
+			MessageBox::Show("Bitte geben Sie eine Zahl ein!", "Stunden gegangen",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+		else if (!Int32::TryParse(gehenMinuteTxt->Text, parse)) {
+			MessageBox::Show("Bitte geben Sie eine Zahl ein!", "Minuten gegangen",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 		else if (int::Parse(ankunftStdTxt->Text) < 0 || int::Parse(ankunftStdTxt->Text) > 23) {
