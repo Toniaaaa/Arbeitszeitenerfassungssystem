@@ -21,8 +21,6 @@ namespace Zeiterfassungssystem {
 
 	public ref class BearbeitungsFenster : public System::Windows::Forms::Form
 	{
-			
-
 
 	public:
 
@@ -561,16 +559,18 @@ namespace Zeiterfassungssystem {
 		txt_abteilung->Items->Clear();
 	}
 	private: System::Void btn_loeschen_Click(System::Object^  sender, System::EventArgs^  e) {
-		//Wenn loeschen button geklickt wird der passende Mitarbeiter aus der abteilung geloescht
-		abteilung = angestellter->getAbteilung();
-		for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
-			if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
-				abteilung->removeMitarbeiter(i);
+		//Sicherheitsabfrage
+		String^ abfrage = "Wollen Sie den Angestellten " + txt_vorname->Text + " " + txt_name->Text + " wirklich löschen?";
+		if (MessageBox::Show(abfrage, "Wirklich löschen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+			//Wenn loeschen button geklickt wird der passende Mitarbeiter aus der abteilung geloescht
+			abteilung = angestellter->getAbteilung();
+			for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
+				if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
+					abteilung->removeMitarbeiter(i);
+				}
 			}
-
+			this->Close();
 		}
-
-		
 	}
 };
 }
