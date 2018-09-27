@@ -537,14 +537,18 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
+	//Wenn das Fenster geschlossen wird
 	private: System::Void RegistrierungsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
 		this->clear();
 	}
 
+	//Wenn die Auswahl der Rolle verändert wird
 	private: System::Void txt_Rolle_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+		//Wenn "Vorgesetzter" ausgewählt ist, kann die Checkbox für Admin-Rechte ausgewählt werden
 		if (this->txt_Rolle->SelectedItem->ToString()->Equals("Vorgesetzter") && !unternehmen->getAlleAngestellte()->Count == 0) {
 			adminCBox->Enabled = true;
 		}
+		//Wenn "Mitarbeiter" ausgewählt wird, kann die Checkbox nicht gewählt werden
 		else if (this->txt_Rolle->SelectedItem->ToString()->Equals("Mitarbeiter")) {
 			adminCBox->Enabled = false;
 			adminCBox->Checked = false;
