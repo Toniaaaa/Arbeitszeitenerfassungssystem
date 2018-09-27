@@ -339,10 +339,24 @@ namespace Zeiterfassungssystem {
 		void setUnternehmen(Unternehmen^ unternehmen) {
 			this->unternehmen = unternehmen;
 		}
+
 		void setAngestellten(Angestellter^ angestellter) {
 			this->angestellter = angestellter;
 		}
+
 		String^ getPersonalnummerVergleich() {
+			return this->txt_personalnummer->Text;
+		}
+
+		String^ getAbteilung() {
+			return this->txt_abteilung->Text;
+		}
+
+		String^ getRolle() {
+			return this->txt_Rolle->Text;
+		}
+		
+		String^ getPersonalnummer() {
 			return this->txt_personalnummer->Text;
 		}
 
@@ -383,50 +397,101 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void btn_mitarbeiter_hinzufuegen_Click(System::Object^  sender, System::EventArgs^  e) {
-		bool fehler = false;
+		bool fehlerAbteilung = false;
+		bool fehlerPersonal = false;
 		int parse;
 		Vorgesetzter^ vorgesetzter;
 		Abteilung^ abteilung;
+
+		//Wenn Abteilung noch nicht existiert und Rolle mitarbeiter sein soll kommt ein Hinweis da es keine Abteilung ohne Vorgesetzten geben kann
+		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+			if (!(getAbteilung()->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer())) && getRolle()->Equals("Mitarbeiter")) {
+				fehlerAbteilung = true;
+			}
+		}
+
 		//Eingabepprüfung im Eventhandler
 		if (this->txt_name->Text->Length == 0) {
-
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			fehler = true;
+			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
-
 		else if (this->txt_vorname->Text->Length == 0) {
-
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			fehler = true;
+			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
-
 		else if (this->txt_personalnummer->Text->Length == 0) {
-
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			fehler = true;
+			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
-
 		else if (this->txt_passwort->Text->Length == 0) {
-
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			fehler = true;
+			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
-
 		else if (this->txt_arbeitsstunden->Text->Length == 0) {
-
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			fehler = true;
+			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
-
 		else if (this->txt_urlaubstage->Text->Length == 0) {
-
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			fehler = true;
+			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 		else if (this->txt_Rolle->Text->Length == 0) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			fehler = true;
+			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+		else if (fehlerAbteilung) {
+			System::Windows::Forms::MessageBox::Show("Die Abteilung existiert noch nicht, fügen Sie zuerst einen Vorgesetzten hinzu!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+			txt_abteilung->Text = "";
+		}
+		else if (fehlerPersonal) {
+			System::Windows::Forms::MessageBox::Show("Die Personalnummer existiert schon, bitte geben Sie eine neue ein!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+			txt_personalnummer->Clear();
+		}
+		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_name->Text, "^[a-zA-Z]*$")) {
+			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Name\" aktzeptiert nur Buchstaben!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+			txt_name->Clear();
+		}
+		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_vorname->Text, "^[a-zA-Z]*$")) {
+			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Vorname\" aktzeptiert nur Buchstaben!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+			txt_vorname->Clear();
+		}
+		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_abteilung->Text, "^[a-zA-Z]*$")) {
+			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Abteilung\" aktzeptiert nur Buchstaben!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+			txt_abteilung->Text = "";
+		}
+		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_personalnummer->Text, "^[0-9]+$")) {
+			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Personalnummer\" aktzeptiert nur Zahlen!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+			txt_personalnummer->Clear();
+		}
+		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_arbeitsstunden->Text, "^[0-9]+$")) {
+			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Arbeitsstunden\" akzeptiert nur Zahlen!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+			txt_arbeitsstunden->Clear();
+		}
+		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_urlaubstage->Text, "^[0-9]+$")) {
+			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Urlaubstage\" aktzeptiert nur Zahlen!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+			txt_urlaubstage->Clear();
+		}
+		else if (int::Parse(txt_urlaubstage->Text) < 28) {
+			System::Windows::Forms::MessageBox::Show("Urlaubstage sind laut Gesetz immer größer 28 zu wählen!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+			txt_urlaubstage->Clear();
+		}
+
 		/*for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
 			if (!(txt_abteilung->Text->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer())) && txt_Rolle->Text->Equals("Mitarbeiter")) {
 				System::Windows::Forms::MessageBox::Show("Die Abteilung existiert noch nicht, fügen Sie zuerst einen Vorgesetzten hinzu!", "Fehlgeschlagen!",
@@ -434,14 +499,8 @@ namespace Zeiterfassungssystem {
 				txt_abteilung->Text = "";
 				fehler = true;
 			}
-
 		}*/
 
-		//ÄNDERUNG
-		if (fehler) {
-			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehler!",
-				MessageBoxButtons::OK, MessageBoxIcon::Error);
-		}
 		else {
 
 			angestellter->setNachname(txt_name->Text);
@@ -488,14 +547,8 @@ namespace Zeiterfassungssystem {
 						}
 					}
 				}
-			
-		
-		MessageBox::Show("Erfolgreich", "Angestellten Daten erfolgreich geändert!", MessageBoxButtons::OK, MessageBoxIcon::Information);
-	}
-	
-			else {
-				
-				
+
+				MessageBox::Show("Erfolgreich", "Angestellten Daten erfolgreich geändert!", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			}
 			this->clear();
 

@@ -427,48 +427,36 @@ namespace Zeiterfassungssystem {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
-			fehlerleer = true;
 		}
-
 		else if (this->txt_vorname->Text->Length == 0) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
-			fehlerleer = true;
 		}
-
 		else if (this->txt_personalnummer->Text->Length == 0) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
-			fehlerleer = true;
 		}
-
 		else if (this->txt_passwort->Text->Length == 0) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
-			fehlerleer = true;
 		}
-
 		else if (this->txt_arbeitsstunden->Text->Length == 0) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
-			fehlerleer = true;
 		}
-
 		else if (this->txt_urlaubstage->Text->Length == 0) {
 			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			fehlerleer = true;
 		}
 		else if (this->txt_Rolle->Text->Length == 0) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
-			fehlerleer = true;
 		}
 		else if (!unternehmen->getAlleAngestellte()->Count == 0 && !abteilungOK) {
 			System::Windows::Forms::MessageBox::Show("Die Abteilung existiert noch nicht, fügen Sie zuerst einen Vorgesetzten hinzu!", "Fehlgeschlagen!",
@@ -489,6 +477,11 @@ namespace Zeiterfassungssystem {
 			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Vorname\" aktzeptiert nur Buchstaben!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_vorname->Clear();
+		}
+		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_abteilung->Text, "^[a-zA-Z]*$")) {
+			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Abteilung\" aktzeptiert nur Buchstaben!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+			txt_abteilung->Text = "";
 		}
 		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_personalnummer->Text, "^[0-9]+$")) {
 			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Personalnummer\" aktzeptiert nur Zahlen!", "Fehlgeschlagen!",
