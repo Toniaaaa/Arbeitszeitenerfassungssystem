@@ -417,7 +417,7 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_personalnummer->Clear();
 		}
-		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_name->Text, "^[a-zA-Z]*$")) {
+		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_name->Text, "^[a-zA-Z]*(\ |\-)[a-zA-Z]*$")) {
 			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Name\" aktzeptiert nur Buchstaben!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_name->Clear();
