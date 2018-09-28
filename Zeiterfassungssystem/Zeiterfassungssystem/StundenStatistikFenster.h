@@ -191,6 +191,7 @@ namespace Zeiterfassungssystem {
 		//zum speichern der gesamtstunden
 		TimeSpan^ gesamtStunden = nullptr;
 		TimeSpan^ gesamt = gcnew TimeSpan;
+		Double^ gesamtezeit;
 
 		//Laufe ueber ereignisse fuege diese an die richtigen Items und speicher index
 		for (int i = 0; i < angestellter->getAnzahlEreignisse(); i++) {
@@ -235,7 +236,8 @@ namespace Zeiterfassungssystem {
 				}
 				hattePause = false;
 				item->SubItems->Add(angestellter->getEreignis(i)->getTimestamp()->ToString());
-				item->SubItems->Add(gesamtStunden->ToString());
+				gesamtezeit = gesamtStunden->TotalHours;
+				item->SubItems->Add(gesamtezeit->ToString("0.00"));
 			}
 		}
 		label1->Text = gesamt->TotalHours.ToString("0.00" + " Stunden gesamt");
