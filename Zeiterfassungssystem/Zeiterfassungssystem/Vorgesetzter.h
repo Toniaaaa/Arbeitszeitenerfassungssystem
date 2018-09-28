@@ -13,6 +13,7 @@ ref class Vorgesetzter :
 private:
 	List<Aenderungsantrag^>^ listeAenderungsantraege;
 	List<Urlaubsantrag^>^ listeUrlaubsantraege;
+	Boolean istAdmin;
 
 public:
 	Vorgesetzter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage, Boolean istAdmin);
@@ -26,4 +27,5 @@ public:
 	inline List<Aenderungsantrag^>^ getAenderungsantraege() { return listeAenderungsantraege; }
 
 	bool istVorgesetzter() override;
+	inline Boolean getIstAdmin() { return istAdmin; }
 };
