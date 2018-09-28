@@ -191,6 +191,9 @@
     <ClInclude Include="UrlaubsFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="VorgesetztenAuswahlFenster.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Vorgesetzter.h" />
     <ClInclude Include="Ereignis.h" />
     <ClInclude Include="Unternehmen.h" />
@@ -222,6 +225,7 @@
     <ClCompile Include="Urlaubsantrag.cpp" />
     <ClCompile Include="UrlaubsbearbeitungsFenster.cpp" />
     <ClCompile Include="UrlaubsFenster.cpp" />
+    <ClCompile Include="VorgesetztenAuswahlFenster.cpp" />
     <ClCompile Include="Vorgesetzter.cpp" />
     <ClCompile Include="Ereignis.cpp" />
     <ClCompile Include="Unternehmen.cpp" />
@@ -287,6 +291,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UrlaubsFenster.resx">
       <DependentUpon>UrlaubsFenster.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VorgesetztenAuswahlFenster.resx">
+      <DependentUpon>VorgesetztenAuswahlFenster.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

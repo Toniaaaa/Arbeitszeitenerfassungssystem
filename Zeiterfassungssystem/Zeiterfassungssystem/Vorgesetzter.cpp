@@ -1,4 +1,5 @@
 #include "Vorgesetzter.h"
+#include "Mitarbeiter.h"
 
 //Konstruktor
 Vorgesetzter::Vorgesetzter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32 wochenstunden, Int32 urlaubstage, Boolean istAdmin) :
@@ -7,6 +8,13 @@ Vorgesetzter::Vorgesetzter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	listeAenderungsantraege = gcnew List<Aenderungsantrag^>;
 	listeUrlaubsantraege = gcnew List<Urlaubsantrag^>;
 	this->istAdmin = istAdmin;
+}
+
+Vorgesetzter::Vorgesetzter(Mitarbeiter^ mitarbeiterAlt) : Angestellter(mitarbeiterAlt)
+{
+	listeAenderungsantraege = gcnew List<Aenderungsantrag^>;
+	listeUrlaubsantraege = gcnew List<Urlaubsantrag^>;
+	this->istAdmin = false;
 }
 
 //Gibt zurück, dass dieser Angestellte ein Vorgesetzter ist

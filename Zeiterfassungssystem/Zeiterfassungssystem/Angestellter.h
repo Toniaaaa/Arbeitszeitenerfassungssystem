@@ -16,6 +16,7 @@ using namespace System::Collections::Generic;
 ref class Abteilung;
 ref class Ereignis;
 ref class Vorgesetzter;
+ref class Mitarbeiter;
 
 [Serializable]
 ref class Angestellter 
@@ -48,6 +49,7 @@ private:
 public:
 	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage);
 	Angestellter(Vorgesetzter^ vorgesetzterAlt);
+	Angestellter(Mitarbeiter^ mitarbeiterAlt);
 
 	//Getter
 	inline String^ getVorname() {return vorname;}

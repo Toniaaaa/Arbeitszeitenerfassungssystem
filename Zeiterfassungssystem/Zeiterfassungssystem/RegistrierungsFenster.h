@@ -22,13 +22,11 @@ namespace Zeiterfassungssystem {
 	{
 	private:
 		Unternehmen ^ unternehmen;
+		Vorgesetzter^ vorgesetzter;
 	private: System::Windows::Forms::TextBox^  txt_name;
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::CheckBox^  adminCBox;
-
-			 Vorgesetzter^ vorgesetzter;
-
-
+			 
 	public:
 
 		RegistrierungsFenster(void)
@@ -395,6 +393,8 @@ namespace Zeiterfassungssystem {
 			this->txt_abteilung->Text = "";
 			this->txt_Rolle->Text = "";
 			this->adminCBox->Checked = false;
+			this->txt_Rolle->Items->Clear();
+			this->txt_Rolle->Items->Add("Mitarbeiter");
 		}
 
 	public: void setUnternehmen(Unternehmen^ unternehmen) {
@@ -512,7 +512,7 @@ namespace Zeiterfassungssystem {
 				Abteilung^ abteilung = nullptr;
 				//Abteilung im Unternehmen wird ausgerufen wenn passender Abteilungsname ausgewählt
 				for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
-					if (unternehmen->getAbteilung(i)->getAbteilungsnummer()->Equals(getAbteilung())) {
+					if (txt_abteilung->SelectedItem->ToString()->Equals(unternehmen->getAbteilung(i)->getAbteilungsnummer())) {
 						abteilung = unternehmen->getAbteilung(i);
 					}
 				}
@@ -528,9 +528,7 @@ namespace Zeiterfassungssystem {
 				Abteilung^ abteilung = gcnew Abteilung(txt_abteilung->Text, nullptr);
 				neuerMitarbeiter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), admin);
 				abteilung->setVorgesetzter(neuerMitarbeiter);
-				
 				unternehmen->addAbteilung(abteilung);
-
 				this->DialogResult = System::Windows::Forms::DialogResult::OK;
 				this->Close();
 			}

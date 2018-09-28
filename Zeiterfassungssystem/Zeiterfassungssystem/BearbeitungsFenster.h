@@ -4,6 +4,7 @@
 #include "Abteilung.h"
 #include "Vorgesetzter.h"
 #include "Mitarbeiter.h"
+#include "VorgesetztenAuswahlFenster.h"
 
 namespace Zeiterfassungssystem {
 
@@ -21,15 +22,15 @@ namespace Zeiterfassungssystem {
 
 	public ref class BearbeitungsFenster : public System::Windows::Forms::Form
 	{
+	private:
+		VorgesetztenAuswahlFenster^ vorgesetztenFenster;
 
 	public:
 
 		BearbeitungsFenster(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Konstruktorcode hier hinzufügen.
-			//
+			vorgesetztenFenster = gcnew VorgesetztenAuswahlFenster;
 		}
 
 	protected:
@@ -43,7 +44,6 @@ namespace Zeiterfassungssystem {
 				delete components;
 			}
 		}
-
 
 	private: System::Windows::Forms::TextBox^  txt_name;
 	private: System::Windows::Forms::TextBox^  txt_vorname;
@@ -502,7 +502,6 @@ namespace Zeiterfassungssystem {
 		}*/
 
 		else {
-
 			angestellter->setNachname(txt_name->Text);
 			angestellter->setVorname(txt_vorname->Text);
 			angestellter->setPersonalnummer(txt_personalnummer->Text);
@@ -512,7 +511,6 @@ namespace Zeiterfassungssystem {
 			for (int k = 0; k < unternehmen->getAnzahlAbteilungen(); k++) {
 				if (txt_abteilung->Text->Equals(unternehmen->getAbteilung(k)->getAbteilungsnummer())) {
 					angestellter->setAbteilung(unternehmen->getAbteilung(k));
-
 				}
 				else if (txt_Rolle->Text->Equals("Mitarbeiter")) {
 					MessageBox::Show("Die Abteilung hat noch keinen Vorgesetzten", "Fehlgeschlagen!", MessageBoxButtons::OK, MessageBoxIcon::Information);
@@ -558,16 +556,31 @@ namespace Zeiterfassungssystem {
 		this->clear();
 		txt_abteilung->Items->Clear();
 	}
+
 	private: System::Void btn_loeschen_Click(System::Object^  sender, System::EventArgs^  e) {
 		//Sicherheitsabfrage
 		String^ abfrage = "Wollen Sie den Angestellten " + txt_vorname->Text + " " + txt_name->Text + " wirklich löschen?";
 		if (MessageBox::Show(abfrage, "Wirklich löschen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 			//Wenn loeschen button geklickt wird der passende Mitarbeiter aus der abteilung geloescht
-			abteilung = angestellter->getAbteilung();
-			for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
-				if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
-					abteilung->removeMitarbeiter(i);
+			if (!angestellter->istVorgesetzter()) {
+				abteilung = angestellter->getAbteilung();
+				for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
+					if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
+						abteilung->removeMitarbeiter(i);
+					}
 				}
+			}
+			else {
+				Vorgesetzter^ vorgesetzterAlt = nullptr;
+				for (int i = 0; i < unternehmen->getAlleAngestellte()->Count; i++) {
+					if (unternehmen->getAlleAngestellte()[i]->getPersonalnummer()->Equals(txt_personalnummer->Text)) {
+						vorgesetzterAlt = (Vorgesetzter^) unternehmen->getAlleAngestellte()[i];
+						break;
+					}
+				}
+				vorgesetztenFenster->setUnternehmen(unternehmen);
+				vorgesetztenFenster->setVorgesetzterAlt(vorgesetzterAlt);
+				vorgesetztenFenster->ShowDialog(this);
 			}
 			this->Close();
 		}
