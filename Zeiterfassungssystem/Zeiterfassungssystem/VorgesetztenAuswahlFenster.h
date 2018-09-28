@@ -27,6 +27,8 @@ namespace Zeiterfassungssystem {
 		Vorgesetzter^ vorgesetzterNeu;
 		Boolean ausgewaehlt;
 		RegistrierungsFenster^ regFenster;
+		Boolean behalten;
+
 	private: System::Windows::Forms::Button^  abbrechenBtn;
 			 Abteilung^ abteilung;
 	
@@ -154,6 +156,10 @@ namespace Zeiterfassungssystem {
 				+ " bestimmen?";
 			if (MessageBox::Show(abfrage, "Wirklich löschen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 				vorgesetzterNeu = gcnew Vorgesetzter(ausgewaehlterMA);
+				if (behalten) {
+					Mitarbeiter^ neuerMA = gcnew Mitarbeiter(vorgesetzterAlt, vorgesetzterNeu);
+					abteilung->fuegeMitarbeiterHinzu(neuerMA);
+				}
 				abteilung->setVorgesetzter(vorgesetzterNeu);
 			}
 			for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
@@ -161,8 +167,15 @@ namespace Zeiterfassungssystem {
 					abteilung->removeMitarbeiter(i);
 				}
 			}
-			String^ infoText = "Sie haben erfolgreich " + vorgesetzterNeu->getVorname() + " " + vorgesetzterNeu->getNachname() + " zum Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer()
-				+ " befördert.\n" + vorgesetzterAlt->getVorname() + " " + vorgesetzterAlt->getNachname() + " wurde gelöscht.";
+			String^ infoText = nullptr;
+			if (behalten) {
+				infoText = "Sie haben erfolgreich " + vorgesetzterNeu->getVorname() + " " + vorgesetzterNeu->getNachname() + " zum Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer()
+					+ " befördert.\n" + vorgesetzterAlt->getVorname() + " " + vorgesetzterAlt->getNachname() + " ist jetzt Mitarbeiter dieser Abteilung.";
+			}
+			else {
+				infoText = "Sie haben erfolgreich " + vorgesetzterNeu->getVorname() + " " + vorgesetzterNeu->getNachname() + " zum Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer()
+					+ " befördert.\n" + vorgesetzterAlt->getVorname() + " " + vorgesetzterAlt->getNachname() + " wurde gelöscht.";
+			}
 			MessageBox::Show(infoText, "Erfolgreich befördert", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			this->Close();
@@ -186,6 +199,10 @@ namespace Zeiterfassungssystem {
 
 	public: void setVorgesetzterAlt(Vorgesetzter^ vorgesetzterAlt) {
 		this->vorgesetzterAlt = vorgesetzterAlt;
+	}
+
+	public: void setVorgesetztenAltBehalten(Boolean behalten) {
+		this->behalten = behalten;
 	}
 
 	private: System::Void auswahlCBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {

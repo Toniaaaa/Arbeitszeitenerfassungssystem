@@ -410,7 +410,7 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void btn_mitarbeiter_hinzufuegen_Click(System::Object^  sender, System::EventArgs^  e) {
-		bool fehlerAbteilung = false;
+		bool fehlerAbteilung = true;
 		bool fehlerPersonal = false;
 		int parse;
 		Vorgesetzter^ vorgesetzter;
@@ -418,8 +418,8 @@ namespace Zeiterfassungssystem {
 
 		//Wenn Abteilung noch nicht existiert und Rolle mitarbeiter sein soll kommt ein Hinweis da es keine Abteilung ohne Vorgesetzten geben kann
 		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
-			if (!(getAbteilung()->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer())) && getRolle()->Equals("Mitarbeiter")) {
-				fehlerAbteilung = true;
+			if ((getAbteilung()->Equals(unternehmen->getAbteilung(i)->getAbteilungsnummer())) || getRolle()->Equals("Vorgesetzter")) {
+				fehlerAbteilung = false;
 			}
 		}
 
@@ -551,9 +551,11 @@ namespace Zeiterfassungssystem {
 					if (abteilungNichtVorhanden) {
 						abteilung->setVorgesetzter(vorgesetzter);
 					}
-					Mitarbeiter^ ehemVorgesetzter = gcnew Mitarbeiter(abteilung->getVorgesetzter(), vorgesetzter); //Alter Vorgesetzter wird als Mitarbeiter gespeichert.
-					abteilung->fuegeMitarbeiterHinzu(ehemVorgesetzter); //Alter Vorgesetzter wird der Abteilung als MA hinzugefuegt
-					abteilung->setVorgesetzter(vorgesetzter);
+					else {
+						Mitarbeiter^ ehemVorgesetzter = gcnew Mitarbeiter(abteilung->getVorgesetzter(), vorgesetzter); //Alter Vorgesetzter wird als Mitarbeiter gespeichert.
+						abteilung->fuegeMitarbeiterHinzu(ehemVorgesetzter); //Alter Vorgesetzter wird der Abteilung als MA hinzugefuegt
+						abteilung->setVorgesetzter(vorgesetzter);
+					}
 					for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
 						if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
 							abteilung->removeMitarbeiter(i);
@@ -570,12 +572,30 @@ namespace Zeiterfassungssystem {
 						}
 					}
 
-					MessageBox::Show("Erfolgreich", "Angestellten Daten erfolgreich geändert!", MessageBoxButtons::OK, MessageBoxIcon::Information);
+					MessageBox::Show("Angestellten Daten erfolgreich geändert!", "Erfolgreich", MessageBoxButtons::OK, MessageBoxIcon::Information);
+				}
+			}
+			if (txt_Rolle->Text->Equals("Mitarbeiter") && rolle->Equals("Vorgesetzter")) {
+				//Sicherheitsabfrage
+				String^ abfrage = "Wollen Sie den Vorgesetzten " + txt_vorname->Text + " " + txt_name->Text + " wirklich als Mitarbeiter setzen?";
+				if (MessageBox::Show(abfrage, "Wirklich degradieren?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+					Vorgesetzter^ vorgesetzterAlt = nullptr;
+					for (int i = 0; i < unternehmen->getAlleAngestellte()->Count; i++) {
+						if (unternehmen->getAlleAngestellte()[i]->getPersonalnummer()->Equals(txt_personalnummer->Text)) {
+							vorgesetzterAlt = (Vorgesetzter^)unternehmen->getAlleAngestellte()[i];
+							break;
+						}
+					}
+					vorgesetztenFenster->setUnternehmen(unternehmen);
+					vorgesetztenFenster->setVorgesetzterAlt(vorgesetzterAlt);
+					vorgesetztenFenster->setVorgesetztenAltBehalten(true);
+					vorgesetztenFenster->ShowDialog(this);
 				}
 			}
 			this->Close();
 		}
 	}
+
 	private: System::Void BearbeitungsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
 		this->clear();
 	}
@@ -603,6 +623,7 @@ namespace Zeiterfassungssystem {
 				}
 				vorgesetztenFenster->setUnternehmen(unternehmen);
 				vorgesetztenFenster->setVorgesetzterAlt(vorgesetzterAlt);
+				vorgesetztenFenster->setVorgesetztenAltBehalten(false);
 				vorgesetztenFenster->ShowDialog(this);
 			}
 			this->Close();
