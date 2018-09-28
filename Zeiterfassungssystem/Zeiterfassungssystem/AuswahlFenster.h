@@ -127,12 +127,18 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void btn_angestellte_Click(System::Object^  sender, System::EventArgs^  e) {
-		bearbeitungsfenster->ShowDialog(this);
+		System::Windows::Forms::DialogResult result = bearbeitungsfenster->ShowDialog(this);
+		if (result == System::Windows::Forms::DialogResult::OK) {
+			this->Close();
+		}
 	}
 
 	private: System::Void btn_feiertag_Click(System::Object^  sender, System::EventArgs^  e) {
-		feiertagsfenster->ShowDialog(this);
+		System::Windows::Forms::DialogResult result = feiertagsfenster->ShowDialog(this);
 		feiertagsfenster->clear();
+		if (result == System::Windows::Forms::DialogResult::OK) {
+			this->Close();
+		}
 	}
 
 	private: System::Void btn_urlaub_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -146,6 +152,7 @@ namespace Zeiterfassungssystem {
 			}
 		}
 		urlaubLoeschenfenster->clear();
+		this->Close();
 	}
 };
 }

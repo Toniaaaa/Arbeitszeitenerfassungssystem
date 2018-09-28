@@ -521,7 +521,6 @@ namespace Zeiterfassungssystem {
 				mitarbeiter->setAbteilung(abteilung);
 				abteilung->fuegeMitarbeiterHinzu(mitarbeiter);
 				this->DialogResult = System::Windows::Forms::DialogResult::OK;
-				this->Close();
 			}
 			else {
 				//Wenn Rolle Vorgesetzter gewaehlt wird neuer Vorgesetzter mit passender Abteilung erstellt
@@ -530,9 +529,9 @@ namespace Zeiterfassungssystem {
 				abteilung->setVorgesetzter(neuerMitarbeiter);
 				unternehmen->addAbteilung(abteilung);
 				this->DialogResult = System::Windows::Forms::DialogResult::OK;
-				this->Close();
 			}
-			
+			MessageBox::Show("Sie haben erfolgreich einen Angestellten hinzugefügt", "Hinzufügen erfolgreich", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			this->Close();
 		}
 	}
 

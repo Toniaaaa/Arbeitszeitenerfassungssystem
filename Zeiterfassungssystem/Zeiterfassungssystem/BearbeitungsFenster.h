@@ -592,6 +592,7 @@ namespace Zeiterfassungssystem {
 					vorgesetztenFenster->ShowDialog(this);
 				}
 			}
+			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			this->Close();
 		}
 	}
@@ -626,6 +627,7 @@ namespace Zeiterfassungssystem {
 				vorgesetztenFenster->setVorgesetztenAltBehalten(false);
 				vorgesetztenFenster->ShowDialog(this);
 			}
+			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			this->Close();
 		}
 	}
