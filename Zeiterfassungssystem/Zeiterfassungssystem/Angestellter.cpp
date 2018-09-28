@@ -37,20 +37,20 @@ Angestellter::Angestellter(Vorgesetzter^ vorgesetzterAlt)
 	this->passwort = vorgesetzterAlt->getPasswort();
 	this->wochenstunden = vorgesetzterAlt->getWochensstunden();
 	this->urlaubstage = vorgesetzterAlt->getUrlaubstage();
-	this->urlaubstageGespart = 0;
+	this->urlaubstageGespart = vorgesetzterAlt->getUrlaubstageGespart();
 	listeEreignisse = vorgesetzterAlt->getListeEreignisse();
 	listegesamtstunden = vorgesetzterAlt->getListeGesamtstunden();
 	antragsInfos = gcnew List<String^>;
-	this->wochenZeitErreicht = false;
-	this->arbeitsStunden = wochenstunden;
-	this->arbeitsMinuten = 0;
-	this->ueberStunden = 0;
-	this->ueberMinuten = 0;
-	this->ueberStundenGesamt = 0.0;
+	this->wochenZeitErreicht = vorgesetzterAlt->getWochenZeitErreicht();
+	this->arbeitsStunden = vorgesetzterAlt->getArbeitsStunden();
+	this->arbeitsMinuten = vorgesetzterAlt->getArbeitsMinuten();
+	this->ueberStunden = vorgesetzterAlt->getUeberStunden();
+	this->ueberMinuten = vorgesetzterAlt->getUeberMinuten();
+	this->ueberStundenGesamt = vorgesetzterAlt->getUeberstundenGesamt();
 	this->listeUrlaubstage = vorgesetzterAlt->getListeUrlaubstage();
-	this->letzterLogin = DateTime::Now;
+	this->letzterLogin = vorgesetzterAlt->getLetzterLogin();
 	this->kalender = gcnew Kalender();
-	this->jahresurlaub = urlaubstage;
+	this->jahresurlaub = vorgesetzterAlt->getJahresurlaub();
 	this->vergleichen = gcnew FreierTagComparer;
 }
 
@@ -63,20 +63,20 @@ Angestellter::Angestellter(Mitarbeiter^ mitarbeiterAlt)
 	this->passwort = mitarbeiterAlt->getPasswort();
 	this->wochenstunden = mitarbeiterAlt->getWochensstunden();
 	this->urlaubstage = mitarbeiterAlt->getUrlaubstage();
-	this->urlaubstageGespart = 0;
+	this->urlaubstageGespart = mitarbeiterAlt->getUrlaubstageGespart();
 	listeEreignisse = mitarbeiterAlt->getListeEreignisse();
 	listegesamtstunden = mitarbeiterAlt->getListeGesamtstunden();
 	antragsInfos = gcnew List<String^>;
-	this->wochenZeitErreicht = false;
-	this->arbeitsStunden = wochenstunden;
-	this->arbeitsMinuten = 0;
-	this->ueberStunden = 0;
-	this->ueberMinuten = 0;
-	this->ueberStundenGesamt = 0.0;
+	this->wochenZeitErreicht = mitarbeiterAlt->getWochenZeitErreicht();
+	this->arbeitsStunden = mitarbeiterAlt->getArbeitsStunden();
+	this->arbeitsMinuten = mitarbeiterAlt->getArbeitsMinuten();
+	this->ueberStunden = mitarbeiterAlt->getUeberStunden();
+	this->ueberMinuten = mitarbeiterAlt->getUeberMinuten();
+	this->ueberStundenGesamt = mitarbeiterAlt->getUeberstundenGesamt();
 	this->listeUrlaubstage = mitarbeiterAlt->getListeUrlaubstage();
-	this->letzterLogin = DateTime::Now;
+	this->letzterLogin = mitarbeiterAlt->getLetzterLogin();
 	this->kalender = gcnew Kalender();
-	this->jahresurlaub = urlaubstage;
+	this->jahresurlaub = mitarbeiterAlt->getJahresurlaub();
 	this->vergleichen = gcnew FreierTagComparer;
 }
 

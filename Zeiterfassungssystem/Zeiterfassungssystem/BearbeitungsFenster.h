@@ -334,6 +334,7 @@ namespace Zeiterfassungssystem {
 			this->txt_arbeitsstunden->Text = "";
 			this->txt_urlaubstage->Text = "";
 			this->txt_Rolle->Text = "";
+			this->txt_abteilung->Items->Clear();
 		}
 	public: 
 		void setUnternehmen(Unternehmen^ unternehmen) {
@@ -367,6 +368,7 @@ namespace Zeiterfassungssystem {
 		//Wenn man anfaengt die Personalnummer zu schreiben wird diese abgeglichen und die Textbooxen werden mit den anderen
 		//Daten automatisch befüllt
 		angestellte = unternehmen->getAlleAngestellte();
+		Boolean gefunden = false;
 		for (int i = 0; i < angestellte->Count; i++) {
 			if (angestellte[i]->getPersonalnummer()->Equals(getPersonalnummerVergleich())) {
 				setAngestellten(angestellte[i]);
@@ -389,11 +391,22 @@ namespace Zeiterfassungssystem {
 					txt_Rolle->Text = "Vorgesetzter";
 					rolle = "Vorgesetzter";
 				}
-
-
+				gefunden = true;
 			}
 		}
-	
+		if (!gefunden) {
+			this->txt_name->Text = "";
+			this->txt_vorname->Text = "";
+			this->txt_passwort->Text = "";
+			this->txt_abteilung->Text = "";
+			this->txt_arbeitsstunden->Text = "";
+			this->txt_urlaubstage->Text = "";
+			this->txt_Rolle->Text = "";
+			this->txt_abteilung->Items->Clear();
+		}
+		if (txt_personalnummer->Text == "") {
+			this->clear();
+		}
 	}
 
 	private: System::Void btn_mitarbeiter_hinzufuegen_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -511,6 +524,7 @@ namespace Zeiterfassungssystem {
 			for (int k = 0; k < unternehmen->getAnzahlAbteilungen(); k++) {
 				if (txt_abteilung->Text->Equals(unternehmen->getAbteilung(k)->getAbteilungsnummer())) {
 					angestellter->setAbteilung(unternehmen->getAbteilung(k));
+					//Alles OK
 				}
 				else if (txt_Rolle->Text->Equals("Mitarbeiter")) {
 					MessageBox::Show("Die Abteilung hat noch keinen Vorgesetzten", "Fehlgeschlagen!", MessageBoxButtons::OK, MessageBoxIcon::Information);
@@ -518,43 +532,50 @@ namespace Zeiterfassungssystem {
 			}
 
 			if (txt_Rolle->Text->Equals("Vorgesetzter") && rolle->Equals("Mitarbeiter")) {
-				for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
-					if (!(txt_abteilung->Text->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer()))) {
-						Abteilung^ abteilungNeu = gcnew Abteilung(txt_abteilung->Text, vorgesetzter);
-						angestellter->setAbteilung(abteilungNeu);
-					}
-				}
-					
-				abteilung = angestellter->getAbteilung();
-				vorgesetzter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, angestellter->getAbteilung(), txt_personalnummer->Text, txt_passwort->Text, Convert::ToInt32(txt_arbeitsstunden->Text), Convert::ToInt32(txt_urlaubstage->Text), false);
-				abteilung->setVorgesetzter(vorgesetzter);
-				unternehmen->addAbteilung(abteilung);
-				for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
-					if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
-						abteilung->removeMitarbeiter(i);
-					}
-				}
-
-				if (txt_Rolle->Text->Equals("Vorgesetzter") && rolle->Equals("Vorgesetzter")) {
+				//Sicherheitsabfrage
+				String^ frageText = "Wollen Sie " + angestellter->getVorname() + " " + angestellter->getNachname() + " wirklich zum neuen Vorgesetzten der Abteilung "
+					+ txt_abteilung->Text + " bestimmen?";
+				if (MessageBox::Show(frageText, "Wirklich Vorgesetzten wechseln?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+					Boolean abteilungNichtVorhanden = true;
 					for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
-						if (!(txt_abteilung->Text->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer()))) {
-							angestellter = vorgesetzter;
-							Abteilung^ abteilungNeu = gcnew Abteilung(txt_abteilung->Text, vorgesetzter);
-							angestellter->setAbteilung(abteilungNeu);
-							unternehmen->addAbteilung(abteilung);
+						if (txt_abteilung->Text->Equals(unternehmen->getAbteilung(i)->getAbteilungsnummer())) {
+							abteilungNichtVorhanden = false;
 						}
 					}
+					if (abteilungNichtVorhanden) {
+						Abteilung^ abteilungNeu = gcnew Abteilung(txt_abteilung->Text, vorgesetzter);
+						angestellter->setAbteilung(abteilungNeu);
+						unternehmen->addAbteilung(abteilungNeu);
+					}
+					abteilung = angestellter->getAbteilung();
+					vorgesetzter = gcnew Vorgesetzter((Mitarbeiter^)angestellter); //Hier neuen Konstruktor verwendet, damit keine Daten verloren gehen.
+					Mitarbeiter^ ehemVorgesetzter = gcnew Mitarbeiter(abteilung->getVorgesetzter(), vorgesetzter); //Alter Vorgesetzter wird als Mitarbeiter gespeichert.
+					abteilung->fuegeMitarbeiterHinzu(ehemVorgesetzter); //Alter Vorgesetzter wird der Abteilung als MA hinzugefuegt
+					abteilung->setVorgesetzter(vorgesetzter);
+					for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
+						if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
+							abteilung->removeMitarbeiter(i);
+						}
+					}
+					if (txt_Rolle->Text->Equals("Vorgesetzter") && rolle->Equals("Vorgesetzter")) {
+						for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+							if (!(txt_abteilung->Text->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer()))) {
+								angestellter = vorgesetzter;
+								Abteilung^ abteilungNeu = gcnew Abteilung(txt_abteilung->Text, vorgesetzter);
+								angestellter->setAbteilung(abteilungNeu);
+								unternehmen->addAbteilung(abteilung);
+							}
+						}
+					}
+
+					MessageBox::Show("Erfolgreich", "Angestellten Daten erfolgreich geändert!", MessageBoxButtons::OK, MessageBoxIcon::Information);
 				}
-
-				MessageBox::Show("Erfolgreich", "Angestellten Daten erfolgreich geändert!", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			}
-			this->clear();
-
+			this->Close();
 		}
 	}
 	private: System::Void BearbeitungsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
 		this->clear();
-		txt_abteilung->Items->Clear();
 	}
 
 	private: System::Void btn_loeschen_Click(System::Object^  sender, System::EventArgs^  e) {

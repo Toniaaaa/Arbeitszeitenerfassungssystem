@@ -532,6 +532,7 @@ namespace Zeiterfassungssystem {
 				this->DialogResult = System::Windows::Forms::DialogResult::OK;
 				this->Close();
 			}
+			
 		}
 	}
 
