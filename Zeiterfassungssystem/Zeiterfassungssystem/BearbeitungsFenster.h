@@ -524,7 +524,6 @@ namespace Zeiterfassungssystem {
 			for (int k = 0; k < unternehmen->getAnzahlAbteilungen(); k++) {
 				if (txt_abteilung->Text->Equals(unternehmen->getAbteilung(k)->getAbteilungsnummer())) {
 					angestellter->setAbteilung(unternehmen->getAbteilung(k));
-					//Alles OK
 				}
 				else if (txt_Rolle->Text->Equals("Mitarbeiter")) {
 					MessageBox::Show("Die Abteilung hat noch keinen Vorgesetzten", "Fehlgeschlagen!", MessageBoxButtons::OK, MessageBoxIcon::Information);
@@ -549,6 +548,9 @@ namespace Zeiterfassungssystem {
 					}
 					abteilung = angestellter->getAbteilung();
 					vorgesetzter = gcnew Vorgesetzter((Mitarbeiter^)angestellter); //Hier neuen Konstruktor verwendet, damit keine Daten verloren gehen.
+					if (abteilungNichtVorhanden) {
+						abteilung->setVorgesetzter(vorgesetzter);
+					}
 					Mitarbeiter^ ehemVorgesetzter = gcnew Mitarbeiter(abteilung->getVorgesetzter(), vorgesetzter); //Alter Vorgesetzter wird als Mitarbeiter gespeichert.
 					abteilung->fuegeMitarbeiterHinzu(ehemVorgesetzter); //Alter Vorgesetzter wird der Abteilung als MA hinzugefuegt
 					abteilung->setVorgesetzter(vorgesetzter);
