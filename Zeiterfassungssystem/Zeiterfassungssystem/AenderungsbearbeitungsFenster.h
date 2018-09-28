@@ -497,7 +497,7 @@ namespace Zeiterfassungssystem {
 
 			//Wenn es sich um die aktuelle woche handelt werden aktuelle Wochenstunden und Ueberstunden angepasst
 			if (kalender->berechneKW(DateTime::Today.Date) == kalender->berechneKW(antrag->getNewStart())) {
-				antrag->getAntragsteller()->zieheZeitAb(differenzStunden, differenzMinuten);
+				antrag->getAntragsteller()->zieheZeitAb(-differenzStunden, -differenzMinuten);
 			}
 			//ansonsten die ueberstunden gesamt
 			else {
