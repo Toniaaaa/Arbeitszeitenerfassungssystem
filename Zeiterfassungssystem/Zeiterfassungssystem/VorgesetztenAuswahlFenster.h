@@ -154,8 +154,6 @@ namespace Zeiterfassungssystem {
 				+ " bestimmen?";
 			if (MessageBox::Show(abfrage, "Wirklich löschen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 				vorgesetzterNeu = gcnew Vorgesetzter(ausgewaehlterMA);
-				Mitarbeiter^ neuerMA = gcnew Mitarbeiter(vorgesetzterAlt, vorgesetzterNeu);
-				abteilung->fuegeMitarbeiterHinzu(neuerMA);
 				abteilung->setVorgesetzter(vorgesetzterNeu);
 			}
 			for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
@@ -164,7 +162,7 @@ namespace Zeiterfassungssystem {
 				}
 			}
 			String^ infoText = "Sie haben erfolgreich " + vorgesetzterNeu->getVorname() + " " + vorgesetzterNeu->getNachname() + " zum Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer()
-				+ " befördert.\n" + vorgesetzterAlt->getVorname() + " " + vorgesetzterAlt->getNachname() + " ist nun Mitarbeiter in dieser Abteilung.";
+				+ " befördert.\n" + vorgesetzterAlt->getVorname() + " " + vorgesetzterAlt->getNachname() + " wurde gelöscht.";
 			MessageBox::Show(infoText, "Erfolgreich befördert", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			this->Close();
