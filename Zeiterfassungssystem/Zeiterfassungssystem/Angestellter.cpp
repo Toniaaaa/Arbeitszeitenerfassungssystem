@@ -1,4 +1,5 @@
 #include "Angestellter.h"
+#include "Vorgesetzter.h"
 
 Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32 wochenstunden, Int32 urlaubstage)
 {
@@ -25,6 +26,33 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->jahresurlaub = urlaubstage;
 	this->vergleichen = gcnew FreierTagComparer;
 }
+
+Angestellter::Angestellter(Vorgesetzter^ vorgesetzterAlt)
+{
+	this->vorname = vorgesetzterAlt->getVorname();
+	this->nachname = vorgesetzterAlt->getNachname();
+	this->abteilung = vorgesetzterAlt->getAbteilung();
+	this->personalnummer = vorgesetzterAlt->getPersonalnummer();
+	this->passwort = vorgesetzterAlt->getPasswort();
+	this->wochenstunden = vorgesetzterAlt->getWochensstunden();
+	this->urlaubstage = vorgesetzterAlt->getUrlaubstage();
+	this->urlaubstageGespart = 0;
+	listeEreignisse = vorgesetzterAlt->getListeEreignisse();
+	listegesamtstunden = vorgesetzterAlt->getListeGesamtstunden();
+	antragsInfos = gcnew List<String^>;
+	this->wochenZeitErreicht = false;
+	this->arbeitsStunden = wochenstunden;
+	this->arbeitsMinuten = 0;
+	this->ueberStunden = 0;
+	this->ueberMinuten = 0;
+	this->ueberStundenGesamt = 0.0;
+	this->listeUrlaubstage = vorgesetzterAlt->getListeUrlaubstage();
+	this->letzterLogin = DateTime::Now;
+	this->kalender = gcnew Kalender();
+	this->jahresurlaub = urlaubstage;
+	this->vergleichen = gcnew FreierTagComparer;
+}
+
 
 //Gibt den restlichen Jahresurlaub zurück, den der Angestellte noch nicht eingereicht hat.
 Int32 Angestellter::getRestUrlaub() 

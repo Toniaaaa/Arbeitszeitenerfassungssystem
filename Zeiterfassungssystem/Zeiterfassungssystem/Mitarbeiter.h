@@ -15,6 +15,7 @@ private:
 
 public:
 	Mitarbeiter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage, Vorgesetzter^ vorgesetzter);
+	Mitarbeiter(Vorgesetzter^ vorgesetzerAlt, Vorgesetzter^ vorgesetzterNeu);
 
 	inline Vorgesetzter^ getVorgesetzter() { return vorgesetzter; }
 

@@ -15,6 +15,7 @@ using namespace System::Collections::Generic;
 
 ref class Abteilung;
 ref class Ereignis;
+ref class Vorgesetzter;
 
 [Serializable]
 ref class Angestellter 
@@ -46,6 +47,7 @@ private:
 
 public:
 	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage);
+	Angestellter(Vorgesetzter^ vorgesetzterAlt);
 
 	//Getter
 	inline String^ getVorname() {return vorname;}
@@ -64,6 +66,8 @@ public:
 	inline List<String^>^ getAntragsInfos() { return antragsInfos; }
 	inline Int32 getUrlaubstageGespart() { return urlaubstageGespart; }
 	inline List<FreierTag^>^ getListeUrlaubstage() { return listeUrlaubstage; }
+	inline List <Ereignis^>^ getListeEreignisse() { return listeEreignisse; }
+	inline List <Double>^ getListeGesamtstunden() { return listegesamtstunden; }
 	inline DateTime getLetzterLogin() { return letzterLogin; }
 	inline Int32 getJahresurlaub() { return jahresurlaub; }
 	inline Abteilung^ getAbteilung() { return abteilung; }
