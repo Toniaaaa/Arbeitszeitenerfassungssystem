@@ -403,15 +403,15 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void btn_mitarbeiter_hinzufuegen_Click(System::Object^  sender, System::EventArgs^  e) {
 		bool fehlerleer = false;
-		bool abteilungOK = false;
 		bool fehlerPersonal = false;
+		bool abteilungExistiert = false;
 		int parse;
 		Vorgesetzter^ neuerMitarbeiter;
 
-		//Wenn Abteilung noch nicht existiert und Rolle mitarbeiter sein soll kommt ein Hinweis da es keine Abteilung ohne Vorgesetzten geben kann
+		//Prüft, ob die Abteilung schon existiert
 		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
-			if (((getAbteilung()->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer())) && getRolle()->Equals("Mitarbeiter")) || getRolle()->Equals("Vorgesetzter")) {
-				abteilungOK = true;
+			if (getAbteilung()->Equals(unternehmen->getAbteilung(i)->getAbteilungsnummer())) {
+				abteilungExistiert = true;
 			}
 		}
 
@@ -429,7 +429,13 @@ namespace Zeiterfassungssystem {
 			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
-		else if (!unternehmen->getAlleAngestellte()->Count == 0 && !abteilungOK) {
+		else if (abteilungExistiert && getRolle()->Equals("Vorgesetzter")) {
+			System::Windows::Forms::MessageBox::Show("Eine Abteilung kann keinen zweiten Vorgesetzten bekommen!\nBitte registrieren Sie einen Mitarbeiter und weisen Sie diesem anschließend im " +
+				"Bearbeiten-Menü die Rolle des Vorgesetzten zu!", "Fehlgeschlagen!", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			txt_abteilung->Text = "";
+		}
+		//Wenn Abteilung noch nicht existiert und Rolle mitarbeiter sein soll kommt ein Hinweis da es keine Abteilung ohne Vorgesetzten geben kann
+		else if (!unternehmen->getAlleAngestellte()->Count == 0 && (!abteilungExistiert && getRolle()->Equals("Mitarbeiter"))) {
 			System::Windows::Forms::MessageBox::Show("Die Abteilung existiert noch nicht, fügen Sie zuerst einen Vorgesetzten hinzu!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_abteilung->Text = "";
