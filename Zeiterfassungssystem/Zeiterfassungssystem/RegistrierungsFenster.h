@@ -22,7 +22,7 @@ namespace Zeiterfassungssystem {
 	{
 	private:
 		Unternehmen ^ unternehmen;
-		Vorgesetzter^ vorgesetzter;
+		Vorgesetzter^ nutzer;
 	private: System::Windows::Forms::TextBox^  txt_name;
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::CheckBox^  adminCBox;
@@ -338,7 +338,7 @@ namespace Zeiterfassungssystem {
 			txt_abteilung->Text = "Administration";
 			adminCBox->Checked = true;
 		}
-		else if (vorgesetzter != nullptr && vorgesetzter->getIstAdmin()) {
+		else if (nutzer != nullptr && nutzer->getIstAdmin()) {
 			txt_Rolle->Items->Add("Vorgesetzter");
 		}
 	}
@@ -377,9 +377,9 @@ namespace Zeiterfassungssystem {
 		}
 
 		//Setter setzt den Vorgesetzten. Angestellte, die selber Vorgesetzte sind, bekommen keinen Vorgesetzten zugeordnet.
-		void setVorgesetzter(Vorgesetzter^ vorgesetzter)
+		void setNutzer(Vorgesetzter^ nutzer)
 		{
-			this->vorgesetzter = vorgesetzter;
+			this->nutzer = nutzer;
 		}
 
 		//Methode zum Zurücksetzen der Textfelder
@@ -493,6 +493,7 @@ namespace Zeiterfassungssystem {
 						abteilung = unternehmen->getAbteilung(i);
 					}
 				}
+				Vorgesetzter^ vorgesetzter = abteilung->getVorgesetzter();
 				//da Rolle Mitarbeiter ausgewaehlt wird ein neuer mitarbeiter mit eingegebenen Daten erstellt und zur Abteilung und Unternehmen hinzugefuegt
 				Mitarbeiter^ mitarbeiter = gcnew Mitarbeiter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), vorgesetzter);
 				mitarbeiter->setAbteilung(abteilung);

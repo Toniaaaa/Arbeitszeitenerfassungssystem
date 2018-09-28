@@ -789,7 +789,7 @@ namespace Zeiterfassungssystem {
 	private: System::Void addBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		//Das Registrierungsfenster wird geöffnet und die Attribute werden gesetzt
 		registrierungsfenster->setUnternehmen(unternehmen);
-		registrierungsfenster->setVorgesetzter(angestellterAkt);
+		registrierungsfenster->setNutzer(angestellterAkt);
 		registrierungsfenster->ShowDialog(this);
 	}
 
