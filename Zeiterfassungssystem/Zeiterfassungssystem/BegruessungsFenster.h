@@ -144,7 +144,7 @@ namespace Zeiterfassungssystem {
 		}
 #pragma endregion
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-		ProcessStartInfo^ startInfo = gcnew ProcessStartInfo("DokumentationProjekt.pdf");
+		ProcessStartInfo^ startInfo = gcnew ProcessStartInfo("BenutzerhandbuchTimeUp.pdf");
 		Process::Start(startInfo);
 	}
 

@@ -820,7 +820,7 @@ namespace Zeiterfassungssystem {
 	/*?-BUTTON
 	Startet den PDF-Reader des Systems und öffnet die Anleitung zum Programm*/
 	private: System::Void IntroductionBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		Diagnostics::ProcessStartInfo^ startInfo = gcnew Diagnostics::ProcessStartInfo("DokumentationProjekt.pdf");
+		Diagnostics::ProcessStartInfo^ startInfo = gcnew Diagnostics::ProcessStartInfo("BenutzerhandbuchTimeUp.pdf");
 		Diagnostics::Process::Start(startInfo);
 	}
 
