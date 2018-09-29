@@ -567,9 +567,18 @@ namespace Zeiterfassungssystem {
 						abteilung->fuegeMitarbeiterHinzu(ehemVorgesetzter); //Alter Vorgesetzter wird der Abteilung als MA hinzugefuegt
 						abteilung->setVorgesetzter(vorgesetzter);
 					}
-					for (int i = 0; i < alteAbteilung->getAnzahlMitarbeiter(); i++) {
-						if (angestellter->getPersonalnummer()->Equals(alteAbteilung->getMitarbeiter(i)->getPersonalnummer())) {
-							alteAbteilung->removeMitarbeiter(i);
+					if (abteilungNichtVorhanden) {
+						for (int i = 0; i < alteAbteilung->getAnzahlMitarbeiter(); i++) {
+							if (angestellter->getPersonalnummer()->Equals(alteAbteilung->getMitarbeiter(i)->getPersonalnummer())) {
+								alteAbteilung->removeMitarbeiter(i);
+							}
+						}
+					}
+					else {
+						for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
+							if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
+								abteilung->removeMitarbeiter(i);
+							}
 						}
 					}
 					if (txt_Rolle->Text->Equals("Vorgesetzter") && rolle->Equals("Vorgesetzter")) {
