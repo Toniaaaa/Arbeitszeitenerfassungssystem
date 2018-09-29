@@ -64,6 +64,8 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Button^  btn_mitarbeiter_hinzufuegen;
 	private: System::Windows::Forms::Label^  lbl_bearbeitung;
 	private: System::Windows::Forms::Button^  btn_loeschen;
+	private: System::Windows::Forms::Label^  label1;
+	private: System::Windows::Forms::CheckBox^  adminCBox;
 
 	private:
 		/// <summary>
@@ -97,12 +99,14 @@ namespace Zeiterfassungssystem {
 			this->lbl_bearbeitung = (gcnew System::Windows::Forms::Label());
 			this->txt_name = (gcnew System::Windows::Forms::TextBox());
 			this->btn_loeschen = (gcnew System::Windows::Forms::Button());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->adminCBox = (gcnew System::Windows::Forms::CheckBox());
 			this->SuspendLayout();
 			// 
 			// txt_vorname
 			// 
 			this->txt_vorname->Location = System::Drawing::Point(121, 168);
-			this->txt_vorname->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->txt_vorname->Margin = System::Windows::Forms::Padding(2);
 			this->txt_vorname->Name = L"txt_vorname";
 			this->txt_vorname->Size = System::Drawing::Size(264, 20);
 			this->txt_vorname->TabIndex = 2;
@@ -110,7 +114,7 @@ namespace Zeiterfassungssystem {
 			// txt_personalnummer
 			// 
 			this->txt_personalnummer->Location = System::Drawing::Point(121, 119);
-			this->txt_personalnummer->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->txt_personalnummer->Margin = System::Windows::Forms::Padding(2);
 			this->txt_personalnummer->Name = L"txt_personalnummer";
 			this->txt_personalnummer->Size = System::Drawing::Size(264, 20);
 			this->txt_personalnummer->TabIndex = 0;
@@ -119,7 +123,7 @@ namespace Zeiterfassungssystem {
 			// txt_passwort
 			// 
 			this->txt_passwort->Location = System::Drawing::Point(121, 217);
-			this->txt_passwort->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->txt_passwort->Margin = System::Windows::Forms::Padding(2);
 			this->txt_passwort->Name = L"txt_passwort";
 			this->txt_passwort->PasswordChar = '*';
 			this->txt_passwort->Size = System::Drawing::Size(264, 20);
@@ -129,7 +133,7 @@ namespace Zeiterfassungssystem {
 			// 
 			this->txt_abteilung->FormattingEnabled = true;
 			this->txt_abteilung->Location = System::Drawing::Point(121, 192);
-			this->txt_abteilung->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->txt_abteilung->Margin = System::Windows::Forms::Padding(2);
 			this->txt_abteilung->Name = L"txt_abteilung";
 			this->txt_abteilung->Size = System::Drawing::Size(264, 21);
 			this->txt_abteilung->TabIndex = 3;
@@ -137,7 +141,7 @@ namespace Zeiterfassungssystem {
 			// txt_arbeitsstunden
 			// 
 			this->txt_arbeitsstunden->Location = System::Drawing::Point(121, 241);
-			this->txt_arbeitsstunden->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->txt_arbeitsstunden->Margin = System::Windows::Forms::Padding(2);
 			this->txt_arbeitsstunden->Name = L"txt_arbeitsstunden";
 			this->txt_arbeitsstunden->Size = System::Drawing::Size(264, 20);
 			this->txt_arbeitsstunden->TabIndex = 5;
@@ -145,7 +149,7 @@ namespace Zeiterfassungssystem {
 			// txt_urlaubstage
 			// 
 			this->txt_urlaubstage->Location = System::Drawing::Point(121, 266);
-			this->txt_urlaubstage->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->txt_urlaubstage->Margin = System::Windows::Forms::Padding(2);
 			this->txt_urlaubstage->Name = L"txt_urlaubstage";
 			this->txt_urlaubstage->Size = System::Drawing::Size(264, 20);
 			this->txt_urlaubstage->TabIndex = 6;
@@ -154,19 +158,20 @@ namespace Zeiterfassungssystem {
 			// 
 			this->txt_Rolle->FormattingEnabled = true;
 			this->txt_Rolle->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Mitarbeiter", L"Vorgesetzter" });
-			this->txt_Rolle->Location = System::Drawing::Point(121, 293);
-			this->txt_Rolle->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->txt_Rolle->Location = System::Drawing::Point(122, 313);
+			this->txt_Rolle->Margin = System::Windows::Forms::Padding(2);
 			this->txt_Rolle->Name = L"txt_Rolle";
 			this->txt_Rolle->Size = System::Drawing::Size(263, 21);
-			this->txt_Rolle->TabIndex = 7;
+			this->txt_Rolle->TabIndex = 8;
+			this->txt_Rolle->SelectedIndexChanged += gcnew System::EventHandler(this, &BearbeitungsFenster::txt_Rolle_SelectedIndexChanged);
 			// 
 			// btn_mitarbeiter_hinzufuegen
 			// 
-			this->btn_mitarbeiter_hinzufuegen->Location = System::Drawing::Point(121, 332);
-			this->btn_mitarbeiter_hinzufuegen->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->btn_mitarbeiter_hinzufuegen->Location = System::Drawing::Point(121, 358);
+			this->btn_mitarbeiter_hinzufuegen->Margin = System::Windows::Forms::Padding(2);
 			this->btn_mitarbeiter_hinzufuegen->Name = L"btn_mitarbeiter_hinzufuegen";
 			this->btn_mitarbeiter_hinzufuegen->Size = System::Drawing::Size(128, 28);
-			this->btn_mitarbeiter_hinzufuegen->TabIndex = 8;
+			this->btn_mitarbeiter_hinzufuegen->TabIndex = 9;
 			this->btn_mitarbeiter_hinzufuegen->Text = L"Ändern";
 			this->btn_mitarbeiter_hinzufuegen->UseVisualStyleBackColor = true;
 			this->btn_mitarbeiter_hinzufuegen->Click += gcnew System::EventHandler(this, &BearbeitungsFenster::btn_mitarbeiter_hinzufuegen_Click);
@@ -174,7 +179,7 @@ namespace Zeiterfassungssystem {
 			// lbl_name
 			// 
 			this->lbl_name->AutoSize = true;
-			this->lbl_name->Location = System::Drawing::Point(12, 150);
+			this->lbl_name->Location = System::Drawing::Point(8, 145);
 			this->lbl_name->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_name->Name = L"lbl_name";
 			this->lbl_name->Size = System::Drawing::Size(35, 13);
@@ -184,7 +189,7 @@ namespace Zeiterfassungssystem {
 			// lbl_vorname
 			// 
 			this->lbl_vorname->AutoSize = true;
-			this->lbl_vorname->Location = System::Drawing::Point(10, 172);
+			this->lbl_vorname->Location = System::Drawing::Point(8, 171);
 			this->lbl_vorname->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_vorname->Name = L"lbl_vorname";
 			this->lbl_vorname->Size = System::Drawing::Size(49, 13);
@@ -194,7 +199,7 @@ namespace Zeiterfassungssystem {
 			// lbl_abteilung
 			// 
 			this->lbl_abteilung->AutoSize = true;
-			this->lbl_abteilung->Location = System::Drawing::Point(11, 197);
+			this->lbl_abteilung->Location = System::Drawing::Point(8, 195);
 			this->lbl_abteilung->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_abteilung->Name = L"lbl_abteilung";
 			this->lbl_abteilung->Size = System::Drawing::Size(51, 13);
@@ -204,7 +209,7 @@ namespace Zeiterfassungssystem {
 			// lbl_personalnummer
 			// 
 			this->lbl_personalnummer->AutoSize = true;
-			this->lbl_personalnummer->Location = System::Drawing::Point(9, 124);
+			this->lbl_personalnummer->Location = System::Drawing::Point(8, 122);
 			this->lbl_personalnummer->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_personalnummer->Name = L"lbl_personalnummer";
 			this->lbl_personalnummer->Size = System::Drawing::Size(85, 13);
@@ -214,7 +219,7 @@ namespace Zeiterfassungssystem {
 			// lbl_passwort
 			// 
 			this->lbl_passwort->AutoSize = true;
-			this->lbl_passwort->Location = System::Drawing::Point(11, 221);
+			this->lbl_passwort->Location = System::Drawing::Point(8, 220);
 			this->lbl_passwort->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_passwort->Name = L"lbl_passwort";
 			this->lbl_passwort->Size = System::Drawing::Size(50, 13);
@@ -224,7 +229,7 @@ namespace Zeiterfassungssystem {
 			// lbl_arbeitsstunden
 			// 
 			this->lbl_arbeitsstunden->AutoSize = true;
-			this->lbl_arbeitsstunden->Location = System::Drawing::Point(11, 245);
+			this->lbl_arbeitsstunden->Location = System::Drawing::Point(8, 244);
 			this->lbl_arbeitsstunden->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_arbeitsstunden->Name = L"lbl_arbeitsstunden";
 			this->lbl_arbeitsstunden->Size = System::Drawing::Size(77, 13);
@@ -234,7 +239,7 @@ namespace Zeiterfassungssystem {
 			// lbl_urlaubstage
 			// 
 			this->lbl_urlaubstage->AutoSize = true;
-			this->lbl_urlaubstage->Location = System::Drawing::Point(12, 268);
+			this->lbl_urlaubstage->Location = System::Drawing::Point(8, 269);
 			this->lbl_urlaubstage->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_urlaubstage->Name = L"lbl_urlaubstage";
 			this->lbl_urlaubstage->Size = System::Drawing::Size(64, 13);
@@ -244,7 +249,7 @@ namespace Zeiterfassungssystem {
 			// lbl_rolle
 			// 
 			this->lbl_rolle->AutoSize = true;
-			this->lbl_rolle->Location = System::Drawing::Point(12, 293);
+			this->lbl_rolle->Location = System::Drawing::Point(8, 316);
 			this->lbl_rolle->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_rolle->Name = L"lbl_rolle";
 			this->lbl_rolle->Size = System::Drawing::Size(31, 13);
@@ -266,28 +271,50 @@ namespace Zeiterfassungssystem {
 			// txt_name
 			// 
 			this->txt_name->Location = System::Drawing::Point(121, 145);
-			this->txt_name->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->txt_name->Margin = System::Windows::Forms::Padding(2);
 			this->txt_name->Name = L"txt_name";
 			this->txt_name->Size = System::Drawing::Size(264, 20);
 			this->txt_name->TabIndex = 1;
 			// 
 			// btn_loeschen
 			// 
-			this->btn_loeschen->Location = System::Drawing::Point(256, 332);
-			this->btn_loeschen->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->btn_loeschen->Location = System::Drawing::Point(257, 358);
+			this->btn_loeschen->Margin = System::Windows::Forms::Padding(2);
 			this->btn_loeschen->Name = L"btn_loeschen";
 			this->btn_loeschen->Size = System::Drawing::Size(128, 28);
-			this->btn_loeschen->TabIndex = 9;
+			this->btn_loeschen->TabIndex = 10;
 			this->btn_loeschen->Text = L"Löschen";
 			this->btn_loeschen->UseVisualStyleBackColor = true;
 			this->btn_loeschen->Click += gcnew System::EventHandler(this, &BearbeitungsFenster::btn_loeschen_Click);
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(8, 293);
+			this->label1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(105, 13);
+			this->label1->TabIndex = 36;
+			this->label1->Text = L"Administrator-Rechte";
+			// 
+			// adminCBox
+			// 
+			this->adminCBox->AutoSize = true;
+			this->adminCBox->Enabled = false;
+			this->adminCBox->Location = System::Drawing::Point(121, 294);
+			this->adminCBox->Name = L"adminCBox";
+			this->adminCBox->Size = System::Drawing::Size(15, 14);
+			this->adminCBox->TabIndex = 7;
+			this->adminCBox->UseVisualStyleBackColor = true;
 			// 
 			// BearbeitungsFenster
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
-			this->ClientSize = System::Drawing::Size(393, 370);
+			this->ClientSize = System::Drawing::Size(393, 397);
+			this->Controls->Add(this->adminCBox);
+			this->Controls->Add(this->label1);
 			this->Controls->Add(this->btn_loeschen);
 			this->Controls->Add(this->txt_name);
 			this->Controls->Add(this->lbl_bearbeitung);
@@ -307,7 +334,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->txt_passwort);
 			this->Controls->Add(this->txt_personalnummer);
 			this->Controls->Add(this->txt_vorname);
-			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"BearbeitungsFenster";
 			this->Text = L"Bearbeitung";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &BearbeitungsFenster::BearbeitungsFenster_FormClosing);
@@ -362,6 +389,7 @@ namespace Zeiterfassungssystem {
 		}
 
 	private: System::Void BearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+		this->adminCBox->Enabled = false;
 	}
 
 	private: System::Void txt_personalnummer_TextChanged(System::Object^  sender, System::EventArgs^  e) {
@@ -378,6 +406,15 @@ namespace Zeiterfassungssystem {
 				txt_passwort->Text = angestellte[i]->getPasswort();
 				txt_arbeitsstunden->Text = Convert::ToString(angestellte[i]->getWochensstunden());
 				txt_urlaubstage->Text = Convert::ToString(angestellte[i]->getJahresurlaub());
+				if (angestellte[i]->istVorgesetzter()) {
+					Vorgesetzter^ v = (Vorgesetzter^) angestellte[i];
+					adminCBox->Enabled = true;
+					adminCBox->Checked = v->getIstAdmin();
+				}
+				else {
+					adminCBox->Enabled = false;
+					adminCBox->Checked = false;
+				}
 				//Abteilungsauswahl wird mit passenden Abteilungen befüllt 
 				for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
 					txt_abteilung->Items->Add(unternehmen->getAbteilung(i)->getAbteilungsnummer());
@@ -492,6 +529,10 @@ namespace Zeiterfassungssystem {
 			angestellter->setPasswort(txt_passwort->Text);
 			angestellter->setWochenstunden(Convert::ToInt32(txt_arbeitsstunden->Text));
 			angestellter->setUrlaubstage(Convert::ToInt32(txt_urlaubstage->Text));
+			if (angestellter->istVorgesetzter()) {
+				Vorgesetzter^ v = (Vorgesetzter^) angestellter;
+				v->setIstAdmin(adminCBox->Checked);
+			}
 			for (int k = 0; k < unternehmen->getAnzahlAbteilungen(); k++) {
 				if (txt_abteilung->Text->Equals(unternehmen->getAbteilung(k)->getAbteilungsnummer())) {
 					angestellter->setAbteilung(unternehmen->getAbteilung(k));
@@ -518,7 +559,7 @@ namespace Zeiterfassungssystem {
 						unternehmen->addAbteilung(abteilungNeu);
 					}
 					abteilung = angestellter->getAbteilung();
-					vorgesetzter = gcnew Vorgesetzter((Mitarbeiter^)angestellter); //Hier neuen Konstruktor verwendet, damit keine Daten verloren gehen.
+					vorgesetzter = gcnew Vorgesetzter((Mitarbeiter^)angestellter, adminCBox->Checked); //Hier neuen Konstruktor verwendet, damit keine Daten verloren gehen.
 					if (abteilungNichtVorhanden) {
 						abteilung->setVorgesetzter(vorgesetzter);
 					}
@@ -600,6 +641,16 @@ namespace Zeiterfassungssystem {
 			}
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			this->Close();
+		}
+	}
+
+	private: System::Void txt_Rolle_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+		if (txt_Rolle->Text->Equals("Mitarbeiter")) {
+			adminCBox->Enabled = false;
+			adminCBox->Checked = false;
+		}
+		else if (txt_Rolle->Text->Equals("Vorgesetzter")) {
+			adminCBox->Enabled = true;
 		}
 	}
 };

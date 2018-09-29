@@ -82,7 +82,7 @@ namespace Zeiterfassungssystem {
 			this->bestaetigenBtn->Location = System::Drawing::Point(40, 153);
 			this->bestaetigenBtn->Name = L"bestaetigenBtn";
 			this->bestaetigenBtn->Size = System::Drawing::Size(150, 50);
-			this->bestaetigenBtn->TabIndex = 0;
+			this->bestaetigenBtn->TabIndex = 1;
 			this->bestaetigenBtn->Text = L"Bestätigen";
 			this->bestaetigenBtn->UseVisualStyleBackColor = true;
 			this->bestaetigenBtn->Click += gcnew System::EventHandler(this, &VorgesetztenAuswahlFenster::bestaetigenBtn_Click);
@@ -93,7 +93,7 @@ namespace Zeiterfassungssystem {
 			this->auswahlCBox->Location = System::Drawing::Point(16, 102);
 			this->auswahlCBox->Name = L"auswahlCBox";
 			this->auswahlCBox->Size = System::Drawing::Size(432, 21);
-			this->auswahlCBox->TabIndex = 1;
+			this->auswahlCBox->TabIndex = 0;
 			this->auswahlCBox->SelectedIndexChanged += gcnew System::EventHandler(this, &VorgesetztenAuswahlFenster::auswahlCBox_SelectedIndexChanged);
 			// 
 			// label1
@@ -115,7 +115,7 @@ namespace Zeiterfassungssystem {
 			this->abbrechenBtn->Location = System::Drawing::Point(266, 153);
 			this->abbrechenBtn->Name = L"abbrechenBtn";
 			this->abbrechenBtn->Size = System::Drawing::Size(150, 50);
-			this->abbrechenBtn->TabIndex = 3;
+			this->abbrechenBtn->TabIndex = 2;
 			this->abbrechenBtn->Text = L"Abbrechen";
 			this->abbrechenBtn->UseVisualStyleBackColor = true;
 			this->abbrechenBtn->Click += gcnew System::EventHandler(this, &VorgesetztenAuswahlFenster::abbrechenBtn_Click);
@@ -155,7 +155,7 @@ namespace Zeiterfassungssystem {
 			String^ abfrage = "Wollen Sie " + ausgewaehlterMA->getVorname() + " " + ausgewaehlterMA->getNachname() + " wirklich zum Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer()
 				+ " bestimmen?";
 			if (MessageBox::Show(abfrage, "Wirklich löschen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-				vorgesetzterNeu = gcnew Vorgesetzter(ausgewaehlterMA);
+				vorgesetzterNeu = gcnew Vorgesetzter(ausgewaehlterMA, false);
 				if (behalten) {
 					Mitarbeiter^ neuerMA = gcnew Mitarbeiter(vorgesetzterAlt, vorgesetzterNeu);
 					abteilung->fuegeMitarbeiterHinzu(neuerMA);

@@ -10,11 +10,11 @@ Vorgesetzter::Vorgesetzter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->istAdmin = istAdmin;
 }
 
-Vorgesetzter::Vorgesetzter(Mitarbeiter^ mitarbeiterAlt) : Angestellter(mitarbeiterAlt)
+Vorgesetzter::Vorgesetzter(Mitarbeiter^ mitarbeiterAlt, Boolean istAdmin) : Angestellter(mitarbeiterAlt)
 {
 	listeAenderungsantraege = gcnew List<Aenderungsantrag^>;
 	listeUrlaubsantraege = gcnew List<Urlaubsantrag^>;
-	this->istAdmin = false;
+	this->istAdmin = istAdmin;
 }
 
 //Gibt zurück, dass dieser Angestellte ein Vorgesetzter ist

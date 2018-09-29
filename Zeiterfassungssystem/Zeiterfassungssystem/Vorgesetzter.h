@@ -17,7 +17,7 @@ private:
 
 public:
 	Vorgesetzter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage, Boolean istAdmin);
-	Vorgesetzter(Mitarbeiter^ mitarbeiterAlt);
+	Vorgesetzter(Mitarbeiter^ mitarbeiterAlt, Boolean istAdmin);
 
 	void addUrlaubsantrag(Urlaubsantrag^ neuerAntrag);
 	void removeUrlaubsantrag(Int32 index);
@@ -29,4 +29,5 @@ public:
 
 	bool istVorgesetzter() override;
 	inline Boolean getIstAdmin() { return istAdmin; }
+	inline void setIstAdmin(Boolean istAdmin) { this->istAdmin = istAdmin; }
 };
