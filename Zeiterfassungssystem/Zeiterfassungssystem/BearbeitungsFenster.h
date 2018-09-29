@@ -583,8 +583,6 @@ namespace Zeiterfassungssystem {
 							}
 						}
 					}
-
-					MessageBox::Show("Angestellten Daten erfolgreich geändert!", "Erfolgreich", MessageBoxButtons::OK, MessageBoxIcon::Information);
 				}
 			}
 			if (txt_Rolle->Text->Equals("Mitarbeiter") && rolle->Equals("Vorgesetzter")) {
@@ -605,6 +603,7 @@ namespace Zeiterfassungssystem {
 				}
 			}
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
+			MessageBox::Show("Angestellten Daten erfolgreich geändert!", "Erfolgreich", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			this->Close();
 		}
 	}
