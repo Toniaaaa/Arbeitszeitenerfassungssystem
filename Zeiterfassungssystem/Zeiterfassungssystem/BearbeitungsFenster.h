@@ -449,6 +449,7 @@ namespace Zeiterfassungssystem {
 	private: System::Void btn_mitarbeiter_hinzufuegen_Click(System::Object^  sender, System::EventArgs^  e) {
 		bool fehlerAbteilung = true;
 		bool fehlerPersonal = false;
+		bool info = true;
 		int parse;
 		Vorgesetzter^ vorgesetzter;
 		Abteilung^ abteilung;
@@ -537,9 +538,6 @@ namespace Zeiterfassungssystem {
 				if (txt_abteilung->Text->Equals(unternehmen->getAbteilung(k)->getAbteilungsnummer())) {
 					angestellter->setAbteilung(unternehmen->getAbteilung(k));
 				}
-				else if (txt_Rolle->Text->Equals("Mitarbeiter")) {
-					MessageBox::Show("Die Abteilung hat noch keinen Vorgesetzten", "Fehlgeschlagen!", MessageBoxButtons::OK, MessageBoxIcon::Information);
-				}
 			}
 
 			if (txt_Rolle->Text->Equals("Vorgesetzter") && rolle->Equals("Mitarbeiter")) {
@@ -601,10 +599,13 @@ namespace Zeiterfassungssystem {
 					vorgesetztenFenster->setVorgesetzterAlt(vorgesetzterAlt);
 					vorgesetztenFenster->setVorgesetztenAltBehalten(true);
 					vorgesetztenFenster->ShowDialog(this);
+					info = false;
 				}
 			}
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
-			MessageBox::Show("Angestellten Daten erfolgreich geändert!", "Erfolgreich", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			if (info) {
+				MessageBox::Show("Angestellten Daten erfolgreich geändert!", "Erfolgreich", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			}
 			this->Close();
 		}
 	}
