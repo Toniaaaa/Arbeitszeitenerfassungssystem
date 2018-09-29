@@ -129,6 +129,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Abteilung.h" />
+    <ClInclude Include="AbteilungLoeschenFenster.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Aenderungsantrag.h" />
     <ClInclude Include="AenderungsantragsFenster.h">
       <FileType>CppForm</FileType>
@@ -200,6 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Abteilung.cpp" />
+    <ClCompile Include="AbteilungLoeschenFenster.cpp" />
     <ClCompile Include="Aenderungsantrag.cpp" />
     <ClCompile Include="AenderungsantragsFenster.cpp" />
     <ClCompile Include="AenderungsbearbeitungsFenster.cpp" />
@@ -239,6 +243,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AbteilungLoeschenFenster.resx">
+      <DependentUpon>AbteilungLoeschenFenster.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AenderungsantragsFenster.resx">
       <DependentUpon>AenderungsantragsFenster.h</DependentUpon>
     </EmbeddedResource>

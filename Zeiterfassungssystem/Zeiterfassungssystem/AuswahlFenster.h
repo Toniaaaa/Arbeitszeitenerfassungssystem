@@ -3,6 +3,7 @@
 #include "FeiertagsFenster.h"
 #include "UrlaubLoeschenFenster.h"
 #include "Angestellter.h"
+#include "AbteilungLoeschenFenster.h"
 
 namespace Zeiterfassungssystem {
 
@@ -23,6 +24,8 @@ namespace Zeiterfassungssystem {
 		FeiertagsFenster^ feiertagsfenster;
 		BearbeitungsFenster^ bearbeitungsfenster;
 		UrlaubLoeschenFenster^ urlaubLoeschenfenster;
+		AbteilungLoeschenFenster^ abteilungFenster;
+	private: System::Windows::Forms::Button^  abteilungBtn; 
 
 	public:
 		AuswahlFenster(void)
@@ -61,13 +64,15 @@ namespace Zeiterfassungssystem {
 			this->btn_angestellte = (gcnew System::Windows::Forms::Button());
 			this->btn_urlaub = (gcnew System::Windows::Forms::Button());
 			this->btn_feiertag = (gcnew System::Windows::Forms::Button());
+			this->abteilungBtn = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// btn_angestellte
 			// 
-			this->btn_angestellte->Location = System::Drawing::Point(142, 51);
+			this->btn_angestellte->Location = System::Drawing::Point(25, 33);
+			this->btn_angestellte->Margin = System::Windows::Forms::Padding(2);
 			this->btn_angestellte->Name = L"btn_angestellte";
-			this->btn_angestellte->Size = System::Drawing::Size(150, 75);
+			this->btn_angestellte->Size = System::Drawing::Size(100, 49);
 			this->btn_angestellte->TabIndex = 0;
 			this->btn_angestellte->Text = L"Angestellten bearbeiten";
 			this->btn_angestellte->UseVisualStyleBackColor = true;
@@ -75,9 +80,10 @@ namespace Zeiterfassungssystem {
 			// 
 			// btn_urlaub
 			// 
-			this->btn_urlaub->Location = System::Drawing::Point(142, 152);
+			this->btn_urlaub->Location = System::Drawing::Point(25, 110);
+			this->btn_urlaub->Margin = System::Windows::Forms::Padding(2);
 			this->btn_urlaub->Name = L"btn_urlaub";
-			this->btn_urlaub->Size = System::Drawing::Size(150, 75);
+			this->btn_urlaub->Size = System::Drawing::Size(100, 49);
 			this->btn_urlaub->TabIndex = 1;
 			this->btn_urlaub->Text = L"Urlaub löschen";
 			this->btn_urlaub->UseVisualStyleBackColor = true;
@@ -85,23 +91,37 @@ namespace Zeiterfassungssystem {
 			// 
 			// btn_feiertag
 			// 
-			this->btn_feiertag->Location = System::Drawing::Point(142, 255);
+			this->btn_feiertag->Location = System::Drawing::Point(175, 33);
+			this->btn_feiertag->Margin = System::Windows::Forms::Padding(2);
 			this->btn_feiertag->Name = L"btn_feiertag";
-			this->btn_feiertag->Size = System::Drawing::Size(150, 75);
+			this->btn_feiertag->Size = System::Drawing::Size(100, 49);
 			this->btn_feiertag->TabIndex = 2;
 			this->btn_feiertag->Text = L"Feiertage bearbeiten";
 			this->btn_feiertag->UseVisualStyleBackColor = true;
 			this->btn_feiertag->Click += gcnew System::EventHandler(this, &AuswahlFenster::btn_feiertag_Click);
 			// 
+			// abteilungBtn
+			// 
+			this->abteilungBtn->Location = System::Drawing::Point(175, 110);
+			this->abteilungBtn->Margin = System::Windows::Forms::Padding(2);
+			this->abteilungBtn->Name = L"abteilungBtn";
+			this->abteilungBtn->Size = System::Drawing::Size(100, 49);
+			this->abteilungBtn->TabIndex = 3;
+			this->abteilungBtn->Text = L"Abteilung löschen";
+			this->abteilungBtn->UseVisualStyleBackColor = true;
+			this->abteilungBtn->Click += gcnew System::EventHandler(this, &AuswahlFenster::abteilungBtn_Click);
+			// 
 			// AuswahlFenster
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
-			this->ClientSize = System::Drawing::Size(447, 385);
+			this->ClientSize = System::Drawing::Size(301, 191);
+			this->Controls->Add(this->abteilungBtn);
 			this->Controls->Add(this->btn_feiertag);
 			this->Controls->Add(this->btn_urlaub);
 			this->Controls->Add(this->btn_angestellte);
+			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"AuswahlFenster";
 			this->Text = L"Bearbeiten";
 			this->ResumeLayout(false);
@@ -121,6 +141,10 @@ namespace Zeiterfassungssystem {
 			
 	void setUrlaubLoeschenfenster(UrlaubLoeschenFenster^ urlaubFenster) {
 		this->urlaubLoeschenfenster = urlaubFenster;
+	}
+
+	void setAbteilungLoeschenFenster(AbteilungLoeschenFenster^ abteilungFenster) {
+		this->abteilungFenster = abteilungFenster;
 	}
 
 	private: System::Void btn_angestellte_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -150,6 +174,13 @@ namespace Zeiterfassungssystem {
 		}
 		urlaubLoeschenfenster->clear();
 		this->Close();
+	}
+
+	private: System::Void abteilungBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		System::Windows::Forms::DialogResult result = abteilungFenster->ShowDialog(this);
+		if (result == System::Windows::Forms::DialogResult::OK) {
+			this->Close();
+		}
 	}
 };
 }

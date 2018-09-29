@@ -15,26 +15,26 @@ namespace Zeiterfassungssystem {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Zusammenfassung für VorgesetztenAuswahlFenster
+	/// Zusammenfassung für AbteilungLoeschenFenster
 	/// </summary>
-	public ref class VorgesetztenAuswahlFenster : public System::Windows::Forms::Form
+	public ref class AbteilungLoeschenFenster : public System::Windows::Forms::Form
 	{
 	private:
 		Unternehmen^ unternehmen;
-		List<Angestellter^>^ angestelltenAuswahl;
+		List<Abteilung^>^ abteilungen;
 		Vorgesetzter^ vorgesetzterAlt;
-		Mitarbeiter^ ausgewaehlterMA;
-		Vorgesetzter^ vorgesetzterNeu;
+		Abteilung^ ausgewaehlteAbteilung;
 		Boolean ausgewaehlt;
 		Boolean behalten;
+		Mitarbeiter^ neuerMA;
+		Boolean istAdmin;
 
 	private: System::Windows::Forms::Button^  abbrechenBtn;
-			 Abteilung^ abteilung;
-	
+
 	public:
-		VorgesetztenAuswahlFenster(void)
+		AbteilungLoeschenFenster(void)
 		{
-			angestelltenAuswahl = gcnew List<Angestellter^>;
+			ausgewaehlteAbteilung = nullptr;
 			InitializeComponent();
 		}
 
@@ -42,7 +42,7 @@ namespace Zeiterfassungssystem {
 		/// <summary>
 		/// Verwendete Ressourcen bereinigen.
 		/// </summary>
-		~VorgesetztenAuswahlFenster()
+		~AbteilungLoeschenFenster()
 		{
 			if (components)
 			{
@@ -83,27 +83,27 @@ namespace Zeiterfassungssystem {
 			this->bestaetigenBtn->TabIndex = 1;
 			this->bestaetigenBtn->Text = L"Bestätigen";
 			this->bestaetigenBtn->UseVisualStyleBackColor = true;
-			this->bestaetigenBtn->Click += gcnew System::EventHandler(this, &VorgesetztenAuswahlFenster::bestaetigenBtn_Click);
+			this->bestaetigenBtn->Click += gcnew System::EventHandler(this, &AbteilungLoeschenFenster::bestaetigenBtn_Click);
 			// 
 			// auswahlCBox
 			// 
 			this->auswahlCBox->FormattingEnabled = true;
-			this->auswahlCBox->Location = System::Drawing::Point(16, 102);
+			this->auswahlCBox->Location = System::Drawing::Point(16, 97);
 			this->auswahlCBox->Name = L"auswahlCBox";
 			this->auswahlCBox->Size = System::Drawing::Size(432, 21);
 			this->auswahlCBox->TabIndex = 0;
-			this->auswahlCBox->SelectedIndexChanged += gcnew System::EventHandler(this, &VorgesetztenAuswahlFenster::auswahlCBox_SelectedIndexChanged);
+			this->auswahlCBox->SelectedIndexChanged += gcnew System::EventHandler(this, &AbteilungLoeschenFenster::auswahlCBox_SelectedIndexChanged);
 			// 
 			// label1
 			// 
 			this->label1->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(12, 20);
+			this->label1->Location = System::Drawing::Point(12, 32);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(436, 56);
+			this->label1->Size = System::Drawing::Size(436, 41);
 			this->label1->TabIndex = 2;
-			this->label1->Text = L"Bitte wählen Sie einen neuen Vorgesetzten für diese Abteilung aus!";
+			this->label1->Text = L"Welche Abteilung möchten Sie löschen\?";
 			this->label1->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			// 
 			// abbrechenBtn
@@ -116,9 +116,9 @@ namespace Zeiterfassungssystem {
 			this->abbrechenBtn->TabIndex = 2;
 			this->abbrechenBtn->Text = L"Abbrechen";
 			this->abbrechenBtn->UseVisualStyleBackColor = true;
-			this->abbrechenBtn->Click += gcnew System::EventHandler(this, &VorgesetztenAuswahlFenster::abbrechenBtn_Click);
+			this->abbrechenBtn->Click += gcnew System::EventHandler(this, &AbteilungLoeschenFenster::abbrechenBtn_Click);
 			// 
-			// VorgesetztenAuswahlFenster
+			// AbteilungLoeschenFenster
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
@@ -128,51 +128,70 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->auswahlCBox);
 			this->Controls->Add(this->bestaetigenBtn);
-			this->Name = L"VorgesetztenAuswahlFenster";
-			this->Text = L"VorgesetztenAuswahlFenster";
-			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &VorgesetztenAuswahlFenster::VorgesetztenAuswahlFenster_FormClosing);
-			this->Load += gcnew System::EventHandler(this, &VorgesetztenAuswahlFenster::VorgesetztenAuswahlFenster_Load);
+			this->Name = L"AbteilungLoeschenFenster";
+			this->Text = L"AbteilungLoeschenFenster";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &AbteilungLoeschenFenster::AbteilungLoeschenFenster_FormClosing);
+			this->Load += gcnew System::EventHandler(this, &AbteilungLoeschenFenster::AbteilungLoeschenFenster_Load);
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
-	
+
 	private: System::Void bestaetigenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		if (!ausgewaehlt) {
-			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			MessageBox::Show("Bitte waehlen Sie einen Mitarbeiter aus!", "Kein Mitarbeiter ausgewählt", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		
+		if (!istAdmin) {
+			this->DialogResult = System::Windows::Forms::DialogResult::Cancel;
+			MessageBox::Show("Sie besitzen leider keine Administrator-Rechte!\nNur Administratoren können Abteilungen entfernen!", 
+				"Keine Abteilung ausgewählt", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+
+		else if (!ausgewaehlt) {
+			this->DialogResult = System::Windows::Forms::DialogResult::None;
+			MessageBox::Show("Bitte waehlen Sie eine Abteilung aus!", "Keine Abteilung ausgewählt", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+
+		else if (unternehmen->getAnzahlAbteilungen() < 2) {
+			this->DialogResult = System::Windows::Forms::DialogResult::Cancel;
+			MessageBox::Show("Das Unternehmen besitzt nur eine Abteilung!\nEs können nicht alle Abteilungen gelöscht werden!",
+				"Keine Abteilung ausgewählt", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+
 		else {
-			ausgewaehlterMA = (Mitarbeiter^)angestelltenAuswahl[auswahlCBox->SelectedIndex];
-			for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
-				if ((vorgesetzterAlt->getAbteilung()->getAbteilungsnummer()->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer()))) {
-					abteilung = unternehmen->getAbteilung(i);
-					ausgewaehlterMA->setAbteilung(abteilung);
-				}
-			}
-			String^ abfrage = "Wollen Sie " + ausgewaehlterMA->getVorname() + " " + ausgewaehlterMA->getNachname() + " wirklich zum Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer()
-				+ " bestimmen?";
+			ausgewaehlteAbteilung = abteilungen[auswahlCBox->SelectedIndex];
+			String^ abfrage = "Wollen Sie die Abteilung " + ausgewaehlteAbteilung->getAbteilungsnummer() + " wirklich löschen?\nAlle Mitarbeiter der Abteilung werden dann gelöscht!";
 			if (MessageBox::Show(abfrage, "Wirklich löschen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-				vorgesetzterNeu = gcnew Vorgesetzter(ausgewaehlterMA, false);
-				if (behalten) {
-					Mitarbeiter^ neuerMA = gcnew Mitarbeiter(vorgesetzterAlt, vorgesetzterNeu);
+
+				if (MessageBox::Show("Wollen Sie den Vorgesetzten der Abteilung als Mitarbeiter behalten?", "Mitarbeiter behalten?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+					behalten = true;
+					vorgesetzterAlt = ausgewaehlteAbteilung->getVorgesetzter();
+					Vorgesetzter^ vorgesetzterNeu = nullptr;
+					Abteilung^ abteilung = nullptr;
+					if (!ausgewaehlteAbteilung->getAbteilungsnummer()->Equals(abteilungen[0]->getAbteilungsnummer())) {
+						vorgesetzterNeu = abteilungen[0]->getVorgesetzter();
+						abteilung = abteilungen[0];
+					}
+					else {
+						vorgesetzterNeu = abteilungen[1]->getVorgesetzter();
+						abteilung = abteilungen[1];
+					}
+					neuerMA = gcnew Mitarbeiter(vorgesetzterAlt, vorgesetzterNeu);
+					neuerMA->setAbteilung(abteilung);
 					abteilung->fuegeMitarbeiterHinzu(neuerMA);
 				}
-				abteilung->setVorgesetzter(vorgesetzterNeu);
 
-				for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
-					if (ausgewaehlterMA->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
-						abteilung->removeMitarbeiter(i);
+				for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+					if (ausgewaehlteAbteilung->getAbteilungsnummer()->Equals(abteilungen[i]->getAbteilungsnummer())) {
+						unternehmen->getAbteilungen()->RemoveAt(i);
 					}
 				}
+
 				String^ infoText = nullptr;
 				if (behalten) {
-					infoText = "Sie haben erfolgreich " + vorgesetzterNeu->getVorname() + " " + vorgesetzterNeu->getNachname() + " zum Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer()
-						+ " befördert.\n" + vorgesetzterAlt->getVorname() + " " + vorgesetzterAlt->getNachname() + " ist jetzt Mitarbeiter dieser Abteilung.";
+					infoText = "Sie haben die Abteilung " + ausgewaehlteAbteilung->getAbteilungsnummer() + " erfolgreich gelöscht!\n" + neuerMA->getVorname() + " " 
+						+ neuerMA->getNachname() + " ist jetzt Mitarbeiter der Abteilung " + neuerMA->getAbteilung()->getAbteilungsnummer() +".";
 				}
 				else {
-					infoText = "Sie haben erfolgreich " + vorgesetzterNeu->getVorname() + " " + vorgesetzterNeu->getNachname() + " zum Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer()
-						+ " befördert.\n" + vorgesetzterAlt->getVorname() + " " + vorgesetzterAlt->getNachname() + " wurde gelöscht.";
+					infoText = "Sie haben die Abteilung " + ausgewaehlteAbteilung->getAbteilungsnummer() + " erfolgreich gelöscht!\nDer Vorgesetzte wurde gelöscht.";
 				}
 				MessageBox::Show(infoText, "Erfolgreich befördert", MessageBoxButtons::OK, MessageBoxIcon::Information);
 				this->DialogResult = System::Windows::Forms::DialogResult::OK;
@@ -181,14 +200,12 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
-	private: System::Void VorgesetztenAuswahlFenster_Load(System::Object^  sender, System::EventArgs^  e) {
-		List<Angestellter^>^ angestellte = unternehmen->getAlleAngestellte();
+	private: System::Void AbteilungLoeschenFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+		abteilungen = unternehmen->getAbteilungen();
 		ausgewaehlt = false;
-		for (int i = 0; i < angestellte->Count; i++) {
-			if (!angestellte[i]->istVorgesetzter()) {
-				auswahlCBox->Items->Add(angestellte[i]->getVorname() + " " + angestellte[i]->getNachname() + ", " + angestellte[i]->getPersonalnummer());
-				angestelltenAuswahl->Add(angestellte[i]);
-			}
+		behalten = false;
+		for (int i = 0; i < abteilungen->Count; i++) {
+			auswahlCBox->Items->Add(abteilungen[i]->getAbteilungsnummer());
 		}
 	}
 
@@ -196,12 +213,8 @@ namespace Zeiterfassungssystem {
 		this->unternehmen = unternehmen;
 	}
 
-	public: void setVorgesetzterAlt(Vorgesetzter^ vorgesetzterAlt) {
-		this->vorgesetzterAlt = vorgesetzterAlt;
-	}
-
-	public: void setVorgesetztenAltBehalten(Boolean behalten) {
-		this->behalten = behalten;
+	public: void setAdminrechte(Boolean istAdmin) {
+		this->istAdmin = istAdmin;
 	}
 
 	private: System::Void auswahlCBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
@@ -217,8 +230,8 @@ namespace Zeiterfassungssystem {
 		auswahlCBox->Items->Clear();
 	}
 
-	private: System::Void VorgesetztenAuswahlFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+	private: System::Void AbteilungLoeschenFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
 		this->clear();
 	}
-};
+	};
 }

@@ -16,6 +16,7 @@
 #include "FeiertagsFenster.h"
 #include "UrlaubLoeschenFenster.h"
 #include "Kalender.h"
+#include "AbteilungLoeschenFenster.h"
 
 namespace Zeiterfassungssystem {
 
@@ -50,6 +51,7 @@ namespace Zeiterfassungssystem {
 		AuswahlFenster^ auswahlfenster;
 		FeiertagsFenster^ feiertagsfenster;
 		UrlaubLoeschenFenster^ urlaubLoeschenFenster;
+		AbteilungLoeschenFenster^ abteilungFenster;
 
 		//Für den Arbeitszeit-Timer:
 		Int32 sekunde;
@@ -109,6 +111,7 @@ namespace Zeiterfassungssystem {
 			auswahlfenster = gcnew AuswahlFenster;
 			feiertagsfenster = gcnew FeiertagsFenster;
 			urlaubLoeschenFenster = gcnew UrlaubLoeschenFenster;
+			abteilungFenster = gcnew AbteilungLoeschenFenster;
 			kalender = gcnew Kalender();
 		}
 
@@ -779,9 +782,12 @@ namespace Zeiterfassungssystem {
 		bearbeitungsfenster->setAdminRechte(angestellterAkt->getIstAdmin());
 		urlaubLoeschenFenster->setUnternehmen(unternehmen);
 		feiertagsfenster->setUnternehmen(unternehmen);
+		abteilungFenster->setUnternehmen(unternehmen);
+		abteilungFenster->setAdminrechte(angestellterAkt->getIstAdmin());
 		auswahlfenster->setUrlaubLoeschenfenster(urlaubLoeschenFenster);
 		auswahlfenster->setFeiertagsfenster(feiertagsfenster);;
 		auswahlfenster->setBearbeitungsfenster(bearbeitungsfenster);
+		auswahlfenster->setAbteilungLoeschenFenster(abteilungFenster);
 		auswahlfenster->ShowDialog(this);
 
 	}
