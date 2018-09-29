@@ -548,13 +548,14 @@ namespace Zeiterfassungssystem {
 					+ txt_abteilung->Text + " bestimmen?";
 				if (MessageBox::Show(frageText, "Wirklich Vorgesetzten wechseln?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 					Boolean abteilungNichtVorhanden = true;
+					Abteilung^ alteAbteilung = angestellter->getAbteilung();
 					for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
 						if (txt_abteilung->Text->Equals(unternehmen->getAbteilung(i)->getAbteilungsnummer())) {
 							abteilungNichtVorhanden = false;
 						}
 					}
 					if (abteilungNichtVorhanden) {
-						Abteilung^ abteilungNeu = gcnew Abteilung(txt_abteilung->Text, vorgesetzter);
+						Abteilung^ abteilungNeu = gcnew Abteilung(txt_abteilung->Text, nullptr);
 						angestellter->setAbteilung(abteilungNeu);
 						unternehmen->addAbteilung(abteilungNeu);
 					}
@@ -568,9 +569,9 @@ namespace Zeiterfassungssystem {
 						abteilung->fuegeMitarbeiterHinzu(ehemVorgesetzter); //Alter Vorgesetzter wird der Abteilung als MA hinzugefuegt
 						abteilung->setVorgesetzter(vorgesetzter);
 					}
-					for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
-						if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
-							abteilung->removeMitarbeiter(i);
+					for (int i = 0; i < alteAbteilung->getAnzahlMitarbeiter(); i++) {
+						if (angestellter->getPersonalnummer()->Equals(alteAbteilung->getMitarbeiter(i)->getPersonalnummer())) {
+							alteAbteilung->removeMitarbeiter(i);
 						}
 					}
 					if (txt_Rolle->Text->Equals("Vorgesetzter") && rolle->Equals("Vorgesetzter")) {
