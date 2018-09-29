@@ -28,9 +28,6 @@ namespace Zeiterfassungssystem {
 		AuswahlFenster(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Konstruktorcode hier hinzufügen.
-			//
 		}
 
 	protected:

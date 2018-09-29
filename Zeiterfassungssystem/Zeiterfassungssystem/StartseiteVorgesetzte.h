@@ -776,6 +776,7 @@ namespace Zeiterfassungssystem {
 	private: System::Void editBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		//Unterfenster werden an das Auswahlfenster übergeben und Attribute werden gesetzt
 		bearbeitungsfenster->setUnternehmen(unternehmen);
+		bearbeitungsfenster->setAdminRechte(angestellterAkt->getIstAdmin());
 		urlaubLoeschenFenster->setUnternehmen(unternehmen);
 		feiertagsfenster->setUnternehmen(unternehmen);
 		auswahlfenster->setUrlaubLoeschenfenster(urlaubLoeschenFenster);
