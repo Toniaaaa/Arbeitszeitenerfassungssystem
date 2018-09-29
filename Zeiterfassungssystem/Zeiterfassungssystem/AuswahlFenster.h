@@ -107,7 +107,7 @@ namespace Zeiterfassungssystem {
 			this->abteilungBtn->Name = L"abteilungBtn";
 			this->abteilungBtn->Size = System::Drawing::Size(100, 49);
 			this->abteilungBtn->TabIndex = 3;
-			this->abteilungBtn->Text = L"Abteilung löschen";
+			this->abteilungBtn->Text = L"Abteilung auflösen";
 			this->abteilungBtn->UseVisualStyleBackColor = true;
 			this->abteilungBtn->Click += gcnew System::EventHandler(this, &AuswahlFenster::abteilungBtn_Click);
 			// 

@@ -81,7 +81,7 @@ namespace Zeiterfassungssystem {
 			this->bestaetigenBtn->Name = L"bestaetigenBtn";
 			this->bestaetigenBtn->Size = System::Drawing::Size(150, 50);
 			this->bestaetigenBtn->TabIndex = 1;
-			this->bestaetigenBtn->Text = L"Bestätigen";
+			this->bestaetigenBtn->Text = L"Auflösen";
 			this->bestaetigenBtn->UseVisualStyleBackColor = true;
 			this->bestaetigenBtn->Click += gcnew System::EventHandler(this, &AbteilungLoeschenFenster::bestaetigenBtn_Click);
 			// 
@@ -103,7 +103,7 @@ namespace Zeiterfassungssystem {
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(436, 41);
 			this->label1->TabIndex = 2;
-			this->label1->Text = L"Welche Abteilung möchten Sie löschen\?";
+			this->label1->Text = L"Welche Abteilung möchten Sie auflösen\?";
 			this->label1->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			// 
 			// abbrechenBtn
@@ -158,14 +158,15 @@ namespace Zeiterfassungssystem {
 
 		else {
 			ausgewaehlteAbteilung = abteilungen[auswahlCBox->SelectedIndex];
-			String^ abfrage = "Wollen Sie die Abteilung " + ausgewaehlteAbteilung->getAbteilungsnummer() + " wirklich löschen?\nAlle Mitarbeiter der Abteilung werden dann gelöscht!";
+			String^ abfrage = "Wollen Sie die Abteilung " + ausgewaehlteAbteilung->getAbteilungsnummer() + " wirklich auflösen?";
 			if (MessageBox::Show(abfrage, "Wirklich löschen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+
+				Abteilung^ abteilung = nullptr;
 
 				if (MessageBox::Show("Wollen Sie den Vorgesetzten der Abteilung als Mitarbeiter behalten?", "Mitarbeiter behalten?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 					behalten = true;
 					vorgesetzterAlt = ausgewaehlteAbteilung->getVorgesetzter();
 					Vorgesetzter^ vorgesetzterNeu = nullptr;
-					Abteilung^ abteilung = nullptr;
 					if (!ausgewaehlteAbteilung->getAbteilungsnummer()->Equals(abteilungen[0]->getAbteilungsnummer())) {
 						vorgesetzterNeu = abteilungen[0]->getVorgesetzter();
 						abteilung = abteilungen[0];
@@ -181,6 +182,10 @@ namespace Zeiterfassungssystem {
 
 				for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
 					if (ausgewaehlteAbteilung->getAbteilungsnummer()->Equals(abteilungen[i]->getAbteilungsnummer())) {
+						for (int j = 0; j < abteilungen[i]->getAnzahlMitarbeiter(); j++) {
+							abteilungen[i]->getMitarbeiter(j)->setAbteilung(abteilung);
+							abteilung->fuegeMitarbeiterHinzu(abteilungen[i]->getMitarbeiter(j));
+						}
 						unternehmen->getAbteilungen()->RemoveAt(i);
 					}
 				}
