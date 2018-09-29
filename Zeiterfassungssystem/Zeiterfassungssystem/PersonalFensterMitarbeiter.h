@@ -1,6 +1,7 @@
 #pragma once
 #include "Angestellter.h"
 #include "Unternehmen.h"
+#include "Abteilung.h"
 
 namespace Zeiterfassungssystem {
 
@@ -41,6 +42,7 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::ColumnHeader^  clm_Status;
 	private: System::Windows::Forms::ColumnHeader^  clm_nachname;
 	private: System::Windows::Forms::ColumnHeader^  clm_Vorname;
+	private: System::Windows::Forms::ColumnHeader^  clm_Abteilung;
 
 	private:
 		/// <summary>
@@ -59,13 +61,14 @@ namespace Zeiterfassungssystem {
 			this->clm_Status = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_nachname = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_Vorname = (gcnew System::Windows::Forms::ColumnHeader());
+			this->clm_Abteilung = (gcnew System::Windows::Forms::ColumnHeader());
 			this->SuspendLayout();
 			// 
 			// listView1
 			// 
-			this->listView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(3) {
+			this->listView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(4) {
 				this->clm_Status, this->clm_nachname,
-					this->clm_Vorname
+					this->clm_Vorname, this->clm_Abteilung
 			});
 			this->listView1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->listView1->FullRowSelect = true;
@@ -90,7 +93,12 @@ namespace Zeiterfassungssystem {
 			// clm_Vorname
 			// 
 			this->clm_Vorname->Text = L"Vorname";
-			this->clm_Vorname->Width = 133;
+			this->clm_Vorname->Width = 166;
+			// 
+			// clm_Abteilung
+			// 
+			this->clm_Abteilung->Text = L"Abteilung";
+			this->clm_Abteilung->Width = 152;
 			// 
 			// PersonalFensterMitarbeiter
 			// 
@@ -148,9 +156,10 @@ namespace Zeiterfassungssystem {
 					item->ForeColor = System::Drawing::Color::Red;
 				}
 
-				//Auch der Name und Vorname wird befüllt
+				//Auch der Name, Vorname und Abteilung wird befüllt
 				item->SubItems->Add(angestellte[i]->getNachname());
 				item->SubItems->Add(angestellte[i]->getVorname());
+				item->SubItems->Add(angestellte[i]->getAbteilung()->getAbteilungsnummer());
 				listView1->Items->Add(item);
 			}
 		}
