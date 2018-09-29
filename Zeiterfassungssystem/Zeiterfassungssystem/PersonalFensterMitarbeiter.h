@@ -75,7 +75,7 @@ namespace Zeiterfassungssystem {
 			this->listView1->GridLines = true;
 			this->listView1->Location = System::Drawing::Point(0, 0);
 			this->listView1->Name = L"listView1";
-			this->listView1->Size = System::Drawing::Size(622, 290);
+			this->listView1->Size = System::Drawing::Size(744, 337);
 			this->listView1->TabIndex = 0;
 			this->listView1->UseCompatibleStateImageBehavior = false;
 			this->listView1->View = System::Windows::Forms::View::Details;
@@ -104,7 +104,7 @@ namespace Zeiterfassungssystem {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(622, 290);
+			this->ClientSize = System::Drawing::Size(744, 337);
 			this->Controls->Add(this->listView1);
 			this->Name = L"PersonalFensterMitarbeiter";
 			this->Text = L"PersonalFensterMitarbeiter";
