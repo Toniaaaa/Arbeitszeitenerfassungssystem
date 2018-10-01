@@ -175,7 +175,7 @@ namespace Zeiterfassungssystem {
 					Vorgesetzter^ vorgesetzterNeu = abteilung->getVorgesetzter();
 					neuerMA = gcnew Mitarbeiter(vorgesetzterAlt, vorgesetzterNeu);
 					neuerMA->setAbteilung(abteilung);
-					neuerMA->addAntragsInfo("Änderung im Unternehmen:\n\nIhre Abteilung wurde gelöscht und Sie wurden in die Abteilung " + abteilung->getAbteilungsnummer() + " versetzt.\n"
+					neuerMA->addAntragsInfo("Änderung im Unternehmen:\n\nIhre Abteilung wurde aufgelöst und Sie wurden in die Abteilung " + abteilung->getAbteilungsnummer() + " versetzt.\n"
 						+ "Ihr neuer Vorgesetzter ist " + neuerMA->getVorgesetzter()->getVorname() + " " + neuerMA->getVorgesetzter()->getNachname());
 					abteilung->fuegeMitarbeiterHinzu(neuerMA);
 				}
@@ -196,7 +196,7 @@ namespace Zeiterfassungssystem {
 
 				String^ infoText = nullptr;
 				if (behalten) {
-					infoText = "Sie haben die Abteilung " + ausgewaehlteAbteilung->getAbteilungsnummer() + " erfolgreich gelöscht!\n" + neuerMA->getVorname() + " " 
+					infoText = "Sie haben die Abteilung " + ausgewaehlteAbteilung->getAbteilungsnummer() + " erfolgreich aufgelöst!\n" + neuerMA->getVorname() + " " 
 						+ neuerMA->getNachname() + " ist jetzt Mitarbeiter der Abteilung " + neuerMA->getAbteilung()->getAbteilungsnummer() +".";
 				}
 				else {

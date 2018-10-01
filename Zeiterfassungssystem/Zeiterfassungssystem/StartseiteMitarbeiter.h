@@ -1008,7 +1008,7 @@ namespace Zeiterfassungssystem {
 			String^ antragString = angestellterAkt->getAntragsInfos()[anzAntragsInfos - 1];
 			angestellterAkt->removeAntragsInfo(--anzAntragsInfos);
 			resturlaubLbl->Text = angestellterAkt->getRestUrlaub() + " Tage";
-			MessageBox::Show(antragString, "Ihr Antrag", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			MessageBox::Show(antragString, "Information", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 	}
 

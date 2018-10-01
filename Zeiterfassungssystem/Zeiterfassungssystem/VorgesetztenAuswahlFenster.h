@@ -154,8 +154,11 @@ namespace Zeiterfassungssystem {
 				+ " bestimmen?";
 			if (MessageBox::Show(abfrage, "Wirklich löschen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 				vorgesetzterNeu = gcnew Vorgesetzter(ausgewaehlterMA, false);
+				vorgesetzterNeu->addAntragsInfo("Änderung im Unternehmen:\n\nSie wurden zum neuen Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer() 
+					+ " bestimmt!\nHerzlichen Glückwunsch!");
 				if (behalten) {
 					Mitarbeiter^ neuerMA = gcnew Mitarbeiter(vorgesetzterAlt, vorgesetzterNeu);
+					neuerMA->addAntragsInfo("Änderung im Unternehmen:\n\nSie wurden als Vorgesetzter Ihrer Abteilung abgelöst und nehmen nun die Rolle eines Mitarbeiters ein!");
 					abteilung->fuegeMitarbeiterHinzu(neuerMA);
 				}
 				abteilung->setVorgesetzter(vorgesetzterNeu);

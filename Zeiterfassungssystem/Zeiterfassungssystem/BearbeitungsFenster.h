@@ -510,12 +510,12 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_personalnummer->Clear();
 		}
-		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_name->Text, "^[a-zA-Z]*$")) {
+		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_name->Text, "^[a-zA-Z]*(\ |\-)?([a-zA-Z]*)?$")) {
 			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Name\" aktzeptiert nur Buchstaben!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_name->Clear();
 		}
-		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_vorname->Text, "^[a-zA-Z]*$")) {
+		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_vorname->Text, "^[a-zA-Z]*(\ |\-)?([a-zA-Z]*)?$")) {
 			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Vorname\" aktzeptiert nur Buchstaben!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_vorname->Clear();
@@ -559,6 +559,12 @@ namespace Zeiterfassungssystem {
 				v->setIstAdmin(adminCBox->Checked);
 			}
 
+			String^ aenderungInfo = "Ihre gespeicherten Daten wurden geändert.\nIhre neuen Daten:\n\nName:\t\t" + txt_vorname->Text + " " + txt_name->Text + "\nPersonalnummer:\t" +
+				txt_personalnummer->Text + "\nWochenstunden:\t" + txt_arbeitsstunden->Text + "\nUrlaubstage:\t" + txt_urlaubstage->Text + "\nAbteilung:\t" + txt_abteilung->Text
+				+ "\nRolle:\t\t" + txt_Rolle->Text + "\nAdmin-Rechte:\t";
+			aenderungInfo = adminCBox->Checked ? aenderungInfo + "Ja" : aenderungInfo + "Nein";
+			angestellter->addAntragsInfo(aenderungInfo);
+
 			Abteilung^ alteAbteilung = angestellter->getAbteilung();
 
 			if (txt_Rolle->Text->Equals("Mitarbeiter") && rolle->Equals("Mitarbeiter") && abteilungWechselt) {
@@ -592,6 +598,7 @@ namespace Zeiterfassungssystem {
 							alteAbteilung->removeMitarbeiter(i);
 						}
 					}
+					vorgesetzter->addAntragsInfo(aenderungInfo);
 				}
 			}
 
@@ -611,16 +618,19 @@ namespace Zeiterfassungssystem {
 					else {
 						abteilungNeu = angestellter->getAbteilung();
 					}
-					vorgesetzter = gcnew Vorgesetzter((Mitarbeiter^)angestellter, adminCBox->Checked); //Hier neuen Konstruktor verwendet, damit keine Daten verloren gehen.
+					vorgesetzter = gcnew Vorgesetzter((Mitarbeiter^)angestellter, adminCBox->Checked);
 					vorgesetzter->setAbteilung(abteilungNeu);
-					Mitarbeiter^ ehemVorgesetzter = gcnew Mitarbeiter(abteilungNeu->getVorgesetzter(), vorgesetzter); //Alter Vorgesetzter wird als Mitarbeiter gespeichert.
-					abteilungNeu->fuegeMitarbeiterHinzu(ehemVorgesetzter); //Alter Vorgesetzter wird der Abteilung als MA hinzugefuegt
+					Mitarbeiter^ ehemVorgesetzter = gcnew Mitarbeiter(abteilungNeu->getVorgesetzter(), vorgesetzter);
+					abteilungNeu->fuegeMitarbeiterHinzu(ehemVorgesetzter);
 					abteilungNeu->setVorgesetzter(vorgesetzter);
 					for (int i = 0; i < alteAbteilung->getAnzahlMitarbeiter(); i++) {
 						if (angestellter->getPersonalnummer()->Equals(alteAbteilung->getMitarbeiter(i)->getPersonalnummer())) {
 							alteAbteilung->removeMitarbeiter(i);
 						}
 					}
+					vorgesetzter->addAntragsInfo(aenderungInfo);
+					ehemVorgesetzter->addAntragsInfo("Änderung im Unternehmen:\n\nSie wurden als Vorgesetzter Ihrer Abteilung abgelöst und nehmen nun die Rolle eines Mitarbeiters ein!\n" 
+						+ "Ihr neuer Vorgesetzter ist: " + vorgesetzter->getVorname() + " " + vorgesetzter->getNachname());
 				}
 			}
 
@@ -643,6 +653,7 @@ namespace Zeiterfassungssystem {
 				}
 			}
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
+			
 			if (info) {
 				MessageBox::Show("Angestellten Daten erfolgreich geändert!", "Erfolgreich", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			}
