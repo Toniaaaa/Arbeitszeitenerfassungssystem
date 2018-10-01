@@ -137,30 +137,37 @@ namespace Zeiterfassungssystem {
 		}
 #pragma endregion
 
+	//Klick auf Bestätigen-Button:
 	private: System::Void bestaetigenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		
+		//Wenn der Nutzer keine Admin-Rechte hat, kann er keine Abteilungen entfernen
 		if (!istAdmin) {
 			this->DialogResult = System::Windows::Forms::DialogResult::Cancel;
 			MessageBox::Show("Sie besitzen leider keine Administrator-Rechte!\nNur Administratoren können Abteilungen entfernen!", 
 				"Keine Abteilung ausgewählt", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 
+		//Fall: keine Abteilung ausgewählt -> Meldung, muss noch ausgewählt werden
 		else if (!ausgewaehlt) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Bitte waehlen Sie eine Abteilung aus!", "Keine Abteilung ausgewählt", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 
+		//Fall: Nur noch eine Abteilung im Unternehmen -> Meldung, Löschen nicht möglich
 		else if (unternehmen->getAnzahlAbteilungen() < 2) {
 			this->DialogResult = System::Windows::Forms::DialogResult::Cancel;
 			MessageBox::Show("Das Unternehmen besitzt nur eine Abteilung!\nEs können nicht alle Abteilungen gelöscht werden!",
 				"Keine Abteilung ausgewählt", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 
+		//Wenn alles OK:
 		else {
 			ausgewaehlteAbteilung = abteilungen[auswahlCBox->SelectedIndex];
+			//Sicherheitsabfrage
 			String^ abfrage = "Wollen Sie die Abteilung " + ausgewaehlteAbteilung->getAbteilungsnummer() + " wirklich auflösen?";
 			if (MessageBox::Show(abfrage, "Wirklich löschen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 
+				//Es wird eine "Ersatzabteilung" für die MA der zu löschenden Abteilung gesetzt (normalerweise Abteilung 0, falls diese nicht gelöscht wird, sonst 1)
 				Abteilung^ abteilung = nullptr;
 				if (!ausgewaehlteAbteilung->getAbteilungsnummer()->Equals(abteilungen[0]->getAbteilungsnummer())) {
 					abteilung = abteilungen[0];
@@ -169,17 +176,21 @@ namespace Zeiterfassungssystem {
 					abteilung = abteilungen[1];
 				}
 
+				//Abfrage, ob der Vorgesetzte gelöscht oder behalten werden soll
 				if (MessageBox::Show("Wollen Sie den Vorgesetzten der Abteilung als Mitarbeiter behalten?", "Mitarbeiter behalten?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 					behalten = true;
+					//Der Vorgesetzte wird in Mitarbeiter seiner neuen Abteilung umgewandelt und der Vorgesetzte seiner neuen Abteilung als sein neuer Vorgesetzter gesetzt
 					vorgesetzterAlt = ausgewaehlteAbteilung->getVorgesetzter();
 					Vorgesetzter^ vorgesetzterNeu = abteilung->getVorgesetzter();
 					neuerMA = gcnew Mitarbeiter(vorgesetzterAlt, vorgesetzterNeu);
 					neuerMA->setAbteilung(abteilung);
+					//Informationsnachricht wird erstellt und hinzugefügt
 					neuerMA->addAntragsInfo("Änderung im Unternehmen:\n\nIhre Abteilung wurde aufgelöst und Sie wurden in die Abteilung " + abteilung->getAbteilungsnummer() + " versetzt.\n"
 						+ "Ihr neuer Vorgesetzter ist " + neuerMA->getVorgesetzter()->getVorname() + " " + neuerMA->getVorgesetzter()->getNachname());
 					abteilung->fuegeMitarbeiterHinzu(neuerMA);
 				}
 
+				//Alle Mitarbeiter der zu löschenden Abteilung werden in die Ersatzabteilung verschoben
 				for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
 					if (ausgewaehlteAbteilung->getAbteilungsnummer()->Equals(abteilungen[i]->getAbteilungsnummer())) {
 						for (int j = 0; j < abteilungen[i]->getAnzahlMitarbeiter(); j++) {
@@ -190,18 +201,23 @@ namespace Zeiterfassungssystem {
 								+ "Ihr neuer Vorgesetzter ist " + mitarbeiter->getVorgesetzter()->getVorname() + " " + mitarbeiter->getVorgesetzter()->getNachname());
 							abteilung->fuegeMitarbeiterHinzu(mitarbeiter);
 						}
+						//Die Abteilung wird gelöscht
 						unternehmen->getAbteilungen()->RemoveAt(i);
 					}
 				}
 
+				//Infotext für die MessageBox wird erstellt. Zwei Varianten für Löschen oder Behalten des Vorgesetzten.
 				String^ infoText = nullptr;
 				if (behalten) {
 					infoText = "Sie haben die Abteilung " + ausgewaehlteAbteilung->getAbteilungsnummer() + " erfolgreich aufgelöst!\n" + neuerMA->getVorname() + " " 
-						+ neuerMA->getNachname() + " ist jetzt Mitarbeiter der Abteilung " + neuerMA->getAbteilung()->getAbteilungsnummer() +".";
+						+ neuerMA->getNachname() + " ist jetzt Mitarbeiter der Abteilung " + neuerMA->getAbteilung()->getAbteilungsnummer() + "." + "\nAlle Mitarbeiter wurden in die Abteilung "
+						+ abteilung->getAbteilungsnummer() + " verschoben.";
 				}
 				else {
-					infoText = "Sie haben die Abteilung " + ausgewaehlteAbteilung->getAbteilungsnummer() + " erfolgreich gelöscht!\nDer Vorgesetzte wurde gelöscht.";
+					infoText = "Sie haben die Abteilung " + ausgewaehlteAbteilung->getAbteilungsnummer() + " erfolgreich gelöscht!\nDer Vorgesetzte wurde gelöscht." 
+						+ "\nAlle Mitarbeiter wurden in die Abteilung " + abteilung->getAbteilungsnummer() + " verschoben.";
 				}
+				//MessageBox wird erstellt und Fenster geschlossen.
 				MessageBox::Show(infoText, "Erfolgreich gelöscht", MessageBoxButtons::OK, MessageBoxIcon::Information);
 				this->DialogResult = System::Windows::Forms::DialogResult::OK;
 				this->Close();
@@ -209,37 +225,47 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
+	//Wenn das Fenster lädt:
 	private: System::Void AbteilungLoeschenFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+		//Werte werden auf Startwerte gesetzt.
 		abteilungen = unternehmen->getAbteilungen();
 		ausgewaehlt = false;
 		behalten = false;
+		//ComboBox wird gefüllt
 		for (int i = 0; i < abteilungen->Count; i++) {
 			auswahlCBox->Items->Add(abteilungen[i]->getAbteilungsnummer());
 		}
 	}
 
+	//Setter für das Unternehmen
 	public: void setUnternehmen(Unternehmen^ unternehmen) {
 		this->unternehmen = unternehmen;
 	}
 
+	//Setter für die Admin-Rechte des Nutzers
 	public: void setAdminrechte(Boolean istAdmin) {
 		this->istAdmin = istAdmin;
 	}
 
+	//Wenn in der ComboBox etwas ausgewaehlt wurde
 	private: System::Void auswahlCBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
 		ausgewaehlt = true;
 	}
 
+	//Abbrechen-Button wird geklickt: Das Fenster wird ohne weitere Aktion geschlossen und Cancel zurückgegeben.
 	private: System::Void abbrechenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		this->DialogResult = System::Windows::Forms::DialogResult::Cancel;
 		this->Close();
 	}
 
+	//Leert die ComboBox
 	private: void clear() {
 		auswahlCBox->Items->Clear();
 	}
 
+	//Wenn das Fenster geschlossen wird.
 	private: System::Void AbteilungLoeschenFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+		//ComboBox leeren
 		this->clear();
 	}
 	};
