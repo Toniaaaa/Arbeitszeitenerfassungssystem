@@ -106,16 +106,17 @@ public:
 	void addAntragsInfo(String^ info);
 	void removeAntragsInfo(Int32 index);
 	void addUrlaubstag(DateTime tag);
+	void addFeiertag(DateTime tag);
 	void removeUrlaubstag(DateTime tag);
 	void loescheAlleUrlaubstage();
-	void loescheUrlaubstage(DateTime von, DateTime bis, String^ kommentar);
+	void loescheUrlaubstage(DateTime von, DateTime bis, String^ kommentar); //Löscht alle Urlaubstage innerhalb des übergebenen Zeitraums
 
 	//Weitere Methoden:
 	void aenderungAntwort(String^ tag, String^ kommentar, Boolean bestaetigt);
-	String^ freieTageAnzeigen(List<FreierTag^>^ feiertage); //Gibt Aufzählung aller Feier- und Urlaubstage zurück
+	String^ freieTageAnzeigen(Boolean mitFeiertagen); //Gibt Aufzählung aller Feier- und Urlaubstage zurück
 	void speichereArbeitszeit();//Speichert die gesamte Arbeitszeit eines abgeschlossenen Tages in den noch-ArbeitsStunden und Minuten
-	void nehmeUrlaub(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage); //Fügt die Tage innerhalb des Zeitraums zu der listeUrlaubstage hinzu, solange die keine Feiertage oder Wochenenden sind
-	Int32 berechneUrlaubstage(DateTime beginn, DateTime ende, List<FreierTag^>^ feiertage); //Berechnet die Anzahl der Urlaubstage innerhalb eines Zeitraums ohne Wochenenden und Feiertage
+	void nehmeUrlaub(DateTime beginn, DateTime ende); //Fügt die Tage innerhalb des Zeitraums zu der listeUrlaubstage hinzu, solange die keine Feiertage oder Wochenenden sind
+	Int32 berechneUrlaubstage(DateTime beginn, DateTime ende); //Berechnet die Anzahl der Urlaubstage innerhalb eines Zeitraums ohne Wochenenden und Feiertage
 	Int32 indexVon(DateTime tag); //Gibt den Index eines Tages in der listeUrlaubstage zurück
 	Boolean istUrlaubstag(DateTime tag); //Gibt zurück, ob der Paramter ein Urlaubstag ist oder nicht
 	void zieheZeitAb(Int32 stunden, Int32 minuten); //Zieht Zeit von der Noch-Arbeitszeit ab bzw. addiert Überstunden, wenn die Wochen-Arbeitszeit erreicht ist

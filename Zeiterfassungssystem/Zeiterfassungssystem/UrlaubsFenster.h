@@ -355,7 +355,7 @@ namespace Zeiterfassungssystem {
 	//Wenn die Auswahl in der Beginn-Combobox geändert wurde
 	private: System::Void urlaubBeginnDTP_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
 		//Anzahl der Urlabstage im gewählten Intervall wird berechnet (ohne Wochenenden und Feiertage)
-		anzahlUrlaubstage = angestellter->berechneUrlaubstage(p_Anfang, p_Ende, unternehmen->getFeiertage());
+		anzahlUrlaubstage = angestellter->berechneUrlaubstage(p_Anfang, p_Ende);
 		//Anzeige der Urlaubstage setzen
 		if (anzahlUrlaubstage == 1) {
 			this->urlaubstageLbl->Text = "1 Tag";
@@ -368,7 +368,7 @@ namespace Zeiterfassungssystem {
 	//Wenn die Auswahl in der Ende-Combobox geändert wurde
 	private: System::Void urlaubEndeDTP_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
 		//Anzahl der Urlabstage im gewählten Intervall wird berechnet (ohne Wochenenden und Feiertage)
-		anzahlUrlaubstage = angestellter->berechneUrlaubstage(p_Anfang, p_Ende, unternehmen->getFeiertage());
+		anzahlUrlaubstage = angestellter->berechneUrlaubstage(p_Anfang, p_Ende);
 		//Anzeige der Urlaubstage setzen
 		if (anzahlUrlaubstage == 1) {
 			this->urlaubstageLbl->Text = "1 Tag";
@@ -381,7 +381,7 @@ namespace Zeiterfassungssystem {
 	//ANZEIGEN-BUTTON
 	private: System::Void anzeigenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		//Urlaubs- und Feiertage für diesen Nutzer werden angezeigt
-		String^ urlaubstageString = angestellter->freieTageAnzeigen(unternehmen->getFeiertage());
+		String^ urlaubstageString = angestellter->freieTageAnzeigen(true);
 		MessageBox::Show(urlaubstageString, "Ihre freien Tage", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
 

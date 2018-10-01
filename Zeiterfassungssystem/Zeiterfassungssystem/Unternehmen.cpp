@@ -129,7 +129,7 @@ List<Abteilung^>^ Unternehmen::getAbteilungen()
 //Fügt einen Feiertag zur Liste hinzu (Datum aus dem übergebene Parameter)
 void Unternehmen::addFeiertag(DateTime tag)
 {
-	this->feiertage->Add(gcnew FreierTag(tag));
+	this->feiertage->Add(gcnew FreierTag(tag, true));
 	//Sortiert die Feiertagsliste nach Datum
 	feiertage->Sort(vergleichen);
 }
@@ -154,7 +154,7 @@ void Unternehmen::erstelleRegelFeiertage(Int32 jahr)
 	for (int i = 0; i < feiertageRegel->Length; i = i + 2) {
 		DateTime^ feiertag = gcnew DateTime(jahr, feiertageRegel[i + 1], feiertageRegel[i]);
 		//Feiertag nur hinzufügen, wenn er noch nicht in der Liste existiert (z.B. durch manuelles Einfügen)
-		FreierTag^ neuerFeiertag = gcnew FreierTag(*feiertag);
+		FreierTag^ neuerFeiertag = gcnew FreierTag(*feiertag, true);
 		if (!feiertage->Contains(neuerFeiertag)) {
 			feiertage->Add(neuerFeiertag);
 		}
