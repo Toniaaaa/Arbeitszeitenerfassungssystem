@@ -12,12 +12,6 @@ Unternehmen::Unternehmen()
 {
 	abteilungen = gcnew List<Abteilung^>;
 	feiertage = gcnew List<FreierTag^>;
-
-	//Abteilung^ administration;
-	//Vorgesetzter^ admin = gcnew Vorgesetzter("Admin", "istrator", administration, "1", "1234", 169, 28);
-	//administration = gcnew Abteilung("1", admin);
-	//admin->setAbteilung(administration);
-	//abteilungen->Add(administration);
 	this->erstelleRegelFeiertage(DateTime::Now.Year);
 	this->erstelleRegelFeiertage((DateTime::Now.Year + 1));
 	this->vergleichen = gcnew FreierTagComparer();

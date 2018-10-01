@@ -17,6 +17,13 @@ Vorgesetzter::Vorgesetzter(Mitarbeiter^ mitarbeiterAlt, Boolean istAdmin) : Ange
 	this->istAdmin = istAdmin;
 }
 
+Vorgesetzter::Vorgesetzter(Vorgesetzter^ vorgesetzter) : Angestellter(vorgesetzter)
+{
+	listeAenderungsantraege = vorgesetzter->getAenderungsantraege();
+	listeUrlaubsantraege = vorgesetzter->getUrlaubsantraege();
+	this->istAdmin = vorgesetzter->getIstAdmin();
+}
+
 //Gibt zurück, dass dieser Angestellte ein Vorgesetzter ist
 bool Vorgesetzter::istVorgesetzter()
 {

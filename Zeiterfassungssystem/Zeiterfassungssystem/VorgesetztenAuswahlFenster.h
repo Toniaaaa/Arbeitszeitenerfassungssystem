@@ -148,9 +148,11 @@ namespace Zeiterfassungssystem {
 		else {
 			//Den ausgewaehlten MA und die Abteilung, deren Vorgesetzter er werden soll, setzen
 			ausgewaehlterMA = (Mitarbeiter^)angestelltenAuswahl[auswahlCBox->SelectedIndex];
+			Abteilung^ abteilungMA = nullptr;
 			for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
 				if ((vorgesetzterAlt->getAbteilung()->getAbteilungsnummer()->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer()))) {
 					abteilung = unternehmen->getAbteilung(i);
+					abteilungMA = ausgewaehlterMA->getAbteilung();
 					ausgewaehlterMA->setAbteilung(abteilung);
 				}
 			}
@@ -172,9 +174,9 @@ namespace Zeiterfassungssystem {
 				abteilung->setVorgesetzter(vorgesetzterNeu);
 
 				//Den neuen Vorgesetzten aus seiner alten Abteilung entfernen
-				for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
-					if (ausgewaehlterMA->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
-						abteilung->removeMitarbeiter(i);
+				for (int i = 0; i < abteilungMA->getAnzahlMitarbeiter(); i++) {
+					if (ausgewaehlterMA->getPersonalnummer()->Equals(abteilungMA->getMitarbeiter(i)->getPersonalnummer())) {
+						abteilungMA->removeMitarbeiter(i);
 					}
 				}
 				//MessageBoxen mit unterschiedlichen Texten für das Behalten oder Löschen des alten Vorgesetzten ausgeben

@@ -396,6 +396,7 @@ namespace Zeiterfassungssystem {
 			this->txt_Rolle->Items->Clear();
 			this->txt_Rolle->Items->Add("Mitarbeiter");
 			this->txt_Rolle->Text = "";
+			this->adminCBox->Enabled = false;
 		}
 
 	public: void setUnternehmen(Unternehmen^ unternehmen) {

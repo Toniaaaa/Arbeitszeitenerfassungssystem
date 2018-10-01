@@ -495,11 +495,11 @@ namespace Zeiterfassungssystem {
 			System::Windows::Forms::MessageBox::Show("Sie haben leider keine Administrator-Rechte.\nSie können daher keine Vorgesetzten oder Abteilungen bearbeiten!", "Keine Administrator-Rechte!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
-		else if (istVorgesetzter && abteilungWechselt) {
+		/*else if (istVorgesetzter && abteilungWechselt) {
 			System::Windows::Forms::MessageBox::Show("Vorgesetzte können keine Abteilung wechseln!\nBitte geben Sie zunächst ihre Leitungsposition ab!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_abteilung->Text = "";
-		}
+		}*/
 		else if (fehlerAbteilung) {
 			System::Windows::Forms::MessageBox::Show("Die Abteilung existiert noch nicht, fügen Sie zuerst einen Vorgesetzten hinzu!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
@@ -546,7 +546,9 @@ namespace Zeiterfassungssystem {
 			txt_urlaubstage->Clear();
 		}
 
+		//Wenn alles OK ist
 		else {
+			//Werte aus den Textfeldern werden in Angestelltenobjekt geschrieben
 			angestellter->setNachname(txt_name->Text);
 			angestellter->setVorname(txt_vorname->Text);
 			angestellter->setPersonalnummer(txt_personalnummer->Text);
@@ -554,11 +556,13 @@ namespace Zeiterfassungssystem {
 			angestellter->setWochenstunden(Convert::ToInt32(txt_arbeitsstunden->Text));
 			angestellter->setUrlaubstage(Convert::ToInt32(txt_urlaubstage->Text));
 
+			//Fall: Angestellter ist ein Vorgesetzter -> Adminrechte können gesetzt werden
 			if (angestellter->istVorgesetzter()) {
 				Vorgesetzter^ v = (Vorgesetzter^)angestellter;
 				v->setIstAdmin(adminCBox->Checked);
 			}
 
+			//Info-Nachricht an betroffenen Angestellten
 			String^ aenderungInfo = "Ihre gespeicherten Daten wurden geändert.\nIhre neuen Daten:\n\nName:\t\t" + txt_vorname->Text + " " + txt_name->Text + "\nPersonalnummer:\t" +
 				txt_personalnummer->Text + "\nWochenstunden:\t" + txt_arbeitsstunden->Text + "\nUrlaubstage:\t" + txt_urlaubstage->Text + "\nAbteilung:\t" + txt_abteilung->Text
 				+ "\nRolle:\t\t" + txt_Rolle->Text + "\nAdmin-Rechte:\t";
@@ -567,13 +571,19 @@ namespace Zeiterfassungssystem {
 
 			Abteilung^ alteAbteilung = angestellter->getAbteilung();
 
+			//Fall: Ein Mitarbeiter wechselt ohne Rollenwechsel die Abteilung
 			if (txt_Rolle->Text->Equals("Mitarbeiter") && rolle->Equals("Mitarbeiter") && abteilungWechselt) {
+				//Neue Abteilung suchen
 				for (int k = 0; k < unternehmen->getAnzahlAbteilungen(); k++) {
 					if (txt_abteilung->Text->Equals(unternehmen->getAbteilung(k)->getAbteilungsnummer())) {
+						//Neue Abteilung setzen
 						angestellter->setAbteilung(unternehmen->getAbteilung(k));
+						//Neuen Vorgesetzten setzen
 						Mitarbeiter^ mitarbeiter = (Mitarbeiter^)angestellter;
 						mitarbeiter->setVorgesetzter(unternehmen->getAbteilung(k)->getVorgesetzter());
+						//Der neuen Abteilung hinzufuegen
 						unternehmen->getAbteilung(k)->fuegeMitarbeiterHinzu(mitarbeiter);
+						//MA aus alter Abteilung entfernen
 						for (int j = 0; j < alteAbteilung->getAnzahlMitarbeiter(); j++) {
 							if (angestellter->getPersonalnummer()->Equals(alteAbteilung->getMitarbeiter(j)->getPersonalnummer())) {
 								alteAbteilung->removeMitarbeiter(j);
@@ -583,61 +593,124 @@ namespace Zeiterfassungssystem {
 				}
 			}
 
+			//Fall: Ein Mitarbeiter wechselt als Vorgesetzter in eine noch nicht existierende Abteilung
 			else if (txt_Rolle->Text->Equals("Vorgesetzter") && rolle->Equals("Mitarbeiter") && !abteilungExistiert) {
 				//Sicherheitsabfrage
 				String^ frageText = "Wollen Sie " + angestellter->getVorname() + " " + angestellter->getNachname() + " wirklich zum neuen Vorgesetzten der neuen Abteilung "
 					+ txt_abteilung->Text + " bestimmen?";
 				if (MessageBox::Show(frageText, "Wirklich Vorgesetzten wechseln?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+					//Neue Abteilung erstellen
 					Abteilung^ abteilungNeu = gcnew Abteilung(txt_abteilung->Text, nullptr);
+					//Abteilung setzen und hinzufuegen
 					angestellter->setAbteilung(abteilungNeu);
 					unternehmen->addAbteilung(abteilungNeu);
+					//MA in Vorgesetzen umwandeln (neu erstellen & Daten kopieren)
 					vorgesetzter = gcnew Vorgesetzter((Mitarbeiter^)angestellter, adminCBox->Checked);
+					//Als Vorgesetzten hinzufügen
 					abteilungNeu->setVorgesetzter(vorgesetzter);
+					//MA aus alter Abteilung entfernen
 					for (int i = 0; i < alteAbteilung->getAnzahlMitarbeiter(); i++) {
 						if (angestellter->getPersonalnummer()->Equals(alteAbteilung->getMitarbeiter(i)->getPersonalnummer())) {
 							alteAbteilung->removeMitarbeiter(i);
 						}
 					}
+					//Info-Nachricht an den neuen Vorgesetzten
 					vorgesetzter->addAntragsInfo(aenderungInfo);
 				}
 			}
 
+			//Fall: Ein Mitarbeiter wechselt als Vorgesetzter in eine bereits existierende Abteilung
 			else if (txt_Rolle->Text->Equals("Vorgesetzter") && rolle->Equals("Mitarbeiter") && abteilungExistiert) {
 				//Sicherheitsabfrage
 				String^ frageText = "Wollen Sie " + angestellter->getVorname() + " " + angestellter->getNachname() + " wirklich zum neuen Vorgesetzten der Abteilung "
 					+ txt_abteilung->Text + " bestimmen?";
 				if (MessageBox::Show(frageText, "Wirklich Vorgesetzten wechseln?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 					Abteilung^ abteilungNeu = nullptr;
+					//Fall: Er wechselt die Abteilung (kommt also aus einer anderen Abteilung)
 					if (abteilungWechselt) {
+						//Abteilung wird gesucht und als abteilungNeu gespeichert
 						for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
 							if (txt_abteilung->Text->Equals(unternehmen->getAbteilung(i)->getAbteilungsnummer())) {
 								abteilungNeu = unternehmen->getAbteilung(i);
 							}
 						}
 					}
+					//Fall: Er kommt aus dieser Abteilung
 					else {
 						abteilungNeu = angestellter->getAbteilung();
 					}
+					//MA in Vorgesetzen umwandeln (neu erstellen & Daten kopieren)
 					vorgesetzter = gcnew Vorgesetzter((Mitarbeiter^)angestellter, adminCBox->Checked);
+					//Abteilung setzen
 					vorgesetzter->setAbteilung(abteilungNeu);
+					//Der alte Vorgesetzte wird als MA gespeichert (neu erstellen & Daten kopieren)
 					Mitarbeiter^ ehemVorgesetzter = gcnew Mitarbeiter(abteilungNeu->getVorgesetzter(), vorgesetzter);
+					//Alter Vorgesetzter als MA der Abteilung hinzufügen
 					abteilungNeu->fuegeMitarbeiterHinzu(ehemVorgesetzter);
+					//Neuen Vorgesetzten setzen
 					abteilungNeu->setVorgesetzter(vorgesetzter);
+					//Den Mitarbeiter aus seiner Abteilung entfernen
 					for (int i = 0; i < alteAbteilung->getAnzahlMitarbeiter(); i++) {
 						if (angestellter->getPersonalnummer()->Equals(alteAbteilung->getMitarbeiter(i)->getPersonalnummer())) {
 							alteAbteilung->removeMitarbeiter(i);
 						}
 					}
+					//Info-Naichricht an beide betroffenen Angestellten
 					vorgesetzter->addAntragsInfo(aenderungInfo);
 					ehemVorgesetzter->addAntragsInfo("Änderung im Unternehmen:\n\nSie wurden als Vorgesetzter Ihrer Abteilung abgelöst und nehmen nun die Rolle eines Mitarbeiters ein!\n" 
 						+ "Ihr neuer Vorgesetzter ist: " + vorgesetzter->getVorname() + " " + vorgesetzter->getNachname());
 				}
 			}
 
+			//Fall: Ein Vorgesetzter wechselt als Vorgesetzter die Abteilung
+			else if (txt_Rolle->Text->Equals("Vorgesetzter") && rolle->Equals("Vorgesetzter") && abteilungWechselt) {
+				//Sicherheitsabfrage
+				String^ frageText = "Wollen Sie " + angestellter->getVorname() + " " + angestellter->getNachname() + " wirklich zum neuen Vorgesetzten der Abteilung "
+					+ txt_abteilung->Text + " bestimmen?";
+				if (MessageBox::Show(frageText, "Wirklich Vorgesetzten wechseln?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+					Abteilung^ abteilungNeu = nullptr;
+					vorgesetzter = gcnew Vorgesetzter((Vorgesetzter^)angestellter);
+					//Fall: Die Abteilung existiert noch nicht
+					if (!abteilungExistiert) {
+						abteilungNeu = gcnew Abteilung(txt_abteilung->Text, vorgesetzter);
+						unternehmen->addAbteilung(abteilungNeu);
+					}
+					//Fall: Die Abteilung existiert schon
+					else {
+						//Abteilung wird gesucht und als abteilungNeu gespeichert
+						for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+							if (txt_abteilung->Text->Equals(unternehmen->getAbteilung(i)->getAbteilungsnummer())) {
+								abteilungNeu = unternehmen->getAbteilung(i);
+							}
+						}
+						//Der alte Vorgesetzte wird als MA gespeichert (neu erstellen & Daten kopieren)
+						Mitarbeiter^ ehemVorgesetzter = gcnew Mitarbeiter(abteilungNeu->getVorgesetzter(), vorgesetzter);
+						//Alter Vorgesetzter als MA der Abteilung hinzufügen
+						abteilungNeu->fuegeMitarbeiterHinzu(ehemVorgesetzter);
+						//Info-Naichricht an beide betroffenen Vorgesetzten
+						ehemVorgesetzter->addAntragsInfo("Änderung im Unternehmen:\n\nSie wurden als Vorgesetzter Ihrer Abteilung abgelöst und nehmen nun die Rolle eines Mitarbeiters ein!\n"
+							+ "Ihr neuer Vorgesetzter ist: " + vorgesetzter->getVorname() + " " + vorgesetzter->getNachname());
+						//Neuen Vorgesetzten setzen
+						abteilungNeu->setVorgesetzter(vorgesetzter);
+					}
+					//Daten an VorgesetztenFenster übergeben und das Fenster zur Auswahl des neuen Vorgesetzten aufrufen
+					vorgesetztenFenster->setUnternehmen(unternehmen);
+					vorgesetztenFenster->setVorgesetzterAlt((Vorgesetzter^) angestellter);
+					vorgesetztenFenster->setVorgesetztenAltBehalten(false);
+					vorgesetztenFenster->ShowDialog(this);
+					//Abteilung setzen
+					vorgesetzter->setAbteilung(abteilungNeu);
+					//MessageBox deaktivieren, weil das VorgesetztenFenster schon einen eigene MessageBox anzeigt
+					info = false;
+				}
+			}
+
+			//Fall: Ein Vorgesetzter wird zum Mitarbeiter
 			else if (txt_Rolle->Text->Equals("Mitarbeiter") && rolle->Equals("Vorgesetzter")) {
 				//Sicherheitsabfrage
 				String^ abfrage = "Wollen Sie den Vorgesetzten " + txt_vorname->Text + " " + txt_name->Text + " wirklich als Mitarbeiter setzen?";
 				if (MessageBox::Show(abfrage, "Wirklich degradieren?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+					//Alten Vorgesetzten suchen
 					Vorgesetzter^ vorgesetzterAlt = nullptr;
 					for (int i = 0; i < unternehmen->getAlleAngestellte()->Count; i++) {
 						if (unternehmen->getAlleAngestellte()[i]->getPersonalnummer()->Equals(txt_personalnummer->Text)) {
@@ -645,32 +718,67 @@ namespace Zeiterfassungssystem {
 							break;
 						}
 					}
+					//Daten an VorgesetztenFenster übergeben und das Fenster zur Auswahl des neuen Vorgesetzten aufrufen
 					vorgesetztenFenster->setUnternehmen(unternehmen);
 					vorgesetztenFenster->setVorgesetzterAlt(vorgesetzterAlt);
 					vorgesetztenFenster->setVorgesetztenAltBehalten(true);
 					vorgesetztenFenster->ShowDialog(this);
+					//Fall: Abteilung wechselt
+					if (abteilungWechselt) {
+						//Mitarbeiter suchen, der vorher der Vorgesetzte war
+						Mitarbeiter^ ehemVorgesetzter = nullptr;
+						for (int i = 0; i < unternehmen->getAlleAngestellte()->Count; i++) {
+							if (unternehmen->getAlleAngestellte()[i]->getPersonalnummer()->Equals(txt_personalnummer->Text)) {
+								ehemVorgesetzter = (Mitarbeiter^) unternehmen->getAlleAngestellte()[i];
+								break;
+							}
+						}
+						//Neue Abteilung suchen
+						Abteilung^ abteilungNeu;
+						for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+							if (txt_abteilung->Text->Equals(unternehmen->getAbteilung(i)->getAbteilungsnummer())) {
+								abteilungNeu = unternehmen->getAbteilung(i);
+							}
+						}
+						//Aus alter Abteilung entfernen
+						for (int i = 0; i < alteAbteilung->getAnzahlMitarbeiter(); i++) {
+							if (alteAbteilung->getMitarbeiter(i)->getPersonalnummer()->Equals(ehemVorgesetzter->getPersonalnummer())) {
+								alteAbteilung->removeMitarbeiter(i);
+							}
+						}
+						//Neue Abteilung setzen und Mitarbeiter hinzufügen
+						ehemVorgesetzter->setVorgesetzter(abteilungNeu->getVorgesetzter());
+						ehemVorgesetzter->setAbteilung(abteilungNeu);
+						abteilungNeu->fuegeMitarbeiterHinzu(ehemVorgesetzter);
+					}
+					//MessageBox deaktivieren, weil das VorgesetztenFenster schon einen eigene MessageBox anzeigt
 					info = false;
 				}
 			}
+
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			
+			//Anzeige einer Bestätigung der Änderung der Daten, fals gewünscht
 			if (info) {
 				MessageBox::Show("Angestellten Daten erfolgreich geändert!", "Erfolgreich", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			}
 
+			//Fenster schließen
 			this->Close();
 		}
 	}
 
+	//Wenn das Fenster geschlossen wird
 	private: System::Void BearbeitungsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
 		this->clear();
 	}
 
+	//Klick auf den Löschen Button
 	private: System::Void btn_loeschen_Click(System::Object^  sender, System::EventArgs^  e) {
 		//Sicherheitsabfrage
 		String^ abfrage = "Wollen Sie den Angestellten " + txt_vorname->Text + " " + txt_name->Text + " wirklich löschen?";
 		if (MessageBox::Show(abfrage, "Wirklich löschen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-			//Wenn loeschen button geklickt wird der passende Mitarbeiter aus der abteilung geloescht
+			//Fall: Angestellter ist kein Vorgesetzter -> Der passende Mitarbeiter wird aus der Abteilung gelöscht
 			if (!angestellter->istVorgesetzter()) {
 				abteilung = angestellter->getAbteilung();
 				for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
@@ -678,7 +786,8 @@ namespace Zeiterfassungssystem {
 						abteilung->removeMitarbeiter(i);
 					}
 				}
-			}
+			} 
+			//Fall: Angestellter ist Vorgesetzter: Erst neuen Vorgesetzten auswählen (über VorgesetzenFenster)
 			else {
 				Vorgesetzter^ vorgesetzterAlt = nullptr;
 				for (int i = 0; i < unternehmen->getAlleAngestellte()->Count; i++) {
@@ -687,6 +796,7 @@ namespace Zeiterfassungssystem {
 						break;
 					}
 				}
+				//Daten an VorgesetztenFenster übergeben und das Fenster zur Auswahl des neuen Vorgesetzten aufrufen
 				vorgesetztenFenster->setUnternehmen(unternehmen);
 				vorgesetztenFenster->setVorgesetzterAlt(vorgesetzterAlt);
 				vorgesetztenFenster->setVorgesetztenAltBehalten(false);
@@ -697,11 +807,14 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
+	//Wenn die Auswahl der ComboBox verändert wird
 	private: System::Void txt_Rolle_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+		//Wenn "Mitarbeiter" ausgewählt wird, können keine Admin-Rechte vergeben werden
 		if (txt_Rolle->Text->Equals("Mitarbeiter")) {
 			adminCBox->Enabled = false;
 			adminCBox->Checked = false;
 		}
+		//Wenn "Vorgesetzter" ausgewählt wird, können Admin-Rechte vergeben werden
 		else if (txt_Rolle->Text->Equals("Vorgesetzter")) {
 			adminCBox->Enabled = true;
 		}
