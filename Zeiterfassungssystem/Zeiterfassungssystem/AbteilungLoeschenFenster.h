@@ -162,29 +162,33 @@ namespace Zeiterfassungssystem {
 			if (MessageBox::Show(abfrage, "Wirklich löschen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 
 				Abteilung^ abteilung = nullptr;
+				if (!ausgewaehlteAbteilung->getAbteilungsnummer()->Equals(abteilungen[0]->getAbteilungsnummer())) {
+					abteilung = abteilungen[0];
+				}
+				else {
+					abteilung = abteilungen[1];
+				}
 
 				if (MessageBox::Show("Wollen Sie den Vorgesetzten der Abteilung als Mitarbeiter behalten?", "Mitarbeiter behalten?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 					behalten = true;
 					vorgesetzterAlt = ausgewaehlteAbteilung->getVorgesetzter();
-					Vorgesetzter^ vorgesetzterNeu = nullptr;
-					if (!ausgewaehlteAbteilung->getAbteilungsnummer()->Equals(abteilungen[0]->getAbteilungsnummer())) {
-						vorgesetzterNeu = abteilungen[0]->getVorgesetzter();
-						abteilung = abteilungen[0];
-					}
-					else {
-						vorgesetzterNeu = abteilungen[1]->getVorgesetzter();
-						abteilung = abteilungen[1];
-					}
+					Vorgesetzter^ vorgesetzterNeu = abteilung->getVorgesetzter();
 					neuerMA = gcnew Mitarbeiter(vorgesetzterAlt, vorgesetzterNeu);
 					neuerMA->setAbteilung(abteilung);
+					neuerMA->addAntragsInfo("Änderung im Unternehmen:\n\nIhre Abteilung wurde gelöscht und Sie wurden in die Abteilung " + abteilung->getAbteilungsnummer() + " versetzt.\n"
+						+ "Ihr neuer Vorgesetzter ist " + neuerMA->getVorgesetzter()->getVorname() + " " + neuerMA->getVorgesetzter()->getNachname());
 					abteilung->fuegeMitarbeiterHinzu(neuerMA);
 				}
 
 				for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
 					if (ausgewaehlteAbteilung->getAbteilungsnummer()->Equals(abteilungen[i]->getAbteilungsnummer())) {
 						for (int j = 0; j < abteilungen[i]->getAnzahlMitarbeiter(); j++) {
-							abteilungen[i]->getMitarbeiter(j)->setAbteilung(abteilung);
-							abteilung->fuegeMitarbeiterHinzu(abteilungen[i]->getMitarbeiter(j));
+							Mitarbeiter^ mitarbeiter = abteilungen[i]->getMitarbeiter(j);
+							mitarbeiter->setAbteilung(abteilung);
+							mitarbeiter->setVorgesetzter(abteilung->getVorgesetzter());
+							mitarbeiter->addAntragsInfo("Änderung im Unternehmen:\n\nIhre Abteilung wurde gelöscht und Sie wurden in die Abteilung " + abteilung->getAbteilungsnummer() + " versetzt.\n"
+								+ "Ihr neuer Vorgesetzter ist " + mitarbeiter->getVorgesetzter()->getVorname() + " " + mitarbeiter->getVorgesetzter()->getNachname());
+							abteilung->fuegeMitarbeiterHinzu(mitarbeiter);
 						}
 						unternehmen->getAbteilungen()->RemoveAt(i);
 					}
@@ -198,7 +202,7 @@ namespace Zeiterfassungssystem {
 				else {
 					infoText = "Sie haben die Abteilung " + ausgewaehlteAbteilung->getAbteilungsnummer() + " erfolgreich gelöscht!\nDer Vorgesetzte wurde gelöscht.";
 				}
-				MessageBox::Show(infoText, "Erfolgreich befördert", MessageBoxButtons::OK, MessageBoxIcon::Information);
+				MessageBox::Show(infoText, "Erfolgreich gelöscht", MessageBoxButtons::OK, MessageBoxIcon::Information);
 				this->DialogResult = System::Windows::Forms::DialogResult::OK;
 				this->Close();
 			}
