@@ -137,12 +137,16 @@ namespace Zeiterfassungssystem {
 		}
 #pragma endregion
 	
+	//Klick auf Bestätigen-Button
 	private: System::Void bestaetigenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		//Fall: Kein neuer Vorgesetzter ausgewaehlt -> Mitteilung, Mitarbeiter muss ausgewaehlt werden.
 		if (!ausgewaehlt) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Bitte waehlen Sie einen Mitarbeiter aus!", "Kein Mitarbeiter ausgewählt", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+		//Wenn neuer Vorgesetzter ausgewaehlt
 		else {
+			//Den ausgewaehlten MA und die Abteilung, deren Vorgesetzter er werden soll, setzen
 			ausgewaehlterMA = (Mitarbeiter^)angestelltenAuswahl[auswahlCBox->SelectedIndex];
 			for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
 				if ((vorgesetzterAlt->getAbteilung()->getAbteilungsnummer()->Equals(unternehmen->getAbteilungen()[i]->getAbteilungsnummer()))) {
@@ -150,24 +154,30 @@ namespace Zeiterfassungssystem {
 					ausgewaehlterMA->setAbteilung(abteilung);
 				}
 			}
+			//Sicherheitsabfrage
 			String^ abfrage = "Wollen Sie " + ausgewaehlterMA->getVorname() + " " + ausgewaehlterMA->getNachname() + " wirklich zum Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer()
 				+ " bestimmen?";
 			if (MessageBox::Show(abfrage, "Wirklich löschen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 				vorgesetzterNeu = gcnew Vorgesetzter(ausgewaehlterMA, false);
+				//Info-Nachricht an den neuen Vorgesetzten
 				vorgesetzterNeu->addAntragsInfo("Änderung im Unternehmen:\n\nSie wurden zum neuen Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer() 
 					+ " bestimmt!\nHerzlichen Glückwunsch!");
+				//Fall: Der Vorgesetzte soll als MA gespeichert werden -> Neuen MA aus Vorgesetzen erstellen und der Abteilung hinzugügen
 				if (behalten) {
 					Mitarbeiter^ neuerMA = gcnew Mitarbeiter(vorgesetzterAlt, vorgesetzterNeu);
 					neuerMA->addAntragsInfo("Änderung im Unternehmen:\n\nSie wurden als Vorgesetzter Ihrer Abteilung abgelöst und nehmen nun die Rolle eines Mitarbeiters ein!");
 					abteilung->fuegeMitarbeiterHinzu(neuerMA);
 				}
+				//Neuen Vorgsetzten in der Abteilung setzen
 				abteilung->setVorgesetzter(vorgesetzterNeu);
 
+				//Den neuen Vorgesetzten aus seiner alten Abteilung entfernen
 				for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
 					if (ausgewaehlterMA->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
 						abteilung->removeMitarbeiter(i);
 					}
 				}
+				//MessageBoxen mit unterschiedlichen Texten für das Behalten oder Löschen des alten Vorgesetzten ausgeben
 				String^ infoText = nullptr;
 				if (behalten) {
 					infoText = "Sie haben erfolgreich " + vorgesetzterNeu->getVorname() + " " + vorgesetzterNeu->getNachname() + " zum Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer()
@@ -178,13 +188,16 @@ namespace Zeiterfassungssystem {
 						+ " befördert.\n" + vorgesetzterAlt->getVorname() + " " + vorgesetzterAlt->getNachname() + " wurde gelöscht.";
 				}
 				MessageBox::Show(infoText, "Erfolgreich befördert", MessageBoxButtons::OK, MessageBoxIcon::Information);
+				//Fenster schließen
 				this->DialogResult = System::Windows::Forms::DialogResult::OK;
 				this->Close();
 			}
 		}
 	}
 
+	//Wenn die Seite lädt
 	private: System::Void VorgesetztenAuswahlFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+		//Angestellte einlesen, zur ComboBox hinzufügen & Werte setzen
 		List<Angestellter^>^ angestellte = unternehmen->getAlleAngestellte();
 		ausgewaehlt = false;
 		for (int i = 0; i < angestellte->Count; i++) {
@@ -195,31 +208,38 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
+	//Setter für das Unternehmen
 	public: void setUnternehmen(Unternehmen^ unternehmen) {
 		this->unternehmen = unternehmen;
 	}
 
+	//Setter für den alten Vorgesetzten
 	public: void setVorgesetzterAlt(Vorgesetzter^ vorgesetzterAlt) {
 		this->vorgesetzterAlt = vorgesetzterAlt;
 	}
 
+	//Setter für den Boolean, ob der Vorgesetzte gespeichert bleiben soll
 	public: void setVorgesetztenAltBehalten(Boolean behalten) {
 		this->behalten = behalten;
 	}
 
+	//Wenn ein Mitarbeiter ausgewählt wurde -> Kann bestätigt werden
 	private: System::Void auswahlCBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
 		ausgewaehlt = true;
 	}
 
+	//Wenn Abbrechen-Button gedrückt wird
 	private: System::Void abbrechenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		this->DialogResult = System::Windows::Forms::DialogResult::Cancel;
 		this->Close();
 	}
 
+	//Leeren der ComboBox
 	private: void clear() {
 		auswahlCBox->Items->Clear();
 	}
 
+	//Wenn das Fenster geschlossen wird
 	private: System::Void VorgesetztenAuswahlFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
 		this->clear();
 	}
