@@ -698,14 +698,15 @@ String^ Angestellter::freieTageAnzeigen(Boolean mitFeiertagen) {
 			urlaubstageString += listeUrlaubstage[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + "\n";
 		}
 	}
-	//Wenn für dieses Jahr keine Urlaubstage in der Liste stehen:
+	//Urlaubstage zählen, die keine Feiertage sind2	1
 	Int32 anzahlUrlaubstage = 0;
 	for (int i = 0; i < listeUrlaubstage->Count; i++) {
 		if (!listeUrlaubstage[i]->getIstFeiertag()) {
 			anzahlUrlaubstage++;
 		}
 	}
-	if (anzahlUrlaubstage = 0) {
+	//Wenn für dieses Jahr keine Urlaubstage in der Liste stehen:
+	if (anzahlUrlaubstage == 0) {
 		urlaubstageString += "Sie haben noch keine bestätigten Urlaubstage.\n";
 	}
 	if (mitFeiertagen) {

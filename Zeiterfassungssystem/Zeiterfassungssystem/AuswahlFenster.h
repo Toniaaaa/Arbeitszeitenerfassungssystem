@@ -4,6 +4,7 @@
 #include "UrlaubLoeschenFenster.h"
 #include "Angestellter.h"
 #include "AbteilungLoeschenFenster.h"
+#include "Vorgesetzter.h"
 
 namespace Zeiterfassungssystem {
 
@@ -25,6 +26,7 @@ namespace Zeiterfassungssystem {
 		BearbeitungsFenster^ bearbeitungsfenster;
 		UrlaubLoeschenFenster^ urlaubLoeschenfenster;
 		AbteilungLoeschenFenster^ abteilungFenster;
+		Boolean adminRechte;
 	private: System::Windows::Forms::Button^  abteilungBtn; 
 
 	public:
@@ -147,6 +149,10 @@ namespace Zeiterfassungssystem {
 		this->abteilungFenster = abteilungFenster;
 	}
 
+	void setAdminRechte(Boolean istAdmin) {
+		this->adminRechte = istAdmin;
+	}
+
 	private: System::Void btn_angestellte_Click(System::Object^  sender, System::EventArgs^  e) {
 		System::Windows::Forms::DialogResult result = bearbeitungsfenster->ShowDialog(this);
 		if (result == System::Windows::Forms::DialogResult::OK) {
@@ -155,10 +161,15 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void btn_feiertag_Click(System::Object^  sender, System::EventArgs^  e) {
-		System::Windows::Forms::DialogResult result = feiertagsfenster->ShowDialog(this);
-		feiertagsfenster->clear();
-		if (result == System::Windows::Forms::DialogResult::OK) {
-			this->Close();
+		if (adminRechte) {
+			System::Windows::Forms::DialogResult result = feiertagsfenster->ShowDialog(this);
+			feiertagsfenster->clear();
+			if (result == System::Windows::Forms::DialogResult::OK) {
+				this->Close();
+			}
+		}
+		else {
+			MessageBox::Show("Sie haben leider keine Administratorrechte.\nNur Administratoren dürfen Feiertage bearbeiten.", "Nicht möglich", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
 
@@ -177,9 +188,14 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void abteilungBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		System::Windows::Forms::DialogResult result = abteilungFenster->ShowDialog(this);
-		if (result == System::Windows::Forms::DialogResult::OK) {
-			this->Close();
+		if (adminRechte) {
+			System::Windows::Forms::DialogResult result = abteilungFenster->ShowDialog(this);
+			if (result == System::Windows::Forms::DialogResult::OK) {
+				this->Close();
+			}
+		}
+		else {
+			MessageBox::Show("Sie haben leider keine Administratorrechte.\nNur Administratoren dürfen Abteilungen löschen.", "Nicht möglich", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
 };

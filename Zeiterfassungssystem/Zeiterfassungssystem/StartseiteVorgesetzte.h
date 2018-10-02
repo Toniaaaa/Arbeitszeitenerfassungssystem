@@ -776,9 +776,11 @@ namespace Zeiterfassungssystem {
 		bearbeitungsfenster->setUnternehmen(unternehmen);
 		bearbeitungsfenster->setAdminRechte(angestellterAkt->getIstAdmin());
 		urlaubLoeschenFenster->setUnternehmen(unternehmen);
+		urlaubLoeschenFenster->setAdminRechte(angestellterAkt->getIstAdmin());
 		feiertagsfenster->setUnternehmen(unternehmen);
 		abteilungFenster->setUnternehmen(unternehmen);
 		abteilungFenster->setAdminrechte(angestellterAkt->getIstAdmin());
+		auswahlfenster->setAdminRechte(angestellterAkt->getIstAdmin());
 		auswahlfenster->setUrlaubLoeschenfenster(urlaubLoeschenFenster);
 		auswahlfenster->setFeiertagsfenster(feiertagsfenster);;
 		auswahlfenster->setBearbeitungsfenster(bearbeitungsfenster);
