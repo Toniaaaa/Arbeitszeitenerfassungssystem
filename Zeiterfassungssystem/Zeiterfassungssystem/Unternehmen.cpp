@@ -137,12 +137,22 @@ void Unternehmen::addFeiertag(DateTime tag)
 //Entfernt einen Feiertag aus der Liste der Feiertage, wenn sein Datum dem übergebenen Datum bestimmt
 void Unternehmen::removeFeiertag(DateTime tag)
 {
+	//Feiertag aus der Liste der Feiertage entfernen
 	for (int i = feiertage->Count - 1; i >= 0; i--) {
 		if (feiertage[i]->getDatum() == tag) {
 			feiertage->RemoveAt(i);
 			break;
 		}
-	};
+	}
+	//Feiertag aus der Urlaubstage-Liste aller Angestellten entfernen
+	for (int i = 0; i < getAlleAngestellte()->Count; i++) {
+		for (int j = 0; j < getAlleAngestellte()[i]->getListeUrlaubstage()->Count; j++) {
+			if (getAlleAngestellte()[i]->getListeUrlaubstage()[j]->getDatum() == tag) {
+				getAlleAngestellte()[i]->getListeUrlaubstage()->RemoveAt(j);
+				getAlleAngestellte()[i]->addAntragsInfo("Der Feiertag " + tag.ToString("dddd, dd. MMMM yyyy") + " wurde entfernt.\nSie müssen an diesem Tag arbeiten oder Urlaub nehmen!");
+			}
+		}
+	}
 }
 
 //Erstellt alle Feiertage, die in Niedersachsen gelten und ein festes Datum haben und fügt sie der Liste von Feiertagen hinzu

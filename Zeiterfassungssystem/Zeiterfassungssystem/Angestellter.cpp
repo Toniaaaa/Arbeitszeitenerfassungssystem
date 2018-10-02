@@ -623,6 +623,7 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 				}
 				if (!schonInListe) {
 					this->addFeiertag(unternehmen->getFeiertage()[i]->getDatum());
+					this->addAntragsInfo(unternehmen->getFeiertage()[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + " wurde als neuer Feiertag zu Ihrem Urlaub hinzugefügt!");
 				}
 			}
 			//Prüfe: Ist der Tag ein Urlaubstag
@@ -662,12 +663,12 @@ void Angestellter::loescheUrlaubstage(DateTime von, DateTime bis, String^ kommen
 		for (int i = 0; i < listeUrlaubstage->Count; i++) {
 			//Urlaubstage in diesem Zeitraum werden aus der Liste entfernt und zur Nachricht hinzugefügt
 			if (listeUrlaubstage[i]->getDatum().Equals(von) && !listeUrlaubstage[i]->getIstFeiertag()) {
-				removeUrlaubstag(von);
-				urlaubEntferntString += von.ToString("dddd, dd. MMMM yyyy") + "\n";
 				//Die Anzahl der Urlaubstage, die in der aktuellen Woche gelöscht werden, wird gezählt
-				if (kalender->berechneKW(DateTime::Now) == kalender->berechneKW(von)) {
+				if (kalender->berechneKW(DateTime::Now) == kalender->berechneKW(von) && listeUrlaubstage[i]->getEingerechnet()) {
 					anzGeloeschteTageDieseWoche++;
 				}
+				removeUrlaubstag(von);
+				urlaubEntferntString += von.ToString("dddd, dd. MMMM yyyy") + "\n";
 			}
 		}
 		von = von.AddDays(1.0);
