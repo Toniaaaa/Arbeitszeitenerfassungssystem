@@ -159,7 +159,7 @@ namespace Zeiterfassungssystem {
 			//Sicherheitsabfrage
 			String^ abfrage = "Wollen Sie " + ausgewaehlterMA->getVorname() + " " + ausgewaehlterMA->getNachname() + " wirklich zum Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer()
 				+ " bestimmen?";
-			if (MessageBox::Show(abfrage, "Wirklich löschen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+			if (MessageBox::Show(abfrage, "Wirklich befördern?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 				vorgesetzterNeu = gcnew Vorgesetzter(ausgewaehlterMA, false);
 				//Info-Nachricht an den neuen Vorgesetzten
 				vorgesetzterNeu->addAntragsInfo("Änderung im Unternehmen:\n\nSie wurden zum neuen Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer() 
@@ -187,7 +187,7 @@ namespace Zeiterfassungssystem {
 				}
 				else {
 					infoText = "Sie haben erfolgreich " + vorgesetzterNeu->getVorname() + " " + vorgesetzterNeu->getNachname() + " zum Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer()
-						+ " befördert.\n" + vorgesetzterAlt->getVorname() + " " + vorgesetzterAlt->getNachname() + " wurde gelöscht.";
+						+ " befördert.";
 				}
 				MessageBox::Show(infoText, "Erfolgreich befördert", MessageBoxButtons::OK, MessageBoxIcon::Information);
 				//Fenster schließen
