@@ -396,6 +396,10 @@ void Angestellter::addFeiertag(DateTime tag)
 {
 	//Fügt einen neuen Urlaubstag mit dem übergebenen Datum hinzu... 
 	listeUrlaubstage->Add(gcnew FreierTag(tag, true));
+	//Wenn es sich nicht um einen der 5 Standard-Feiertage handelt, wird der Angestellte über das Hinzufügen eines neuen Feiertags informiert
+	if (!(tag.Day == 1 && tag.Month == 1) && !(tag.Day == 1 && tag.Month == 5) && !(tag.Day == 3 && tag.Month == 10) && !(tag.Day == 25 && tag.Month == 12) && !(tag.Day == 26 && tag.Month == 12)) {
+		this->addAntragsInfo(tag.ToString("dddd, dd. MMMM yyyy") + " wurde als neuer Feiertag zu Ihrem Urlaub hinzugefügt!");
+	}
 	//...und sortiert die Liste der Urlaubstage nach dem Datum der Urlaubstage
 	listeUrlaubstage->Sort(vergleichen);
 }
@@ -623,7 +627,6 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 				}
 				if (!schonInListe) {
 					this->addFeiertag(unternehmen->getFeiertage()[i]->getDatum());
-					this->addAntragsInfo(unternehmen->getFeiertage()[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + " wurde als neuer Feiertag zu Ihrem Urlaub hinzugefügt!");
 				}
 			}
 			//Prüfe: Ist der Tag ein Urlaubstag

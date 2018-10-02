@@ -764,11 +764,6 @@ namespace Zeiterfassungssystem {
 					MessageBoxButtons::OK, MessageBoxIcon::Error);
 			}
 		}
-		//Falls das Urlaubsfenster kein OK zurückgibt:
-		else {
-			MessageBox::Show("Urlaubsantrag konnte nicht erstellt werden!", "Erstellen fehlgeschlagen",
-				MessageBoxButtons::OK, MessageBoxIcon::Error);
-		}
 
 		//Textfelder wieder leeren
 		urlaubsfenster->clear(); 
