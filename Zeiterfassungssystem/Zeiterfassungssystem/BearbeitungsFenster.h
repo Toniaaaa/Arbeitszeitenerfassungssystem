@@ -545,7 +545,11 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_urlaubstage->Clear();
 		}
-
+		else if (!this->txt_Rolle->Text->Equals("Mitarbeiter") && !this->txt_Rolle->Text->Equals("Vorgesetzter")) {
+			System::Windows::Forms::MessageBox::Show("Bitte wählen Sie eine der vorgegebenen Rollen aus!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+			txt_Rolle->Text = "";
+		}
 		//Wenn alles OK ist
 		else {
 			//Werte aus den Textfeldern werden in Angestelltenobjekt geschrieben

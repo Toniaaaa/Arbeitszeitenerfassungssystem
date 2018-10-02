@@ -435,7 +435,6 @@ namespace Zeiterfassungssystem {
 		else if (!unternehmen->getAlleAngestellte()->Count == 0 && (!abteilungExistiert && getRolle()->Equals("Mitarbeiter"))) {
 			System::Windows::Forms::MessageBox::Show("Die Abteilung existiert noch nicht, fügen Sie zuerst einen Vorgesetzten hinzu!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
-			txt_abteilung->Text = "";
 		}
 		else if (fehlerPersonal) {
 			System::Windows::Forms::MessageBox::Show("Die Personalnummer existiert schon, bitte geben Sie eine neue ein!", "Fehlgeschlagen!",
@@ -477,6 +476,11 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_urlaubstage->Clear();
 		}
+		else if (!this->txt_Rolle->Text->Equals("Mitarbeiter") && !this->txt_Rolle->Text->Equals("Vorgesetzter")) {
+			System::Windows::Forms::MessageBox::Show("Bitte wählen Sie eine der vorgegebenen Rollen aus!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+			txt_Rolle->Text = "";
+		}
 		else if (abteilungExistiert && getRolle()->Equals("Vorgesetzter")) {
 			if (System::Windows::Forms::MessageBox::Show("Sie wollen einen neuen Vorgesetzten einer existierenden Abteilung setzen!\nDadurch wird der aktuelle Vorgesetzte zum Mitarbeiter " +
 				"dieser Abteilung.\n\nFortsetzen?", "Vorgesetzten ablösen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
@@ -498,7 +502,7 @@ namespace Zeiterfassungssystem {
 			}
 		}
 		else {
-			if (this->txt_Rolle->SelectedItem->ToString()->Equals("Mitarbeiter")) {
+			if (this->txt_Rolle->Text->Equals("Mitarbeiter")) {
 				Abteilung^ abteilung = nullptr;
 				//Abteilung im Unternehmen wird ausgerufen wenn passender Abteilungsname ausgewählt
 				for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
