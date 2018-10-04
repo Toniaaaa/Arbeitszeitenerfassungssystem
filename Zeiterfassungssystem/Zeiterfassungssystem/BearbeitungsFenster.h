@@ -495,11 +495,6 @@ namespace Zeiterfassungssystem {
 			System::Windows::Forms::MessageBox::Show("Sie haben leider keine Administrator-Rechte.\nSie können daher keine Vorgesetzten oder Abteilungen bearbeiten!", "Keine Administrator-Rechte!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
-		/*else if (istVorgesetzter && abteilungWechselt) {
-			System::Windows::Forms::MessageBox::Show("Vorgesetzte können keine Abteilung wechseln!\nBitte geben Sie zunächst ihre Leitungsposition ab!", "Fehlgeschlagen!",
-				MessageBoxButtons::OK, MessageBoxIcon::Error);
-			txt_abteilung->Text = "";
-		}*/
 		else if (fehlerAbteilung) {
 			System::Windows::Forms::MessageBox::Show("Die Abteilung existiert noch nicht, fügen Sie zuerst einen Vorgesetzten hinzu!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
@@ -510,17 +505,17 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_personalnummer->Clear();
 		}
-		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_name->Text, "^[a-zA-Z]*(\ |\-)?([a-zA-Z]*)?$")) {
+		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_name->Text, "^[a-zA-ZäöüßÄÖÜ]*(\ |\-)?([a-zA-ZäöüßÄÖÜ]*)?$")) {
 			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Name\" aktzeptiert nur Buchstaben!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_name->Clear();
 		}
-		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_vorname->Text, "^[a-zA-Z]*(\ |\-)?([a-zA-Z]*)?$")) {
+		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_vorname->Text, "^[a-zA-ZäöüßÄÖÜ]*(\ |\-)?([a-zA-ZäöüßÄÖÜ]*)?$")) {
 			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Vorname\" aktzeptiert nur Buchstaben!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_vorname->Clear();
 		}
-		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_abteilung->Text, "^[a-zA-Z]*$")) {
+		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_abteilung->Text, "^[a-zA-ZäöüßÄÖÜ]*(\ |\-)?([a-zA-ZäöüßÄÖÜ]*)?$")) {
 			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Abteilung\" aktzeptiert nur Buchstaben!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_abteilung->Text = "";

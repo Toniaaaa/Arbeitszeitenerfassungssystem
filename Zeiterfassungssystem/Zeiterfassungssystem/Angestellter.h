@@ -96,6 +96,7 @@ public:
 	inline void setGesamtstunden(Double gesamtstunden) { this->listegesamtstunden->Add(gesamtstunden); }
 	inline void setLetzterLogin(DateTime jetzt) { this->letzterLogin = jetzt; }
 	inline void setAktuellenStatus(String^ status) { this->status = status; }
+
 	virtual bool istVorgesetzter() = 0;
 	
 	void setUeberstundenGesamt(Int32 stunden, Int32 minuten);
