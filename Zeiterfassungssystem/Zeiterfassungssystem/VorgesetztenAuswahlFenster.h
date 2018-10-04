@@ -131,7 +131,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->bestaetigenBtn);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"VorgesetztenAuswahlFenster";
-			this->Text = L"VorgesetztenAuswahlFenster";
+			this->Text = L"Neuer Vorgesetzter";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &VorgesetztenAuswahlFenster::VorgesetztenAuswahlFenster_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &VorgesetztenAuswahlFenster::VorgesetztenAuswahlFenster_Load);
 			this->ResumeLayout(false);

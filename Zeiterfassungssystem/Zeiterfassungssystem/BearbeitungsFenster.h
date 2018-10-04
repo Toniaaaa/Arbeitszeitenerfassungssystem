@@ -338,7 +338,7 @@ namespace Zeiterfassungssystem {
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"BearbeitungsFenster";
-			this->Text = L"Bearbeitung";
+			this->Text = L"Angestellte bearbeiten";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &BearbeitungsFenster::BearbeitungsFenster_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &BearbeitungsFenster::BearbeitungsFenster_Load);
 			this->ResumeLayout(false);

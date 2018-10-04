@@ -178,7 +178,7 @@ namespace Zeiterfassungssystem {
 			// 
 			this->angestellterCBox->FormattingEnabled = true;
 			this->angestellterCBox->Location = System::Drawing::Point(203, 107);
-			this->angestellterCBox->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->angestellterCBox->Margin = System::Windows::Forms::Padding(2);
 			this->angestellterCBox->Name = L"angestellterCBox";
 			this->angestellterCBox->Size = System::Drawing::Size(201, 21);
 			this->angestellterCBox->TabIndex = 0;
@@ -198,7 +198,7 @@ namespace Zeiterfassungssystem {
 			// kommentarTxt
 			// 
 			this->kommentarTxt->Location = System::Drawing::Point(26, 271);
-			this->kommentarTxt->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->kommentarTxt->Margin = System::Windows::Forms::Padding(2);
 			this->kommentarTxt->Name = L"kommentarTxt";
 			this->kommentarTxt->Size = System::Drawing::Size(377, 20);
 			this->kommentarTxt->TabIndex = 3;
@@ -223,7 +223,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->urlaubBeginnDTP);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"UrlaubLoeschenFenster";
-			this->Text = L"Urlaubsantrag";
+			this->Text = L"Urlaub löschen";
 			this->Load += gcnew System::EventHandler(this, &UrlaubLoeschenFenster::UrlaubLoeschenFenster_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();

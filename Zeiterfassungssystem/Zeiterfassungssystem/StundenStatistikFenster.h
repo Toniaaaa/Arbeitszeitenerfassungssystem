@@ -159,7 +159,7 @@ namespace Zeiterfassungssystem {
 			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"StundenStatistikFenster";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
-			this->Text = L"StundenStatistikFenster";
+			this->Text = L"Arbeitszeit Statistik";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &StundenStatistikFenster::StundenStatistikFenster_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &StundenStatistikFenster::StundenStatistikFenster_Load);
 			this->ResumeLayout(false);

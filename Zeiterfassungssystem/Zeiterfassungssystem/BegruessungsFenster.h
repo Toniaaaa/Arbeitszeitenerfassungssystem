@@ -140,7 +140,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->button1);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"BegruessungsFenster";
-			this->Text = L"BegruessungsFenster";
+			this->Text = L"Begrüßung";
 			this->ResumeLayout(false);
 
 		}

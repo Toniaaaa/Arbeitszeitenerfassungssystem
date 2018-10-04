@@ -575,7 +575,7 @@ namespace Zeiterfassungssystem {
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"StartseiteVorgesetzte";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
-			this->Text = L"Zeiterfassung Startseite Vorgesetzte";
+			this->Text = L"Zeiterfassung TimeUp Vorgesetzte";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &StartseiteVorgesetzte::StartseiteVorgesetzte_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &StartseiteVorgesetzte::StartseiteVorgesetzte_Load);
 			this->Shown += gcnew System::EventHandler(this, &StartseiteVorgesetzte::StartseiteVorgesetzte_Shown);

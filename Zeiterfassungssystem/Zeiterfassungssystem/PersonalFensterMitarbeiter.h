@@ -111,7 +111,7 @@ namespace Zeiterfassungssystem {
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"PersonalFensterMitarbeiter";
-			this->Text = L"PersonalFensterMitarbeiter";
+			this->Text = L"Personal Übersicht";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &PersonalFensterMitarbeiter::PersonalFensterMitarbeiter_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &PersonalFensterMitarbeiter::PersonalFensterMitarbeiter_Load_1);
 			this->ResumeLayout(false);
