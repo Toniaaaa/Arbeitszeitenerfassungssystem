@@ -364,7 +364,7 @@ public:
 			//Info-Nachricht wird dem Antragsteller übermittelt
 			antrag->getAntragsteller()->addAntragsInfo(textZumAntrag);
 			//Urlaubstage werden dem Antragsteller eingetragen
-			antrag->getAntragsteller()->nehmeUrlaub(antrag->getAnfang(), antrag->getEnde(), unternehmen->getFeiertage());
+			antrag->getAntragsteller()->nehmeUrlaub(antrag->getAnfang(), antrag->getEnde());
 			//Es wird OK gesendet und die Seite geschlossen
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			this->Close();

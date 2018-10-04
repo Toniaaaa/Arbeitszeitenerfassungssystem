@@ -12,12 +12,6 @@ Unternehmen::Unternehmen()
 {
 	abteilungen = gcnew List<Abteilung^>;
 	feiertage = gcnew List<FreierTag^>;
-
-	//Abteilung^ administration;
-	//Vorgesetzter^ admin = gcnew Vorgesetzter("Admin", "istrator", administration, "1", "1234", 169, 28);
-	//administration = gcnew Abteilung("1", admin);
-	//admin->setAbteilung(administration);
-	//abteilungen->Add(administration);
 	this->erstelleRegelFeiertage(DateTime::Now.Year);
 	this->erstelleRegelFeiertage((DateTime::Now.Year + 1));
 	this->vergleichen = gcnew FreierTagComparer();
@@ -135,7 +129,7 @@ List<Abteilung^>^ Unternehmen::getAbteilungen()
 //Fügt einen Feiertag zur Liste hinzu (Datum aus dem übergebene Parameter)
 void Unternehmen::addFeiertag(DateTime tag)
 {
-	this->feiertage->Add(gcnew FreierTag(tag));
+	this->feiertage->Add(gcnew FreierTag(tag, true));
 	//Sortiert die Feiertagsliste nach Datum
 	feiertage->Sort(vergleichen);
 }
@@ -143,12 +137,22 @@ void Unternehmen::addFeiertag(DateTime tag)
 //Entfernt einen Feiertag aus der Liste der Feiertage, wenn sein Datum dem übergebenen Datum bestimmt
 void Unternehmen::removeFeiertag(DateTime tag)
 {
+	//Feiertag aus der Liste der Feiertage entfernen
 	for (int i = feiertage->Count - 1; i >= 0; i--) {
 		if (feiertage[i]->getDatum() == tag) {
 			feiertage->RemoveAt(i);
 			break;
 		}
-	};
+	}
+	//Feiertag aus der Urlaubstage-Liste aller Angestellten entfernen
+	for (int i = 0; i < getAlleAngestellte()->Count; i++) {
+		for (int j = 0; j < getAlleAngestellte()[i]->getListeUrlaubstage()->Count; j++) {
+			if (getAlleAngestellte()[i]->getListeUrlaubstage()[j]->getDatum() == tag) {
+				getAlleAngestellte()[i]->getListeUrlaubstage()->RemoveAt(j);
+				getAlleAngestellte()[i]->addAntragsInfo("Der Feiertag " + tag.ToString("dddd, dd. MMMM yyyy") + " wurde entfernt.\nSie müssen an diesem Tag arbeiten oder Urlaub nehmen!");
+			}
+		}
+	}
 }
 
 //Erstellt alle Feiertage, die in Niedersachsen gelten und ein festes Datum haben und fügt sie der Liste von Feiertagen hinzu
@@ -160,7 +164,7 @@ void Unternehmen::erstelleRegelFeiertage(Int32 jahr)
 	for (int i = 0; i < feiertageRegel->Length; i = i + 2) {
 		DateTime^ feiertag = gcnew DateTime(jahr, feiertageRegel[i + 1], feiertageRegel[i]);
 		//Feiertag nur hinzufügen, wenn er noch nicht in der Liste existiert (z.B. durch manuelles Einfügen)
-		FreierTag^ neuerFeiertag = gcnew FreierTag(*feiertag);
+		FreierTag^ neuerFeiertag = gcnew FreierTag(*feiertag, true);
 		if (!feiertage->Contains(neuerFeiertag)) {
 			feiertage->Add(neuerFeiertag);
 		}

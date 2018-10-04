@@ -764,11 +764,6 @@ namespace Zeiterfassungssystem {
 					MessageBoxButtons::OK, MessageBoxIcon::Error);
 			}
 		}
-		//Falls das Urlaubsfenster kein OK zurückgibt:
-		else {
-			MessageBox::Show("Urlaubsantrag konnte nicht erstellt werden!", "Erstellen fehlgeschlagen",
-				MessageBoxButtons::OK, MessageBoxIcon::Error);
-		}
 
 		//Textfelder wieder leeren
 		urlaubsfenster->clear(); 
@@ -781,9 +776,11 @@ namespace Zeiterfassungssystem {
 		bearbeitungsfenster->setUnternehmen(unternehmen);
 		bearbeitungsfenster->setAdminRechte(angestellterAkt->getIstAdmin());
 		urlaubLoeschenFenster->setUnternehmen(unternehmen);
+		urlaubLoeschenFenster->setAdminRechte(angestellterAkt->getIstAdmin());
 		feiertagsfenster->setUnternehmen(unternehmen);
 		abteilungFenster->setUnternehmen(unternehmen);
 		abteilungFenster->setAdminrechte(angestellterAkt->getIstAdmin());
+		auswahlfenster->setAdminRechte(angestellterAkt->getIstAdmin());
 		auswahlfenster->setUrlaubLoeschenfenster(urlaubLoeschenFenster);
 		auswahlfenster->setFeiertagsfenster(feiertagsfenster);;
 		auswahlfenster->setBearbeitungsfenster(bearbeitungsfenster);
@@ -1080,7 +1077,7 @@ namespace Zeiterfassungssystem {
 			String^ antragString = angestellterAkt->getAntragsInfos()[anzAntragsInfos - 1];
 			angestellterAkt->removeAntragsInfo(--anzAntragsInfos);
 			resturlaubLbl->Text = angestellterAkt->getRestUrlaub() + " Tage";
-			MessageBox::Show(antragString, "Ihr Antrag", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			MessageBox::Show(antragString, "Information", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 	}
 

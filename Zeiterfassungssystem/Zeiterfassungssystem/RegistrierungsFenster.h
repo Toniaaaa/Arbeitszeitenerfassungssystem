@@ -396,6 +396,7 @@ namespace Zeiterfassungssystem {
 			this->txt_Rolle->Items->Clear();
 			this->txt_Rolle->Items->Add("Mitarbeiter");
 			this->txt_Rolle->Text = "";
+			this->adminCBox->Enabled = false;
 		}
 
 	public: void setUnternehmen(Unternehmen^ unternehmen) {
@@ -434,24 +435,23 @@ namespace Zeiterfassungssystem {
 		else if (!unternehmen->getAlleAngestellte()->Count == 0 && (!abteilungExistiert && getRolle()->Equals("Mitarbeiter"))) {
 			System::Windows::Forms::MessageBox::Show("Die Abteilung existiert noch nicht, fügen Sie zuerst einen Vorgesetzten hinzu!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
-			txt_abteilung->Text = "";
 		}
 		else if (fehlerPersonal) {
 			System::Windows::Forms::MessageBox::Show("Die Personalnummer existiert schon, bitte geben Sie eine neue ein!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_personalnummer->Clear();
 		}
-		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_name->Text, "^[a-zA-Z]*(\ |\-)?([a-zA-Z]*)?$")) {
+		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_name->Text, "^[a-zA-ZäöüßÄÖÜ]*(\ |\-)?([a-zA-ZäöüßÄÖÜ]*)?$")) {
 			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Name\" aktzeptiert nur Buchstaben!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_name->Clear();
 		}
-		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_vorname->Text, "^[a-zA-Z]*(\ |\-)?([a-zA-Z]*)?$")) {
+		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_vorname->Text, "^[a-zA-ZäöüßÄÖÜ]*(\ |\-)?([a-zA-ZäöüßÄÖÜ]*)?$")) {
 			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Vorname\" aktzeptiert nur Buchstaben!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_vorname->Clear();
 		}
-		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_abteilung->Text, "^[a-zA-Z]*$")) {
+		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_abteilung->Text, "^[a-zA-ZäöüßÄÖÜ]*(\ |\-)?([a-zA-ZäöüßÄÖÜ]*)?$")) {
 			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Abteilung\" aktzeptiert nur Buchstaben!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_abteilung->Text = "";
@@ -476,6 +476,11 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_urlaubstage->Clear();
 		}
+		else if (!this->txt_Rolle->Text->Equals("Mitarbeiter") && !this->txt_Rolle->Text->Equals("Vorgesetzter")) {
+			System::Windows::Forms::MessageBox::Show("Bitte wählen Sie eine der vorgegebenen Rollen aus!", "Fehlgeschlagen!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+			txt_Rolle->Text = "";
+		}
 		else if (abteilungExistiert && getRolle()->Equals("Vorgesetzter")) {
 			if (System::Windows::Forms::MessageBox::Show("Sie wollen einen neuen Vorgesetzten einer existierenden Abteilung setzen!\nDadurch wird der aktuelle Vorgesetzte zum Mitarbeiter " +
 				"dieser Abteilung.\n\nFortsetzen?", "Vorgesetzten ablösen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
@@ -497,7 +502,7 @@ namespace Zeiterfassungssystem {
 			}
 		}
 		else {
-			if (this->txt_Rolle->SelectedItem->ToString()->Equals("Mitarbeiter")) {
+			if (this->txt_Rolle->Text->Equals("Mitarbeiter")) {
 				Abteilung^ abteilung = nullptr;
 				//Abteilung im Unternehmen wird ausgerufen wenn passender Abteilungsname ausgewählt
 				for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {

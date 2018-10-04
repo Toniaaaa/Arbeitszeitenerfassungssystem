@@ -1,4 +1,5 @@
 #include "Abteilung.h"
+#include "Mitarbeiter.h"
 
 Abteilung::Abteilung(String ^ abteilungsnummer, Vorgesetzter ^ vorgesetzer)
 {
@@ -21,6 +22,9 @@ Vorgesetzter ^ Abteilung::getVorgesetzter()
 void Abteilung::setVorgesetzter(Vorgesetzter ^ vorgesetzter)
 {
 	this->vorgesetzter = vorgesetzter;
+	for (int i = 0; i < mitarbeiter->Count; i++) {
+		mitarbeiter[i]->setVorgesetzter(vorgesetzter);
+	}
 }
 
 Mitarbeiter ^ Abteilung::getMitarbeiter(Int32 index)

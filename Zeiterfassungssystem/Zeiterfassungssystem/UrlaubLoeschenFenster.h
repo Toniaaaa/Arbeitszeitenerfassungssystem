@@ -23,6 +23,7 @@ namespace Zeiterfassungssystem {
 		Int32 vergleichMitHeute;
 		Angestellter^ angestellter;
 		Unternehmen^ unternehmen;
+		Boolean adminRechte;
 
 	private: System::Windows::Forms::Button^  anzeigenBtn;
 	private: System::Windows::Forms::Label^  label2;
@@ -305,14 +306,20 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 		//Fall: Kein Angestellter ausgewählt
-		else if (angestellter = nullptr) {
+		else if (angestellter == nullptr) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Bitte wählen Sie einen Angestellten aus!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+		//Fall: Ausgewählter Angestellter ist Vorgesetzter und User hat keine Administratorrechte
+		else if (!adminRechte && angestellter->istVorgesetzter()) {
+			this->DialogResult = System::Windows::Forms::DialogResult::None;
+			MessageBox::Show("Sie haben keine Administratorrechte!\nNur Administratoren dürfen den Urlaub von Vorgesetzten löschen!", "Absenden nicht möglich!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 		//Alles OK
 		else {
-			//OK senden und Fenster schließen
+			//OK senden und Fenster schließen2	11	1
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			this->Close(); //Fenster wird nur geschlossen, wenn alle Angaben gemacht wurden und OK sind.
 		}
@@ -338,7 +345,7 @@ namespace Zeiterfassungssystem {
 		//Fall: Angestellter ausgewählt
 		if (angestellter != nullptr) {
 			//Alle Urlaubstage der ausgewählten Person OHNE Feiertage anzeigen
-			String^ urlaubstageString = angestellter->freieTageAnzeigen(nullptr);
+			String^ urlaubstageString = angestellter->freieTageAnzeigen(false);
 			MessageBox::Show(urlaubstageString, "Ihre freien Tage", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 		//Fall: KEIN Angestellter ausgewählt
@@ -352,6 +359,10 @@ namespace Zeiterfassungssystem {
 	private: System::Void angestellterCBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
 		//Der Angestellte wird gesetzt als der in der Combobox ausgewählte
 		angestellter = unternehmen->getAlleAngestellte()[angestellterCBox->SelectedIndex];
+	}
+
+	public: void setAdminRechte(Boolean istAdmin) {
+		this->adminRechte = istAdmin;
 	}
 };
 }
