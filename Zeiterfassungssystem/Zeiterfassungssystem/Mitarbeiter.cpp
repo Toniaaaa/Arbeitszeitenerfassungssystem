@@ -14,13 +14,13 @@ Mitarbeiter::Mitarbeiter(Vorgesetzter^ vorgesetzterAlt, Vorgesetzter^ vorgesetzt
 	this->vorgesetzter = vorgesetzterNeu;
 }
 
-//Setter für den Vorgesetzten das Mitarbeiters
+//Setter für den Vorgesetzten des Mitarbeiters
 void Mitarbeiter::setVorgesetzter(Vorgesetzter^ vorgesetzter)
 {
 	this->vorgesetzter = vorgesetzter;
 }
 
-//Gibt zurück, dass der Mitarbeiter kein Vorgesetzter ist.
+//Gibt zurück, dass der Mitarbeiter kein Vorgesetzter ist
 bool Mitarbeiter::istVorgesetzter()
 {
 	return false;
