@@ -19,7 +19,7 @@ private:
 	Unternehmen();
 
 public:
-	static String^ SPEICHERORT = "Rebellion.dat";
+	static String^ SPEICHERORT = "TimeUp.dat";
 	static Unternehmen^ ladeUnternehmen(String^ file);
 	void speichern();
 
