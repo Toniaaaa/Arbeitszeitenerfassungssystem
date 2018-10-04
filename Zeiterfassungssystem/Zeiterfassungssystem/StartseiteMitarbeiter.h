@@ -824,10 +824,6 @@ namespace Zeiterfassungssystem {
 		angestellterAkt->setWochenZeitErreicht(wochenZeitErreicht);
 		//Unternehmen wird gespeichert
 		unternehmen->speichern(); 
-		//Spiele Musik
-		sound->SoundLocation = "Sounds/beenden.wav";
-		sound->Load();
-		sound->Play();
 		Application::Exit();
 	}
 
