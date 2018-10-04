@@ -63,6 +63,7 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(AuswahlFenster::typeid));
 			this->btn_angestellte = (gcnew System::Windows::Forms::Button());
 			this->btn_urlaub = (gcnew System::Windows::Forms::Button());
 			this->btn_feiertag = (gcnew System::Windows::Forms::Button());
@@ -123,6 +124,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->btn_feiertag);
 			this->Controls->Add(this->btn_urlaub);
 			this->Controls->Add(this->btn_angestellte);
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"AuswahlFenster";
 			this->Text = L"Bearbeiten";

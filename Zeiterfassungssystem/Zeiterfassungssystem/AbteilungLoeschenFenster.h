@@ -67,6 +67,7 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(AbteilungLoeschenFenster::typeid));
 			this->bestaetigenBtn = (gcnew System::Windows::Forms::Button());
 			this->auswahlCBox = (gcnew System::Windows::Forms::ComboBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
@@ -128,6 +129,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->auswahlCBox);
 			this->Controls->Add(this->bestaetigenBtn);
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"AbteilungLoeschenFenster";
 			this->Text = L"AbteilungLoeschenFenster";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &AbteilungLoeschenFenster::AbteilungLoeschenFenster_FormClosing);

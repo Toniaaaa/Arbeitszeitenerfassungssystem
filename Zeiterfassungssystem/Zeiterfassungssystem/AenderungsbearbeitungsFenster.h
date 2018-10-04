@@ -79,6 +79,7 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(AenderungsbearbeitungsFenster::typeid));
 			this->AntragBestaetigenBtn = (gcnew System::Windows::Forms::Button());
 			this->AntragAblehnenBtn = (gcnew System::Windows::Forms::Button());
 			this->lbl_Aenderungsanfrage = (gcnew System::Windows::Forms::Label());
@@ -346,6 +347,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->lbl_Aenderungsanfrage);
 			this->Controls->Add(this->AntragAblehnenBtn);
 			this->Controls->Add(this->AntragBestaetigenBtn);
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Margin = System::Windows::Forms::Padding(2, 3, 2, 3);
 			this->Name = L"AenderungsbearbeitungsFenster";
 			this->Text = L"Neue Anfrage";

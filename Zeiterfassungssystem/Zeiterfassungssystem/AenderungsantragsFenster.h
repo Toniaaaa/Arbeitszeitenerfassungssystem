@@ -102,9 +102,6 @@ namespace Zeiterfassungssystem {
 			this->gruendeAuswahl = (gcnew System::Windows::Forms::ComboBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
-			// 
-			// aenderungsantragLbl
-			// 
 			this->aenderungsantragLbl->AutoSize = true;
 			this->aenderungsantragLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -114,9 +111,6 @@ namespace Zeiterfassungssystem {
 			this->aenderungsantragLbl->Size = System::Drawing::Size(339, 46);
 			this->aenderungsantragLbl->TabIndex = 2;
 			this->aenderungsantragLbl->Text = L"Änderungsantrag";
-			// 
-			// einreichenBtn
-			// 
 			this->einreichenBtn->Location = System::Drawing::Point(81, 524);
 			this->einreichenBtn->Margin = System::Windows::Forms::Padding(4);
 			this->einreichenBtn->Name = L"einreichenBtn";
@@ -125,9 +119,6 @@ namespace Zeiterfassungssystem {
 			this->einreichenBtn->Text = L"Einreichen";
 			this->einreichenBtn->UseVisualStyleBackColor = true;
 			this->einreichenBtn->Click += gcnew System::EventHandler(this, &AenderungsantragsFenster::Einreichen_Click);
-			// 
-			// tagLbl
-			// 
 			this->tagLbl->AutoSize = true;
 			this->tagLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -137,9 +128,6 @@ namespace Zeiterfassungssystem {
 			this->tagLbl->Size = System::Drawing::Size(171, 25);
 			this->tagLbl->TabIndex = 5;
 			this->tagLbl->Text = L"Tag der Änderung";
-			// 
-			// abbrechenBtn
-			// 
 			this->abbrechenBtn->Location = System::Drawing::Point(309, 524);
 			this->abbrechenBtn->Margin = System::Windows::Forms::Padding(4);
 			this->abbrechenBtn->Name = L"abbrechenBtn";
@@ -148,9 +136,6 @@ namespace Zeiterfassungssystem {
 			this->abbrechenBtn->Text = L"Abbrechen";
 			this->abbrechenBtn->UseVisualStyleBackColor = true;
 			this->abbrechenBtn->Click += gcnew System::EventHandler(this, &AenderungsantragsFenster::abbrechenBtn_Click);
-			// 
-			// ankunftLbl
-			// 
 			this->ankunftLbl->AutoSize = true;
 			this->ankunftLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -160,9 +145,6 @@ namespace Zeiterfassungssystem {
 			this->ankunftLbl->Size = System::Drawing::Size(116, 25);
 			this->ankunftLbl->TabIndex = 11;
 			this->ankunftLbl->Text = L"Ankunft Zeit";
-			// 
-			// kommentarLbl
-			// 
 			this->kommentarLbl->AutoSize = true;
 			this->kommentarLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -172,18 +154,12 @@ namespace Zeiterfassungssystem {
 			this->kommentarLbl->Size = System::Drawing::Size(113, 25);
 			this->kommentarLbl->TabIndex = 12;
 			this->kommentarLbl->Text = L"Kommentar";
-			// 
-			// kommentarTxt
-			// 
 			this->kommentarTxt->Location = System::Drawing::Point(29, 353);
 			this->kommentarTxt->Margin = System::Windows::Forms::Padding(4);
 			this->kommentarTxt->Multiline = true;
 			this->kommentarTxt->Name = L"kommentarTxt";
 			this->kommentarTxt->Size = System::Drawing::Size(507, 143);
 			this->kommentarTxt->TabIndex = 6;
-			// 
-			// gehenLbl
-			// 
 			this->gehenLbl->AutoSize = true;
 			this->gehenLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -193,41 +169,26 @@ namespace Zeiterfassungssystem {
 			this->gehenLbl->Size = System::Drawing::Size(108, 25);
 			this->gehenLbl->TabIndex = 14;
 			this->gehenLbl->Text = L"Gehen Zeit";
-			// 
-			// ankunftStdTxt
-			// 
 			this->ankunftStdTxt->Location = System::Drawing::Point(271, 176);
 			this->ankunftStdTxt->Margin = System::Windows::Forms::Padding(4);
 			this->ankunftStdTxt->Name = L"ankunftStdTxt";
 			this->ankunftStdTxt->Size = System::Drawing::Size(52, 22);
 			this->ankunftStdTxt->TabIndex = 1;
-			// 
-			// gehenStdTxt
-			// 
 			this->gehenStdTxt->Location = System::Drawing::Point(271, 222);
 			this->gehenStdTxt->Margin = System::Windows::Forms::Padding(4);
 			this->gehenStdTxt->Name = L"gehenStdTxt";
 			this->gehenStdTxt->Size = System::Drawing::Size(52, 22);
 			this->gehenStdTxt->TabIndex = 3;
-			// 
-			// ankunftMinuteTxt
-			// 
 			this->ankunftMinuteTxt->Location = System::Drawing::Point(353, 176);
 			this->ankunftMinuteTxt->Margin = System::Windows::Forms::Padding(4);
 			this->ankunftMinuteTxt->Name = L"ankunftMinuteTxt";
 			this->ankunftMinuteTxt->Size = System::Drawing::Size(52, 22);
 			this->ankunftMinuteTxt->TabIndex = 2;
-			// 
-			// gehenMinuteTxt
-			// 
 			this->gehenMinuteTxt->Location = System::Drawing::Point(353, 222);
 			this->gehenMinuteTxt->Margin = System::Windows::Forms::Padding(4);
 			this->gehenMinuteTxt->Name = L"gehenMinuteTxt";
 			this->gehenMinuteTxt->Size = System::Drawing::Size(52, 22);
 			this->gehenMinuteTxt->TabIndex = 4;
-			// 
-			// label1
-			// 
 			this->label1->AutoSize = true;
 			this->label1->Location = System::Drawing::Point(332, 180);
 			this->label1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
@@ -235,9 +196,6 @@ namespace Zeiterfassungssystem {
 			this->label1->Size = System::Drawing::Size(12, 17);
 			this->label1->TabIndex = 19;
 			this->label1->Text = L":";
-			// 
-			// label3
-			// 
 			this->label3->AutoSize = true;
 			this->label3->Location = System::Drawing::Point(332, 225);
 			this->label3->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
@@ -245,9 +203,6 @@ namespace Zeiterfassungssystem {
 			this->label3->Size = System::Drawing::Size(12, 17);
 			this->label3->TabIndex = 20;
 			this->label3->Text = L":";
-			// 
-			// label4
-			// 
 			this->label4->AutoSize = true;
 			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -257,9 +212,6 @@ namespace Zeiterfassungssystem {
 			this->label4->Size = System::Drawing::Size(43, 25);
 			this->label4->TabIndex = 21;
 			this->label4->Text = L"Uhr";
-			// 
-			// label5
-			// 
 			this->label5->AutoSize = true;
 			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -269,9 +221,6 @@ namespace Zeiterfassungssystem {
 			this->label5->Size = System::Drawing::Size(43, 25);
 			this->label5->TabIndex = 22;
 			this->label5->Text = L"Uhr";
-			// 
-			// grundLbl
-			// 
 			this->grundLbl->AutoSize = true;
 			this->grundLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -281,9 +230,6 @@ namespace Zeiterfassungssystem {
 			this->grundLbl->Size = System::Drawing::Size(190, 25);
 			this->grundLbl->TabIndex = 23;
 			this->grundLbl->Text = L"Grund der Änderung";
-			// 
-			// gruendeAuswahl
-			// 
 			this->gruendeAuswahl->FormattingEnabled = true;
 			this->gruendeAuswahl->Location = System::Drawing::Point(271, 266);
 			this->gruendeAuswahl->Margin = System::Windows::Forms::Padding(4);
@@ -291,18 +237,12 @@ namespace Zeiterfassungssystem {
 			this->gruendeAuswahl->Size = System::Drawing::Size(265, 24);
 			this->gruendeAuswahl->TabIndex = 5;
 			this->gruendeAuswahl->SelectedIndexChanged += gcnew System::EventHandler(this, &AenderungsantragsFenster::gruendeAuswahl_SelectedIndexChanged);
-			// 
-			// label2
-			// 
 			this->label2->AutoSize = true;
 			this->label2->Location = System::Drawing::Point(306, 125);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(46, 17);
 			this->label2->TabIndex = 24;
 			this->label2->Text = L"label2";
-			// 
-			// AenderungsantragsFenster
-			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;

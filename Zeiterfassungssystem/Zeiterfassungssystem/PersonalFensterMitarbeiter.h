@@ -57,6 +57,7 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(PersonalFensterMitarbeiter::typeid));
 			this->listView1 = (gcnew System::Windows::Forms::ListView());
 			this->clm_Status = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_nachname = (gcnew System::Windows::Forms::ColumnHeader());
@@ -74,7 +75,7 @@ namespace Zeiterfassungssystem {
 			this->listView1->FullRowSelect = true;
 			this->listView1->GridLines = true;
 			this->listView1->Location = System::Drawing::Point(0, 0);
-			this->listView1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->listView1->Margin = System::Windows::Forms::Padding(2);
 			this->listView1->Name = L"listView1";
 			this->listView1->Size = System::Drawing::Size(620, 274);
 			this->listView1->TabIndex = 0;
@@ -107,7 +108,8 @@ namespace Zeiterfassungssystem {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(620, 274);
 			this->Controls->Add(this->listView1);
-			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
+			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"PersonalFensterMitarbeiter";
 			this->Text = L"PersonalFensterMitarbeiter";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &PersonalFensterMitarbeiter::PersonalFensterMitarbeiter_FormClosing);

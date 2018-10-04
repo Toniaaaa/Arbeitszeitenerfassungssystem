@@ -281,6 +281,12 @@
     <Media Include="Sounds\lacucarachaKurz.wav">
       <Filter>Quelldateien\Sounds</Filter>
     </Media>
+    <Media Include="Sounds\beenden.wav">
+      <Filter>Quelldateien\Sounds</Filter>
+    </Media>
+    <Media Include="Sounds\start.wav">
+      <Filter>Quelldateien\Sounds</Filter>
+    </Media>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\addIcon.jpg">
@@ -332,6 +338,12 @@
       <Filter>Quelldateien\Images</Filter>
     </Image>
     <Image Include="Images\PersonalIconKlein.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\TIME_UP.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\TimeUpIcon.ico">
       <Filter>Quelldateien\Images</Filter>
     </Image>
   </ItemGroup>

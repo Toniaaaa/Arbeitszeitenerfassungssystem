@@ -58,6 +58,7 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(BegruessungsFenster::typeid));
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->addBtn = (gcnew System::Windows::Forms::Button());
 			this->begruessungLbl1 = (gcnew System::Windows::Forms::Label());
@@ -137,6 +138,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->begruessungLbl1);
 			this->Controls->Add(this->addBtn);
 			this->Controls->Add(this->button1);
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"BegruessungsFenster";
 			this->Text = L"BegruessungsFenster";
 			this->ResumeLayout(false);

@@ -69,6 +69,7 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(UrlaubsanfragenbearbeitungsFenster::typeid));
 			this->btn_AntragBestaetigen = (gcnew System::Windows::Forms::Button());
 			this->btn_AntragAblehnen = (gcnew System::Windows::Forms::Button());
 			this->lbl_Aenderungsanfrage = (gcnew System::Windows::Forms::Label());
@@ -261,7 +262,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->btn_AntragAblehnen);
 			this->Controls->Add(this->btn_AntragBestaetigen);
 			this->Margin = System::Windows::Forms::Padding(2, 3, 2, 3);
-			this->Name = L"UrlaubsanfragenbearbeitungsFenster";
+			this->Name = L"Urlaubsanfrage bearbeiten";
 			this->Text = L"Neue Anfrage";
 			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &UrlaubsanfragenbearbeitungsFenster::UrlaubsanfragenbearbeitungsFenster_FormClosed);
 			this->Load += gcnew System::EventHandler(this, &UrlaubsanfragenbearbeitungsFenster::AenderungsbearbeitungsFenster_Load);

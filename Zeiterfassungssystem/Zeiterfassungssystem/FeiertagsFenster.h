@@ -56,6 +56,7 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(FeiertagsFenster::typeid));
 			this->neuerFeiertagDTP = (gcnew System::Windows::Forms::DateTimePicker());
 			this->aenderungsantragLbl = (gcnew System::Windows::Forms::Label());
 			this->hinzufuegenBtn = (gcnew System::Windows::Forms::Button());
@@ -135,6 +136,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->hinzufuegenBtn);
 			this->Controls->Add(this->aenderungsantragLbl);
 			this->Controls->Add(this->neuerFeiertagDTP);
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"FeiertagsFenster";
 			this->Text = L"Feiertag hinzufügen";
 			this->ResumeLayout(false);

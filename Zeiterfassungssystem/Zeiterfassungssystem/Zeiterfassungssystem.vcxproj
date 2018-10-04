@@ -270,6 +270,9 @@
     <EmbeddedResource Include="LogInFenster.resx">
       <DependentUpon>LogInFenster.h</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PasswortAendernFenster.resx">
+      <DependentUpon>PasswortAendernFenster.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PersonalFenster.resx">
       <DependentUpon>PersonalFenster.h</DependentUpon>
     </EmbeddedResource>
@@ -305,6 +308,8 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="Sounds\lacucarachaKurz.wav" />
+    <Media Include="Sounds\beenden.wav" />
+    <Media Include="Sounds\start.wav" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\addIcon.jpg" />
@@ -322,6 +327,8 @@
     <Image Include="Images\PersonalIconKlein.jpg" />
     <Image Include="Images\statistikIcon.jpg" />
     <Image Include="Images\statistikIconKlein.jpg" />
+    <Image Include="Images\TimeUpIcon.ico" />
+    <Image Include="Images\TIME_UP.jpg" />
     <Image Include="Images\urlaubIcon2.jpg" />
     <Image Include="Images\urlaubIconKlein.jpg" />
   </ItemGroup>

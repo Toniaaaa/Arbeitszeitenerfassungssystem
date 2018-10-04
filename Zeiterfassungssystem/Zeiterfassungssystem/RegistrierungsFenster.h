@@ -76,6 +76,7 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(RegistrierungsFenster::typeid));
 			this->txt_vorname = (gcnew System::Windows::Forms::TextBox());
 			this->txt_personalnummer = (gcnew System::Windows::Forms::TextBox());
 			this->txt_passwort = (gcnew System::Windows::Forms::TextBox());
@@ -315,6 +316,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->txt_passwort);
 			this->Controls->Add(this->txt_personalnummer);
 			this->Controls->Add(this->txt_vorname);
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"RegistrierungsFenster";
 			this->Text = L"Registrierung";

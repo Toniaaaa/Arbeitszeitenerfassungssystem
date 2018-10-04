@@ -26,13 +26,14 @@ namespace Zeiterfassungssystem {
 		Int32 restUrlaub;
 		Unternehmen^ unternehmen;
 		Int32 anzahlUrlaubstage;
+		SoundPlayer^ sound;
 
 	private: System::Windows::Forms::Label^  label4;
 	private: System::Windows::Forms::TextBox^  kommentarTxt;
 	private: System::Windows::Forms::Label^  urlaubstageLbl;
 	private: System::Windows::Forms::Button^  anzeigenBtn;
 
-			 SoundPlayer^ sound;
+			 
 
 	public:
 		UrlaubsFenster(void)
@@ -75,6 +76,7 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(UrlaubsFenster::typeid));
 			this->urlaubBeginnDTP = (gcnew System::Windows::Forms::DateTimePicker());
 			this->urlaubsabtragLbl = (gcnew System::Windows::Forms::Label());
 			this->einreichenBtn = (gcnew System::Windows::Forms::Button());
@@ -183,7 +185,7 @@ namespace Zeiterfassungssystem {
 			// kommentarTxt
 			// 
 			this->kommentarTxt->Location = System::Drawing::Point(26, 279);
-			this->kommentarTxt->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->kommentarTxt->Margin = System::Windows::Forms::Padding(2);
 			this->kommentarTxt->Name = L"kommentarTxt";
 			this->kommentarTxt->Size = System::Drawing::Size(377, 20);
 			this->kommentarTxt->TabIndex = 2;
@@ -227,6 +229,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->einreichenBtn);
 			this->Controls->Add(this->urlaubsabtragLbl);
 			this->Controls->Add(this->urlaubBeginnDTP);
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"UrlaubsFenster";
 			this->Text = L"Urlaubsantrag";
 			this->Load += gcnew System::EventHandler(this, &UrlaubsFenster::UrlaubsFenster_Load);

@@ -35,7 +35,10 @@ namespace Zeiterfassungssystem {
 		PersonalFenster^ personalfenster;
 		Angestellter^ angestellter;
 		bool loginGedrueckt = false;
-		BegruessungsFenster^ begruessung;
+	private: System::Windows::Forms::PictureBox^  pictureBox1;
+	private: System::Windows::Forms::Label^  label1;
+
+			 BegruessungsFenster^ begruessung;
 		
 	public:
 		LoginFenster(void)
@@ -86,6 +89,7 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(LoginFenster::typeid));
 			this->logInButton = (gcnew System::Windows::Forms::Button());
 			this->BenutzernameLabel = (gcnew System::Windows::Forms::Label());
 			this->KennwortLabel = (gcnew System::Windows::Forms::Label());
@@ -93,6 +97,9 @@ namespace Zeiterfassungssystem {
 			this->txt_Benutzername = (gcnew System::Windows::Forms::TextBox());
 			this->txt_Kennwort = (gcnew System::Windows::Forms::TextBox());
 			this->btn_passwortAendern = (gcnew System::Windows::Forms::Button());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// logInButton
@@ -101,7 +108,7 @@ namespace Zeiterfassungssystem {
 			this->logInButton->Font = (gcnew System::Drawing::Font(L"Arial", 7.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->logInButton->ForeColor = System::Drawing::SystemColors::Control;
-			this->logInButton->Location = System::Drawing::Point(30, 152);
+			this->logInButton->Location = System::Drawing::Point(30, 184);
 			this->logInButton->Name = L"logInButton";
 			this->logInButton->Size = System::Drawing::Size(112, 45);
 			this->logInButton->TabIndex = 2;
@@ -114,9 +121,9 @@ namespace Zeiterfassungssystem {
 			this->BenutzernameLabel->AutoSize = true;
 			this->BenutzernameLabel->Font = (gcnew System::Drawing::Font(L"Arial", 7.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->BenutzernameLabel->Location = System::Drawing::Point(27, 33);
+			this->BenutzernameLabel->Location = System::Drawing::Point(27, 87);
 			this->BenutzernameLabel->Name = L"BenutzernameLabel";
-			this->BenutzernameLabel->Size = System::Drawing::Size(127, 16);
+			this->BenutzernameLabel->Size = System::Drawing::Size(104, 14);
 			this->BenutzernameLabel->TabIndex = 2;
 			this->BenutzernameLabel->Text = L"Personalnummer";
 			// 
@@ -125,15 +132,15 @@ namespace Zeiterfassungssystem {
 			this->KennwortLabel->AutoSize = true;
 			this->KennwortLabel->Font = (gcnew System::Drawing::Font(L"Arial", 7.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->KennwortLabel->Location = System::Drawing::Point(27, 81);
+			this->KennwortLabel->Location = System::Drawing::Point(27, 132);
 			this->KennwortLabel->Name = L"KennwortLabel";
-			this->KennwortLabel->Size = System::Drawing::Size(76, 16);
+			this->KennwortLabel->Size = System::Drawing::Size(61, 14);
 			this->KennwortLabel->TabIndex = 3;
 			this->KennwortLabel->Text = L"Kennwort";
 			// 
 			// passwortvergessenButton
 			// 
-			this->passwortvergessenButton->Location = System::Drawing::Point(186, 152);
+			this->passwortvergessenButton->Location = System::Drawing::Point(188, 184);
 			this->passwortvergessenButton->Name = L"passwortvergessenButton";
 			this->passwortvergessenButton->Size = System::Drawing::Size(112, 45);
 			this->passwortvergessenButton->TabIndex = 3;
@@ -143,22 +150,22 @@ namespace Zeiterfassungssystem {
 			// 
 			// txt_Benutzername
 			// 
-			this->txt_Benutzername->Location = System::Drawing::Point(198, 33);
+			this->txt_Benutzername->Location = System::Drawing::Point(188, 84);
 			this->txt_Benutzername->Name = L"txt_Benutzername";
-			this->txt_Benutzername->Size = System::Drawing::Size(254, 22);
+			this->txt_Benutzername->Size = System::Drawing::Size(278, 19);
 			this->txt_Benutzername->TabIndex = 0;
 			// 
 			// txt_Kennwort
 			// 
-			this->txt_Kennwort->Location = System::Drawing::Point(198, 81);
+			this->txt_Kennwort->Location = System::Drawing::Point(188, 129);
 			this->txt_Kennwort->Name = L"txt_Kennwort";
 			this->txt_Kennwort->PasswordChar = '*';
-			this->txt_Kennwort->Size = System::Drawing::Size(254, 22);
+			this->txt_Kennwort->Size = System::Drawing::Size(278, 19);
 			this->txt_Kennwort->TabIndex = 1;
 			// 
 			// btn_passwortAendern
 			// 
-			this->btn_passwortAendern->Location = System::Drawing::Point(340, 152);
+			this->btn_passwortAendern->Location = System::Drawing::Point(354, 184);
 			this->btn_passwortAendern->Name = L"btn_passwortAendern";
 			this->btn_passwortAendern->Size = System::Drawing::Size(112, 45);
 			this->btn_passwortAendern->TabIndex = 4;
@@ -166,15 +173,37 @@ namespace Zeiterfassungssystem {
 			this->btn_passwortAendern->UseVisualStyleBackColor = true;
 			this->btn_passwortAendern->Click += gcnew System::EventHandler(this, &LoginFenster::btn_passwortAendern_Click);
 			// 
+			// pictureBox1
+			// 
+			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
+			this->pictureBox1->Location = System::Drawing::Point(508, 29);
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(173, 200);
+			this->pictureBox1->TabIndex = 5;
+			this->pictureBox1->TabStop = false;
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Arial", 20.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label1->Location = System::Drawing::Point(24, 31);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(91, 32);
+			this->label1->TabIndex = 6;
+			this->label1->Text = L"Login";
+			// 
 			// LoginFenster
 			// 
 			this->AllowDrop = true;
-			this->AutoScaleDimensions = System::Drawing::SizeF(7, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoSize = true;
 			this->AutoValidate = System::Windows::Forms::AutoValidate::EnablePreventFocusChange;
 			this->BackColor = System::Drawing::SystemColors::Window;
-			this->ClientSize = System::Drawing::Size(517, 421);
+			this->ClientSize = System::Drawing::Size(693, 248);
+			this->Controls->Add(this->label1);
+			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->btn_passwortAendern);
 			this->Controls->Add(this->txt_Kennwort);
 			this->Controls->Add(this->txt_Benutzername);
@@ -185,10 +214,12 @@ namespace Zeiterfassungssystem {
 			this->Font = (gcnew System::Drawing::Font(L"Arial", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->ForeColor = System::Drawing::SystemColors::MenuText;
-			this->Name = L"LoginFenster";
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
+			this->Name = L"Login";
 			this->Text = L"Login";
 			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &LoginFenster::LoginFenster_FormClosed);
 			this->Load += gcnew System::EventHandler(this, &LoginFenster::loginFenster_Load);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -259,5 +290,6 @@ namespace Zeiterfassungssystem {
 			Application::Exit();
 		}
 	}
+
 };
 }

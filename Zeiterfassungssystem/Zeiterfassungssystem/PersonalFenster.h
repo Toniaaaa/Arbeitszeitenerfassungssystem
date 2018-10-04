@@ -67,6 +67,7 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(PersonalFenster::typeid));
 			this->listView1 = (gcnew System::Windows::Forms::ListView());
 			this->clm_Status = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_Name = (gcnew System::Windows::Forms::ColumnHeader());
@@ -164,6 +165,7 @@ namespace Zeiterfassungssystem {
 			this->ClientSize = System::Drawing::Size(1265, 607);
 			this->Controls->Add(this->listView1);
 			this->DoubleBuffered = true;
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"PersonalFenster";
 			this->Text = L"PersonalFenster";

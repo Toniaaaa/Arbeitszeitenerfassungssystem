@@ -26,6 +26,7 @@ namespace Zeiterfassungssystem {
 	//zum lesen und schreiben
 	using namespace System::Runtime::Serialization::Formatters::Binary;
 	using namespace System::IO;
+	using namespace System::Media;
 	/// <summary>
 	/// Zusammenfassung für VorgesetztenSeite
 	/// </summary>
@@ -36,6 +37,9 @@ namespace Zeiterfassungssystem {
 		Unternehmen ^ unternehmen;
 		Mitarbeiter^ angestellterAkt;
 		Vorgesetzter^ vorgesetzter;
+
+		//Für die Soundeffekte
+		SoundPlayer^ sound;
 
 		//Unterfenster
 		StundenStatistikFenster^ statistik;
@@ -98,6 +102,7 @@ namespace Zeiterfassungssystem {
 			aenderungsfenster = gcnew AenderungsantragsFenster;
 			kalender = gcnew Kalender();
 			personalfenster = gcnew PersonalFensterMitarbeiter;
+			sound = gcnew SoundPlayer();
 		}
 
 	protected:
@@ -522,6 +527,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->halloLbl);
 			this->Controls->Add(this->gehenBtn);
 			this->Controls->Add(this->kommenBtn);
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"StartseiteMitarbeiter";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Zeiterfassung Startseite Mitarbeiter";
@@ -752,6 +758,10 @@ namespace Zeiterfassungssystem {
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
 
+		//Spiele Musik
+		sound->SoundLocation = "Sounds/start.wav";
+		sound->Load();
+		sound->Play();
 		//Es wird geprüft, ob ein neues Jahr oder eine neue Woche angefangen hat
 		this->neuesJahr();
 		angestellterAkt->neueWoche();
@@ -814,6 +824,10 @@ namespace Zeiterfassungssystem {
 		angestellterAkt->setWochenZeitErreicht(wochenZeitErreicht);
 		//Unternehmen wird gespeichert
 		unternehmen->speichern(); 
+		//Spiele Musik
+		sound->SoundLocation = "Sounds/beenden.wav";
+		sound->Load();
+		sound->Play();
 		Application::Exit();
 	}
 

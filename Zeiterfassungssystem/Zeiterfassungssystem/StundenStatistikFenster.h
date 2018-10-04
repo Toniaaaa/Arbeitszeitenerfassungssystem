@@ -68,6 +68,7 @@ namespace Zeiterfassungssystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(StundenStatistikFenster::typeid));
 			this->listView1 = (gcnew System::Windows::Forms::ListView());
 			this->clm_Arbeitsang = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_pausenanfang = (gcnew System::Windows::Forms::ColumnHeader());
@@ -87,9 +88,9 @@ namespace Zeiterfassungssystem {
 			this->listView1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->listView1->GridLines = true;
 			this->listView1->Location = System::Drawing::Point(0, 0);
-			this->listView1->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->listView1->Margin = System::Windows::Forms::Padding(2);
 			this->listView1->Name = L"listView1";
-			this->listView1->Size = System::Drawing::Size(1591, 699);
+			this->listView1->Size = System::Drawing::Size(1193, 568);
 			this->listView1->TabIndex = 0;
 			this->listView1->UseCompatibleStateImageBehavior = false;
 			this->listView1->View = System::Windows::Forms::View::Details;
@@ -123,9 +124,10 @@ namespace Zeiterfassungssystem {
 			// 
 			// btn_aendern
 			// 
-			this->btn_aendern->Location = System::Drawing::Point(27, 544);
+			this->btn_aendern->Location = System::Drawing::Point(20, 442);
+			this->btn_aendern->Margin = System::Windows::Forms::Padding(2);
 			this->btn_aendern->Name = L"btn_aendern";
-			this->btn_aendern->Size = System::Drawing::Size(144, 54);
+			this->btn_aendern->Size = System::Drawing::Size(108, 44);
 			this->btn_aendern->TabIndex = 1;
 			this->btn_aendern->Text = L"Ändern";
 			this->btn_aendern->UseVisualStyleBackColor = true;
@@ -138,21 +140,23 @@ namespace Zeiterfassungssystem {
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label1->ForeColor = System::Drawing::SystemColors::MenuHighlight;
-			this->label1->Location = System::Drawing::Point(1383, 563);
+			this->label1->Location = System::Drawing::Point(1037, 457);
+			this->label1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(46, 17);
+			this->label1->Size = System::Drawing::Size(35, 13);
 			this->label1->TabIndex = 2;
 			this->label1->Text = L"label1";
 			// 
 			// StundenStatistikFenster
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1591, 699);
+			this->ClientSize = System::Drawing::Size(1193, 568);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->btn_aendern);
 			this->Controls->Add(this->listView1);
-			this->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
+			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"StundenStatistikFenster";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"StundenStatistikFenster";
