@@ -93,7 +93,7 @@ List<Angestellter^>^ Unternehmen::getAlleAngestellte()
 	return angestellte;
 }
 
-//
+//Gibt den Angestellten zurück, der Eingeloggt wurde, wenn Benutzername und Passwort übereinstimmen
 Angestellter ^ Unternehmen::loginaccept(String ^ personalnummer, String ^ passwort)
 {
 	List<Angestellter^>^ angestellte = getAlleAngestellte();
@@ -113,7 +113,7 @@ Angestellter ^ Unternehmen::loginaccept(String ^ personalnummer, String ^ passwo
 	} 
 	return result;
 }
-
+//Gibt Liste mit allen Abteilungen zurück
 List<Abteilung^>^ Unternehmen::getAbteilungen()
 {
 	List<Abteilung^>^ abteilungRueckgabe;
@@ -126,7 +126,7 @@ List<Abteilung^>^ Unternehmen::getAbteilungen()
 	return abteilungRueckgabe;
 }
 
-//Fügt einen Feiertag zur Liste hinzu (Datum aus dem übergebene Parameter)
+//Fügt einen Feiertag zur Liste hinzu (Datum aus dem übergebenen Parameter)
 void Unternehmen::addFeiertag(DateTime tag)
 {
 	this->feiertage->Add(gcnew FreierTag(tag, true));
@@ -134,7 +134,7 @@ void Unternehmen::addFeiertag(DateTime tag)
 	feiertage->Sort(vergleichen);
 }
 
-//Entfernt einen Feiertag aus der Liste der Feiertage, wenn sein Datum dem übergebenen Datum bestimmt
+//Entfernt einen Feiertag aus der Liste der Feiertage, wenn das Datum mit dem übergebenen Datum übereinstimmt
 void Unternehmen::removeFeiertag(DateTime tag)
 {
 	//Feiertag aus der Liste der Feiertage entfernen

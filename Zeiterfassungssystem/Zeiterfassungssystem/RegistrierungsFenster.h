@@ -326,13 +326,13 @@ namespace Zeiterfassungssystem {
 		}
 #pragma endregion
 	private: System::Void registrierungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
-		//Abteilungen werden zur Auswahl hinzugefuegt
+		//Hinzufuegen von Abteilungen zur Auswahl
 		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
 			txt_abteilung->Items->Add(unternehmen->getAbteilung(i)->getAbteilungsnummer());
 		}
-		//Fall: Das Unternehmen ist neu
+		//Falls das Unternehmen neu ist
 		if (unternehmen->getAlleAngestellte()->Count == 0) {
-			//Der erste Mitarbeiter muss der Administrator sein
+			//Der erste Mitarbeiter muss ein Administrator sein
 			txt_Rolle->Items->RemoveAt(0);
 			txt_Rolle->Items->Add("Vorgesetzter");
 			txt_abteilung->Text = "Administration";
@@ -382,7 +382,7 @@ namespace Zeiterfassungssystem {
 			this->ersteller = ersteller;
 		}
 
-		//Methode zum Zurücksetzen der Textfelder
+		//Clear-Methode der Textfelder
 		void clear() {
 			this->txt_name->Text = "";
 			this->txt_vorname->Text = "";
@@ -424,7 +424,7 @@ namespace Zeiterfassungssystem {
 			}
 		}
 
-		//Eingabepprüfung im Eventhandler
+		//Eingabepprüfung
 		if (this->txt_name->Text->Length == 0 || this->txt_vorname->Text->Length == 0 || this->txt_personalnummer->Text->Length == 0 || this->txt_passwort->Text->Length == 0 
 			|| this->txt_arbeitsstunden->Text->Length == 0 || this->txt_urlaubstage->Text->Length == 0 || this->txt_Rolle->Text->Length == 0 || this->txt_abteilung->Text->Length == 0) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
@@ -441,6 +441,7 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_personalnummer->Clear();
 		}
+		//Überprüfung der Namen, Vornamen, Abteilungen, Personalnummern, Arbeitsstunden und Urlaubstagen über eine Regular Expression 
 		else if (!System::Text::RegularExpressions::Regex::IsMatch(txt_name->Text, "^[a-zA-ZäöüßÄÖÜ]*(\ |\-)?([a-zA-ZäöüßÄÖÜ]*)?$")) {
 			System::Windows::Forms::MessageBox::Show("Das Textfeld \"Name\" aktzeptiert nur Buchstaben!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
@@ -471,16 +472,19 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_urlaubstage->Clear();
 		}
+		//Überprüfung ob Urlaubstage größer 28 sind
 		else if (int::Parse(txt_urlaubstage->Text) < 28) {
 			System::Windows::Forms::MessageBox::Show("Urlaubstage sind laut Gesetz immer größer 28 zu wählen!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_urlaubstage->Clear();
 		}
+		//Überprüfung ob eine Rolle ausgewählt wurde
 		else if (!this->txt_Rolle->Text->Equals("Mitarbeiter") && !this->txt_Rolle->Text->Equals("Vorgesetzter")) {
 			System::Windows::Forms::MessageBox::Show("Bitte wählen Sie eine der vorgegebenen Rollen aus!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_Rolle->Text = "";
 		}
+		//Falls Abteilung schon existiert und die Rolle Vorgsetzter ist, löst der neue Vorgestzte den Alten ab, und der alte Vorgesetzte wird zum Mitarbieter
 		else if (abteilungExistiert && getRolle()->Equals("Vorgesetzter")) {
 			if (System::Windows::Forms::MessageBox::Show("Sie wollen einen neuen Vorgesetzten einer existierenden Abteilung setzen!\nDadurch wird der aktuelle Vorgesetzte zum Mitarbeiter " +
 				"dieser Abteilung.\n\nFortsetzen?", "Vorgesetzten ablösen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
@@ -511,14 +515,14 @@ namespace Zeiterfassungssystem {
 					}
 				}
 				Vorgesetzter^ vorgesetzter = abteilung->getVorgesetzter();
-				//da Rolle Mitarbeiter ausgewaehlt wird ein neuer mitarbeiter mit eingegebenen Daten erstellt und zur Abteilung und Unternehmen hinzugefuegt
+				//da Rolle Mitarbeiter ausgewählt wird ein neuer Mitarbeiter mit eingegebenen Daten erstellt und zur Abteilung und Unternehmen hinzugefügt
 				Mitarbeiter^ mitarbeiter = gcnew Mitarbeiter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), vorgesetzter);
 				mitarbeiter->setAbteilung(abteilung);
 				abteilung->fuegeMitarbeiterHinzu(mitarbeiter);
 				this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			}
 			else {
-				//Wenn Rolle Vorgesetzter gewaehlt wird neuer Vorgesetzter mit passender Abteilung erstellt
+				//Wenn Rolle Vorgesetzter gewählt wird neuer Vorgesetzter mit passender Abteilung erstellt
 				Abteilung^ abteilung = gcnew Abteilung(txt_abteilung->Text, nullptr);
 				neuerMitarbeiter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), this->adminCBox->Checked);
 				abteilung->setVorgesetzter(neuerMitarbeiter);
@@ -530,18 +534,18 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
-	//Wenn das Fenster geschlossen wird
+	//Eventhandler zum schließen des Fensters
 	private: System::Void RegistrierungsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
 		this->clear();
 	}
 
 	//Wenn die Auswahl der Rolle verändert wird
 	private: System::Void txt_Rolle_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
-		//Wenn "Vorgesetzter" ausgewählt ist, kann die Checkbox für Admin-Rechte ausgewählt werden
+		//Wenn die Rolle "Vorgesetzter" ausgewählt ist, kann die Checkbox für Admin-Rechte ausgewählt werden
 		if (this->txt_Rolle->SelectedItem->ToString()->Equals("Vorgesetzter") && !unternehmen->getAlleAngestellte()->Count == 0) {
 			adminCBox->Enabled = true;
 		}
-		//Wenn "Mitarbeiter" ausgewählt wird, kann die Checkbox nicht gewählt werden
+		//Wenn "Mitarbeiter" ausgewählt wird, kann die Checkbox für Admin-Rechte nicht gewählt werden
 		else if (this->txt_Rolle->SelectedItem->ToString()->Equals("Mitarbeiter")) {
 			adminCBox->Enabled = false;
 			adminCBox->Checked = false;
