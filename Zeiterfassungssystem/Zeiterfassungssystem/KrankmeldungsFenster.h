@@ -130,7 +130,7 @@ namespace Zeiterfassungssystem {
 			this->abbrechenBtn->Location = System::Drawing::Point(272, 332);
 			this->abbrechenBtn->Name = L"abbrechenBtn";
 			this->abbrechenBtn->Size = System::Drawing::Size(130, 37);
-			this->abbrechenBtn->TabIndex = 5;
+			this->abbrechenBtn->TabIndex = 4;
 			this->abbrechenBtn->Text = L"Abbrechen";
 			this->abbrechenBtn->UseVisualStyleBackColor = true;
 			this->abbrechenBtn->Click += gcnew System::EventHandler(this, &KrankmeldungsFenster::abbrechenBtn_Click);

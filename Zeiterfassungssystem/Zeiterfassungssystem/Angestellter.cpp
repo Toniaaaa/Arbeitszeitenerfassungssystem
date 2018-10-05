@@ -896,7 +896,7 @@ String^ Angestellter::freieTageAnzeigen(Boolean mitFeiertagen) {
 	}
 	//Wenn für dieses Jahr keine Urlaubstage in der Liste stehen:
 	if (anzahlUrlaubstage == 0) {
-		urlaubstageString += "Sie haben noch keine bestätigten Urlaubstage.\n";
+		urlaubstageString += "Noch keine bestätigten Urlaubstage.\n";
 	}
 	if (mitFeiertagen) {
 		urlaubstageString += "\nFeiertage " + Convert::ToString(DateTime::Now.Year) + ":\n\n";

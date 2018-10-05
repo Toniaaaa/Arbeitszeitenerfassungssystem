@@ -97,7 +97,7 @@ namespace Zeiterfassungssystem {
 			this->urlaubBeginnDTP->Location = System::Drawing::Point(209, 184);
 			this->urlaubBeginnDTP->Name = L"urlaubBeginnDTP";
 			this->urlaubBeginnDTP->Size = System::Drawing::Size(200, 20);
-			this->urlaubBeginnDTP->TabIndex = 1;
+			this->urlaubBeginnDTP->TabIndex = 2;
 			// 
 			// urlaubsabtragLbl
 			// 
@@ -115,7 +115,7 @@ namespace Zeiterfassungssystem {
 			this->loeschenBtn->Location = System::Drawing::Point(32, 346);
 			this->loeschenBtn->Name = L"loeschenBtn";
 			this->loeschenBtn->Size = System::Drawing::Size(85, 37);
-			this->loeschenBtn->TabIndex = 4;
+			this->loeschenBtn->TabIndex = 5;
 			this->loeschenBtn->Text = L"Tage löschen";
 			this->loeschenBtn->UseVisualStyleBackColor = true;
 			this->loeschenBtn->Click += gcnew System::EventHandler(this, &UrlaubLoeschenFenster::Loeschen_Click);
@@ -136,14 +136,14 @@ namespace Zeiterfassungssystem {
 			this->urlaubEndeDTP->Location = System::Drawing::Point(209, 229);
 			this->urlaubEndeDTP->Name = L"urlaubEndeDTP";
 			this->urlaubEndeDTP->Size = System::Drawing::Size(200, 20);
-			this->urlaubEndeDTP->TabIndex = 2;
+			this->urlaubEndeDTP->TabIndex = 3;
 			// 
 			// abbrechenBtn
 			// 
 			this->abbrechenBtn->Location = System::Drawing::Point(324, 346);
 			this->abbrechenBtn->Name = L"abbrechenBtn";
 			this->abbrechenBtn->Size = System::Drawing::Size(85, 37);
-			this->abbrechenBtn->TabIndex = 6;
+			this->abbrechenBtn->TabIndex = 8;
 			this->abbrechenBtn->Text = L"Abbrechen";
 			this->abbrechenBtn->UseVisualStyleBackColor = true;
 			this->abbrechenBtn->Click += gcnew System::EventHandler(this, &UrlaubLoeschenFenster::abbrechenBtn_Click);
@@ -164,7 +164,7 @@ namespace Zeiterfassungssystem {
 			this->anzeigenBtn->Location = System::Drawing::Point(130, 346);
 			this->anzeigenBtn->Name = L"anzeigenBtn";
 			this->anzeigenBtn->Size = System::Drawing::Size(85, 37);
-			this->anzeigenBtn->TabIndex = 5;
+			this->anzeigenBtn->TabIndex = 6;
 			this->anzeigenBtn->Text = L"Urlaubstage anzeigen";
 			this->anzeigenBtn->UseVisualStyleBackColor = true;
 			this->anzeigenBtn->Click += gcnew System::EventHandler(this, &UrlaubLoeschenFenster::anzeigenBtn_Click);
@@ -187,7 +187,7 @@ namespace Zeiterfassungssystem {
 			this->angestellterCBox->Margin = System::Windows::Forms::Padding(2);
 			this->angestellterCBox->Name = L"angestellterCBox";
 			this->angestellterCBox->Size = System::Drawing::Size(201, 21);
-			this->angestellterCBox->TabIndex = 0;
+			this->angestellterCBox->TabIndex = 1;
 			this->angestellterCBox->SelectedIndexChanged += gcnew System::EventHandler(this, &UrlaubLoeschenFenster::angestellterCBox_SelectedIndexChanged);
 			// 
 			// label4
@@ -207,7 +207,7 @@ namespace Zeiterfassungssystem {
 			this->kommentarTxt->Margin = System::Windows::Forms::Padding(2);
 			this->kommentarTxt->Name = L"kommentarTxt";
 			this->kommentarTxt->Size = System::Drawing::Size(377, 20);
-			this->kommentarTxt->TabIndex = 3;
+			this->kommentarTxt->TabIndex = 4;
 			// 
 			// label3
 			// 
@@ -228,7 +228,7 @@ namespace Zeiterfassungssystem {
 			this->artCBox->Margin = System::Windows::Forms::Padding(2);
 			this->artCBox->Name = L"artCBox";
 			this->artCBox->Size = System::Drawing::Size(201, 21);
-			this->artCBox->TabIndex = 22;
+			this->artCBox->TabIndex = 0;
 			this->artCBox->SelectedIndexChanged += gcnew System::EventHandler(this, &UrlaubLoeschenFenster::artCBox_SelectedIndexChanged);
 			// 
 			// krankheitstageAnzeigenBtn
@@ -236,7 +236,7 @@ namespace Zeiterfassungssystem {
 			this->krankheitstageAnzeigenBtn->Location = System::Drawing::Point(228, 346);
 			this->krankheitstageAnzeigenBtn->Name = L"krankheitstageAnzeigenBtn";
 			this->krankheitstageAnzeigenBtn->Size = System::Drawing::Size(85, 37);
-			this->krankheitstageAnzeigenBtn->TabIndex = 23;
+			this->krankheitstageAnzeigenBtn->TabIndex = 7;
 			this->krankheitstageAnzeigenBtn->Text = L"Tage krank anzeigen";
 			this->krankheitstageAnzeigenBtn->UseVisualStyleBackColor = true;
 			this->krankheitstageAnzeigenBtn->Click += gcnew System::EventHandler(this, &UrlaubLoeschenFenster::krankheitstageAnzeigenBtn_Click);
