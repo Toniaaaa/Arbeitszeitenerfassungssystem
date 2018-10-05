@@ -887,7 +887,7 @@ String^ Angestellter::freieTageAnzeigen(Boolean mitFeiertagen) {
 			urlaubstageString += listeUrlaubstage[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + "\n";
 		}
 	}
-	//Urlaubstage zählen, die keine Feiertage sind2	1
+	//Urlaubstage zählen, die keine Feiertage sind
 	Int32 anzahlUrlaubstage = 0;
 	for (int i = 0; i < listeUrlaubstage->Count; i++) {
 		if (!listeUrlaubstage[i]->getIstFeiertag()) {
@@ -909,6 +909,25 @@ String^ Angestellter::freieTageAnzeigen(Boolean mitFeiertagen) {
 		}
 	}
 	return urlaubstageString;
+}
+
+/*Gibt einen String^ zurück, der das Datum mit Wochentag aller Krankheitstage eines Angestellten anzeigt*/
+String^ Angestellter::krankheitstageAnzeigen() {
+	String^ krankheitstageString = "Krankheitstage von " + vorname + " " + nachname + ":\n\n";
+	Int32 anzahl = 0;
+	//Die Liste der Urlaubstage wird durchlaufen
+	for (int i = 0; i < krankheitsTage->Count; i++) {
+		//Alle Urlaubstage aus diesem Jahr werden dem String hinzugefügt
+		if (krankheitsTage[i]->getDatum().Year == DateTime::Now.Year) {
+			krankheitstageString += krankheitsTage[i]->getDatum().ToString("dddd, dd. MMMM yyyy") + "\n";
+			anzahl++;
+		}
+	}
+	//Wenn für dieses Jahr keine Krankheitstage in der Liste stehen:
+	if (anzahl == 0) {
+		krankheitstageString += "Noch keine Krankheitstage.\n";
+	}
+	return krankheitstageString;
 }
 
 //Es wird eine Nachricht zu einem Änderungsantrag als Antwort erstellt und den AntragsInfos hinzugefügt

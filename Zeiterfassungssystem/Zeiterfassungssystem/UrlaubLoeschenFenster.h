@@ -32,6 +32,7 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::TextBox^  kommentarTxt;
 	private: System::Windows::Forms::Label^  label3;
 	private: System::Windows::Forms::ComboBox^  artCBox;
+	private: System::Windows::Forms::Button^  krankheitstageAnzeigenBtn;
 	private: System::Windows::Forms::ComboBox^  angestellterCBox;
 
 	public:
@@ -88,6 +89,7 @@ namespace Zeiterfassungssystem {
 			this->kommentarTxt = (gcnew System::Windows::Forms::TextBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->artCBox = (gcnew System::Windows::Forms::ComboBox());
+			this->krankheitstageAnzeigenBtn = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// urlaubBeginnDTP
@@ -110,9 +112,9 @@ namespace Zeiterfassungssystem {
 			// 
 			// loeschenBtn
 			// 
-			this->loeschenBtn->Location = System::Drawing::Point(31, 346);
+			this->loeschenBtn->Location = System::Drawing::Point(32, 346);
 			this->loeschenBtn->Name = L"loeschenBtn";
-			this->loeschenBtn->Size = System::Drawing::Size(117, 37);
+			this->loeschenBtn->Size = System::Drawing::Size(85, 37);
 			this->loeschenBtn->TabIndex = 4;
 			this->loeschenBtn->Text = L"Tage löschen";
 			this->loeschenBtn->UseVisualStyleBackColor = true;
@@ -138,9 +140,9 @@ namespace Zeiterfassungssystem {
 			// 
 			// abbrechenBtn
 			// 
-			this->abbrechenBtn->Location = System::Drawing::Point(291, 346);
+			this->abbrechenBtn->Location = System::Drawing::Point(324, 346);
 			this->abbrechenBtn->Name = L"abbrechenBtn";
-			this->abbrechenBtn->Size = System::Drawing::Size(117, 37);
+			this->abbrechenBtn->Size = System::Drawing::Size(85, 37);
 			this->abbrechenBtn->TabIndex = 6;
 			this->abbrechenBtn->Text = L"Abbrechen";
 			this->abbrechenBtn->UseVisualStyleBackColor = true;
@@ -159,9 +161,9 @@ namespace Zeiterfassungssystem {
 			// 
 			// anzeigenBtn
 			// 
-			this->anzeigenBtn->Location = System::Drawing::Point(160, 346);
+			this->anzeigenBtn->Location = System::Drawing::Point(130, 346);
 			this->anzeigenBtn->Name = L"anzeigenBtn";
-			this->anzeigenBtn->Size = System::Drawing::Size(117, 37);
+			this->anzeigenBtn->Size = System::Drawing::Size(85, 37);
 			this->anzeigenBtn->TabIndex = 5;
 			this->anzeigenBtn->Text = L"Urlaubstage anzeigen";
 			this->anzeigenBtn->UseVisualStyleBackColor = true;
@@ -221,13 +223,23 @@ namespace Zeiterfassungssystem {
 			// artCBox
 			// 
 			this->artCBox->FormattingEnabled = true;
-			this->artCBox->Location = System::Drawing::Point(209, 101);
 			this->artCBox->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Urlaub", L"Krankmeldung" });
+			this->artCBox->Location = System::Drawing::Point(209, 101);
 			this->artCBox->Margin = System::Windows::Forms::Padding(2);
 			this->artCBox->Name = L"artCBox";
 			this->artCBox->Size = System::Drawing::Size(201, 21);
 			this->artCBox->TabIndex = 22;
 			this->artCBox->SelectedIndexChanged += gcnew System::EventHandler(this, &UrlaubLoeschenFenster::artCBox_SelectedIndexChanged);
+			// 
+			// krankheitstageAnzeigenBtn
+			// 
+			this->krankheitstageAnzeigenBtn->Location = System::Drawing::Point(228, 346);
+			this->krankheitstageAnzeigenBtn->Name = L"krankheitstageAnzeigenBtn";
+			this->krankheitstageAnzeigenBtn->Size = System::Drawing::Size(85, 37);
+			this->krankheitstageAnzeigenBtn->TabIndex = 23;
+			this->krankheitstageAnzeigenBtn->Text = L"Tage krank anzeigen";
+			this->krankheitstageAnzeigenBtn->UseVisualStyleBackColor = true;
+			this->krankheitstageAnzeigenBtn->Click += gcnew System::EventHandler(this, &UrlaubLoeschenFenster::krankheitstageAnzeigenBtn_Click);
 			// 
 			// UrlaubLoeschenFenster
 			// 
@@ -235,13 +247,14 @@ namespace Zeiterfassungssystem {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
 			this->ClientSize = System::Drawing::Size(433, 403);
+			this->Controls->Add(this->anzeigenBtn);
+			this->Controls->Add(this->krankheitstageAnzeigenBtn);
 			this->Controls->Add(this->artCBox);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->kommentarTxt);
 			this->Controls->Add(this->label4);
 			this->Controls->Add(this->angestellterCBox);
 			this->Controls->Add(this->label2);
-			this->Controls->Add(this->anzeigenBtn);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->abbrechenBtn);
 			this->Controls->Add(this->urlaubEndeDTP);
@@ -301,8 +314,10 @@ namespace Zeiterfassungssystem {
 		{
 			this->urlaubBeginnDTP->Value == DateTime::Today.Date;
 			this->urlaubEndeDTP->Value == DateTime::Today.Date;
+			this->angestellterCBox->SelectedIndex = -1;
 			this->angestellterCBox->Items->Clear();
 			this->kommentarTxt->Text = "";
+			this->artCBox->SelectedIndex = -1;
 		}
 
 		//Unternehmen wird gesetzt
@@ -386,7 +401,9 @@ namespace Zeiterfassungssystem {
 	//In der Combobox wurde ein Angestellter ausgewählt
 	private: System::Void angestellterCBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
 		//Der Angestellte wird gesetzt als der in der Combobox ausgewählte
-		angestellter = unternehmen->getAlleAngestellte()[angestellterCBox->SelectedIndex];
+		if (angestellterCBox->SelectedIndex != -1) {
+			angestellter = unternehmen->getAlleAngestellte()[angestellterCBox->SelectedIndex];
+		}
 	}
 
 	//Setter für Admin-Rechte
@@ -397,6 +414,20 @@ namespace Zeiterfassungssystem {
 	//In der Combobox wurde eine Art von freien Tagen ausgewählt
 	private: System::Void artCBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
 		artAusgewaehlt = artCBox->Text;
+	}
+
+	private: System::Void krankheitstageAnzeigenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		//Fall: Angestellter ausgewählt
+		if (angestellter != nullptr) {
+			//Alle Urlaubstage der ausgewählten Person OHNE Feiertage anzeigen
+			String^ urlaubstageString = angestellter->krankheitstageAnzeigen();
+			MessageBox::Show(urlaubstageString, "Ihre Krankheitstage", MessageBoxButtons::OK, MessageBoxIcon::Information);
+		}
+		//Fall: KEIN Angestellter ausgewählt
+		else {
+			MessageBox::Show("Bitte wählen Sie einen Angestellten aus!", "Anzeigen nicht möglich!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 	}
 };
 }

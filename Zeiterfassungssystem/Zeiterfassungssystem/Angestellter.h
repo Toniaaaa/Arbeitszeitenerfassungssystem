@@ -120,6 +120,7 @@ public:
 	//Weitere Methoden:
 	void aenderungAntwort(String^ tag, String^ kommentar, Boolean bestaetigt);
 	String^ freieTageAnzeigen(Boolean mitFeiertagen); //Gibt Aufzählung aller Feier- und Urlaubstage zurück
+	String^ krankheitstageAnzeigen(); //Gibt Aufzählung aller Feier- und Urlaubstage zurück
 	void speichereArbeitszeit();//Speichert die gesamte Arbeitszeit eines abgeschlossenen Tages in den noch-ArbeitsStunden und Minuten
 	void nehmeUrlaub(DateTime beginn, DateTime ende); //Fügt die Tage innerhalb des Zeitraums zu der listeUrlaubstage hinzu, solange die keine Feiertage oder Wochenenden sind
 	void krankMelden(DateTime beginn, DateTime ende); //Fügt die Tage innerhalb des Zeitraums zu den Krankheitstagen hinzu, solange die keine Feiertage oder Wochenenden sind und entfernt sie aus den Urlaubstagen
