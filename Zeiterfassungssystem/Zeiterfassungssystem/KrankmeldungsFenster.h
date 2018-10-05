@@ -274,12 +274,6 @@ namespace Zeiterfassungssystem {
 			MessageBox::Show("Ihr Krankheitsende darf nicht vor Ihrem Krankheitsbeginn liegen!\nBitte korrigieren Sie die Eingaben!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
-		//Fall: Beginn oder Ende liegen in der Zukunft
-		else if ((DateTime::Today.Date < p_Anfang < 0) || (DateTime::Today.Date < p_Ende)) {
-			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			MessageBox::Show("Ihre Kranmeldung darf nicht in der Zukunft liegen!\nBitte korrigieren Sie die Eingaben!", "Absenden nicht möglich!",
-				MessageBoxButtons::OK, MessageBoxIcon::Error);
-		}
 		//Alles ist OK
 		else {
 			//OK senden und Fenster schließen
