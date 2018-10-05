@@ -307,9 +307,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="Sounds\lacucarachaKurz.wav" />
     <Media Include="Sounds\beenden.wav" />
     <Media Include="Sounds\start.wav" />
+    <Media Include="Sounds\zeitBeenden.wav" />
+    <Media Include="Sounds\zeitStarten.wav" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\addIcon.jpg" />
@@ -322,7 +323,6 @@
     <Image Include="Images\LogOutIcon2.jpg" />
     <Image Include="Images\pauseIcon.jpg" />
     <Image Include="Images\pauseIcon2.jpg" />
-    <Image Include="Images\pauseIcon3.jpg" />
     <Image Include="Images\PersonalIcon2.jpg" />
     <Image Include="Images\PersonalIconKlein.jpg" />
     <Image Include="Images\statistikIcon.jpg" />

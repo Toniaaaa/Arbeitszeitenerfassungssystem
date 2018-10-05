@@ -601,6 +601,15 @@ namespace Zeiterfassungssystem {
 	Es wird ein Ereignis ARBEIT-START mit der aktuellen DateTime erstellt, der Status gesetzt und der Arbeitszeit-Timer gesartet.*/
 	private: System::Void kommenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		if (angestellterAkt->getArbeitsAnfang() == nullptr) {
+			//Soundeffekt wird abgespielt
+			try {
+				sound->SoundLocation = "Sounds/zeitStarten.wav";
+				sound->Load();
+				sound->Play();
+			}
+			catch (FileNotFoundException ^e) {
+				//Kein Sound, wenn die Datei nicht existiert
+			}
 			Ereignis^ arbeitsanfang = gcnew Ereignis(ARBEIT_START, DateTime::Now);
 			angestellterAkt->fuegeEreignisHinzu(arbeitsanfang);
 			timerArbeitszeit->Start();
@@ -619,6 +628,15 @@ namespace Zeiterfassungssystem {
 	private: System::Void pauseCbox_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
 		//Wenn der Arbeitstag schon läuft
 		if (angestellterAkt->getArbeitsAnfang() != nullptr) {
+			//Soundeffekt wird abgespielt
+			try {
+				sound->SoundLocation = "Sounds/klack.wav";
+				sound->Load();
+				sound->Play();
+			}
+			catch (FileNotFoundException ^e) {
+				//Kein Sound, wenn die Datei nicht existiert
+			}
 			//Wenn schon eine Pause läuft
 			if(angestellterAkt->getPauseAnfang() == nullptr) {
 				//Timer werden gestartet bzw. gestoppt
@@ -703,7 +721,15 @@ namespace Zeiterfassungssystem {
 			//Sicherheitsabfrage, ob der Mitarbeiter wirklich gehen moechte
 			if (MessageBox::Show("Sind Sie sicher, dass Sie Ihren Arbeitstag beenden möchten?", "Wirklich gehen?", MessageBoxButtons::YesNo,
 				MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-
+				//Soundeffekt wird abgespielt
+				try {
+					sound->SoundLocation = "Sounds/zeitBeenden.wav";
+					sound->Load();
+					sound->Play();
+				}
+				catch (FileNotFoundException ^e) {
+					//Kein Sound, wenn die Datei nicht existiert
+				}
 				//Timer stoppen
 				timerArbeitszeit->Stop();
 				timerPause->Stop();

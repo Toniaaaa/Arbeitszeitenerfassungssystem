@@ -21,7 +21,8 @@ namespace Zeiterfassungssystem {
 		RegistrierungsFenster^ regFenster;
 	private: System::Windows::Forms::Label^  begruessungLbl1;
 	private: System::Windows::Forms::Label^  label1;
-	private: System::Windows::Forms::Label^  label2;
+	private: System::Windows::Forms::PictureBox^  pictureBox1;
+
 			 Unternehmen^ unternehmen;
 
 	public:
@@ -63,7 +64,8 @@ namespace Zeiterfassungssystem {
 			this->addBtn = (gcnew System::Windows::Forms::Button());
 			this->begruessungLbl1 = (gcnew System::Windows::Forms::Label());
 			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// button1
@@ -115,25 +117,24 @@ namespace Zeiterfassungssystem {
 				L"ertraut machen und den ersten Nutzer hinzufügen.";
 			this->label1->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			// 
-			// label2
+			// pictureBox1
 			// 
-			this->label2->Anchor = System::Windows::Forms::AnchorStyles::Top;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 27.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label2->Location = System::Drawing::Point(-1, 142);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(693, 191);
-			this->label2->TabIndex = 4;
-			this->label2->Text = L"HIER LOGO";
-			this->label2->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
+			this->pictureBox1->Location = System::Drawing::Point(171, 110);
+			this->pictureBox1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(337, 235);
+			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
+			this->pictureBox1->TabIndex = 4;
+			this->pictureBox1->TabStop = false;
 			// 
 			// BegruessungsFenster
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ControlLightLight;
-			this->ClientSize = System::Drawing::Size(693, 586);
-			this->Controls->Add(this->label2);
+			this->ClientSize = System::Drawing::Size(693, 574);
+			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->begruessungLbl1);
 			this->Controls->Add(this->addBtn);
@@ -141,6 +142,7 @@ namespace Zeiterfassungssystem {
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"BegruessungsFenster";
 			this->Text = L"Begrüßung";
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 
 		}
