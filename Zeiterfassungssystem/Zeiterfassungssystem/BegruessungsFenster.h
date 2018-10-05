@@ -21,7 +21,8 @@ namespace Zeiterfassungssystem {
 		RegistrierungsFenster^ regFenster;
 	private: System::Windows::Forms::Label^  begruessungLbl1;
 	private: System::Windows::Forms::Label^  label1;
-	private: System::Windows::Forms::Label^  label2;
+	private: System::Windows::Forms::PictureBox^  pictureBox1;
+
 			 Unternehmen^ unternehmen;
 
 	public:
@@ -63,16 +64,18 @@ namespace Zeiterfassungssystem {
 			this->addBtn = (gcnew System::Windows::Forms::Button());
 			this->begruessungLbl1 = (gcnew System::Windows::Forms::Label());
 			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// button1
 			// 
 			this->button1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->button1->Location = System::Drawing::Point(49, 456);
+			this->button1->Location = System::Drawing::Point(74, 702);
+			this->button1->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(205, 100);
+			this->button1->Size = System::Drawing::Size(308, 154);
 			this->button1->TabIndex = 0;
 			this->button1->Text = L"Anleitung";
 			this->button1->UseVisualStyleBackColor = true;
@@ -82,9 +85,10 @@ namespace Zeiterfassungssystem {
 			// 
 			this->addBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->addBtn->Location = System::Drawing::Point(434, 456);
+			this->addBtn->Location = System::Drawing::Point(651, 702);
+			this->addBtn->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->addBtn->Name = L"addBtn";
-			this->addBtn->Size = System::Drawing::Size(205, 100);
+			this->addBtn->Size = System::Drawing::Size(308, 154);
 			this->addBtn->TabIndex = 1;
 			this->addBtn->Text = L"Administrator registrieren";
 			this->addBtn->UseVisualStyleBackColor = true;
@@ -95,9 +99,10 @@ namespace Zeiterfassungssystem {
 			this->begruessungLbl1->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->begruessungLbl1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 27.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->begruessungLbl1->Location = System::Drawing::Point(-1, 53);
+			this->begruessungLbl1->Location = System::Drawing::Point(-2, 82);
+			this->begruessungLbl1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->begruessungLbl1->Name = L"begruessungLbl1";
-			this->begruessungLbl1->Size = System::Drawing::Size(693, 45);
+			this->begruessungLbl1->Size = System::Drawing::Size(1040, 69);
 			this->begruessungLbl1->TabIndex = 2;
 			this->begruessungLbl1->Text = L"Herzlich Willkommen";
 			this->begruessungLbl1->TextAlign = System::Drawing::ContentAlignment::TopCenter;
@@ -107,40 +112,41 @@ namespace Zeiterfassungssystem {
 			this->label1->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(-1, 368);
+			this->label1->Location = System::Drawing::Point(-2, 566);
+			this->label1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(693, 59);
+			this->label1->Size = System::Drawing::Size(1040, 91);
 			this->label1->TabIndex = 3;
 			this->label1->Text = L"Sie starten das Programm zum ersten Mal. Sie können sich hier mit der Anleitung v"
 				L"ertraut machen und den ersten Nutzer hinzufügen.";
 			this->label1->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			// 
-			// label2
+			// pictureBox1
 			// 
-			this->label2->Anchor = System::Windows::Forms::AnchorStyles::Top;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 27.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label2->Location = System::Drawing::Point(-1, 142);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(693, 191);
-			this->label2->TabIndex = 4;
-			this->label2->Text = L"HIER LOGO";
-			this->label2->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
+			this->pictureBox1->Location = System::Drawing::Point(257, 170);
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(505, 361);
+			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
+			this->pictureBox1->TabIndex = 4;
+			this->pictureBox1->TabStop = false;
 			// 
 			// BegruessungsFenster
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ControlLightLight;
-			this->ClientSize = System::Drawing::Size(693, 586);
-			this->Controls->Add(this->label2);
+			this->ClientSize = System::Drawing::Size(1040, 902);
+			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->begruessungLbl1);
 			this->Controls->Add(this->addBtn);
 			this->Controls->Add(this->button1);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
+			this->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->Name = L"BegruessungsFenster";
 			this->Text = L"Begrüßung";
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 
 		}

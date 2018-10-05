@@ -271,6 +271,9 @@
     <EmbeddedResource Include="AbteilungLoeschenFenster.resx">
       <Filter>Ressourcendateien</Filter>
     </EmbeddedResource>
+    <EmbeddedResource Include="PasswortAendernFenster.resx">
+      <Filter>Ressourcendateien</Filter>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LogInFenster.resx">
@@ -278,13 +281,16 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="Sounds\lacucarachaKurz.wav">
-      <Filter>Quelldateien\Sounds</Filter>
-    </Media>
     <Media Include="Sounds\beenden.wav">
       <Filter>Quelldateien\Sounds</Filter>
     </Media>
     <Media Include="Sounds\start.wav">
+      <Filter>Quelldateien\Sounds</Filter>
+    </Media>
+    <Media Include="Sounds\zeitBeenden.wav">
+      <Filter>Quelldateien\Sounds</Filter>
+    </Media>
+    <Media Include="Sounds\zeitStarten.wav">
       <Filter>Quelldateien\Sounds</Filter>
     </Media>
   </ItemGroup>
@@ -305,15 +311,6 @@
       <Filter>Quelldateien\Images</Filter>
     </Image>
     <Image Include="Images\LogOutIcon2.jpg">
-      <Filter>Quelldateien\Images</Filter>
-    </Image>
-    <Image Include="Images\pauseIcon.jpg">
-      <Filter>Quelldateien\Images</Filter>
-    </Image>
-    <Image Include="Images\pauseIcon2.jpg">
-      <Filter>Quelldateien\Images</Filter>
-    </Image>
-    <Image Include="Images\pauseIcon3.jpg">
       <Filter>Quelldateien\Images</Filter>
     </Image>
     <Image Include="Images\PersonalIcon2.jpg">
@@ -344,6 +341,12 @@
       <Filter>Quelldateien\Images</Filter>
     </Image>
     <Image Include="Images\TimeUpIcon.ico">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\pauseIcon.jpg">
+      <Filter>Quelldateien\Images</Filter>
+    </Image>
+    <Image Include="Images\pauseIcon2.jpg">
       <Filter>Quelldateien\Images</Filter>
     </Image>
   </ItemGroup>
