@@ -145,18 +145,26 @@ namespace Zeiterfassungssystem {
 
 		}
 #pragma endregion
-		//Öffnen des Benutzerhandbuches
+	//Öffnen des Benutzerhandbuches
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-		ProcessStartInfo^ startInfo = gcnew ProcessStartInfo("BenutzerhandbuchTimeUp.pdf");
-		Process::Start(startInfo);
+		try {
+			Diagnostics::ProcessStartInfo^ startInfo = gcnew Diagnostics::ProcessStartInfo("BenutzerhandbuchTimeUp.pdf");
+			Diagnostics::Process::Start(startInfo);
+		}
+		catch (System::IO::FileNotFoundException ^e) {
+			MessageBox::Show("Das Benutzerhandbuch konnte leider nicht gefunden werden.\nBitte wenden Sie sich an Ihren Administrator!", "Datei nicht gefunden",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 	}
-		//Öffnen des Registrierungsfensters
+
+	//Öffnen des Registrierungsfensters
 	private: System::Void addBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		regFenster->setUnternehmen(unternehmen);
 		regFenster->ShowDialog(this);
 		this->Close();
 	}
 		
+	//Setter für das Unternehmen
 	public: void setUnternehmen(Unternehmen^ unternehmen) {
 		this->unternehmen = unternehmen;
 	}

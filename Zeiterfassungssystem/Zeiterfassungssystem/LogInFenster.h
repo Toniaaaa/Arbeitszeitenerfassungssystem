@@ -37,6 +37,8 @@ namespace Zeiterfassungssystem {
 		bool loginGedrueckt = false;
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::Label^  label1;
+	private: System::Windows::Forms::Button^  HilfeBtn;
+
 
 			 BegruessungsFenster^ begruessung;
 		
@@ -99,6 +101,7 @@ namespace Zeiterfassungssystem {
 			this->btn_passwortAendern = (gcnew System::Windows::Forms::Button());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->HilfeBtn = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -193,6 +196,19 @@ namespace Zeiterfassungssystem {
 			this->label1->TabIndex = 6;
 			this->label1->Text = L"Login";
 			// 
+			// HilfeBtn
+			// 
+			this->HilfeBtn->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->HilfeBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->HilfeBtn->Location = System::Drawing::Point(430, 31);
+			this->HilfeBtn->Name = L"HilfeBtn";
+			this->HilfeBtn->Size = System::Drawing::Size(36, 32);
+			this->HilfeBtn->TabIndex = 5;
+			this->HilfeBtn->Text = L"\?";
+			this->HilfeBtn->UseVisualStyleBackColor = true;
+			this->HilfeBtn->Click += gcnew System::EventHandler(this, &LoginFenster::HilfeBtn_Click);
+			// 
 			// LoginFenster
 			// 
 			this->AllowDrop = true;
@@ -202,6 +218,7 @@ namespace Zeiterfassungssystem {
 			this->AutoValidate = System::Windows::Forms::AutoValidate::EnablePreventFocusChange;
 			this->BackColor = System::Drawing::SystemColors::Window;
 			this->ClientSize = System::Drawing::Size(693, 248);
+			this->Controls->Add(this->HilfeBtn);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->btn_passwortAendern);
@@ -215,7 +232,7 @@ namespace Zeiterfassungssystem {
 				static_cast<System::Byte>(0)));
 			this->ForeColor = System::Drawing::SystemColors::MenuText;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
-			this->Name = L"Login";
+			this->Name = L"LoginFenster";
 			this->Text = L"Login";
 			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &LoginFenster::LoginFenster_FormClosed);
 			this->Load += gcnew System::EventHandler(this, &LoginFenster::loginFenster_Load);
@@ -288,6 +305,19 @@ namespace Zeiterfassungssystem {
 	private: System::Void LoginFenster_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {
 		if (!loginGedrueckt) {
 			Application::Exit();
+		}
+	}
+
+	/*HILFE-BUTTON "?"
+	Startet den PDF-Reader des Systems und öffnet die Anleitung zum Programm*/
+	private: System::Void HilfeBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		try {
+			Diagnostics::ProcessStartInfo^ startInfo = gcnew Diagnostics::ProcessStartInfo("BenutzerhandbuchTimeUp.pdf");
+			Diagnostics::Process::Start(startInfo);
+		}
+		catch (System::ComponentModel::Win32Exception ^e) {
+			MessageBox::Show("Das Benutzerhandbuch konnte leider nicht gefunden werden.\nBitte wenden Sie sich an Ihren Administrator!", "Datei nicht gefunden",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
 

@@ -88,7 +88,6 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::Label^  ueberstundenSchriftLbl;
 	private: System::Windows::Forms::Label^  ueberstundenLbl;
 	private: System::Windows::Forms::Button^  IntroductionBtn;
-
 	private: System::Windows::Forms::Label^  uhrzeitLbl;
 
 	public:
@@ -586,7 +585,17 @@ namespace Zeiterfassungssystem {
 				//Wenn jetzt eine Pause gestartet wurde:
 				if (angestellterAkt->getPauseAnfang() != nullptr) {
 					//Farben der Timer-Darstellungen werden geändert. Der Pause-Button wird grau
-					this->pauseCbox->Image = Image::FromFile("Images/pauseIcon3.jpg");
+					try {
+						this->pauseCbox->Text = "";
+						this->pauseCbox->Image = Image::FromFile("Images/pauseIcon2.jpg");
+					}
+					catch (FileNotFoundException ^e) {
+						this->pauseCbox->Image = nullptr;
+						this->pauseCbox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+							static_cast<System::Byte>(0)));
+						this->pauseCbox->TextAlign = ContentAlignment::MiddleCenter;
+						this->pauseCbox->Text = L"Pause beenden";
+					}
 					this->pauseLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 					this->PausenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 					this->arbeitszeitLbl->ForeColor = System::Drawing::Color::Gray;
@@ -605,7 +614,17 @@ namespace Zeiterfassungssystem {
 				Ereignis^ pausenende = gcnew Ereignis(PAUSE_ENDE, DateTime::Now);
 				angestellterAkt->fuegeEreignisHinzu(pausenende);
 				//Farben der Timer Darstellung werden wieder zurückgesetzt und Pause-Button wird wieder blau
-				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon.jpg");
+				try {
+					this->pauseCbox->Text = "";
+					this->pauseCbox->Image = Image::FromFile("Images/pauseIcon.jpg");
+				}
+				catch (FileNotFoundException ^e) {
+					this->pauseCbox->Image = nullptr;
+					this->pauseCbox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+						static_cast<System::Byte>(0)));
+					this->pauseCbox->TextAlign = ContentAlignment::MiddleCenter;
+					this->pauseCbox->Text = L"Pause starten";
+				}
 				this->pauseLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 				this->PausenSchriftLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 				this->arbeitszeitLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
@@ -744,24 +763,34 @@ namespace Zeiterfassungssystem {
 			MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 			//Das LogIn-Fenster wird wieder neu gestartet, falls mit Ja geantwortet wird
 			Application::Restart();
-		
 		}
 	}
 
-	/*?-BUTTON
+	/*HILFE-BUTTON "?"
 	Startet den PDF-Reader des Systems und öffnet die Anleitung zum Programm*/
 	private: System::Void IntroductionBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		Diagnostics::ProcessStartInfo^ startInfo = gcnew Diagnostics::ProcessStartInfo("BenutzerhandbuchTimeUp.pdf");
-		Diagnostics::Process::Start(startInfo);
+		try {
+			Diagnostics::ProcessStartInfo^ startInfo = gcnew Diagnostics::ProcessStartInfo("BenutzerhandbuchTimeUp.pdf");
+			Diagnostics::Process::Start(startInfo);
+		}
+		catch (System::ComponentModel::Win32Exception ^e) {
+			MessageBox::Show("Das Benutzerhandbuch konnte leider nicht gefunden werden.\nBitte wenden Sie sich an Ihren Administrator!", "Datei nicht gefunden",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 	}
 
 	//WÄHREND SEITE LÄD
 	private: System::Void StartseiteMitarbeiter_Load(System::Object^  sender, System::EventArgs^  e) {
 
 		//Spiele Musik
-		sound->SoundLocation = "Sounds/start.wav";
-		sound->Load();
-		sound->Play();
+		try {
+			sound->SoundLocation = "Sounds/start.wav";
+			sound->Load();
+			sound->Play();
+		}
+		catch (FileNotFoundException ^e) {
+			//Kein Sound, wenn die Datei nicht existiert
+		}
 		//Es wird geprüft, ob ein neues Jahr oder eine neue Woche angefangen hat
 		this->neuesJahr();
 		angestellterAkt->neueWoche();
@@ -880,7 +909,17 @@ namespace Zeiterfassungssystem {
 			if (angestellterAkt->getPauseAnfang() != nullptr) {
 				Ereignis^ pausenende = gcnew Ereignis(PAUSE_ENDE, DateTime::Now);
 				angestellterAkt->fuegeEreignisHinzu(pausenende);
-				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon.jpg");
+				try {
+					this->pauseCbox->Text = "";
+					this->pauseCbox->Image = Image::FromFile("Images/pauseIcon.jpg");
+				}
+				catch (FileNotFoundException ^e) {
+					this->pauseCbox->Image = nullptr;
+					this->pauseCbox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+						static_cast<System::Byte>(0)));
+					this->pauseCbox->TextAlign = ContentAlignment::MiddleCenter;
+					this->pauseCbox->Text = L"Pause starten";
+				}
 				this->pauseLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 				this->PausenSchriftLbl->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 				this->arbeitszeitLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
@@ -1086,7 +1125,17 @@ namespace Zeiterfassungssystem {
 			//Pausentimer-Starten
 			timerPause->Start();
 			//Farben des Pausebuttons und der Anzeigen anders setzen
-			this->pauseCbox->Image = Image::FromFile("Images/pauseIcon3.jpg");
+			try {
+				this->pauseCbox->Text = "";
+				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon2.jpg");
+			}
+			catch (FileNotFoundException ^e) {
+				this->pauseCbox->Image = nullptr;
+				this->pauseCbox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+					static_cast<System::Byte>(0)));
+				this->pauseCbox->TextAlign = ContentAlignment::MiddleCenter;
+				this->pauseCbox->Text = L"Pause beenden";
+			}
 			this->pauseLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->PausenSchriftLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->arbeitszeitLbl->ForeColor = System::Drawing::Color::Gray;
