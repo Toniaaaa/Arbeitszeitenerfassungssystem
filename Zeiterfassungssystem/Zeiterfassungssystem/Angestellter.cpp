@@ -610,8 +610,9 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 	// Kalenderwoche von heute berechnen
 	DateTime^ heute = DateTime::Now.Date;
 	Int32 kWHeute = kalender->berechneKW(*heute);
-	DateTime^ tagDynamisch = heute;
+	DateTime^ tagDynamisch = kalender->ersterTagDieserWoche();
 	Int32 kWDynamisch = kWHeute;
+	MessageBox::Show(tagDynamisch->ToString("dddd, dd. MMMM yyyy"), "Erster Tage dieser Woche", MessageBoxButtons::OK, MessageBoxIcon::Information);
 
 	//Exception-Handling, weil evtl. eine Null-Reference-Exception auftreten kann.
 	try {

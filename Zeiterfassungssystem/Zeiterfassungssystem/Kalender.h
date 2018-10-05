@@ -13,5 +13,6 @@ public:
 
 	//Berechnet die Kalenderwoche des übergebenen Tags
 	Int32 berechneKW(DateTime^ tag);
+	DateTime^ ersterTagDieserWoche();
 };
 
