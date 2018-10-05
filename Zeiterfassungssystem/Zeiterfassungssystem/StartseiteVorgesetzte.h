@@ -1250,7 +1250,7 @@ namespace Zeiterfassungssystem {
 		//Werte für Noch-Arbeitszeit-Timer werden gesetzte
 		//TimeSpan gibt die Noch-Wochen-Arbeitszeit um die aktuelle Arbeitszeit reduziert an
 		TimeSpan abgelaufeneZeit = angestellterAkt->getReduzierteZeit(stunde, minute);
-		arbeitsStunden = abgelaufeneZeit.Hours;
+		arbeitsStunden = abgelaufeneZeit.Hours + 24 * abgelaufeneZeit.Days;
 		arbeitsMinuten = abgelaufeneZeit.Minutes;
 		//Der Sekundenwert des TimeSpans gibt mit 1 oder 0 an, ob die Wochenzeit erreicht wurde
 		wochenZeitErreicht = abgelaufeneZeit.Seconds;
