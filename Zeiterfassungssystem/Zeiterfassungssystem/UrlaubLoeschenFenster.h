@@ -24,13 +24,15 @@ namespace Zeiterfassungssystem {
 		Angestellter^ angestellter;
 		Unternehmen^ unternehmen;
 		Boolean adminRechte;
+		String^ artAusgewaehlt;
 
 	private: System::Windows::Forms::Button^  anzeigenBtn;
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Label^  label4;
 	private: System::Windows::Forms::TextBox^  kommentarTxt;
+	private: System::Windows::Forms::Label^  label3;
+	private: System::Windows::Forms::ComboBox^  artCBox;
 	private: System::Windows::Forms::ComboBox^  angestellterCBox;
-
 
 	public:
 		UrlaubLoeschenFenster(void)
@@ -84,11 +86,13 @@ namespace Zeiterfassungssystem {
 			this->angestellterCBox = (gcnew System::Windows::Forms::ComboBox());
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->kommentarTxt = (gcnew System::Windows::Forms::TextBox());
+			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->artCBox = (gcnew System::Windows::Forms::ComboBox());
 			this->SuspendLayout();
 			// 
 			// urlaubBeginnDTP
 			// 
-			this->urlaubBeginnDTP->Location = System::Drawing::Point(203, 151);
+			this->urlaubBeginnDTP->Location = System::Drawing::Point(209, 184);
 			this->urlaubBeginnDTP->Name = L"urlaubBeginnDTP";
 			this->urlaubBeginnDTP->Size = System::Drawing::Size(200, 20);
 			this->urlaubBeginnDTP->TabIndex = 1;
@@ -97,16 +101,16 @@ namespace Zeiterfassungssystem {
 			// 
 			this->urlaubsabtragLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->urlaubsabtragLbl->Location = System::Drawing::Point(1, 37);
+			this->urlaubsabtragLbl->Location = System::Drawing::Point(1, 30);
 			this->urlaubsabtragLbl->Name = L"urlaubsabtragLbl";
 			this->urlaubsabtragLbl->Size = System::Drawing::Size(433, 36);
 			this->urlaubsabtragLbl->TabIndex = 2;
-			this->urlaubsabtragLbl->Text = L"Urlaub löschen ";
+			this->urlaubsabtragLbl->Text = L"Freie Tage löschen ";
 			this->urlaubsabtragLbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// loeschenBtn
 			// 
-			this->loeschenBtn->Location = System::Drawing::Point(25, 313);
+			this->loeschenBtn->Location = System::Drawing::Point(31, 346);
 			this->loeschenBtn->Name = L"loeschenBtn";
 			this->loeschenBtn->Size = System::Drawing::Size(117, 37);
 			this->loeschenBtn->TabIndex = 4;
@@ -119,7 +123,7 @@ namespace Zeiterfassungssystem {
 			this->urlaubBeginnLbl->AutoSize = true;
 			this->urlaubBeginnLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->urlaubBeginnLbl->Location = System::Drawing::Point(22, 149);
+			this->urlaubBeginnLbl->Location = System::Drawing::Point(28, 182);
 			this->urlaubBeginnLbl->Name = L"urlaubBeginnLbl";
 			this->urlaubBeginnLbl->Size = System::Drawing::Size(145, 20);
 			this->urlaubBeginnLbl->TabIndex = 5;
@@ -127,14 +131,14 @@ namespace Zeiterfassungssystem {
 			// 
 			// urlaubEndeDTP
 			// 
-			this->urlaubEndeDTP->Location = System::Drawing::Point(203, 196);
+			this->urlaubEndeDTP->Location = System::Drawing::Point(209, 229);
 			this->urlaubEndeDTP->Name = L"urlaubEndeDTP";
 			this->urlaubEndeDTP->Size = System::Drawing::Size(200, 20);
 			this->urlaubEndeDTP->TabIndex = 2;
 			// 
 			// abbrechenBtn
 			// 
-			this->abbrechenBtn->Location = System::Drawing::Point(285, 313);
+			this->abbrechenBtn->Location = System::Drawing::Point(291, 346);
 			this->abbrechenBtn->Name = L"abbrechenBtn";
 			this->abbrechenBtn->Size = System::Drawing::Size(117, 37);
 			this->abbrechenBtn->TabIndex = 6;
@@ -147,7 +151,7 @@ namespace Zeiterfassungssystem {
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(23, 194);
+			this->label1->Location = System::Drawing::Point(29, 227);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(157, 20);
 			this->label1->TabIndex = 11;
@@ -155,7 +159,7 @@ namespace Zeiterfassungssystem {
 			// 
 			// anzeigenBtn
 			// 
-			this->anzeigenBtn->Location = System::Drawing::Point(154, 313);
+			this->anzeigenBtn->Location = System::Drawing::Point(160, 346);
 			this->anzeigenBtn->Name = L"anzeigenBtn";
 			this->anzeigenBtn->Size = System::Drawing::Size(117, 37);
 			this->anzeigenBtn->TabIndex = 5;
@@ -168,7 +172,7 @@ namespace Zeiterfassungssystem {
 			this->label2->AutoSize = true;
 			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label2->Location = System::Drawing::Point(22, 107);
+			this->label2->Location = System::Drawing::Point(28, 140);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(94, 20);
 			this->label2->TabIndex = 18;
@@ -177,7 +181,7 @@ namespace Zeiterfassungssystem {
 			// angestellterCBox
 			// 
 			this->angestellterCBox->FormattingEnabled = true;
-			this->angestellterCBox->Location = System::Drawing::Point(203, 107);
+			this->angestellterCBox->Location = System::Drawing::Point(209, 140);
 			this->angestellterCBox->Margin = System::Windows::Forms::Padding(2);
 			this->angestellterCBox->Name = L"angestellterCBox";
 			this->angestellterCBox->Size = System::Drawing::Size(201, 21);
@@ -189,7 +193,7 @@ namespace Zeiterfassungssystem {
 			this->label4->AutoSize = true;
 			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label4->Location = System::Drawing::Point(22, 240);
+			this->label4->Location = System::Drawing::Point(28, 273);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(91, 20);
 			this->label4->TabIndex = 20;
@@ -197,18 +201,42 @@ namespace Zeiterfassungssystem {
 			// 
 			// kommentarTxt
 			// 
-			this->kommentarTxt->Location = System::Drawing::Point(26, 271);
+			this->kommentarTxt->Location = System::Drawing::Point(32, 304);
 			this->kommentarTxt->Margin = System::Windows::Forms::Padding(2);
 			this->kommentarTxt->Name = L"kommentarTxt";
 			this->kommentarTxt->Size = System::Drawing::Size(377, 20);
 			this->kommentarTxt->TabIndex = 3;
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label3->Location = System::Drawing::Point(29, 102);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(99, 20);
+			this->label3->TabIndex = 21;
+			this->label3->Text = L"Löschen von";
+			// 
+			// artCBox
+			// 
+			this->artCBox->FormattingEnabled = true;
+			this->artCBox->Location = System::Drawing::Point(209, 101);
+			this->artCBox->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Urlaub", L"Krankmeldung" });
+			this->artCBox->Margin = System::Windows::Forms::Padding(2);
+			this->artCBox->Name = L"artCBox";
+			this->artCBox->Size = System::Drawing::Size(201, 21);
+			this->artCBox->TabIndex = 22;
+			this->artCBox->SelectedIndexChanged += gcnew System::EventHandler(this, &UrlaubLoeschenFenster::artCBox_SelectedIndexChanged);
 			// 
 			// UrlaubLoeschenFenster
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
-			this->ClientSize = System::Drawing::Size(433, 359);
+			this->ClientSize = System::Drawing::Size(433, 403);
+			this->Controls->Add(this->artCBox);
+			this->Controls->Add(this->label3);
 			this->Controls->Add(this->kommentarTxt);
 			this->Controls->Add(this->label4);
 			this->Controls->Add(this->angestellterCBox);
@@ -261,6 +289,13 @@ namespace Zeiterfassungssystem {
 			}
 		}
 
+		property String^ p_Art
+		{
+			String^ get() {
+				return artCBox->Text;
+			}
+		}
+
 		//Leere Anzeigen
 		void clear()
 		{
@@ -290,16 +325,16 @@ namespace Zeiterfassungssystem {
 			MessageBox::Show("Das Ende des Zeitraums muss nach dem Beginn liegen!\nBitte korrigieren Sie die Eingaben!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
-		//Fall: Beginn liegt in der Vergangenheit
-		else if (vergleichMitHeute > 0) {
-			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			MessageBox::Show("Sie können keinen Urlaub in der Vergangenheit löschen!\nBitte korrigieren Sie die Eingaben!", "Absenden nicht möglich!",
-				MessageBoxButtons::OK, MessageBoxIcon::Error);
-		}
 		//Fall: Kein Angestellter ausgewählt
 		else if (angestellter == nullptr) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Bitte wählen Sie einen Angestellten aus!", "Absenden nicht möglich!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+		//Fall: Keine Art von freien Tagen ausgewählt
+		else if (artAusgewaehlt == nullptr || (!artAusgewaehlt->Equals("Urlaub") && !artAusgewaehlt->Equals("Krankmeldung"))) {
+			this->DialogResult = System::Windows::Forms::DialogResult::None;
+			MessageBox::Show("Bitte wählen Sie eine zulässige Art von freien Tagen, die gelöscht werden sollen, aus!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 		//Fall: Ausgewählter Angestellter ist Vorgesetzter und User hat keine Administratorrechte
@@ -310,7 +345,7 @@ namespace Zeiterfassungssystem {
 		}
 		//Alles OK
 		else {
-			//OK senden und Fenster schließen2	11	1
+			//OK senden und Fenster schließen
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			this->Close(); //Fenster wird nur geschlossen, wenn alle Angaben gemacht wurden und OK sind.
 		}
@@ -325,10 +360,12 @@ namespace Zeiterfassungssystem {
 	//Wenn das Fenster geladen wird
 	private: System::Void UrlaubLoeschenFenster_Load(System::Object^  sender, System::EventArgs^  e)
 	{
+
 		//Alle Angestellten des Unternehmens werden zur Combobox hinzugefügt
 		for (int i = 0; i < unternehmen->getAlleAngestellte()->Count; i++) {
 			angestellterCBox->Items->Add(unternehmen->getAlleAngestellte()[i]->getVorname() + " " + unternehmen->getAlleAngestellte()[i]->getNachname());
 		}
+		
 	}
 
 	//ANZEIGEN-BUTTON
@@ -352,8 +389,14 @@ namespace Zeiterfassungssystem {
 		angestellter = unternehmen->getAlleAngestellte()[angestellterCBox->SelectedIndex];
 	}
 
+	//Setter für Admin-Rechte
 	public: void setAdminRechte(Boolean istAdmin) {
 		this->adminRechte = istAdmin;
+	}
+
+	//In der Combobox wurde eine Art von freien Tagen ausgewählt
+	private: System::Void artCBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+		artAusgewaehlt = artCBox->Text;
 	}
 };
 }

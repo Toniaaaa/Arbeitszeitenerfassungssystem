@@ -88,7 +88,7 @@ namespace Zeiterfassungssystem {
 			this->btn_urlaub->Name = L"btn_urlaub";
 			this->btn_urlaub->Size = System::Drawing::Size(100, 49);
 			this->btn_urlaub->TabIndex = 1;
-			this->btn_urlaub->Text = L"Urlaub löschen";
+			this->btn_urlaub->Text = L"Freie Tage löschen";
 			this->btn_urlaub->UseVisualStyleBackColor = true;
 			this->btn_urlaub->Click += gcnew System::EventHandler(this, &AuswahlFenster::btn_urlaub_Click);
 			// 
@@ -177,12 +177,20 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void btn_urlaub_Click(System::Object^  sender, System::EventArgs^  e) {
 		System::Windows::Forms::DialogResult result = urlaubLoeschenfenster->ShowDialog(this);
-		if (result == System::Windows::Forms::DialogResult::OK) {
+		if (result == System::Windows::Forms::DialogResult::OK && urlaubLoeschenfenster->p_Art->Equals("Urlaub")) {
 			String^ urlaubLoeschenString = "Wollen Sie " + urlaubLoeschenfenster->p_Angestellter->getVorname() + " " + urlaubLoeschenfenster->p_Angestellter->getNachname() +
 				" wirklich alle Urlaubstage\n\nvon: " + urlaubLoeschenfenster->p_Anfang.ToString("dddd, dd. MMMM yyyy") + "\nbis: " + urlaubLoeschenfenster->p_Ende.ToString("dddd, dd. MMMM yyyy")
 				+ "\n\nentfernen?";
 			if (MessageBox::Show(urlaubLoeschenString, "Wirklich entfernen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 				urlaubLoeschenfenster->p_Angestellter->loescheUrlaubstage(urlaubLoeschenfenster->p_Anfang, urlaubLoeschenfenster->p_Ende, urlaubLoeschenfenster->p_Kommentar);
+			}
+		}
+		else if (result == System::Windows::Forms::DialogResult::OK && urlaubLoeschenfenster->p_Art->Equals("Krankmeldung")) {
+			String^ urlaubLoeschenString = "Wollen Sie " + urlaubLoeschenfenster->p_Angestellter->getVorname() + " " + urlaubLoeschenfenster->p_Angestellter->getNachname() +
+				" wirklich alle Krankheitstage\n\nvon: " + urlaubLoeschenfenster->p_Anfang.ToString("dddd, dd. MMMM yyyy") + "\nbis: " + urlaubLoeschenfenster->p_Ende.ToString("dddd, dd. MMMM yyyy")
+				+ "\n\nentfernen?";
+			if (MessageBox::Show(urlaubLoeschenString, "Wirklich entfernen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+				urlaubLoeschenfenster->p_Angestellter->loescheKrankheitstage(urlaubLoeschenfenster->p_Anfang, urlaubLoeschenfenster->p_Ende, urlaubLoeschenfenster->p_Kommentar);
 			}
 		}
 		urlaubLoeschenfenster->clear();

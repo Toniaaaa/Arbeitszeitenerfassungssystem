@@ -158,6 +158,9 @@
     <ClInclude Include="KalenderFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="KrankmeldungsFenster.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="LogInFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -216,6 +219,7 @@
     <ClCompile Include="FreierTagComparer.cpp" />
     <ClCompile Include="Kalender.cpp" />
     <ClCompile Include="KalenderFenster.cpp" />
+    <ClCompile Include="KrankmeldungsFenster.cpp" />
     <ClCompile Include="LogInFenster.cpp" />
     <ClCompile Include="Mitarbeiter.cpp" />
     <ClCompile Include="PasswortAendernFenster.cpp" />
@@ -266,6 +270,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="KalenderFenster.resx">
       <DependentUpon>KalenderFenster.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KrankmeldungsFenster.resx">
+      <DependentUpon>KrankmeldungsFenster.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LogInFenster.resx">
       <DependentUpon>LogInFenster.h</DependentUpon>

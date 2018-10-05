@@ -117,6 +117,9 @@
     <ClInclude Include="AbteilungLoeschenFenster.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="KrankmeldungsFenster.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Angestellter.cpp">
@@ -210,6 +213,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="AbteilungLoeschenFenster.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="KrankmeldungsFenster.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

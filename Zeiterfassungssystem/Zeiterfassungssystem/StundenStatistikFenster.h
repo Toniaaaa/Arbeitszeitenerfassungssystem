@@ -3,6 +3,8 @@
 #include "Ereignis.h"
 #include "AenderungsantragsFenster.h"
 #include "Vorgesetzter.h"
+#include "KrankmeldungsFenster.h"
+#include "Kalender.h"
 
 
 namespace Zeiterfassungssystem {
@@ -24,14 +26,17 @@ namespace Zeiterfassungssystem {
 		Int32 selectedEreignis = -1;
 	private: System::Windows::Forms::Button^  btn_aendern;
 	private: System::Windows::Forms::Label^  label1;
+	private: System::Windows::Forms::Button^  krankheitBtn;
 
-			 AenderungsantragsFenster^ aenderungsantrag;
+	AenderungsantragsFenster^ aenderungsantrag;
+	KrankmeldungsFenster^ krankmeldungsfenster;
 
 	public:
 		StundenStatistikFenster(void)
 		{
 			InitializeComponent();
 			aenderungsantrag = gcnew AenderungsantragsFenster;
+			krankmeldungsfenster = gcnew KrankmeldungsFenster;
 		}
 
 	protected:
@@ -47,9 +52,6 @@ namespace Zeiterfassungssystem {
 		}
 	private: System::Windows::Forms::ListView^  listView1;
 	private: System::Windows::Forms::ColumnHeader^  clm_Arbeitsang;
-
-	protected:
-
 	private: System::Windows::Forms::ColumnHeader^  clm_pausenanfang;
 	private: System::Windows::Forms::ColumnHeader^  clm_Pausenende;
 	private: System::Windows::Forms::ColumnHeader^  clm_Arbeitsende;
@@ -77,6 +79,7 @@ namespace Zeiterfassungssystem {
 			this->clm_Gesamt = (gcnew System::Windows::Forms::ColumnHeader());
 			this->btn_aendern = (gcnew System::Windows::Forms::Button());
 			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->krankheitBtn = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// listView1
@@ -95,7 +98,6 @@ namespace Zeiterfassungssystem {
 			this->listView1->UseCompatibleStateImageBehavior = false;
 			this->listView1->View = System::Windows::Forms::View::Details;
 			this->listView1->ItemSelectionChanged += gcnew System::Windows::Forms::ListViewItemSelectionChangedEventHandler(this, &StundenStatistikFenster::listView1_ItemSelectionChanged);
-			this->listView1->MouseDoubleClick += gcnew System::Windows::Forms::MouseEventHandler(this, &StundenStatistikFenster::listView1_MouseDoubleClick);
 			// 
 			// clm_Arbeitsang
 			// 
@@ -128,7 +130,7 @@ namespace Zeiterfassungssystem {
 			this->btn_aendern->Margin = System::Windows::Forms::Padding(2);
 			this->btn_aendern->Name = L"btn_aendern";
 			this->btn_aendern->Size = System::Drawing::Size(108, 44);
-			this->btn_aendern->TabIndex = 1;
+			this->btn_aendern->TabIndex = 0;
 			this->btn_aendern->Text = L"Ändern";
 			this->btn_aendern->UseVisualStyleBackColor = true;
 			this->btn_aendern->Click += gcnew System::EventHandler(this, &StundenStatistikFenster::btn_aendern_Click);
@@ -147,11 +149,23 @@ namespace Zeiterfassungssystem {
 			this->label1->TabIndex = 2;
 			this->label1->Text = L"label1";
 			// 
+			// krankheitBtn
+			// 
+			this->krankheitBtn->Location = System::Drawing::Point(151, 442);
+			this->krankheitBtn->Margin = System::Windows::Forms::Padding(2);
+			this->krankheitBtn->Name = L"krankheitBtn";
+			this->krankheitBtn->Size = System::Drawing::Size(108, 44);
+			this->krankheitBtn->TabIndex = 1;
+			this->krankheitBtn->Text = L"Krankmeldung";
+			this->krankheitBtn->UseVisualStyleBackColor = true;
+			this->krankheitBtn->Click += gcnew System::EventHandler(this, &StundenStatistikFenster::krankheitBtn_Click);
+			// 
 			// StundenStatistikFenster
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1193, 568);
+			this->Controls->Add(this->krankheitBtn);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->btn_aendern);
 			this->Controls->Add(this->listView1);
@@ -170,11 +184,14 @@ namespace Zeiterfassungssystem {
 	private:
 		Angestellter ^ angestellter;
 		Vorgesetzter^ vorgesetzter;
+		Kalender^ kalender = gcnew Kalender;
 
 	public:
+
 		void setAktuellenAngestellten(Angestellter^ angestellter) {
 			this->angestellter = angestellter;
 		}
+
 		void setVorgesetzter(Vorgesetzter^ vorgesetzter) {
 			this->vorgesetzter = vorgesetzter;
 		}
@@ -253,13 +270,9 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void listView1_ItemSelectionChanged(System::Object^  sender, System::Windows::Forms::ListViewItemSelectionChangedEventArgs^  e) {
-		
 		selectedEreignis = ereignisse[e->ItemIndex];
-	
 	}
-	private: System::Void listView1_MouseDoubleClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 
-	}
 	private: System::Void btn_aendern_Click(System::Object^  sender, System::EventArgs^  e) {
 		if (selectedEreignis >= 0) {
 			aenderungsantrag->setSelectedEreignis(selectedEreignis);
@@ -270,5 +283,33 @@ namespace Zeiterfassungssystem {
 		}
 		aenderungsantrag->clear(); //Textfelder wieder leeren
 	}
+
+	//Krankheit-Button geklickt
+	private: System::Void krankheitBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		//Das KrankmeldungsFenster wird aufgerufen
+		krankmeldungsfenster->setAngestellter(angestellter);
+		System::Windows::Forms::DialogResult result = krankmeldungsfenster->ShowDialog(this);
+
+		//Wenn das Fenster OK zurückgibt, wird eine Information an den Arbeitgeber gesendet und die Arbeitstage werden als volle Arbeitstage verrechnet
+		if (result == System::Windows::Forms::DialogResult::OK) {
+			String^ text = "Wollen Sie wirklich eine Krankmeldung für den Zeitraum\nvom " + krankmeldungsfenster->p_Anfang.ToString("dddd, dd. MMMM yyyy") + "\nbis "
+				+ krankmeldungsfenster->p_Ende.ToString("dddd, dd. MMMM yyyy") + " einreichen?";
+			if (MessageBox::Show(text, "Krankmeldung", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+				DateTime beginn = krankmeldungsfenster->p_Anfang;
+
+				//Krankheitstage hinzufügen
+				angestellter->krankMelden(krankmeldungsfenster->p_Anfang, krankmeldungsfenster->p_Ende);
+
+				//Bestätigung per MessageBox:
+				MessageBox::Show("Ihre Krankmeldung wurde erfolgreich gespeichert!", "Einreichen erfolgreich", MessageBoxButtons::OK, MessageBoxIcon::Information);
+
+				//Information an Vorgesetzten
+				String^ infoAnVorgesetzten = angestellter->getVorname() + " " + angestellter->getNachname() + " hat eine Krankmeldung\nvom " + krankmeldungsfenster->p_Anfang.ToString("dddd, dd. MMMM yyyy")
+					+ "\nbis " + krankmeldungsfenster->p_Ende.ToString("dddd, dd. MMMM yyyy") + "\nüber insgesamt " + krankmeldungsfenster->p_Tage + " Tage eingereicht.";
+				vorgesetzter->addAntragsInfo(infoAnVorgesetzten);
+			}
+		}
+	}
+
 };
 }

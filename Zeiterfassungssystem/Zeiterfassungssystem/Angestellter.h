@@ -35,6 +35,7 @@ private:
 	List<Ereignis^>^ listeEreignisse;
 	List<Double>^ listegesamtstunden;
 	List<String^>^ antragsInfos;
+	List<FreierTag^>^ krankheitsTage;
 	String^ status;
 	Int32 arbeitsStunden;
 	Int32 arbeitsMinuten;
@@ -66,6 +67,7 @@ public:
 	inline Int32 getUeberStunden() { return ueberStunden; }
 	inline Int32 getUeberMinuten() { return ueberMinuten; }
 	inline List<String^>^ getAntragsInfos() { return antragsInfos; }
+	inline List<FreierTag^>^ getKrankheitstage() { return krankheitsTage; }
 	inline Int32 getUrlaubstageGespart() { return urlaubstageGespart; }
 	inline List<FreierTag^>^ getListeUrlaubstage() { return listeUrlaubstage; }
 	inline List <Ereignis^>^ getListeEreignisse() { return listeEreignisse; }
@@ -97,9 +99,9 @@ public:
 	inline void setLetzterLogin(DateTime jetzt) { this->letzterLogin = jetzt; }
 	inline void setAktuellenStatus(String^ status) { this->status = status; }
 
-	virtual bool istVorgesetzter() = 0;
-	
 	void setUeberstundenGesamt(Int32 stunden, Int32 minuten);
+
+	virtual bool istVorgesetzter() = 0;
 
 	//Hinzufügen zu und entfernen aus Listen:
 	void fuegeEreignisHinzu(Ereignis^ ereignis);
@@ -111,15 +113,21 @@ public:
 	void removeUrlaubstag(DateTime tag);
 	void loescheAlleUrlaubstage();
 	void loescheUrlaubstage(DateTime von, DateTime bis, String^ kommentar); //Löscht alle Urlaubstage innerhalb des übergebenen Zeitraums
+	void loescheKrankheitstage(DateTime von, DateTime bis, String^ kommentar); //Löscht alle Krankheitstage innerhalb des übergebenen Zeitraums
+	void addKrankheitstag(DateTime tag);
+	void removeKrankheitstag(DateTime tag);
 
 	//Weitere Methoden:
 	void aenderungAntwort(String^ tag, String^ kommentar, Boolean bestaetigt);
 	String^ freieTageAnzeigen(Boolean mitFeiertagen); //Gibt Aufzählung aller Feier- und Urlaubstage zurück
 	void speichereArbeitszeit();//Speichert die gesamte Arbeitszeit eines abgeschlossenen Tages in den noch-ArbeitsStunden und Minuten
 	void nehmeUrlaub(DateTime beginn, DateTime ende); //Fügt die Tage innerhalb des Zeitraums zu der listeUrlaubstage hinzu, solange die keine Feiertage oder Wochenenden sind
-	Int32 berechneUrlaubstage(DateTime beginn, DateTime ende); //Berechnet die Anzahl der Urlaubstage innerhalb eines Zeitraums ohne Wochenenden und Feiertage
-	Int32 indexVon(DateTime tag); //Gibt den Index eines Tages in der listeUrlaubstage zurück
+	void krankMelden(DateTime beginn, DateTime ende); //Fügt die Tage innerhalb des Zeitraums zu den Krankheitstagen hinzu, solange die keine Feiertage oder Wochenenden sind und entfernt sie aus den Urlaubstagen
+	Int32 berechneArbeitstage(DateTime beginn, DateTime ende); //Berechnet die Anzahl der Urlaubstage innerhalb eines Zeitraums ohne Wochenenden und Feiertage
+	Int32 indexVonUrlaubstag(DateTime tag); //Gibt den Index eines Tages in der listeUrlaubstage zurück
+	Int32 indexVonKrankheitstag(DateTime tag); //Gibt den Index eines Tages in der Liste der Krankheitstage zurück
 	Boolean istUrlaubstag(DateTime tag); //Gibt zurück, ob der Paramter ein Urlaubstag ist oder nicht
+	Boolean istKrankheitstag(DateTime tag); //Gibt zurück, ob der Paramter ein Krankheitstag ist oder nicht
 	void zieheZeitAb(Int32 stunden, Int32 minuten); //Zieht Zeit von der Noch-Arbeitszeit ab bzw. addiert Überstunden, wenn die Wochen-Arbeitszeit erreicht ist
 	TimeSpan getReduzierteZeit(Int32 stunden, Int32 minuten); //Gibt die Noch-Arbeitszeit um die übergebene Zeit reduziert zurück, ohne sie zu ändern
 	Boolean dieseWocheEingeloggt(); //Gibt zurück, ob der letzte Login in dieser Woche war
