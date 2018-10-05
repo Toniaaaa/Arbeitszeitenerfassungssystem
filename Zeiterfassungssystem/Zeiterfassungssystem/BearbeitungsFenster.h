@@ -353,6 +353,7 @@ namespace Zeiterfassungssystem {
 		Abteilung^ abteilung;
 		String^ rolle;
 		Boolean istAdmin;
+		Int32 anzAdmins = 0;
 
 		//Clear-Methode zum zurücksetzten der Textfelder
 		void clear() {
@@ -397,6 +398,14 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void BearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		this->adminCBox->Enabled = false;
+
+		//Admins zählen
+		anzAdmins = 0;
+		for (int i = 0; i < unternehmen->getAbteilungen()->Count; i++) {
+			if (unternehmen->getAbteilung(i)->getVorgesetzter()->getIstAdmin()) {
+				anzAdmins++;
+			}
+		}
 	}
 
 	private: System::Void txt_personalnummer_TextChanged(System::Object^  sender, System::EventArgs^  e) {
@@ -459,6 +468,7 @@ namespace Zeiterfassungssystem {
 		bool abteilungExistiert = false;
 		bool abteilungWechselt = false;
 		bool istVorgesetzter = false;
+		bool istLetzterAdmin = false;
 		int parse;
 		Vorgesetzter^ vorgesetzter;
 		Abteilung^ abteilung;
@@ -473,6 +483,14 @@ namespace Zeiterfassungssystem {
 		//Wenn der Angestellte, der bearbeitet werden soll, ein Vorgesetzter ist
 		if (angestellter->istVorgesetzter()) {
 			istVorgesetzter = true;
+		}
+
+		//Es wird geprüft, ob der Angestellte der letzte Admin des Unternehmens ist
+		if (istVorgesetzter) {
+			Vorgesetzter^ v = (Vorgesetzter^)angestellter;
+			if (v->getIstAdmin() && anzAdmins < 2) {
+				istLetzterAdmin = true;
+			}
 		}
 
 		//Wenn die Abteilung gewechselt werden soll
@@ -546,6 +564,11 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_Rolle->Text = "";
 		}
+		//Der letzte Admin darf nicht in die Rolle einen Mitarbeiters wechseln und dadurch seine Admin-Rechte verlieren
+		else if (anzAdmins < 2 && this->txt_Rolle->Text->Equals("Mitarbeiter") && istLetzterAdmin) {
+			MessageBox::Show("Es gibt nur noch einen Administrator!\nDem letzten Administrator können die Rechte nicht entzogen werden!", "Nicht möglich", MessageBoxButtons::OK,
+				MessageBoxIcon::Error);
+		}
 		else {
 			//Werte aus den Textfeldern werden in Angestelltenobjekt geschrieben
 			angestellter->setNachname(txt_name->Text);
@@ -557,15 +580,30 @@ namespace Zeiterfassungssystem {
 
 			//Falls Angestellter ein Vorgesetzter ist können Adminrechte gesetzt werden
 			if (angestellter->istVorgesetzter()) {
-				Vorgesetzter^ v = (Vorgesetzter^)angestellter;
-				v->setIstAdmin(adminCBox->Checked);
+				//Es muss immer mindestens einen Admin geben, also wird geprüft, ob es einen gibt, bevor Admin-Rechte entfernt werden können.
+				if ((!adminCBox->Checked && anzAdmins > 1) || adminCBox->Checked) {
+					Vorgesetzter^ v = (Vorgesetzter^)angestellter;
+					v->setIstAdmin(adminCBox->Checked);
+				}
+				else {
+					MessageBox::Show("Es gibt nur noch einen Administrator!\nDem letzten Administrator können die Rechte nicht entzogen werden!", "Nicht möglich", MessageBoxButtons::OK,
+						MessageBoxIcon::Error);
+				}
 			}
 
 			//Info-Nachricht an betroffenen Angestellten
 			String^ aenderungInfo = "Ihre gespeicherten Daten wurden geändert.\nIhre neuen Daten:\n\nName:\t\t" + txt_vorname->Text + " " + txt_name->Text + "\nPersonalnummer:\t" +
 				txt_personalnummer->Text + "\nWochenstunden:\t" + txt_arbeitsstunden->Text + "\nUrlaubstage:\t" + txt_urlaubstage->Text + "\nAbteilung:\t" + txt_abteilung->Text
-				+ "\nRolle:\t\t" + txt_Rolle->Text + "\nAdmin-Rechte:\t";
-			aenderungInfo = adminCBox->Checked ? aenderungInfo + "Ja" : aenderungInfo + "Nein";
+				+ "\nRolle:\t\t";
+			aenderungInfo = angestellter->istVorgesetzter() ? aenderungInfo + "Vorgesetzter" : aenderungInfo + "Mitarbeiter";
+			if (angestellter->istVorgesetzter()) {
+				Vorgesetzter^ vorgesetzterFuerString = (Vorgesetzter^)angestellter;
+				aenderungInfo = vorgesetzterFuerString->getIstAdmin() ? aenderungInfo + "\nAdmin - Rechte:\tJa" : aenderungInfo + "\nAdmin - Rechte:\tNein";
+			} 
+			else {
+				aenderungInfo += "\nAdmin-Rechte:\tNein";
+			}
+			
 			angestellter->addAntragsInfo(aenderungInfo);
 
 			Abteilung^ alteAbteilung = angestellter->getAbteilung();
