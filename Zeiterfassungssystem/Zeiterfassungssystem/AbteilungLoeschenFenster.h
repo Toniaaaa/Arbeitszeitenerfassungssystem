@@ -262,6 +262,7 @@ namespace Zeiterfassungssystem {
 
 	//Leert die ComboBox
 	private: void clear() {
+		auswahlCBox->SelectedIndex = -1;
 		auswahlCBox->Items->Clear();
 	}
 

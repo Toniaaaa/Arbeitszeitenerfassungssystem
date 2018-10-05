@@ -364,7 +364,8 @@ namespace Zeiterfassungssystem {
 			this->txt_abteilung->Text = "";
 			this->txt_arbeitsstunden->Text = "";
 			this->txt_urlaubstage->Text = "";
-			this->txt_Rolle->Text = "";
+			this->txt_Rolle->SelectedIndex = -1;
+			this->txt_abteilung->SelectedIndex = -1;
 			this->txt_abteilung->Items->Clear();
 		}
 	public: 
