@@ -462,14 +462,6 @@ void Angestellter::removeUrlaubstag(DateTime tag)
 	}
 }
 
-//Loescht ALLE Einträge aus der Liste der Urlaubstage
-void Angestellter::loescheAlleUrlaubstage()
-{
-	for (int i = listeUrlaubstage->Count - 1; i >= 0; i--) {
-		listeUrlaubstage->RemoveAt(i);
-	}
-}
-
 //Prüft, ob das Datum eines Eintrag in der Liste der Urlaubstage mit der übergebenen DateTime übereinstimmt. 
 Boolean Angestellter::istUrlaubstag(DateTime tag)
 {

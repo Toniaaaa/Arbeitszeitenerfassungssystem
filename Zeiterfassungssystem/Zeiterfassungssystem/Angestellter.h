@@ -111,7 +111,6 @@ public:
 	void addUrlaubstag(DateTime tag);
 	void addFeiertag(DateTime tag);
 	void removeUrlaubstag(DateTime tag);
-	void loescheAlleUrlaubstage();
 	void loescheUrlaubstage(DateTime von, DateTime bis, String^ kommentar); //Löscht alle Urlaubstage innerhalb des übergebenen Zeitraums
 	void loescheKrankheitstage(DateTime von, DateTime bis, String^ kommentar); //Löscht alle Krankheitstage innerhalb des übergebenen Zeitraums
 	void addKrankheitstag(DateTime tag);
