@@ -252,11 +252,11 @@ TimeSpan^ Angestellter::genugPause()
 	TimeSpan^ pausen = getPausezeit(true);
 	//Fall: Es wurden mehr als 9 Stunden gearbeitet
 	if (*arbeit > *(gcnew TimeSpan(9, 0, 0))) {
-		fehlendePause = TimeSpan::operator-(*(gcnew TimeSpan(0, 30, 0)), *pausen);
+		fehlendePause = TimeSpan::operator-(*(gcnew TimeSpan(0, 45, 0)), *pausen);
 	}
 	//Fall: Es wurden zwichen 6 und 9 Stunden gearbeitet
 	else if (*arbeit > *(gcnew TimeSpan(6, 0, 0))) {
-		fehlendePause = TimeSpan::operator-(*(gcnew TimeSpan(0, 45, 0)), *pausen);
+		fehlendePause = TimeSpan::operator-(*(gcnew TimeSpan(0, 30, 0)), *pausen);
 	} 
 	return fehlendePause;
 }
@@ -381,16 +381,23 @@ void Angestellter::nehmeUrlaub(DateTime beginn, DateTime ende)
 /*Trägt alle Tage innerhalb der Zeitspanne, die kein Wochenende oder Feiertage sind, in die Liste der Krankheitstage ein. Urlaubstage in diesem Zeitraum werden entfernt.*/
 void Angestellter::krankMelden(DateTime beginn, DateTime ende)
 {
+	//Alle Tage von Beginn bis Ende werden durchlaufen
 	while (beginn <= ende) {
+		//Prüfen: Ist der Tag ein Feiertag oder ein Urlaubstag ist (also in der Urlaubstage-Liste und evtl. istFeiertag = true)
 		Boolean istEinFeiertag = false;
 		if (Int32 index = indexVonUrlaubstag(beginn) != -1) {
+			//Wenn der Tag ein Feiertag ist, wird der Boolean auf true gesetzt
 			if (listeUrlaubstage[index]->getIstFeiertag()) {
 				istEinFeiertag = true;
 			}
+			//Wenn der Tag ein normaler Urlaubstag ist, wird er aus der Urlaubstage-Liste entfernt.
+			else {
+				loescheUrlaubstage(beginn, beginn, "Ist jetzt ein Krankheitstag.");
+			}
 		}
-		//Prüfe, ob dieser Tag bereits ein genommener Urlaubstag, ein Samstag oder Sonntag ist
+		//Prüfe, ob dieser Tag bereits ein gespeicherter Krankheitstag, ein Feiertag, Samstag oder Sonntag ist
 		if (!istKrankheitstag(beginn) && !istEinFeiertag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
-			//Tag wird der Liste hinzugefügt
+			//Wenn er das alles nicht ist, wird er der Liste der Krankheitstag hinzugefügt.
 			this->addKrankheitstag(beginn);
 		}
 		beginn = beginn.AddDays(1.0);
