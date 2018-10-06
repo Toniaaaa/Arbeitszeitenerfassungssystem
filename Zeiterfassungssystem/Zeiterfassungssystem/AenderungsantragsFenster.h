@@ -102,151 +102,196 @@ namespace Zeiterfassungssystem {
 			this->gruendeAuswahl = (gcnew System::Windows::Forms::ComboBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
+			// 
+			// aenderungsantragLbl
+			// 
 			this->aenderungsantragLbl->AutoSize = true;
 			this->aenderungsantragLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->aenderungsantragLbl->Location = System::Drawing::Point(99, 39);
-			this->aenderungsantragLbl->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->aenderungsantragLbl->Location = System::Drawing::Point(74, 32);
 			this->aenderungsantragLbl->Name = L"aenderungsantragLbl";
-			this->aenderungsantragLbl->Size = System::Drawing::Size(339, 46);
+			this->aenderungsantragLbl->Size = System::Drawing::Size(280, 37);
 			this->aenderungsantragLbl->TabIndex = 2;
 			this->aenderungsantragLbl->Text = L"Änderungsantrag";
-			this->einreichenBtn->Location = System::Drawing::Point(81, 524);
-			this->einreichenBtn->Margin = System::Windows::Forms::Padding(4);
+			// 
+			// einreichenBtn
+			// 
+			this->einreichenBtn->Location = System::Drawing::Point(61, 426);
 			this->einreichenBtn->Name = L"einreichenBtn";
-			this->einreichenBtn->Size = System::Drawing::Size(163, 46);
+			this->einreichenBtn->Size = System::Drawing::Size(122, 37);
 			this->einreichenBtn->TabIndex = 7;
 			this->einreichenBtn->Text = L"Einreichen";
 			this->einreichenBtn->UseVisualStyleBackColor = true;
 			this->einreichenBtn->Click += gcnew System::EventHandler(this, &AenderungsantragsFenster::Einreichen_Click);
+			// 
+			// tagLbl
+			// 
 			this->tagLbl->AutoSize = true;
 			this->tagLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->tagLbl->Location = System::Drawing::Point(24, 118);
-			this->tagLbl->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->tagLbl->Location = System::Drawing::Point(18, 96);
 			this->tagLbl->Name = L"tagLbl";
-			this->tagLbl->Size = System::Drawing::Size(171, 25);
+			this->tagLbl->Size = System::Drawing::Size(137, 20);
 			this->tagLbl->TabIndex = 5;
 			this->tagLbl->Text = L"Tag der Änderung";
-			this->abbrechenBtn->Location = System::Drawing::Point(309, 524);
-			this->abbrechenBtn->Margin = System::Windows::Forms::Padding(4);
+			// 
+			// abbrechenBtn
+			// 
+			this->abbrechenBtn->Location = System::Drawing::Point(232, 426);
 			this->abbrechenBtn->Name = L"abbrechenBtn";
-			this->abbrechenBtn->Size = System::Drawing::Size(163, 46);
+			this->abbrechenBtn->Size = System::Drawing::Size(122, 37);
 			this->abbrechenBtn->TabIndex = 8;
 			this->abbrechenBtn->Text = L"Abbrechen";
 			this->abbrechenBtn->UseVisualStyleBackColor = true;
 			this->abbrechenBtn->Click += gcnew System::EventHandler(this, &AenderungsantragsFenster::abbrechenBtn_Click);
+			// 
+			// ankunftLbl
+			// 
 			this->ankunftLbl->AutoSize = true;
 			this->ankunftLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->ankunftLbl->Location = System::Drawing::Point(24, 177);
-			this->ankunftLbl->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->ankunftLbl->Location = System::Drawing::Point(18, 144);
 			this->ankunftLbl->Name = L"ankunftLbl";
-			this->ankunftLbl->Size = System::Drawing::Size(116, 25);
+			this->ankunftLbl->Size = System::Drawing::Size(96, 20);
 			this->ankunftLbl->TabIndex = 11;
 			this->ankunftLbl->Text = L"Ankunft Zeit";
+			// 
+			// kommentarLbl
+			// 
 			this->kommentarLbl->AutoSize = true;
 			this->kommentarLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->kommentarLbl->Location = System::Drawing::Point(24, 325);
-			this->kommentarLbl->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->kommentarLbl->Location = System::Drawing::Point(18, 264);
 			this->kommentarLbl->Name = L"kommentarLbl";
-			this->kommentarLbl->Size = System::Drawing::Size(113, 25);
+			this->kommentarLbl->Size = System::Drawing::Size(91, 20);
 			this->kommentarLbl->TabIndex = 12;
 			this->kommentarLbl->Text = L"Kommentar";
-			this->kommentarTxt->Location = System::Drawing::Point(29, 353);
-			this->kommentarTxt->Margin = System::Windows::Forms::Padding(4);
+			// 
+			// kommentarTxt
+			// 
+			this->kommentarTxt->Location = System::Drawing::Point(22, 287);
 			this->kommentarTxt->Multiline = true;
 			this->kommentarTxt->Name = L"kommentarTxt";
-			this->kommentarTxt->Size = System::Drawing::Size(507, 143);
+			this->kommentarTxt->Size = System::Drawing::Size(381, 117);
 			this->kommentarTxt->TabIndex = 6;
+			// 
+			// gehenLbl
+			// 
 			this->gehenLbl->AutoSize = true;
 			this->gehenLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->gehenLbl->Location = System::Drawing::Point(24, 222);
-			this->gehenLbl->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->gehenLbl->Location = System::Drawing::Point(18, 180);
 			this->gehenLbl->Name = L"gehenLbl";
-			this->gehenLbl->Size = System::Drawing::Size(108, 25);
+			this->gehenLbl->Size = System::Drawing::Size(89, 20);
 			this->gehenLbl->TabIndex = 14;
 			this->gehenLbl->Text = L"Gehen Zeit";
-			this->ankunftStdTxt->Location = System::Drawing::Point(271, 176);
-			this->ankunftStdTxt->Margin = System::Windows::Forms::Padding(4);
+			// 
+			// ankunftStdTxt
+			// 
+			this->ankunftStdTxt->Location = System::Drawing::Point(203, 143);
 			this->ankunftStdTxt->Name = L"ankunftStdTxt";
-			this->ankunftStdTxt->Size = System::Drawing::Size(52, 22);
+			this->ankunftStdTxt->Size = System::Drawing::Size(40, 20);
 			this->ankunftStdTxt->TabIndex = 1;
-			this->gehenStdTxt->Location = System::Drawing::Point(271, 222);
-			this->gehenStdTxt->Margin = System::Windows::Forms::Padding(4);
+			// 
+			// gehenStdTxt
+			// 
+			this->gehenStdTxt->Location = System::Drawing::Point(203, 180);
 			this->gehenStdTxt->Name = L"gehenStdTxt";
-			this->gehenStdTxt->Size = System::Drawing::Size(52, 22);
+			this->gehenStdTxt->Size = System::Drawing::Size(40, 20);
 			this->gehenStdTxt->TabIndex = 3;
-			this->ankunftMinuteTxt->Location = System::Drawing::Point(353, 176);
-			this->ankunftMinuteTxt->Margin = System::Windows::Forms::Padding(4);
+			// 
+			// ankunftMinuteTxt
+			// 
+			this->ankunftMinuteTxt->Location = System::Drawing::Point(265, 143);
 			this->ankunftMinuteTxt->Name = L"ankunftMinuteTxt";
-			this->ankunftMinuteTxt->Size = System::Drawing::Size(52, 22);
+			this->ankunftMinuteTxt->Size = System::Drawing::Size(40, 20);
 			this->ankunftMinuteTxt->TabIndex = 2;
-			this->gehenMinuteTxt->Location = System::Drawing::Point(353, 222);
-			this->gehenMinuteTxt->Margin = System::Windows::Forms::Padding(4);
+			// 
+			// gehenMinuteTxt
+			// 
+			this->gehenMinuteTxt->Location = System::Drawing::Point(265, 180);
 			this->gehenMinuteTxt->Name = L"gehenMinuteTxt";
-			this->gehenMinuteTxt->Size = System::Drawing::Size(52, 22);
+			this->gehenMinuteTxt->Size = System::Drawing::Size(40, 20);
 			this->gehenMinuteTxt->TabIndex = 4;
+			// 
+			// label1
+			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(332, 180);
-			this->label1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label1->Location = System::Drawing::Point(249, 146);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(12, 17);
+			this->label1->Size = System::Drawing::Size(10, 13);
 			this->label1->TabIndex = 19;
 			this->label1->Text = L":";
+			// 
+			// label3
+			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(332, 225);
-			this->label3->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label3->Location = System::Drawing::Point(249, 183);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(12, 17);
+			this->label3->Size = System::Drawing::Size(10, 13);
 			this->label3->TabIndex = 20;
 			this->label3->Text = L":";
+			// 
+			// label4
+			// 
 			this->label4->AutoSize = true;
 			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label4->Location = System::Drawing::Point(415, 177);
-			this->label4->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label4->Location = System::Drawing::Point(311, 144);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(43, 25);
+			this->label4->Size = System::Drawing::Size(35, 20);
 			this->label4->TabIndex = 21;
 			this->label4->Text = L"Uhr";
+			// 
+			// label5
+			// 
 			this->label5->AutoSize = true;
 			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label5->Location = System::Drawing::Point(415, 222);
-			this->label5->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label5->Location = System::Drawing::Point(311, 180);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(43, 25);
+			this->label5->Size = System::Drawing::Size(35, 20);
 			this->label5->TabIndex = 22;
 			this->label5->Text = L"Uhr";
+			// 
+			// grundLbl
+			// 
 			this->grundLbl->AutoSize = true;
 			this->grundLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->grundLbl->Location = System::Drawing::Point(24, 263);
-			this->grundLbl->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->grundLbl->Location = System::Drawing::Point(18, 214);
 			this->grundLbl->Name = L"grundLbl";
-			this->grundLbl->Size = System::Drawing::Size(190, 25);
+			this->grundLbl->Size = System::Drawing::Size(155, 20);
 			this->grundLbl->TabIndex = 23;
 			this->grundLbl->Text = L"Grund der Änderung";
+			// 
+			// gruendeAuswahl
+			// 
 			this->gruendeAuswahl->FormattingEnabled = true;
-			this->gruendeAuswahl->Location = System::Drawing::Point(271, 266);
-			this->gruendeAuswahl->Margin = System::Windows::Forms::Padding(4);
+			this->gruendeAuswahl->Location = System::Drawing::Point(203, 216);
 			this->gruendeAuswahl->Name = L"gruendeAuswahl";
-			this->gruendeAuswahl->Size = System::Drawing::Size(265, 24);
+			this->gruendeAuswahl->Size = System::Drawing::Size(200, 21);
 			this->gruendeAuswahl->TabIndex = 5;
 			this->gruendeAuswahl->SelectedIndexChanged += gcnew System::EventHandler(this, &AenderungsantragsFenster::gruendeAuswahl_SelectedIndexChanged);
-			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(306, 125);
+			// 
+			// label2
+			// 
+			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label2->Location = System::Drawing::Point(199, 96);
+			this->label2->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(46, 17);
+			this->label2->Size = System::Drawing::Size(204, 20);
 			this->label2->TabIndex = 24;
 			this->label2->Text = L"label2";
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->label2->TextAlign = System::Drawing::ContentAlignment::BottomLeft;
+			// 
+			// AenderungsantragsFenster
+			// 
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
-			this->ClientSize = System::Drawing::Size(580, 591);
+			this->ClientSize = System::Drawing::Size(435, 480);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->gruendeAuswahl);
 			this->Controls->Add(this->grundLbl);
@@ -266,7 +311,6 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->tagLbl);
 			this->Controls->Add(this->einreichenBtn);
 			this->Controls->Add(this->aenderungsantragLbl);
-			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"AenderungsantragsFenster";
 			this->Text = L"Aenderungsantrag";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &AenderungsantragsFenster::AenderungsantragsFenster_FormClosing);

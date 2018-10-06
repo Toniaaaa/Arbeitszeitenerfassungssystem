@@ -252,8 +252,8 @@ namespace Zeiterfassungssystem {
 		//Leere Anzeigen
 		void clear()
 		{
-			this->krankheitBeginnDTP->Value == DateTime::Today.Date;
-			this->krankheitEndeDTP->Value == DateTime::Today.Date;
+			this->krankheitBeginnDTP->Value = DateTime::Now.Date;
+			this->krankheitEndeDTP->Value = DateTime::Now.Date;
 			this->kommentarTxt->Text = "";
 		}
 

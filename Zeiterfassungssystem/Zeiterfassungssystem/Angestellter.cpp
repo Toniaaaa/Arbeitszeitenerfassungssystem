@@ -407,6 +407,31 @@ void Angestellter::krankMelden(DateTime beginn, DateTime ende)
 //Berechnet die Anzahl der Tage in einem Intervall ohne Wochenenden und Feiertage
 Int32 Angestellter::berechneArbeitstage(DateTime beginn, DateTime ende)
 {
+	Int32 anzArbeitstage = 0;
+
+	while (beginn <= ende) {
+		//Prüfe, ob dieser Tag bereits ein genommener Urlaubstag ist
+		Boolean istFeiertag = false;
+		for (int i = 0; i < listeUrlaubstage->Count; i++) {
+			if (beginn == listeUrlaubstage[i]->getDatum() && listeUrlaubstage[i]->getIstFeiertag()) {
+				istFeiertag = true;
+				break;
+			}
+		}
+		//Prüfe, ob dieser Tag ein Samstag oder Sonntag ist
+		if (!istFeiertag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
+			//Tag wird der Liste hinzugefügt und ein Tag den genommenen Urlaubstagen hinzugefügt.
+			anzArbeitstage++;
+		}
+		beginn = beginn.AddDays(1.0);
+	}
+
+	return anzArbeitstage;
+}
+
+//Berechnet die Anzahl der Tage in einem Intervall ohne Wochenenden und Feiertage
+Int32 Angestellter::berechneUrlaubstage(DateTime beginn, DateTime ende)
+{
 	Int32 anzUrlaubstage = 0;
 
 	while (beginn <= ende) {

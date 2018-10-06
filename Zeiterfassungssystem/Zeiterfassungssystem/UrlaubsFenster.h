@@ -269,8 +269,8 @@ namespace Zeiterfassungssystem {
 	//Leere Anzeigen
 	void clear()
 	{
-		this->urlaubBeginnDTP->Value == DateTime::Today.Date;
-		this->urlaubEndeDTP->Value == DateTime::Today.Date;
+		this->urlaubBeginnDTP->Value = DateTime::Today.Date;
+		this->urlaubEndeDTP->Value = DateTime::Today.Date;
 		this->kommentarTxt->Text = "";
 	}
 
@@ -346,7 +346,7 @@ namespace Zeiterfassungssystem {
 	//Wenn die Auswahl in der Beginn-Combobox geändert wurde
 	private: System::Void urlaubBeginnDTP_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
 		//Anzahl der Urlabstage im gewählten Intervall wird berechnet (ohne Wochenenden und Feiertage)
-		anzahlUrlaubstage = angestellter->berechneArbeitstage(p_Anfang, p_Ende);
+		anzahlUrlaubstage = angestellter->berechneUrlaubstage(p_Anfang, p_Ende);
 		//Anzeige der Urlaubstage setzen
 		if (anzahlUrlaubstage == 1) {
 			this->urlaubstageLbl->Text = "1 Tag";
@@ -359,7 +359,7 @@ namespace Zeiterfassungssystem {
 	//Wenn die Auswahl in der Ende-Combobox geändert wurde
 	private: System::Void urlaubEndeDTP_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
 		//Anzahl der Urlabstage im gewählten Intervall wird berechnet (ohne Wochenenden und Feiertage)
-		anzahlUrlaubstage = angestellter->berechneArbeitstage(p_Anfang, p_Ende);
+		anzahlUrlaubstage = angestellter->berechneUrlaubstage(p_Anfang, p_Ende);
 		//Anzeige der Urlaubstage setzen
 		if (anzahlUrlaubstage == 1) {
 			this->urlaubstageLbl->Text = "1 Tag";

@@ -309,6 +309,7 @@ namespace Zeiterfassungssystem {
 				vorgesetzter->addAntragsInfo(infoAnVorgesetzten);
 			}
 		}
+		krankmeldungsfenster->clear();
 	}
 
 };

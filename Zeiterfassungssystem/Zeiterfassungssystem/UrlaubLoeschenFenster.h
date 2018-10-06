@@ -312,8 +312,8 @@ namespace Zeiterfassungssystem {
 		//Leere Anzeigen
 		void clear()
 		{
-			this->urlaubBeginnDTP->Value == DateTime::Today.Date;
-			this->urlaubEndeDTP->Value == DateTime::Today.Date;
+			this->urlaubBeginnDTP->Value = DateTime::Today.Date;
+			this->urlaubEndeDTP->Value = DateTime::Today.Date;
 			this->angestellterCBox->SelectedIndex = -1;
 			this->angestellterCBox->Items->Clear();
 			this->kommentarTxt->Text = "";

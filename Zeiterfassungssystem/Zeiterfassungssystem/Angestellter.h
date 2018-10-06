@@ -123,7 +123,8 @@ public:
 	void speichereArbeitszeit();//Speichert die gesamte Arbeitszeit eines abgeschlossenen Tages in den noch-ArbeitsStunden und Minuten
 	void nehmeUrlaub(DateTime beginn, DateTime ende); //Fügt die Tage innerhalb des Zeitraums zu der listeUrlaubstage hinzu, solange die keine Feiertage oder Wochenenden sind
 	void krankMelden(DateTime beginn, DateTime ende); //Fügt die Tage innerhalb des Zeitraums zu den Krankheitstagen hinzu, solange die keine Feiertage oder Wochenenden sind und entfernt sie aus den Urlaubstagen
-	Int32 berechneArbeitstage(DateTime beginn, DateTime ende); //Berechnet die Anzahl der Urlaubstage innerhalb eines Zeitraums ohne Wochenenden und Feiertage
+	Int32 berechneUrlaubstage(DateTime beginn, DateTime ende); //Berechnet die Anzahl der Urlaubstage innerhalb eines Zeitraums ohne Wochenenden und Feiertage
+	Int32 berechneArbeitstage(DateTime beginn, DateTime ende); //Berechnet die Anzahl der Arbeitstage innerhalb eines Zeitraums ohne Wochenenden und Feiertage
 	Int32 indexVonUrlaubstag(DateTime tag); //Gibt den Index eines Tages in der listeUrlaubstage zurück
 	Int32 indexVonKrankheitstag(DateTime tag); //Gibt den Index eines Tages in der Liste der Krankheitstage zurück
 	Boolean istUrlaubstag(DateTime tag); //Gibt zurück, ob der Paramter ein Urlaubstag ist oder nicht
