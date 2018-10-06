@@ -142,8 +142,8 @@ public:
 	// Ereignislisteauswertungsmethodensammlung
 	DateTime^ getArbeitsAnfang(); // null wenn arbeitstag (noch) nicht begonnen
 	DateTime^ getPauseAnfang(); // null wenn pause gerade nicht läuft
-	TimeSpan^ getAktuelleArbeitszeit();
-	TimeSpan^ getAktuellePausenzeit(); // liefert die Zeit der aktuell laufenden Pause
+	TimeSpan^ getAktuelleArbeitszeit(); //gibt zum Aufrufzeitpunkt die aktuelle Arbeitszeit zurück wobei Pausen "live" herausgerechnet werden
+	TimeSpan^ getAktuellePausenzeit(); // liefert die aktuelle Zeit der laufenden Pause
 	TimeSpan^ getPausezeit(Boolean tagBeendet); // liefert die Zeit der bisherigen Pausen seit letztem Arbeitsbeginn
 	TimeSpan^ berechneArbeitsstunden(Int32 anfangsEreignisIndex); //Berechnet die Arbeitszeit eines Arbeitstages ab dem übergebenen Index in der Ereignisliste ohne Pausen
 	TimeSpan^ genugPause(); //Prüft, ob am gerade beendeten Arbeitstag genug Pause gemacht wurde

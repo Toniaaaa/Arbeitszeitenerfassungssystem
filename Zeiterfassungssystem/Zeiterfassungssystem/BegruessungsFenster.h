@@ -18,18 +18,14 @@ namespace Zeiterfassungssystem {
 	public ref class BegruessungsFenster : public System::Windows::Forms::Form
 	{
 	private:
-		RegistrierungsFenster^ regFenster;
-	private: System::Windows::Forms::Label^  begruessungLbl1;
-	private: System::Windows::Forms::Label^  label1;
-	private: System::Windows::Forms::PictureBox^  pictureBox1;
-
-			 Unternehmen^ unternehmen;
+		RegistrierungsFenster^ registrierungsfenster;
+		Unternehmen^ unternehmen;
 
 	public:
 		BegruessungsFenster(void)
 		{
 			InitializeComponent();
-			regFenster = gcnew RegistrierungsFenster;
+			registrierungsfenster = gcnew RegistrierungsFenster;
 		}
 
 	protected:
@@ -43,6 +39,9 @@ namespace Zeiterfassungssystem {
 				delete components;
 			}
 		}
+	private: System::Windows::Forms::Label^  begruessungLbl1;
+	private: System::Windows::Forms::Label^  label1;
+	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::Button^  button1;
 	private: System::Windows::Forms::Button^  addBtn;
 
@@ -161,8 +160,8 @@ namespace Zeiterfassungssystem {
 
 	//Öffnen des Registrierungsfensters
 	private: System::Void addBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		regFenster->setUnternehmen(unternehmen);
-		regFenster->ShowDialog(this);
+		registrierungsfenster->setUnternehmen(unternehmen);
+		registrierungsfenster->ShowDialog(this);
 		this->Close();
 	}
 		
