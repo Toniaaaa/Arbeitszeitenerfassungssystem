@@ -6,6 +6,7 @@
 #include "Unternehmen.h"
 
 
+
 namespace Zeiterfassungssystem {
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -14,15 +15,13 @@ namespace Zeiterfassungssystem {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Text::RegularExpressions;
+	using namespace System::Security::Cryptography;
 	/// <summary>
 	/// Zusammenfassung für RegistrierungsFenster
 	/// </summary>
 
 	public ref class RegistrierungsFenster : public System::Windows::Forms::Form
 	{
-	private:
-		Unternehmen ^ unternehmen;
-		Vorgesetzter^ ersteller;
 	private: System::Windows::Forms::TextBox^  txt_name;
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::CheckBox^  adminCBox;
@@ -327,23 +326,11 @@ namespace Zeiterfassungssystem {
 
 		}
 #pragma endregion
-	private: System::Void registrierungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
-		//Hinzufuegen von Abteilungen zur Auswahl
-		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
-			txt_abteilung->Items->Add(unternehmen->getAbteilung(i)->getAbteilungsnummer());
-		}
-		//Falls das Unternehmen neu ist
-		if (unternehmen->getAlleAngestellte()->Count == 0) {
-			//Der erste Mitarbeiter muss ein Administrator sein
-			txt_Rolle->Items->RemoveAt(0);
-			txt_Rolle->Items->Add("Vorgesetzter");
-			txt_abteilung->Text = "Administration";
-			adminCBox->Checked = true;
-		}
-		else if (ersteller != nullptr && ersteller->getIstAdmin()) {
-			txt_Rolle->Items->Add("Vorgesetzter");
-		}
-	}
+	private: 
+		Unternehmen ^ unternehmen;
+		Vorgesetzter^ ersteller;
+		SHA512^ hash = gcnew SHA512Managed();
+
 	//Getter zun Datenaustausch
 	public:
 		String ^ getName() {
@@ -405,6 +392,23 @@ namespace Zeiterfassungssystem {
 		this->unternehmen = unternehmen;
 	}
 
+	private: System::Void registrierungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+		//Hinzufuegen von Abteilungen zur Auswahl
+		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+			txt_abteilung->Items->Add(unternehmen->getAbteilung(i)->getAbteilungsnummer());
+		}
+		//Falls das Unternehmen neu ist
+		if (unternehmen->getAlleAngestellte()->Count == 0) {
+			//Der erste Mitarbeiter muss ein Administrator sein
+			txt_Rolle->Items->RemoveAt(0);
+			txt_Rolle->Items->Add("Vorgesetzter");
+			txt_abteilung->Text = "Administration";
+			adminCBox->Checked = true;
+		}
+		else if (ersteller != nullptr && ersteller->getIstAdmin()) {
+			txt_Rolle->Items->Add("Vorgesetzter");
+		}
+	}
 	private: System::Void btn_mitarbeiter_hinzufuegen_Click(System::Object^  sender, System::EventArgs^  e) {
 		bool fehlerleer = false;
 		bool fehlerPersonal = false;

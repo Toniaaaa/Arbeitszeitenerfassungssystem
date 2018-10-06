@@ -257,8 +257,8 @@ namespace Zeiterfassungssystem {
 				}
 				hattePause = false;
 				item->SubItems->Add(angestellter->getEreignis(i)->getTimestamp()->ToString());
-				gesamtezeit = gesamtStunden->TotalHours;
-				item->SubItems->Add(gesamtezeit->ToString("0.00"));
+				gesamtezeit = gesamtStunden->TotalSeconds;
+				item->SubItems->Add(gesamtStunden->ToString());
 			}
 		}
 		label1->Text = gesamt->TotalHours.ToString("0.00" + " Stunden gesamt");
