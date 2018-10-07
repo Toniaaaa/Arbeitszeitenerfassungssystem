@@ -112,7 +112,7 @@ Angestellter ^ Unternehmen::loginaccept(String ^ personalnummer, array<Byte>^ pa
 			}
 			String^ passwortString2;
 			for (int i = 0; i < passwort->Length; i++) {
-				passwortString2 += angestellter->getPasswort()[i];
+				passwortString2 += passwort[i];
 			}
 			if (passwortString1->Equals(passwortString2)) {
 				result = angestellter;

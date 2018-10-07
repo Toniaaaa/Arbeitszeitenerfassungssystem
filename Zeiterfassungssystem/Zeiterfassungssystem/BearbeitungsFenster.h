@@ -25,14 +25,14 @@ namespace Zeiterfassungssystem {
 	{
 	private:
 		VorgesetztenAuswahlFenster^ vorgesetztenFenster;
-		SHA1^ verschluesselung; //ZUM HASHEN
+		SHA512^ verschluesselung; //ZUM HASHEN
 	public:
 
 		BearbeitungsFenster(void)
 		{
 			InitializeComponent();
 			vorgesetztenFenster = gcnew VorgesetztenAuswahlFenster;
-			this->verschluesselung = gcnew SHA1CryptoServiceProvider(); //ZUM HASHEN
+			this->verschluesselung = gcnew SHA512Managed(); //ZUM HASHEN
 		}
 
 	protected:

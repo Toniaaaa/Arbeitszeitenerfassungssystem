@@ -24,7 +24,7 @@ namespace Zeiterfassungssystem {
 	private:
 		Unternehmen ^ unternehmen;
 		Vorgesetzter^ ersteller;
-		SHA1^ verschluesselung; //ZUM HASHEN
+		SHA512^ verschluesselung; //ZUM HASHEN
 	private: System::Windows::Forms::TextBox^  txt_name;
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::CheckBox^  adminCBox;
@@ -33,7 +33,7 @@ namespace Zeiterfassungssystem {
 
 		RegistrierungsFenster(void)
 		{
-			this->verschluesselung = gcnew SHA1CryptoServiceProvider(); //ZUM HASHEN
+			this->verschluesselung = gcnew SHA512Managed(); //ZUM HASHEN
 			InitializeComponent();
 		}
 

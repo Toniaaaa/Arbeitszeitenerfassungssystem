@@ -35,7 +35,7 @@ namespace Zeiterfassungssystem {
 		PasswortAendernFenster^ passwortaendernseite;
 		PersonalFenster^ personalfenster;
 		Angestellter^ angestellter;
-		SHA1^ verschluesselung;
+		SHA512^ verschluesselung;
 		bool loginGedrueckt = false;
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::Label^  label1;
@@ -59,7 +59,7 @@ namespace Zeiterfassungssystem {
 			startseitevorgesetzte = gcnew StartseiteVorgesetzte();
 			passwortaendernseite = gcnew PasswortAendernFenster();
 			begruessung = gcnew BegruessungsFenster();
-			this->verschluesselung = gcnew SHA1CryptoServiceProvider(); //ZUM HASHEN
+			this->verschluesselung = gcnew SHA512Managed(); //ZUM HASHEN
 		}
 
 	protected:
