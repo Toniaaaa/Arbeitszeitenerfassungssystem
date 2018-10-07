@@ -28,7 +28,7 @@ public:
 	void removeAbteilung(Int32 index);
 	void addAbteilung(Abteilung^ abteilung);
 	List<Angestellter^>^ getAlleAngestellte();
-	Angestellter^ loginaccept(String^ personalnummer, String^ passwort);
+	Angestellter^ loginaccept(String^ personalnummer, array<Byte>^ passwort);
 	List<Abteilung^>^ getAbteilungen();
 	inline List<FreierTag^>^ getFeiertage() { return feiertage; }
 	void addFeiertag(DateTime tag);

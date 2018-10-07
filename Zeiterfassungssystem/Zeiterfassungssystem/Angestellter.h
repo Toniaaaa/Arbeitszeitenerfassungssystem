@@ -26,7 +26,7 @@ private:
 	String^ nachname;
 	Abteilung^ abteilung;
 	String^ personalnummer;
-	String^ passwort;
+	array<Byte>^ passwort;
 	Int32 wochenstunden;
 	Int32 jahresurlaub;
 	Int32 urlaubstage;
@@ -48,7 +48,7 @@ private:
 	FreierTagComparer^ vergleichen;
 
 public:
-	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage);
+	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, array<Byte>^ passwort, Int32 wochenstunden, Int32 urlaubstage);
 	Angestellter(Vorgesetzter^ vorgesetzterAlt);
 	Angestellter(Mitarbeiter^ mitarbeiterAlt);
 
@@ -56,7 +56,7 @@ public:
 	inline String^ getVorname() {return vorname;}
 	inline String^ getNachname() {return nachname;}
 	inline String^ getPersonalnummer() {return personalnummer;}
-	inline String^ getPasswort() {return passwort;};
+	inline array<Byte>^ getPasswort() {return passwort;}
 	inline Int32 getWochensstunden() {return wochenstunden;}
 	inline Int32 getUrlaubstage() {return urlaubstage;}
 	inline Boolean getWochenZeitErreicht() {return wochenZeitErreicht;}
@@ -86,7 +86,7 @@ public:
 	inline void setNachname(String^ nachname) {this->nachname = nachname;}
 	inline void setAbteilung(Abteilung^ abteilung) {this->abteilung = abteilung;}
 	inline void setPersonalnummer(String^ personalnummer) {this->personalnummer = personalnummer;}
-	inline void setPasswort(String^ passwort) {this->passwort = passwort;}
+	inline void setPasswort(array<Byte>^ passwort) {this->passwort = passwort;}
 	inline void setWochenstunden(Int32 wochenstunden) {this->wochenstunden = wochenstunden;}
 	inline void setUrlaubstage(Int32 urlaubstage) {this->urlaubstage = urlaubstage;}
 	inline void setUrlaubstageGespart(Int32 urlaubstage) { this->urlaubstageGespart = urlaubstage; }

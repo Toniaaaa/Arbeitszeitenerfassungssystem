@@ -20,6 +20,7 @@ namespace Zeiterfassungssystem {
 	//Namespace zum lesen und schreiben
 	using namespace System::Runtime::Serialization::Formatters::Binary;
 	using namespace System::IO;
+	using namespace System::Security::Cryptography; //ZUM HASHEN
 	
 	/// <summary>
 	/// Zusammenfassung für loginFenster
@@ -34,6 +35,7 @@ namespace Zeiterfassungssystem {
 		PasswortAendernFenster^ passwortaendernseite;
 		PersonalFenster^ personalfenster;
 		Angestellter^ angestellter;
+		SHA1^ verschluesselung;
 		bool loginGedrueckt = false;
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::Label^  label1;
@@ -57,6 +59,7 @@ namespace Zeiterfassungssystem {
 			startseitevorgesetzte = gcnew StartseiteVorgesetzte();
 			passwortaendernseite = gcnew PasswortAendernFenster();
 			begruessung = gcnew BegruessungsFenster();
+			this->verschluesselung = gcnew SHA1CryptoServiceProvider(); //ZUM HASHEN
 		}
 
 	protected:
@@ -235,7 +238,6 @@ namespace Zeiterfassungssystem {
 			this->Name = L"LoginFenster";
 			this->Text = L"Login";
 			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &LoginFenster::LoginFenster_FormClosed);
-			this->Load += gcnew System::EventHandler(this, &LoginFenster::loginFenster_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -256,21 +258,20 @@ namespace Zeiterfassungssystem {
 			this->txt_Kennwort->Text = "";
 		}
 
-	//Beim Laden des Fensters wird eine Sound Datei abgespielt
-	private: System::Void loginFenster_Load(System::Object^  sender, System::EventArgs^  e) {
-		//sound->SoundLocation = "";
-		//sound->Load();
-		//sound->Play();
-	}
-
 	private: System::Void logInButton_Click(System::Object^  sender, System::EventArgs^  e) {
-		String^ passwort = getKennwort();
+		array<Byte>^ passwort = System::Text::Encoding::UTF8->GetBytes(getKennwort()); //ZUM HASHEN
+		array<Byte>^ passwortVerschluesselt = verschluesselung->ComputeHash(passwort); //ZUM HASHEN
+		String^ passwortString;
+		for (int i = 0; i < passwortVerschluesselt->Length; i++) {
+			passwortString += passwortVerschluesselt[i];
+		}
+		MessageBox::Show(passwortString, "Passwort verschlüsselt", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		
 		/*LogIndaten werden überprüft, ebenfalls die rolle des Angestellten damit sich passendes Fenster öffnet
 		* Unternehmen wird uebergeben
 		*/
 		String^ personalnummer = getBenutzername();
-	    angestellter = unternehmen->loginaccept(personalnummer, passwort);
+	    angestellter = unternehmen->loginaccept(personalnummer, passwortVerschluesselt);
 		if (angestellter != nullptr && angestellter->istVorgesetzter() == false) {
 			loginGedrueckt = true;
 			startseitemitarbeiter->setAngemeldeterAngestellter((Mitarbeiter^) angestellter);

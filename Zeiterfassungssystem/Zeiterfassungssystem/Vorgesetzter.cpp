@@ -2,7 +2,7 @@
 #include "Mitarbeiter.h"
 
 //Konstruktoren
-Vorgesetzter::Vorgesetzter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32 wochenstunden, Int32 urlaubstage, Boolean istAdmin) :
+Vorgesetzter::Vorgesetzter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, array<Byte>^ passwort, Int32 wochenstunden, Int32 urlaubstage, Boolean istAdmin) :
 	Angestellter(vorname, nachname, abteilung, personalnummer, passwort, wochenstunden, urlaubstage)
 {
 	listeAenderungsantraege = gcnew List<Aenderungsantrag^>;

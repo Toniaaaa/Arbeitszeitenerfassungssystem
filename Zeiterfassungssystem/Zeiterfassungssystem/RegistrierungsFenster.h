@@ -14,6 +14,7 @@ namespace Zeiterfassungssystem {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Text::RegularExpressions;
+	using namespace System::Security::Cryptography; //ZUM HASHEN
 	/// <summary>
 	/// Zusammenfassung für RegistrierungsFenster
 	/// </summary>
@@ -23,6 +24,7 @@ namespace Zeiterfassungssystem {
 	private:
 		Unternehmen ^ unternehmen;
 		Vorgesetzter^ ersteller;
+		SHA1^ verschluesselung; //ZUM HASHEN
 	private: System::Windows::Forms::TextBox^  txt_name;
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::CheckBox^  adminCBox;
@@ -31,6 +33,7 @@ namespace Zeiterfassungssystem {
 
 		RegistrierungsFenster(void)
 		{
+			this->verschluesselung = gcnew SHA1CryptoServiceProvider(); //ZUM HASHEN
 			InitializeComponent();
 		}
 
@@ -411,6 +414,7 @@ namespace Zeiterfassungssystem {
 		bool abteilungExistiert = false;
 		int parse;
 		Vorgesetzter^ neuerMitarbeiter;
+		array<Byte>^ passwortInBytes = System::Text::Encoding::UTF8->GetBytes(txt_passwort->Text); //Zum HASHEN
 
 		//Prüft, ob die Abteilung schon existiert
 		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
@@ -496,7 +500,7 @@ namespace Zeiterfassungssystem {
 						abteilungNeu = unternehmen->getAbteilung(i);
 					}
 				}
-				neuerMitarbeiter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilungNeu, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), this->adminCBox->Checked);
+				neuerMitarbeiter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilungNeu, txt_personalnummer->Text, verschluesselung->ComputeHash(passwortInBytes), Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), this->adminCBox->Checked);
 				Mitarbeiter^ ehemVorgesetzter = gcnew Mitarbeiter(abteilungNeu->getVorgesetzter(), neuerMitarbeiter);
 				abteilungNeu->fuegeMitarbeiterHinzu(ehemVorgesetzter);
 				abteilungNeu->setVorgesetzter(neuerMitarbeiter);
@@ -518,18 +522,24 @@ namespace Zeiterfassungssystem {
 				}
 				Vorgesetzter^ vorgesetzter = abteilung->getVorgesetzter();
 				//da Rolle Mitarbeiter ausgewählt wird ein neuer Mitarbeiter mit eingegebenen Daten erstellt und zur Abteilung und Unternehmen hinzugefügt
-				Mitarbeiter^ mitarbeiter = gcnew Mitarbeiter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), vorgesetzter);
+				Mitarbeiter^ mitarbeiter = gcnew Mitarbeiter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, verschluesselung->ComputeHash(passwortInBytes), Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), vorgesetzter);
 				mitarbeiter->setAbteilung(abteilung);
 				abteilung->fuegeMitarbeiterHinzu(mitarbeiter);
 				this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			}
 			else {
-				if (System::Windows::Forms::MessageBox::Show("Sie wollen eine neue Abteilung " + txt_abteilung->Text + " mit " + txt_vorname->Text + " " + txt_name->Text + " als Vorgesetzten erstellen.\nIst das korrekt?", "Neue Abteilung?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+				if (System::Windows::Forms::MessageBox::Show("Sie wollen eine neue Abteilung " + txt_abteilung->Text + " mit " + txt_vorname->Text + " " + txt_name->Text 
+					+ " als Vorgesetzten erstellen.\nIst das korrekt?", "Neue Abteilung?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 					//Wenn Rolle Vorgesetzter gewählt wird neuer Vorgesetzter mit passender Abteilung erstellt
 					Abteilung^ abteilung = gcnew Abteilung(txt_abteilung->Text, nullptr);
-					neuerMitarbeiter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, txt_passwort->Text, Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), this->adminCBox->Checked);
+					neuerMitarbeiter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, verschluesselung->ComputeHash(passwortInBytes), Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), this->adminCBox->Checked);
 					abteilung->setVorgesetzter(neuerMitarbeiter);
 					unternehmen->addAbteilung(abteilung);
+					String^ passwortString;
+					for (int i = 0; i < verschluesselung->ComputeHash(passwortInBytes)->Length; i++) {
+						passwortString += verschluesselung->ComputeHash(passwortInBytes)[i];
+					}
+					MessageBox::Show(passwortString, "Passwort verschlüsselt", MessageBoxButtons::OK, MessageBoxIcon::Information);
 					this->DialogResult = System::Windows::Forms::DialogResult::OK;
 				}
 			}

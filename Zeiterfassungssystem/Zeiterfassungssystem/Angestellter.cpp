@@ -2,7 +2,7 @@
 #include "Vorgesetzter.h"
 #include "Mitarbeiter.h"
 
-Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, String ^ passwort, Int32 wochenstunden, Int32 urlaubstage)
+Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abteilung, String ^ personalnummer, array<Byte>^ passwort, Int32 wochenstunden, Int32 urlaubstage)
 {
 	this->vorname = vorname;
 	this->nachname = nachname;

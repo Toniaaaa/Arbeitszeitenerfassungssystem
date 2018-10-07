@@ -16,7 +16,7 @@ private:
 	Boolean istAdmin;
 
 public:
-	Vorgesetzter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, String^ passwort, Int32 wochenstunden, Int32 urlaubstage, Boolean istAdmin);
+	Vorgesetzter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, array<Byte>^ passwort, Int32 wochenstunden, Int32 urlaubstage, Boolean istAdmin);
 	Vorgesetzter(Mitarbeiter^ mitarbeiterAlt, Boolean istAdmin);
 	Vorgesetzter(Vorgesetzter^ vorgesetzter);
 

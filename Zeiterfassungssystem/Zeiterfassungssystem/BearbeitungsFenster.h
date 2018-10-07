@@ -15,6 +15,7 @@ namespace Zeiterfassungssystem {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Text::RegularExpressions;
+	using namespace System::Security::Cryptography; //ZUM HASHEN
 	//ref class StartseiteVorgesetzte;
 	/// <summary>
 	/// Zusammenfassung für RegistrierungsFenster
@@ -24,13 +25,14 @@ namespace Zeiterfassungssystem {
 	{
 	private:
 		VorgesetztenAuswahlFenster^ vorgesetztenFenster;
-
+		SHA1^ verschluesselung; //ZUM HASHEN
 	public:
 
 		BearbeitungsFenster(void)
 		{
 			InitializeComponent();
 			vorgesetztenFenster = gcnew VorgesetztenAuswahlFenster;
+			this->verschluesselung = gcnew SHA1CryptoServiceProvider(); //ZUM HASHEN
 		}
 
 	protected:
@@ -419,7 +421,6 @@ namespace Zeiterfassungssystem {
 				txt_name->Text = angestellte[i]->getNachname();
 				txt_vorname->Text = angestellte[i]->getVorname();
 				txt_abteilung->Text = angestellte[i]->getAbteilung()->getAbteilungsnummer();
-				txt_passwort->Text = angestellte[i]->getPasswort();
 				txt_arbeitsstunden->Text = Convert::ToString(angestellte[i]->getWochensstunden());
 				txt_urlaubstage->Text = Convert::ToString(angestellte[i]->getJahresurlaub());
 				if (angestellte[i]->istVorgesetzter()) {
@@ -575,7 +576,10 @@ namespace Zeiterfassungssystem {
 			angestellter->setNachname(txt_name->Text);
 			angestellter->setVorname(txt_vorname->Text);
 			angestellter->setPersonalnummer(txt_personalnummer->Text);
-			angestellter->setPasswort(txt_passwort->Text);
+			if (txt_passwort->Text->Length != 0) {
+				array<Byte>^ passwortInBytes = System::Text::Encoding::UTF8->GetBytes(txt_passwort->Text); //Zum HASHEN
+				angestellter->setPasswort(verschluesselung->ComputeHash(passwortInBytes)); //ZUM HASHEN
+			}
 			angestellter->setWochenstunden(Convert::ToInt32(txt_arbeitsstunden->Text));
 			angestellter->setUrlaubstage(Convert::ToInt32(txt_urlaubstage->Text));
 

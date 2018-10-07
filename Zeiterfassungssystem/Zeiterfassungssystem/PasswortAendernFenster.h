@@ -243,18 +243,20 @@ namespace Zeiterfassungssystem {
 	private: System::Void btn_bestätigen_Click(System::Object^  sender, System::EventArgs^  e) {
 		String^ personalnummer = getBenutzername();
 		String^ passwort = getAltesPasswort();
+		array<Byte>^ passwortBytes = System::Text::Encoding::UTF8->GetBytes(txt_altespasswort->Text); //ZUM HASHEN
 		String^ neuespasswort = getNeuesPasswort();
+		array<Byte>^ neuespasswortBytes = System::Text::Encoding::UTF8->GetBytes(txt_neuespasswort->Text); //ZUM HASHEN
 		String^ passwortwiederholen = getPasswortWiederholen();
 		Angestellter^ angestellter;
 		LoginFenster^ loginfenster;
 		setUnternehmen(unternehmen);
-		angestellter = unternehmen->loginaccept(personalnummer, passwort);
+		angestellter = unternehmen->loginaccept(personalnummer, passwortBytes);
 		if (angestellter == nullptr) {
 			MessageBox::Show("Personalnummer oder Passwort falsch", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			clear();
 		}
 		else if (neuespasswort->Equals(passwortwiederholen) && neuespasswort != "") {
-			angestellter->setPasswort(neuespasswort);
+			angestellter->setPasswort(neuespasswortBytes);
 			this->clear();
 			this->Close();
 		}
