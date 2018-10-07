@@ -11,8 +11,7 @@ namespace Zeiterfassungssystem {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Security::Cryptography; //ZUM HASHEN
-	ref class LoginFenster;
-
+	
 	/// <summary>
 	/// Zusammenfassung für PasswortAendernFenster
 	/// </summary>
@@ -20,11 +19,11 @@ namespace Zeiterfassungssystem {
 	{
 	private:
 		Unternehmen ^ unternehmen;
-		SHA512^ verschluesselung; //ZUM HASHEN
+		SHA512^ hash; //ZUM HASHEN
 	public:
 		PasswortAendernFenster(void)
 		{
-			this->verschluesselung = gcnew SHA512Managed(); //ZUM HASHEN
+			this->hash = gcnew SHA512Managed(); //ZUM HASHEN
 			InitializeComponent();
 		}
 
@@ -82,10 +81,10 @@ namespace Zeiterfassungssystem {
 			// 
 			// btn_bestätigen
 			// 
-			this->btn_bestätigen->Location = System::Drawing::Point(39, 236);
-			this->btn_bestätigen->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->btn_bestätigen->Location = System::Drawing::Point(52, 290);
+			this->btn_bestätigen->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->btn_bestätigen->Name = L"btn_bestätigen";
-			this->btn_bestätigen->Size = System::Drawing::Size(74, 42);
+			this->btn_bestätigen->Size = System::Drawing::Size(99, 52);
 			this->btn_bestätigen->TabIndex = 0;
 			this->btn_bestätigen->Text = L"Bestätigen";
 			this->btn_bestätigen->UseVisualStyleBackColor = true;
@@ -93,10 +92,10 @@ namespace Zeiterfassungssystem {
 			// 
 			// btn_abbrechen
 			// 
-			this->btn_abbrechen->Location = System::Drawing::Point(172, 236);
-			this->btn_abbrechen->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->btn_abbrechen->Location = System::Drawing::Point(229, 290);
+			this->btn_abbrechen->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->btn_abbrechen->Name = L"btn_abbrechen";
-			this->btn_abbrechen->Size = System::Drawing::Size(74, 42);
+			this->btn_abbrechen->Size = System::Drawing::Size(99, 52);
 			this->btn_abbrechen->TabIndex = 1;
 			this->btn_abbrechen->Text = L"Abbrechen";
 			this->btn_abbrechen->UseVisualStyleBackColor = true;
@@ -105,73 +104,72 @@ namespace Zeiterfassungssystem {
 			// lbl_benutzername
 			// 
 			this->lbl_benutzername->AutoSize = true;
-			this->lbl_benutzername->Location = System::Drawing::Point(10, 76);
-			this->lbl_benutzername->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->lbl_benutzername->Location = System::Drawing::Point(13, 94);
 			this->lbl_benutzername->Name = L"lbl_benutzername";
-			this->lbl_benutzername->Size = System::Drawing::Size(75, 13);
+			this->lbl_benutzername->Size = System::Drawing::Size(100, 17);
 			this->lbl_benutzername->TabIndex = 2;
 			this->lbl_benutzername->Text = L"Benutzername";
 			// 
 			// lbl_altesPasswort
 			// 
 			this->lbl_altesPasswort->AutoSize = true;
-			this->lbl_altesPasswort->Location = System::Drawing::Point(10, 108);
-			this->lbl_altesPasswort->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->lbl_altesPasswort->Location = System::Drawing::Point(13, 133);
 			this->lbl_altesPasswort->Name = L"lbl_altesPasswort";
-			this->lbl_altesPasswort->Size = System::Drawing::Size(76, 13);
+			this->lbl_altesPasswort->Size = System::Drawing::Size(100, 17);
 			this->lbl_altesPasswort->TabIndex = 3;
 			this->lbl_altesPasswort->Text = L"Altes Passwort";
 			// 
 			// lbl_neuesPasswort
 			// 
 			this->lbl_neuesPasswort->AutoSize = true;
-			this->lbl_neuesPasswort->Location = System::Drawing::Point(9, 147);
-			this->lbl_neuesPasswort->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->lbl_neuesPasswort->Location = System::Drawing::Point(12, 181);
 			this->lbl_neuesPasswort->Name = L"lbl_neuesPasswort";
-			this->lbl_neuesPasswort->Size = System::Drawing::Size(84, 13);
+			this->lbl_neuesPasswort->Size = System::Drawing::Size(110, 17);
 			this->lbl_neuesPasswort->TabIndex = 4;
 			this->lbl_neuesPasswort->Text = L"Neues Passwort";
 			// 
 			// lbl_neuesPasswortbestättigen
 			// 
 			this->lbl_neuesPasswortbestättigen->AutoSize = true;
-			this->lbl_neuesPasswortbestättigen->Location = System::Drawing::Point(9, 182);
-			this->lbl_neuesPasswortbestättigen->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->lbl_neuesPasswortbestättigen->Location = System::Drawing::Point(12, 224);
 			this->lbl_neuesPasswortbestättigen->Name = L"lbl_neuesPasswortbestättigen";
-			this->lbl_neuesPasswortbestättigen->Size = System::Drawing::Size(110, 13);
+			this->lbl_neuesPasswortbestättigen->Size = System::Drawing::Size(145, 17);
 			this->lbl_neuesPasswortbestättigen->TabIndex = 5;
 			this->lbl_neuesPasswortbestättigen->Text = L"Passwort wiederholen";
 			// 
 			// txt_benutzername
 			// 
-			this->txt_benutzername->Location = System::Drawing::Point(144, 76);
-			this->txt_benutzername->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->txt_benutzername->Location = System::Drawing::Point(192, 94);
+			this->txt_benutzername->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->txt_benutzername->Name = L"txt_benutzername";
-			this->txt_benutzername->Size = System::Drawing::Size(113, 20);
+			this->txt_benutzername->Size = System::Drawing::Size(149, 22);
 			this->txt_benutzername->TabIndex = 6;
 			// 
 			// txt_altespasswort
 			// 
-			this->txt_altespasswort->Location = System::Drawing::Point(144, 106);
-			this->txt_altespasswort->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->txt_altespasswort->Location = System::Drawing::Point(192, 130);
+			this->txt_altespasswort->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->txt_altespasswort->Name = L"txt_altespasswort";
-			this->txt_altespasswort->Size = System::Drawing::Size(113, 20);
+			this->txt_altespasswort->PasswordChar = '*';
+			this->txt_altespasswort->Size = System::Drawing::Size(149, 22);
 			this->txt_altespasswort->TabIndex = 7;
 			// 
 			// txt_neuespasswort
 			// 
-			this->txt_neuespasswort->Location = System::Drawing::Point(144, 143);
-			this->txt_neuespasswort->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->txt_neuespasswort->Location = System::Drawing::Point(192, 176);
+			this->txt_neuespasswort->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->txt_neuespasswort->Name = L"txt_neuespasswort";
-			this->txt_neuespasswort->Size = System::Drawing::Size(113, 20);
+			this->txt_neuespasswort->PasswordChar = '*';
+			this->txt_neuespasswort->Size = System::Drawing::Size(149, 22);
 			this->txt_neuespasswort->TabIndex = 8;
 			// 
 			// txt_passwortwiederholen
 			// 
-			this->txt_passwortwiederholen->Location = System::Drawing::Point(144, 182);
-			this->txt_passwortwiederholen->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->txt_passwortwiederholen->Location = System::Drawing::Point(192, 224);
+			this->txt_passwortwiederholen->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->txt_passwortwiederholen->Name = L"txt_passwortwiederholen";
-			this->txt_passwortwiederholen->Size = System::Drawing::Size(113, 20);
+			this->txt_passwortwiederholen->PasswordChar = '*';
+			this->txt_passwortwiederholen->Size = System::Drawing::Size(149, 22);
 			this->txt_passwortwiederholen->TabIndex = 9;
 			// 
 			// lbl_PasswortAendern
@@ -179,18 +177,19 @@ namespace Zeiterfassungssystem {
 			this->lbl_PasswortAendern->AutoSize = true;
 			this->lbl_PasswortAendern->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lbl_PasswortAendern->Location = System::Drawing::Point(10, 17);
+			this->lbl_PasswortAendern->Location = System::Drawing::Point(13, 21);
+			this->lbl_PasswortAendern->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->lbl_PasswortAendern->Name = L"lbl_PasswortAendern";
-			this->lbl_PasswortAendern->Size = System::Drawing::Size(273, 37);
+			this->lbl_PasswortAendern->Size = System::Drawing::Size(334, 46);
 			this->lbl_PasswortAendern->TabIndex = 10;
 			this->lbl_PasswortAendern->Text = L"Passwort ändern";
 			// 
 			// PasswortAendernFenster
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
-			this->ClientSize = System::Drawing::Size(283, 301);
+			this->ClientSize = System::Drawing::Size(377, 370);
 			this->Controls->Add(this->lbl_PasswortAendern);
 			this->Controls->Add(this->txt_passwortwiederholen);
 			this->Controls->Add(this->txt_neuespasswort);
@@ -203,9 +202,10 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->btn_abbrechen);
 			this->Controls->Add(this->btn_bestätigen);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
-			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->Name = L"PasswortAendernFenster";
 			this->Text = L"Passwort Ändern";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &PasswortAendernFenster::PasswortAendernFenster_FormClosing);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -242,29 +242,21 @@ namespace Zeiterfassungssystem {
 	private: System::Void btn_bestätigen_Click(System::Object^  sender, System::EventArgs^  e) {
 		String^ personalnummer = getBenutzername();
 		String^ passwort = getAltesPasswort();
-		array<Byte>^ passwortBytes = System::Text::Encoding::UTF8->GetBytes(txt_altespasswort->Text); //ZUM HASHEN
-		String^ neuespasswort = getNeuesPasswort();
-		array<Byte>^ passwortCrypt = verschluesselung->ComputeHash(passwortBytes); //ZUM HASHEN
-		array<Byte>^ neuespasswortBytes = System::Text::Encoding::UTF8->GetBytes(txt_neuespasswort->Text); //ZUM HASHEN
-		array<Byte>^ neuespasswortCrypt = verschluesselung->ComputeHash(neuespasswortBytes); //ZUM HASHEN
-		String^ passwortwiederholen = getPasswortWiederholen();
 		Angestellter^ angestellter;
-		LoginFenster^ loginfenster;
-		setUnternehmen(unternehmen);
+		array<Byte>^ passwortBytes = System::Text::Encoding::UTF8->GetBytes(passwort); //ZUM HASHEN
+		String^ neuespasswort = getNeuesPasswort();
+		array<Byte>^ passwortCrypt = hash->ComputeHash(passwortBytes); //ZUM HASHEN
+		array<Byte>^ neuespasswortBytes = System::Text::Encoding::UTF8->GetBytes(neuespasswort); //ZUM HASHEN
+		array<Byte>^ neuespasswortCrypt = hash->ComputeHash(neuespasswortBytes); //ZUM HASHEN
+		String^ passwortwiederholen = getPasswortWiederholen();
+		//prueft ob angestellter und altes Passwort uebereinstimmmen
 		angestellter = unternehmen->loginaccept(personalnummer, passwortCrypt);
-		String^ passwortString1;
-		for (int i = 0; i < passwortCrypt->Length; i++) {
-			passwortString1 += passwortCrypt[i];
-		}
-		String^ passwortString2;
-		for (int i = 0; i < angestellter->getPasswort()->Length; i++) {
-			passwortString2 += angestellter->getPasswort()[i];
-		}
 		if (angestellter == nullptr) {
 			MessageBox::Show("Personalnummer oder Passwort falsch", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			clear();
 		}
-		else if (passwortString1->Equals(passwortString2) && neuespasswort != "") {
+		//wenn alles okay dann wird neues Passwort gespeichert 
+		else if (neuespasswort->Equals(passwortwiederholen) && neuespasswort != "") {
 			angestellter->setPasswort(neuespasswortCrypt);
 			this->clear();
 			this->Close();
@@ -272,12 +264,19 @@ namespace Zeiterfassungssystem {
 		else {
 			MessageBox::Show("Neues Passwort stimmt nicht überein oder Feld leer!", "Fehler!",
 				MessageBoxButtons::OK, MessageBoxIcon::Information);
+			txt_neuespasswort->Text = "";
+			txt_passwortwiederholen->Text = "";
+
 		}
 
 	}
     //Bei Klick auf den Button wird das Fenster geschlossen
 	private: System::Void btn_abbrechen_Click_1(System::Object^  sender, System::EventArgs^  e) {
 		this->Close();
+		this->clear();
 	}
-	};
+	private: System::Void PasswortAendernFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+		this->clear();
+	}
+};
 }
