@@ -272,14 +272,28 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void btn_aendern_Click(System::Object^  sender, System::EventArgs^  e) {
 		//erkennt die angeklickte Zeile und gibt die passenden Ereignisse weiter
+		bool fehler = true;
+	
 		if (selectedEreignis >= 0) {
-			aenderungsantrag->setSelectedEreignis(selectedEreignis);
-			aenderungsantrag->ShowDialog(this);
+			for (int i = selectedEreignis; i < angestellter->getAnzahlEreignisse(); i++) {
+				if (angestellter->getEreignis(i)->getTyp() == ARBEIT_ENDE) {
+					aenderungsantrag->setSelectedEreignis(selectedEreignis);
+					aenderungsantrag->ShowDialog(this);
+					fehler = false;
+					break;
+				}
+			}
 		}
 		else {
 			MessageBox::Show("Bitte wählen Sie eine zu ändernde Zeile aus!", "Keine Auswahl getroffen!", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			fehler = false;
 		}
 		aenderungsantrag->clear(); //Textfelder wieder leeren
+	
+		if (fehler) {
+			MessageBox::Show("Das Bearbeiten ist erst nach Beenden des Arbeitstages möglich!", "Bearbeitung nicht möglich!", MessageBoxButtons::OK, MessageBoxIcon::Information);
+
+		}
 	}
 
 	//Krankheit-Button geklickt
