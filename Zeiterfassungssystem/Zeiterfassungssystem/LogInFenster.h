@@ -294,7 +294,7 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void btn_passwortAendern_Click(System::Object^  sender, System::EventArgs^  e) {
 		passwortaendernseite->setUnternehmen(unternehmen);
-		passwortaendernseite->Show();
+		passwortaendernseite->ShowDialog(this);
 	}
 
 	private: System::Void LoginFenster_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {
