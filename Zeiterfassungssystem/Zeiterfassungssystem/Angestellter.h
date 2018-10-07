@@ -92,7 +92,6 @@ public:
 	inline void setWochenstunden(Int32 wochenstunden) {this->wochenstunden = wochenstunden;}
 	inline void setUrlaubstage(Int32 urlaubstage) {this->urlaubstage = urlaubstage;}
 	inline void setUrlaubstageGespart(Int32 urlaubstage) { this->urlaubstageGespart = urlaubstage; }
-	inline void setWochenZeitErreicht(Boolean erreicht) {this->wochenZeitErreicht = erreicht;}
 	inline void setArbeitsStunden(Int32 stunden) { this->arbeitsStunden = stunden; }
 	inline void setArbeitsMinuten(Int32 minuten) { this->arbeitsMinuten = minuten; }
 	inline void setUeberStunden(Int32 stunden) { this->ueberStunden = stunden; }
@@ -102,6 +101,7 @@ public:
 	inline void setAktuellenStatus(String^ status) { this->status = status; }
 	inline void setAenderungVorgenommen(Boolean wurdeVorgenommen) { this->aenderungVorgenommen = wurdeVorgenommen; }
 
+	void setWochenZeitErreicht(Boolean erreicht);
 	void setUeberstundenGesamt(Int32 stunden, Int32 minuten);
 
 	virtual bool istVorgesetzter() = 0;

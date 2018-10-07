@@ -86,6 +86,14 @@ Angestellter::Angestellter(Mitarbeiter^ mitarbeiterAlt)
 	this->aenderungVorgenommen = mitarbeiterAlt->getAenderungVorgenommen();
 }
 
+//Setzt den Boolean Wochenzeiterreicht nur, wenn keine Aenderung vorgenommen wurde.
+void Angestellter::setWochenZeitErreicht(Boolean erreicht)
+{ 
+	if (!aenderungVorgenommen) {
+		this->wochenZeitErreicht = erreicht;
+	}
+}
+
 //Gibt den restlichen Jahresurlaub zurück, den der Angestellte noch nicht eingereicht hat.
 Int32 Angestellter::getRestUrlaub() 
 {

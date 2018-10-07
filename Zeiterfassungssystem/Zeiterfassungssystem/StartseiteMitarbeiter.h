@@ -877,9 +877,7 @@ namespace Zeiterfassungssystem {
 	//SEITE WIRD GESCHLOSSEN
 	private: System::Void StartseiteMitarbeiter_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
 		//Es wird gespeichert, ob die Wochen-Arbeitszeit bereits erreicht wurde.
-		if (!angestellterAkt->getAenderungVorgenommen()) {
-			angestellterAkt->setWochenZeitErreicht(wochenZeitErreicht);
-		}
+		angestellterAkt->setWochenZeitErreicht(wochenZeitErreicht);
 		//Unternehmen wird gespeichert
 		unternehmen->speichern(); 
 		Application::Exit();
