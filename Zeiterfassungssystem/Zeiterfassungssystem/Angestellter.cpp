@@ -580,7 +580,7 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 
 	/*1. Fall: Es wurden bereits Überstunden gezählt (also Wochen-Arbeitszeit war schon erreicht). Die übergebenen Stunden und Minuten 
 	werden von den Überstunden subtrahiert.*/
-	if (wochenZeitErreicht) {
+	if (wochenZeitErreicht && (ueberMinuten > 0 || ueberMinuten > 0)) {
 		ueberStd -= stunden;
 		if (ueberMin - minuten < 0) {
 			ueberStd--;
