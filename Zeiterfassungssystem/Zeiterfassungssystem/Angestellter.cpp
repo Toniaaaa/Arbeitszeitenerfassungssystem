@@ -586,6 +586,10 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 			ueberStd--;
 			ueberMin = ueberMin - minuten + 60;
 		}
+		else if (ueberMin - minuten > 59) {
+			ueberStd++;
+			ueberMin = ueberMin - minuten - 60;
+		}
 		else {
 			ueberMin -= minuten;
 		}
@@ -605,6 +609,10 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 		if (arbeitsMin - minuten < 0) {
 			arbeitsStd--;
 			arbeitsMin = arbeitsMin - minuten + 60;
+		}
+		else if (arbeitsMin - minuten > 59) {
+			arbeitsStd++;
+			arbeitsMin = arbeitsMin - minuten - 60;
 		}
 		else {
 			arbeitsMin -= minuten;
