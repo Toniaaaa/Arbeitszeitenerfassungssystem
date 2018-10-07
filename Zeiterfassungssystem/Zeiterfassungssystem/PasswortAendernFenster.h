@@ -10,6 +10,7 @@ namespace Zeiterfassungssystem {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Security::Cryptography; //ZUM HASHEN
 	ref class LoginFenster;
 
 	/// <summary>
@@ -19,14 +20,12 @@ namespace Zeiterfassungssystem {
 	{
 	private:
 		Unternehmen ^ unternehmen;
+		SHA512^ verschluesselung; //ZUM HASHEN
 	public:
 		PasswortAendernFenster(void)
 		{
+			this->verschluesselung = gcnew SHA512Managed(); //ZUM HASHEN
 			InitializeComponent();
-			//Unterfenster initialisieren
-			//
-			//TODO: Konstruktorcode hier hinzufügen.
-			//
 		}
 
 	protected:
@@ -245,18 +244,28 @@ namespace Zeiterfassungssystem {
 		String^ passwort = getAltesPasswort();
 		array<Byte>^ passwortBytes = System::Text::Encoding::UTF8->GetBytes(txt_altespasswort->Text); //ZUM HASHEN
 		String^ neuespasswort = getNeuesPasswort();
+		array<Byte>^ passwortCrypt = verschluesselung->ComputeHash(passwortBytes); //ZUM HASHEN
 		array<Byte>^ neuespasswortBytes = System::Text::Encoding::UTF8->GetBytes(txt_neuespasswort->Text); //ZUM HASHEN
+		array<Byte>^ neuespasswortCrypt = verschluesselung->ComputeHash(neuespasswortBytes); //ZUM HASHEN
 		String^ passwortwiederholen = getPasswortWiederholen();
 		Angestellter^ angestellter;
 		LoginFenster^ loginfenster;
 		setUnternehmen(unternehmen);
-		angestellter = unternehmen->loginaccept(personalnummer, passwortBytes);
+		angestellter = unternehmen->loginaccept(personalnummer, passwortCrypt);
+		String^ passwortString1;
+		for (int i = 0; i < passwortCrypt->Length; i++) {
+			passwortString1 += passwortCrypt[i];
+		}
+		String^ passwortString2;
+		for (int i = 0; i < angestellter->getPasswort()->Length; i++) {
+			passwortString2 += angestellter->getPasswort()[i];
+		}
 		if (angestellter == nullptr) {
 			MessageBox::Show("Personalnummer oder Passwort falsch", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			clear();
 		}
-		else if (neuespasswort->Equals(passwortwiederholen) && neuespasswort != "") {
-			angestellter->setPasswort(neuespasswortBytes);
+		else if (passwortString1->Equals(passwortString2) && neuespasswort != "") {
+			angestellter->setPasswort(neuespasswortCrypt);
 			this->clear();
 			this->Close();
 		}
