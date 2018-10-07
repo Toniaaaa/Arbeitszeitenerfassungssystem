@@ -563,6 +563,8 @@ void Angestellter::zieheZeitAb(Int32 stunden, Int32 minuten) {
 	else {
 		arbeitsMinuten = zeit.Minutes;
 		arbeitsStunden = zeit.Hours + 24 * zeit.Days;
+		ueberStunden = 0;
+		ueberMinuten = 0;
 	}
 }
 
@@ -588,7 +590,7 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 			ueberMin -= minuten;
 		}
 		if (ueberStd >= 0) {
-			reduzierteZeit = reduzierteZeit = gcnew TimeSpan(ueberStd, ueberMin, 1);
+			reduzierteZeit = gcnew TimeSpan(ueberStd, ueberMin, 1);
 		}
 		//2. Fall: Die Wochen-Arbeitszeit wurde durch den Zeitabzug doch nicht mehr erreicht
 		else {
@@ -617,7 +619,6 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 			reduzierteZeit = gcnew TimeSpan(ueberStd, ueberMin, 1);
 		}
 	}
-
 	return *reduzierteZeit;
 }
 
@@ -773,7 +774,9 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 	Int32 wenigerMinuten = (abzugArbeitszeit - wenigerStunden) * 60;
 
 	//Diese Zeit von den ArbeitsStunden und Minuten dieser Woche abziehen
-	this->zieheZeitAb(wenigerStunden, wenigerMinuten);
+	if (anzFreieTage > 0) {
+		this->zieheZeitAb(wenigerStunden, wenigerMinuten);
+	}
 
 	//Jetzt werden die Krankmeldungen geprüft, die weiter zurückliegen als nur diese Woche (max 6 Wochen zurückliegend wird geprüft).
 	//Exception-Handling, weil evtl. eine Null-Reference-Exception auftreten kann.
@@ -813,7 +816,9 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 	wenigerStunden = (Int32)abzugArbeitszeit;
 	wenigerMinuten = (abzugArbeitszeit - wenigerStunden) * 60;
 
-	setUeberstundenGesamt(wenigerStunden, wenigerMinuten);
+	if (anzFreieTage > 0) {
+		setUeberstundenGesamt(wenigerStunden, wenigerMinuten);
+	}
 }
 
 /*Entfernt Urlaubstage in einem bestimten Zeitraum (Datum von - Datum bis) aus der Liste der Urlaubstage und erstellt eine Nachricht

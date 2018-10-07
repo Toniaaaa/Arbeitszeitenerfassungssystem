@@ -953,6 +953,7 @@ namespace Zeiterfassungssystem {
 	private: System::Void StartseiteVorgesetzte_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
 		//Es wird gespeichert, ob die Wochen-Arbeitszeit bereits erreicht wurde.
 		angestellterAkt->setWochenZeitErreicht(wochenZeitErreicht); 
+		MessageBox::Show(Convert::ToString(wochenZeitErreicht), "Wochenzeit erreicht?", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		//Unternehmen wird gespeichert
 		unternehmen->speichern(); 
 		Application::Exit();
@@ -1250,6 +1251,7 @@ namespace Zeiterfassungssystem {
 		//Werte für Noch-Arbeitszeit-Timer werden gesetzte
 		//TimeSpan gibt die Noch-Wochen-Arbeitszeit um die aktuelle Arbeitszeit reduziert an
 		TimeSpan abgelaufeneZeit = angestellterAkt->getReduzierteZeit(stunde, minute);
+		System::Windows::Forms::MessageBox::Show(abgelaufeneZeit.ToString(), "reduzierte Zeit", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Information);
 		arbeitsStunden = abgelaufeneZeit.Hours + 24 * abgelaufeneZeit.Days;
 		arbeitsMinuten = abgelaufeneZeit.Minutes;
 		//Der Sekundenwert des TimeSpans gibt mit 1 oder 0 an, ob die Wochenzeit erreicht wurde
