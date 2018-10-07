@@ -506,8 +506,8 @@ namespace Zeiterfassungssystem {
 		}
 
 		//Eingabepprüfung wie im Registrierungsfenster
-		if (this->txt_name->Text->Length == 0 || this->txt_vorname->Text->Length == 0 || this->txt_personalnummer->Text->Length == 0 || this->txt_passwort->Text->Length == 0
-			|| this->txt_arbeitsstunden->Text->Length == 0 || this->txt_urlaubstage->Text->Length == 0 || this->txt_Rolle->Text->Length == 0 || this->txt_abteilung->Text->Length == 0) {
+		if (this->txt_name->Text->Length == 0 || this->txt_vorname->Text->Length == 0 || this->txt_personalnummer->Text->Length == 0 || this->txt_arbeitsstunden->Text->Length == 0 
+			|| this->txt_urlaubstage->Text->Length == 0 || this->txt_Rolle->Text->Length == 0 || this->txt_abteilung->Text->Length == 0) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			System::Windows::Forms::MessageBox::Show("Bitte füllen Sie alle Felder aus!", "Fehlgeschlagen!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);

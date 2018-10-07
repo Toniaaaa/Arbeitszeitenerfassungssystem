@@ -16,7 +16,6 @@ namespace Zeiterfassungssystem {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Collections::Generic;
-	using namespace System::Media;
 	//Namespace zum lesen und schreiben
 	using namespace System::Runtime::Serialization::Formatters::Binary;
 	using namespace System::IO;
@@ -28,7 +27,6 @@ namespace Zeiterfassungssystem {
 	public ref class LoginFenster : public System::Windows::Forms::Form
 	{
 	private:
-		SoundPlayer^ sound;
 		Unternehmen^ unternehmen;
 		StartseiteMitarbeiter^ startseitemitarbeiter;
 		StartseiteVorgesetzte^ startseitevorgesetzte;
@@ -37,18 +35,15 @@ namespace Zeiterfassungssystem {
 		Angestellter^ angestellter;
 		SHA512^ verschluesselung;
 		bool loginGedrueckt = false;
+		BegruessungsFenster^ begruessung;
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::Button^  HilfeBtn;
-
-
-			 BegruessungsFenster^ begruessung;
 		
 	public:
 		LoginFenster(void)
 		{
 			InitializeComponent();
-			sound = gcnew SoundPlayer();
 			unternehmen = Unternehmen::ladeUnternehmen(Unternehmen::SPEICHERORT);
 			if (unternehmen->getAlleAngestellte()->Count == 0) {
 				begruessung = gcnew BegruessungsFenster;
