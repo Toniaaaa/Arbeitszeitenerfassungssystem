@@ -131,7 +131,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->bestaetigenBtn);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"AbteilungLoeschenFenster";
-			this->Text = L"AbteilungLoeschenFenster";
+			this->Text = L"Abteilung löschen";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &AbteilungLoeschenFenster::AbteilungLoeschenFenster_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &AbteilungLoeschenFenster::AbteilungLoeschenFenster_Load);
 			this->ResumeLayout(false);
@@ -262,6 +262,7 @@ namespace Zeiterfassungssystem {
 
 	//Leert die ComboBox
 	private: void clear() {
+		auswahlCBox->SelectedIndex = -1;
 		auswahlCBox->Items->Clear();
 	}
 

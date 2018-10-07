@@ -6,6 +6,7 @@
 
 using namespace System::Runtime::Serialization::Formatters::Binary;
 using namespace System::IO;
+using namespace System::Windows::Forms;
 
 //Konstruktor
 Unternehmen::Unternehmen()
@@ -94,7 +95,7 @@ List<Angestellter^>^ Unternehmen::getAlleAngestellte()
 }
 
 //Gibt den Angestellten zurück, der Eingeloggt wurde, wenn Benutzername und Passwort übereinstimmen
-Angestellter ^ Unternehmen::loginaccept(String ^ personalnummer, String ^ passwort)
+Angestellter ^ Unternehmen::loginaccept(String ^ personalnummer, array<Byte>^ passwort)
 {
 	List<Angestellter^>^ angestellte = getAlleAngestellte();
 	Angestellter^ result = nullptr;
@@ -105,8 +106,15 @@ Angestellter ^ Unternehmen::loginaccept(String ^ personalnummer, String ^ passwo
 
 		if (angestellter->getPersonalnummer()->Equals(personalnummer)) {
 			gefunden = true;
-
-			if (angestellter->getPasswort()->Equals(passwort)) {
+			String^ passwortString1;
+			for (int i = 0; i < angestellter->getPasswort()->Length; i++) {
+				passwortString1 += angestellter->getPasswort()[i];
+			}
+			String^ passwortString2;
+			for (int i = 0; i < passwort->Length; i++) {
+				passwortString2 += passwort[i];
+			}
+			if (passwortString1->Equals(passwortString2)) {
 				result = angestellter;
 			}
 		}

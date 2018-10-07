@@ -2,12 +2,10 @@
 
 Kalender::Kalender()
 {
-
 }
 
 Kalender::~Kalender()
 {
-
 }
 
 //Kalenderwoche eines Tages berechnen 
@@ -23,4 +21,16 @@ Int32 Kalender::berechneKW(DateTime^ tag)
 	DayOfWeek^ meinErsterWochentag = meinCI->DateTimeFormat->FirstDayOfWeek;
 	//Die KW des übergebenen Tages wird berechnet und zurückgegeben
 	return meinKalender->GetWeekOfYear(*tag, *meineCWR, *meinErsterWochentag);
+}
+
+//Gibt den ersten Tag dieser Kalenderwoche zurück
+DateTime^ Kalender::ersterTagDieserWoche()
+{
+	//Wenn heute Montag ist, wird heute als erster Tag dieser Woche gesetzt
+	DateTime^ tag = DateTime::Now.Date;
+	//Ansonsten wird nach dem ersten Montag in der Vergangenheit gesucht
+	while (tag->DayOfWeek != DayOfWeek::Monday) {
+		tag = tag->AddDays(-1.0);
+	}
+	return tag;
 }

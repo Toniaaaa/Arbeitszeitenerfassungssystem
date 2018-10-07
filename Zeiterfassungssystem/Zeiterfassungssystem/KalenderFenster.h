@@ -59,7 +59,7 @@ namespace Zeiterfassungssystem {
 			this->monthCalendar1->CalendarDimensions = System::Drawing::Size(4, 2);
 			this->monthCalendar1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->monthCalendar1->Location = System::Drawing::Point(0, 0);
-			this->monthCalendar1->Margin = System::Windows::Forms::Padding(7, 7, 7, 7);
+			this->monthCalendar1->Margin = System::Windows::Forms::Padding(7);
 			this->monthCalendar1->Name = L"monthCalendar1";
 			this->monthCalendar1->TabIndex = 0;
 			// 
@@ -71,9 +71,9 @@ namespace Zeiterfassungssystem {
 			this->ClientSize = System::Drawing::Size(721, 312);
 			this->Controls->Add(this->monthCalendar1);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
-			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"KalenderFenster";
-			this->Text = L"KalenderFenster";
+			this->Text = L"Kalender";
 			this->ResumeLayout(false);
 
 		}

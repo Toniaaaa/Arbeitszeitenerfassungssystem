@@ -18,17 +18,14 @@ namespace Zeiterfassungssystem {
 	public ref class BegruessungsFenster : public System::Windows::Forms::Form
 	{
 	private:
-		RegistrierungsFenster^ regFenster;
-	private: System::Windows::Forms::Label^  begruessungLbl1;
-	private: System::Windows::Forms::Label^  label1;
-	private: System::Windows::Forms::Label^  label2;
-			 Unternehmen^ unternehmen;
+		RegistrierungsFenster^ registrierungsfenster;
+		Unternehmen^ unternehmen;
 
 	public:
 		BegruessungsFenster(void)
 		{
 			InitializeComponent();
-			regFenster = gcnew RegistrierungsFenster;
+			registrierungsfenster = gcnew RegistrierungsFenster;
 		}
 
 	protected:
@@ -42,6 +39,9 @@ namespace Zeiterfassungssystem {
 				delete components;
 			}
 		}
+	private: System::Windows::Forms::Label^  begruessungLbl1;
+	private: System::Windows::Forms::Label^  label1;
+	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::Button^  button1;
 	private: System::Windows::Forms::Button^  addBtn;
 
@@ -63,7 +63,8 @@ namespace Zeiterfassungssystem {
 			this->addBtn = (gcnew System::Windows::Forms::Button());
 			this->begruessungLbl1 = (gcnew System::Windows::Forms::Label());
 			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// button1
@@ -115,51 +116,78 @@ namespace Zeiterfassungssystem {
 				L"ertraut machen und den ersten Nutzer hinzufügen.";
 			this->label1->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			// 
-			// label2
+			// pictureBox1
 			// 
-			this->label2->Anchor = System::Windows::Forms::AnchorStyles::Top;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 27.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label2->Location = System::Drawing::Point(-1, 142);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(693, 191);
-			this->label2->TabIndex = 4;
-			this->label2->Text = L"HIER LOGO";
-			this->label2->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
+			this->pictureBox1->Location = System::Drawing::Point(171, 110);
+			this->pictureBox1->Margin = System::Windows::Forms::Padding(2);
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(337, 235);
+			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
+			this->pictureBox1->TabIndex = 4;
+			this->pictureBox1->TabStop = false;
 			// 
 			// BegruessungsFenster
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ControlLightLight;
-			this->ClientSize = System::Drawing::Size(693, 586);
-			this->Controls->Add(this->label2);
+			this->ClientSize = System::Drawing::Size(693, 574);
+			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->begruessungLbl1);
 			this->Controls->Add(this->addBtn);
 			this->Controls->Add(this->button1);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"BegruessungsFenster";
-			this->Text = L"BegruessungsFenster";
+			this->Text = L"Begrüßung";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &BegruessungsFenster::BegruessungsFenster_FormClosing);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
-		//Öffnen des Benutzerhandbuches
+	//Öffnen des Benutzerhandbuches
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-		ProcessStartInfo^ startInfo = gcnew ProcessStartInfo("BenutzerhandbuchTimeUp.pdf");
-		Process::Start(startInfo);
+		try {
+			Diagnostics::ProcessStartInfo^ startInfo = gcnew Diagnostics::ProcessStartInfo("BenutzerhandbuchTimeUp.pdf");
+			Diagnostics::Process::Start(startInfo);
+		}
+		catch (System::IO::FileNotFoundException ^e) {
+			MessageBox::Show("Das Benutzerhandbuch konnte leider nicht gefunden werden.\nBitte wenden Sie sich an Ihren Administrator!", "Datei nicht gefunden",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 	}
-		//Öffnen des Registrierungsfensters
+
+	//Öffnen des Registrierungsfensters
 	private: System::Void addBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		regFenster->setUnternehmen(unternehmen);
-		regFenster->ShowDialog(this);
-		this->Close();
+		registrierungsfenster->setUnternehmen(unternehmen);
+		System::Windows::Forms::DialogResult result = registrierungsfenster->ShowDialog(this);
+		if (result == System::Windows::Forms::DialogResult::OK) {
+			this->Close();
+		}
 	}
 		
+	//Setter für das Unternehmen
 	public: void setUnternehmen(Unternehmen^ unternehmen) {
 		this->unternehmen = unternehmen;
 	}
 
-	};
+	//Wenn das Fenster geschlossen wird
+	private: System::Void BegruessungsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+		//Fall: Kein Admin erstellt
+		if (unternehmen->getAlleAngestellte()->Count == 0) {
+			//Sicherheitsabfrage: Programm wirklich ohne Registrierung beenden
+			if (MessageBox::Show("Sie müssen einen Administrator anlegen, bevor Sie das Programm verwenden können.\n\nWollen Sie die Registrierung abbrechen und die Anwendung verlassen?",
+				"Anwendung verlassen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+				//Antwort Ja -> Anwendung wird verlassen
+				Application::ExitThread();
+			}
+			else {
+				//Antwort Nein -> Fenster bleibt geöffnet, Anwendung läuft weiter
+				e->Cancel = true;
+			}
+		}
+	}
+};
 }

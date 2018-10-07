@@ -15,6 +15,7 @@ namespace Zeiterfassungssystem {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Text::RegularExpressions;
+	using namespace System::Security::Cryptography; //ZUM HASHEN
 	//ref class StartseiteVorgesetzte;
 	/// <summary>
 	/// Zusammenfassung für RegistrierungsFenster
@@ -24,13 +25,14 @@ namespace Zeiterfassungssystem {
 	{
 	private:
 		VorgesetztenAuswahlFenster^ vorgesetztenFenster;
-
+		SHA512^ verschluesselung; //ZUM HASHEN
 	public:
 
 		BearbeitungsFenster(void)
 		{
 			InitializeComponent();
 			vorgesetztenFenster = gcnew VorgesetztenAuswahlFenster;
+			this->verschluesselung = gcnew SHA512Managed(); //ZUM HASHEN
 		}
 
 	protected:
@@ -338,7 +340,7 @@ namespace Zeiterfassungssystem {
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"BearbeitungsFenster";
-			this->Text = L"Bearbeitung";
+			this->Text = L"Angestellte bearbeiten";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &BearbeitungsFenster::BearbeitungsFenster_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &BearbeitungsFenster::BearbeitungsFenster_Load);
 			this->ResumeLayout(false);
@@ -353,6 +355,7 @@ namespace Zeiterfassungssystem {
 		Abteilung^ abteilung;
 		String^ rolle;
 		Boolean istAdmin;
+		Int32 anzAdmins = 0;
 
 		//Clear-Methode zum zurücksetzten der Textfelder
 		void clear() {
@@ -363,7 +366,8 @@ namespace Zeiterfassungssystem {
 			this->txt_abteilung->Text = "";
 			this->txt_arbeitsstunden->Text = "";
 			this->txt_urlaubstage->Text = "";
-			this->txt_Rolle->Text = "";
+			this->txt_Rolle->SelectedIndex = -1;
+			this->txt_abteilung->SelectedIndex = -1;
 			this->txt_abteilung->Items->Clear();
 		}
 	public: 
@@ -397,6 +401,14 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void BearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
 		this->adminCBox->Enabled = false;
+
+		//Admins zählen
+		anzAdmins = 0;
+		for (int i = 0; i < unternehmen->getAbteilungen()->Count; i++) {
+			if (unternehmen->getAbteilung(i)->getVorgesetzter()->getIstAdmin()) {
+				anzAdmins++;
+			}
+		}
 	}
 
 	private: System::Void txt_personalnummer_TextChanged(System::Object^  sender, System::EventArgs^  e) {
@@ -409,7 +421,6 @@ namespace Zeiterfassungssystem {
 				txt_name->Text = angestellte[i]->getNachname();
 				txt_vorname->Text = angestellte[i]->getVorname();
 				txt_abteilung->Text = angestellte[i]->getAbteilung()->getAbteilungsnummer();
-				txt_passwort->Text = angestellte[i]->getPasswort();
 				txt_arbeitsstunden->Text = Convert::ToString(angestellte[i]->getWochensstunden());
 				txt_urlaubstage->Text = Convert::ToString(angestellte[i]->getJahresurlaub());
 				if (angestellte[i]->istVorgesetzter()) {
@@ -459,6 +470,7 @@ namespace Zeiterfassungssystem {
 		bool abteilungExistiert = false;
 		bool abteilungWechselt = false;
 		bool istVorgesetzter = false;
+		bool istLetzterAdmin = false;
 		int parse;
 		Vorgesetzter^ vorgesetzter;
 		Abteilung^ abteilung;
@@ -473,6 +485,14 @@ namespace Zeiterfassungssystem {
 		//Wenn der Angestellte, der bearbeitet werden soll, ein Vorgesetzter ist
 		if (angestellter->istVorgesetzter()) {
 			istVorgesetzter = true;
+		}
+
+		//Es wird geprüft, ob der Angestellte der letzte Admin des Unternehmens ist
+		if (istVorgesetzter) {
+			Vorgesetzter^ v = (Vorgesetzter^)angestellter;
+			if (v->getIstAdmin() && anzAdmins < 2) {
+				istLetzterAdmin = true;
+			}
 		}
 
 		//Wenn die Abteilung gewechselt werden soll
@@ -546,26 +566,49 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			txt_Rolle->Text = "";
 		}
+		//Der letzte Admin darf nicht in die Rolle einen Mitarbeiters wechseln und dadurch seine Admin-Rechte verlieren
+		else if (anzAdmins < 2 && this->txt_Rolle->Text->Equals("Mitarbeiter") && istLetzterAdmin) {
+			MessageBox::Show("Es gibt nur noch einen Administrator!\nDem letzten Administrator können die Rechte nicht entzogen werden!", "Nicht möglich", MessageBoxButtons::OK,
+				MessageBoxIcon::Error);
+		}
 		else {
 			//Werte aus den Textfeldern werden in Angestelltenobjekt geschrieben
 			angestellter->setNachname(txt_name->Text);
 			angestellter->setVorname(txt_vorname->Text);
 			angestellter->setPersonalnummer(txt_personalnummer->Text);
-			angestellter->setPasswort(txt_passwort->Text);
+			if (txt_passwort->Text->Length != 0) {
+				array<Byte>^ passwortInBytes = System::Text::Encoding::UTF8->GetBytes(txt_passwort->Text); //Zum HASHEN
+				angestellter->setPasswort(verschluesselung->ComputeHash(passwortInBytes)); //ZUM HASHEN
+			}
 			angestellter->setWochenstunden(Convert::ToInt32(txt_arbeitsstunden->Text));
 			angestellter->setUrlaubstage(Convert::ToInt32(txt_urlaubstage->Text));
 
 			//Falls Angestellter ein Vorgesetzter ist können Adminrechte gesetzt werden
 			if (angestellter->istVorgesetzter()) {
-				Vorgesetzter^ v = (Vorgesetzter^)angestellter;
-				v->setIstAdmin(adminCBox->Checked);
+				//Es muss immer mindestens einen Admin geben, also wird geprüft, ob es einen gibt, bevor Admin-Rechte entfernt werden können.
+				if ((!adminCBox->Checked && anzAdmins > 1) || adminCBox->Checked) {
+					Vorgesetzter^ v = (Vorgesetzter^)angestellter;
+					v->setIstAdmin(adminCBox->Checked);
+				}
+				else {
+					MessageBox::Show("Es gibt nur noch einen Administrator!\nDem letzten Administrator können die Rechte nicht entzogen werden!", "Nicht möglich", MessageBoxButtons::OK,
+						MessageBoxIcon::Error);
+				}
 			}
 
 			//Info-Nachricht an betroffenen Angestellten
 			String^ aenderungInfo = "Ihre gespeicherten Daten wurden geändert.\nIhre neuen Daten:\n\nName:\t\t" + txt_vorname->Text + " " + txt_name->Text + "\nPersonalnummer:\t" +
 				txt_personalnummer->Text + "\nWochenstunden:\t" + txt_arbeitsstunden->Text + "\nUrlaubstage:\t" + txt_urlaubstage->Text + "\nAbteilung:\t" + txt_abteilung->Text
-				+ "\nRolle:\t\t" + txt_Rolle->Text + "\nAdmin-Rechte:\t";
-			aenderungInfo = adminCBox->Checked ? aenderungInfo + "Ja" : aenderungInfo + "Nein";
+				+ "\nRolle:\t\t";
+			aenderungInfo = angestellter->istVorgesetzter() ? aenderungInfo + "Vorgesetzter" : aenderungInfo + "Mitarbeiter";
+			if (angestellter->istVorgesetzter()) {
+				Vorgesetzter^ vorgesetzterFuerString = (Vorgesetzter^)angestellter;
+				aenderungInfo = vorgesetzterFuerString->getIstAdmin() ? aenderungInfo + "\nAdmin - Rechte:\tJa" : aenderungInfo + "\nAdmin - Rechte:\tNein";
+			} 
+			else {
+				aenderungInfo += "\nAdmin-Rechte:\tNein";
+			}
+			
 			angestellter->addAntragsInfo(aenderungInfo);
 
 			Abteilung^ alteAbteilung = angestellter->getAbteilung();

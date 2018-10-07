@@ -10,7 +10,6 @@ namespace Zeiterfassungssystem {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-	using namespace System::Media;
 
 	/// <summary>
 	/// Zusammenfassung für UrlaubsFenster
@@ -19,26 +18,19 @@ namespace Zeiterfassungssystem {
 	{
 
 	private:
-
-		Int32 vergleichDaten;
-		Int32 vergleichMitHeute;
 		Angestellter^ angestellter;
 		Int32 restUrlaub;
 		Unternehmen^ unternehmen;
 		Int32 anzahlUrlaubstage;
-		SoundPlayer^ sound;
 
 	private: System::Windows::Forms::Label^  label4;
 	private: System::Windows::Forms::TextBox^  kommentarTxt;
 	private: System::Windows::Forms::Label^  urlaubstageLbl;
 	private: System::Windows::Forms::Button^  anzeigenBtn;
 
-			 
-
 	public:
 		UrlaubsFenster(void)
 		{
-			sound = gcnew SoundPlayer();
 			InitializeComponent();
 		}
 
@@ -277,8 +269,8 @@ namespace Zeiterfassungssystem {
 	//Leere Anzeigen
 	void clear()
 	{
-		this->urlaubBeginnDTP->Value == DateTime::Today.Date;
-		this->urlaubEndeDTP->Value == DateTime::Today.Date;
+		this->urlaubBeginnDTP->Value = DateTime::Today.Date;
+		this->urlaubEndeDTP->Value = DateTime::Today.Date;
 		this->kommentarTxt->Text = "";
 	}
 
@@ -299,8 +291,8 @@ namespace Zeiterfassungssystem {
 	private: System::Void Einreichen_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		//Vergleich der Daten wird in Integern gespeichert
-		vergleichDaten = DateTime::Compare(p_Anfang, p_Ende);
-		vergleichMitHeute = DateTime::Compare(DateTime::Today.Date, p_Anfang);
+		Int32 vergleichDaten = DateTime::Compare(p_Anfang, p_Ende);
+		Int32 vergleichMitHeute = DateTime::Compare(DateTime::Today.Date, p_Anfang);
 
 		//Anfang und Ende müssen in diesem Jahr liegen oder in einem der ersten drei Monate des nächsten Jahres
 		if (!((p_Anfang.Year == DateTime::Now.Year) || ((p_Anfang.Year == (DateTime::Now.Year + 1)) && (p_Anfang.Month < 4)))) {
@@ -345,10 +337,6 @@ namespace Zeiterfassungssystem {
 	//Waehrend Fenster laed
 	private: System::Void UrlaubsFenster_Load(System::Object^  sender, System::EventArgs^  e)
 	{
-		//Spiele Musik
-		/*sound->SoundLocation = "Sounds/lacucarachaKurz.wav";
-		sound->Load();
-		sound->Play();*/
 		//Setze Werte für Anzeige und Berechnung
 		restUrlaub = angestellter->getRestUrlaub();
 		anzahlUrlaubstage = 1;

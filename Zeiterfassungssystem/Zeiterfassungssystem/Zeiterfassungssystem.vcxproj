@@ -158,6 +158,9 @@
     <ClInclude Include="KalenderFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="KrankmeldungsFenster.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="LogInFenster.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -216,6 +219,7 @@
     <ClCompile Include="FreierTagComparer.cpp" />
     <ClCompile Include="Kalender.cpp" />
     <ClCompile Include="KalenderFenster.cpp" />
+    <ClCompile Include="KrankmeldungsFenster.cpp" />
     <ClCompile Include="LogInFenster.cpp" />
     <ClCompile Include="Mitarbeiter.cpp" />
     <ClCompile Include="PasswortAendernFenster.cpp" />
@@ -267,6 +271,9 @@
     <EmbeddedResource Include="KalenderFenster.resx">
       <DependentUpon>KalenderFenster.h</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="KrankmeldungsFenster.resx">
+      <DependentUpon>KrankmeldungsFenster.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LogInFenster.resx">
       <DependentUpon>LogInFenster.h</DependentUpon>
     </EmbeddedResource>
@@ -307,9 +314,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="Sounds\lacucarachaKurz.wav" />
     <Media Include="Sounds\beenden.wav" />
     <Media Include="Sounds\start.wav" />
+    <Media Include="Sounds\zeitBeenden.wav" />
+    <Media Include="Sounds\zeitStarten.wav" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\addIcon.jpg" />
@@ -322,7 +330,6 @@
     <Image Include="Images\LogOutIcon2.jpg" />
     <Image Include="Images\pauseIcon.jpg" />
     <Image Include="Images\pauseIcon2.jpg" />
-    <Image Include="Images\pauseIcon3.jpg" />
     <Image Include="Images\PersonalIcon2.jpg" />
     <Image Include="Images\PersonalIconKlein.jpg" />
     <Image Include="Images\statistikIcon.jpg" />

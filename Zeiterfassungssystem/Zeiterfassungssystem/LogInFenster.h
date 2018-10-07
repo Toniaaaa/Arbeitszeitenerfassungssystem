@@ -16,10 +16,10 @@ namespace Zeiterfassungssystem {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Collections::Generic;
-	using namespace System::Media;
 	//Namespace zum lesen und schreiben
 	using namespace System::Runtime::Serialization::Formatters::Binary;
 	using namespace System::IO;
+	using namespace System::Security::Cryptography; //ZUM HASHEN
 	
 	/// <summary>
 	/// Zusammenfassung für loginFenster
@@ -27,24 +27,23 @@ namespace Zeiterfassungssystem {
 	public ref class LoginFenster : public System::Windows::Forms::Form
 	{
 	private:
-		SoundPlayer^ sound;
 		Unternehmen^ unternehmen;
 		StartseiteMitarbeiter^ startseitemitarbeiter;
 		StartseiteVorgesetzte^ startseitevorgesetzte;
 		PasswortAendernFenster^ passwortaendernseite;
 		PersonalFenster^ personalfenster;
 		Angestellter^ angestellter;
+		SHA512^ verschluesselung;
 		bool loginGedrueckt = false;
+		BegruessungsFenster^ begruessung;
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::Label^  label1;
-
-			 BegruessungsFenster^ begruessung;
+	private: System::Windows::Forms::Button^  HilfeBtn;
 		
 	public:
 		LoginFenster(void)
 		{
 			InitializeComponent();
-			sound = gcnew SoundPlayer();
 			unternehmen = Unternehmen::ladeUnternehmen(Unternehmen::SPEICHERORT);
 			if (unternehmen->getAlleAngestellte()->Count == 0) {
 				begruessung = gcnew BegruessungsFenster;
@@ -55,6 +54,7 @@ namespace Zeiterfassungssystem {
 			startseitevorgesetzte = gcnew StartseiteVorgesetzte();
 			passwortaendernseite = gcnew PasswortAendernFenster();
 			begruessung = gcnew BegruessungsFenster();
+			this->verschluesselung = gcnew SHA512Managed(); //ZUM HASHEN
 		}
 
 	protected:
@@ -99,6 +99,7 @@ namespace Zeiterfassungssystem {
 			this->btn_passwortAendern = (gcnew System::Windows::Forms::Button());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->HilfeBtn = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -193,6 +194,19 @@ namespace Zeiterfassungssystem {
 			this->label1->TabIndex = 6;
 			this->label1->Text = L"Login";
 			// 
+			// HilfeBtn
+			// 
+			this->HilfeBtn->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->HilfeBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->HilfeBtn->Location = System::Drawing::Point(430, 31);
+			this->HilfeBtn->Name = L"HilfeBtn";
+			this->HilfeBtn->Size = System::Drawing::Size(36, 32);
+			this->HilfeBtn->TabIndex = 5;
+			this->HilfeBtn->Text = L"\?";
+			this->HilfeBtn->UseVisualStyleBackColor = true;
+			this->HilfeBtn->Click += gcnew System::EventHandler(this, &LoginFenster::HilfeBtn_Click);
+			// 
 			// LoginFenster
 			// 
 			this->AllowDrop = true;
@@ -202,6 +216,7 @@ namespace Zeiterfassungssystem {
 			this->AutoValidate = System::Windows::Forms::AutoValidate::EnablePreventFocusChange;
 			this->BackColor = System::Drawing::SystemColors::Window;
 			this->ClientSize = System::Drawing::Size(693, 248);
+			this->Controls->Add(this->HilfeBtn);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->btn_passwortAendern);
@@ -215,10 +230,9 @@ namespace Zeiterfassungssystem {
 				static_cast<System::Byte>(0)));
 			this->ForeColor = System::Drawing::SystemColors::MenuText;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
-			this->Name = L"Login";
+			this->Name = L"LoginFenster";
 			this->Text = L"Login";
 			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &LoginFenster::LoginFenster_FormClosed);
-			this->Load += gcnew System::EventHandler(this, &LoginFenster::loginFenster_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -239,21 +253,14 @@ namespace Zeiterfassungssystem {
 			this->txt_Kennwort->Text = "";
 		}
 
-	//Beim Laden des Fensters wird eine Sound Datei abgespielt
-	private: System::Void loginFenster_Load(System::Object^  sender, System::EventArgs^  e) {
-		//sound->SoundLocation = "";
-		//sound->Load();
-		//sound->Play();
-	}
-
 	private: System::Void logInButton_Click(System::Object^  sender, System::EventArgs^  e) {
-		String^ passwort = getKennwort();
-		
+		array<Byte>^ passwort = System::Text::Encoding::UTF8->GetBytes(getKennwort()); //ZUM HASHEN
+		array<Byte>^ passwortVerschluesselt = verschluesselung->ComputeHash(passwort); //ZUM HASHEN
 		/*LogIndaten werden überprüft, ebenfalls die rolle des Angestellten damit sich passendes Fenster öffnet
 		* Unternehmen wird uebergeben
 		*/
 		String^ personalnummer = getBenutzername();
-	    angestellter = unternehmen->loginaccept(personalnummer, passwort);
+	    angestellter = unternehmen->loginaccept(personalnummer, passwortVerschluesselt);
 		if (angestellter != nullptr && angestellter->istVorgesetzter() == false) {
 			loginGedrueckt = true;
 			startseitemitarbeiter->setAngemeldeterAngestellter((Mitarbeiter^) angestellter);
@@ -282,12 +289,25 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void btn_passwortAendern_Click(System::Object^  sender, System::EventArgs^  e) {
 		passwortaendernseite->setUnternehmen(unternehmen);
-		passwortaendernseite->Show();
+		passwortaendernseite->ShowDialog(this);
 	}
 
 	private: System::Void LoginFenster_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {
 		if (!loginGedrueckt) {
 			Application::Exit();
+		}
+	}
+
+	/*HILFE-BUTTON "?"
+	Startet den PDF-Reader des Systems und öffnet die Anleitung zum Programm*/
+	private: System::Void HilfeBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		try {
+			Diagnostics::ProcessStartInfo^ startInfo = gcnew Diagnostics::ProcessStartInfo("BenutzerhandbuchTimeUp.pdf");
+			Diagnostics::Process::Start(startInfo);
+		}
+		catch (System::ComponentModel::Win32Exception ^e) {
+			MessageBox::Show("Das Benutzerhandbuch konnte leider nicht gefunden werden.\nBitte wenden Sie sich an Ihren Administrator!", "Datei nicht gefunden",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
 
