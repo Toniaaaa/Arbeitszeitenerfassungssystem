@@ -27,6 +27,7 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->kalender = gcnew Kalender();
 	this->jahresurlaub = urlaubstage;
 	this->vergleichen = gcnew FreierTagComparer;
+	this->aenderungVorgenommen = false;
 }
 
 Angestellter::Angestellter(Vorgesetzter^ vorgesetzterAlt)
@@ -54,6 +55,7 @@ Angestellter::Angestellter(Vorgesetzter^ vorgesetzterAlt)
 	this->kalender = gcnew Kalender();
 	this->jahresurlaub = vorgesetzterAlt->getJahresurlaub();
 	this->vergleichen = gcnew FreierTagComparer;
+	this->aenderungVorgenommen = vorgesetzterAlt->getAenderungVorgenommen();
 }
 
 Angestellter::Angestellter(Mitarbeiter^ mitarbeiterAlt)
@@ -81,6 +83,7 @@ Angestellter::Angestellter(Mitarbeiter^ mitarbeiterAlt)
 	this->kalender = gcnew Kalender();
 	this->jahresurlaub = mitarbeiterAlt->getJahresurlaub();
 	this->vergleichen = gcnew FreierTagComparer;
+	this->aenderungVorgenommen = mitarbeiterAlt->getAenderungVorgenommen();
 }
 
 //Gibt den restlichen Jahresurlaub zurück, den der Angestellte noch nicht eingereicht hat.
@@ -346,6 +349,7 @@ void Angestellter::speichereArbeitszeit()
 	Int32 arbeitsAnfangHeute = getArbeitsAnfangIndexNachArbeitstag();
 	TimeSpan^ arbeitsZeitHeute = berechneArbeitsstunden(arbeitsAnfangHeute);
 	zieheZeitAb(arbeitsZeitHeute->Hours, arbeitsZeitHeute->Minutes);
+	aenderungVorgenommen = false;
 }
 
 void Angestellter::setUeberstundenGesamt(Int32 stunden, Int32 minuten) 
@@ -469,7 +473,8 @@ void Angestellter::addFeiertag(DateTime tag)
 	//Fügt einen neuen Urlaubstag mit dem übergebenen Datum hinzu... 
 	listeUrlaubstage->Add(gcnew FreierTag(tag, true));
 	//Wenn es sich nicht um einen der 5 Standard-Feiertage handelt, wird der Angestellte über das Hinzufügen eines neuen Feiertags informiert
-	if (!(tag.Day == 1 && tag.Month == 1) && !(tag.Day == 1 && tag.Month == 5) && !(tag.Day == 3 && tag.Month == 10) && !(tag.Day == 25 && tag.Month == 12) && !(tag.Day == 26 && tag.Month == 12)) {
+	if (!(tag.Day == 1 && tag.Month == 1) && !(tag.Day == 1 && tag.Month == 5) && !(tag.Day == 3 && tag.Month == 10) && !(tag.Day == 25 && tag.Month == 12) && 
+		!(tag.Day == 26 && tag.Month == 12)) {
 		this->addAntragsInfo(tag.ToString("dddd, dd. MMMM yyyy") + " wurde als neuer Feiertag zu Ihrem Urlaub hinzugefügt!");
 	}
 	//...und sortiert die Liste der Urlaubstage nach dem Datum der Urlaubstage

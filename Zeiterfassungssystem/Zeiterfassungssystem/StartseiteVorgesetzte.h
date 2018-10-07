@@ -880,7 +880,7 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
-	//WÄHREND SEITE LÄD
+	//WÄHREND SEITE LÄDT
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {
 
 		//Spiele Musik
@@ -894,7 +894,6 @@ namespace Zeiterfassungssystem {
 		}
 		//Es wird geprüft, ob ein neues Jahr oder eine neue Woche angefangen hat
 		this->neuesJahr();
-		angestellterAkt->neueWoche();
 		//Falls in dieser Woche freie Tage vorhanden sind (Urlaub, Feiertage) wird die Arbeitszeit dieser Woche entsprechend angepasst.
 		angestellterAkt->freieTagePruefen(unternehmen);
 		//Wurde die Wochen-Arbeitszeit bereits erreicht
@@ -904,7 +903,6 @@ namespace Zeiterfassungssystem {
 
 		//Fall: Wenn der Arbeitstag noch läuft, gibt es KEINEN Arbeitsanfang, der noch nicht beendet wurde.
 		if (angestellterAkt->getArbeitsAnfang() == nullptr) {
-
 			//Timer-Zeiten werden auf 0 gesetzt
 			sekunde = 0;
 			minute = 0;
@@ -952,7 +950,9 @@ namespace Zeiterfassungssystem {
 	//SEITE WIRD GESCHLOSSEN
 	private: System::Void StartseiteVorgesetzte_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
 		//Es wird gespeichert, ob die Wochen-Arbeitszeit bereits erreicht wurde.
-		angestellterAkt->setWochenZeitErreicht(wochenZeitErreicht); 
+		if (!angestellterAkt->getAenderungVorgenommen()) {
+			angestellterAkt->setWochenZeitErreicht(wochenZeitErreicht);
+		}
 		//Unternehmen wird gespeichert
 		unternehmen->speichern(); 
 		Application::Exit();
