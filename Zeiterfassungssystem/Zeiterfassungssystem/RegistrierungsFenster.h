@@ -330,23 +330,6 @@ namespace Zeiterfassungssystem {
 
 		}
 #pragma endregion
-	private: System::Void registrierungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
-		//Hinzufuegen von Abteilungen zur Auswahl
-		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
-			txt_abteilung->Items->Add(unternehmen->getAbteilung(i)->getAbteilungsnummer());
-		}
-		//Falls das Unternehmen neu ist
-		if (unternehmen->getAlleAngestellte()->Count == 0) {
-			//Der erste Mitarbeiter muss ein Administrator sein
-			txt_Rolle->Items->RemoveAt(0);
-			txt_Rolle->Items->Add("Vorgesetzter");
-			txt_abteilung->Text = "Administration";
-			adminCBox->Checked = true;
-		}
-		else if (ersteller != nullptr && ersteller->getIstAdmin()) {
-			txt_Rolle->Items->Add("Vorgesetzter");
-		}
-	}
 	//Getter zun Datenaustausch
 	public:
 		String ^ getName() {
@@ -406,6 +389,23 @@ namespace Zeiterfassungssystem {
 
 	public: void setUnternehmen(Unternehmen^ unternehmen) {
 		this->unternehmen = unternehmen;
+	}
+	private: System::Void registrierungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+		//Hinzufuegen von Abteilungen zur Auswahl
+		for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+			txt_abteilung->Items->Add(unternehmen->getAbteilung(i)->getAbteilungsnummer());
+		}
+		//Falls das Unternehmen neu ist
+		if (unternehmen->getAlleAngestellte()->Count == 0) {
+			//Der erste Mitarbeiter muss ein Administrator sein
+			txt_Rolle->Items->RemoveAt(0);
+			txt_Rolle->Items->Add("Vorgesetzter");
+			txt_abteilung->Text = "Administration";
+			adminCBox->Checked = true;
+		}
+		else if (ersteller != nullptr && ersteller->getIstAdmin()) {
+			txt_Rolle->Items->Add("Vorgesetzter");
+		}
 	}
 
 	private: System::Void btn_mitarbeiter_hinzufuegen_Click(System::Object^  sender, System::EventArgs^  e) {
