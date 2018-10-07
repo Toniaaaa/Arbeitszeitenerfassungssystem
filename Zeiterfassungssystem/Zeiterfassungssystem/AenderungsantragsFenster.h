@@ -403,6 +403,7 @@ namespace Zeiterfassungssystem {
 			this->gehenMinuteTxt->Text = "";
 			this->kommentarTxt->Text = "";
 			this->gruendeAuswahl->Items->Clear();
+			this->gruendeAuswahl->Text = "";
 		}
 		
 	//Beim Klick auf "Einreichen" wird das Fenster geschlossen und OK gesendet, falls: Die Tage eingetragen wurden und die Zahl positiv ist,
@@ -529,7 +530,7 @@ namespace Zeiterfassungssystem {
 			
 	private: System::Void AenderungsantragsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
 		//Items werden bereinigt damit sie nicht immer wieder dahinter gehängt werden
-		gruendeAuswahl->Items->Clear();
+		this->clear();
 	}
 
 	private: System::Void gruendeAuswahl_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {

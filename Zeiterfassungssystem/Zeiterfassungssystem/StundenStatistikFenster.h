@@ -291,7 +291,7 @@ namespace Zeiterfassungssystem {
 		aenderungsantrag->clear(); //Textfelder wieder leeren
 	
 		if (fehler) {
-			MessageBox::Show("Das Bearbeiten ist erst nach Beenden des Arbeitstages möglich!", "Bearbeitung nicht möglich!", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			MessageBox::Show("Das Bearbeiten ist erst nach Beenden des Arbeitstages möglich!", "Bearbeitung nicht möglich!", MessageBoxButtons::OK, MessageBoxIcon::Error);
 
 		}
 	}
