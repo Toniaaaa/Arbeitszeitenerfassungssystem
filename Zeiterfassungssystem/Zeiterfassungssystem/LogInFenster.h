@@ -261,12 +261,6 @@ namespace Zeiterfassungssystem {
 	private: System::Void logInButton_Click(System::Object^  sender, System::EventArgs^  e) {
 		array<Byte>^ passwort = System::Text::Encoding::UTF8->GetBytes(getKennwort()); //ZUM HASHEN
 		array<Byte>^ passwortVerschluesselt = verschluesselung->ComputeHash(passwort); //ZUM HASHEN
-		String^ passwortString;
-		for (int i = 0; i < passwortVerschluesselt->Length; i++) {
-			passwortString += passwortVerschluesselt[i];
-		}
-		MessageBox::Show(passwortString, "Passwort verschlüsselt", MessageBoxButtons::OK, MessageBoxIcon::Information);
-		
 		/*LogIndaten werden überprüft, ebenfalls die rolle des Angestellten damit sich passendes Fenster öffnet
 		* Unternehmen wird uebergeben
 		*/

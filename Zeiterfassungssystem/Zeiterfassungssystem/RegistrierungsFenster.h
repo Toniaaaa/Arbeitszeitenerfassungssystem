@@ -535,11 +535,6 @@ namespace Zeiterfassungssystem {
 					neuerMitarbeiter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, verschluesselung->ComputeHash(passwortInBytes), Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), this->adminCBox->Checked);
 					abteilung->setVorgesetzter(neuerMitarbeiter);
 					unternehmen->addAbteilung(abteilung);
-					String^ passwortString;
-					for (int i = 0; i < verschluesselung->ComputeHash(passwortInBytes)->Length; i++) {
-						passwortString += verschluesselung->ComputeHash(passwortInBytes)[i];
-					}
-					MessageBox::Show(passwortString, "Passwort verschlüsselt", MessageBoxButtons::OK, MessageBoxIcon::Information);
 					this->DialogResult = System::Windows::Forms::DialogResult::OK;
 				}
 			}

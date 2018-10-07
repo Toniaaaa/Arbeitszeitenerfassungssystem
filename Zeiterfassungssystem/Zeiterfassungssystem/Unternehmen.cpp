@@ -106,9 +106,15 @@ Angestellter ^ Unternehmen::loginaccept(String ^ personalnummer, array<Byte>^ pa
 
 		if (angestellter->getPersonalnummer()->Equals(personalnummer)) {
 			gefunden = true;
-			MessageBox::Show("Gefunden", "Angestellten gefunden", MessageBoxButtons::OK, MessageBoxIcon::Information);
-			if (angestellter->getPasswort() == passwort) {
-				MessageBox::Show("Passwort OK", "Angestellten gefunden", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			String^ passwortString1;
+			for (int i = 0; i < angestellter->getPasswort()->Length; i++) {
+				passwortString1 += angestellter->getPasswort()[i];
+			}
+			String^ passwortString2;
+			for (int i = 0; i < passwort->Length; i++) {
+				passwortString2 += angestellter->getPasswort()[i];
+			}
+			if (passwortString1->Equals(passwortString2)) {
 				result = angestellter;
 			}
 		}
