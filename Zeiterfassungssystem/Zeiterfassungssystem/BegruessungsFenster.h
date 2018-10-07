@@ -120,7 +120,7 @@ namespace Zeiterfassungssystem {
 			// 
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
 			this->pictureBox1->Location = System::Drawing::Point(171, 110);
-			this->pictureBox1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->pictureBox1->Margin = System::Windows::Forms::Padding(2);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(337, 235);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
@@ -141,6 +141,7 @@ namespace Zeiterfassungssystem {
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"BegruessungsFenster";
 			this->Text = L"Begrüßung";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &BegruessungsFenster::BegruessungsFenster_FormClosing);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 
@@ -161,8 +162,10 @@ namespace Zeiterfassungssystem {
 	//Öffnen des Registrierungsfensters
 	private: System::Void addBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		registrierungsfenster->setUnternehmen(unternehmen);
-		registrierungsfenster->ShowDialog(this);
-		this->Close();
+		System::Windows::Forms::DialogResult result = registrierungsfenster->ShowDialog(this);
+		if (result == System::Windows::Forms::DialogResult::OK) {
+			this->Close();
+		}
 	}
 		
 	//Setter für das Unternehmen
@@ -170,5 +173,21 @@ namespace Zeiterfassungssystem {
 		this->unternehmen = unternehmen;
 	}
 
-	};
+	//Wenn das Fenster geschlossen wird
+	private: System::Void BegruessungsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+		//Fall: Kein Admin erstellt
+		if (unternehmen->getAlleAngestellte()->Count == 0) {
+			//Sicherheitsabfrage: Programm wirklich ohne Registrierung beenden
+			if (MessageBox::Show("Sie müssen einen Administrator anlegen, bevor Sie das Programm verwenden können.\n\nWollen Sie die Registrierung abbrechen und die Anwendung verlassen?",
+				"Anwendung verlassen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+				//Antwort Ja -> Anwendung wird verlassen
+				Application::ExitThread();
+			}
+			else {
+				//Antwort Nein -> Fenster bleibt geöffnet, Anwendung läuft weiter
+				e->Cancel = true;
+			}
+		}
+	}
+};
 }
