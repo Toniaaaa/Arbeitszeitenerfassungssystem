@@ -581,23 +581,25 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 	/*1. Fall: Es wurden bereits Überstunden gezählt (also Wochen-Arbeitszeit war schon erreicht). Die übergebenen Stunden und Minuten 
 	werden von den Überstunden subtrahiert.*/
 	if (wochenZeitErreicht && (ueberMinuten > 0 || ueberMinuten > 0)) {
-		ueberStd -= stunden;
-		if (ueberMin - minuten < 0) {
-			ueberStd--;
-			ueberMin = ueberMin - minuten + 60;
-		}
-		else if (ueberMin - minuten > 59) {
+		System::Windows::Forms::MessageBox::Show("Überstunden wurden bereits eingerechnet", "Test", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Information);
+		ueberStd += stunden;
+		if (ueberMin + minuten > 59) {
 			ueberStd++;
-			ueberMin = ueberMin - minuten - 60;
+			ueberMin = ueberMin + minuten - 60;
+		}
+		else if (ueberMin + minuten < 0) {
+			ueberStd--;
+			ueberMin = ueberMin + minuten + 60;
 		}
 		else {
-			ueberMin -= minuten;
+			ueberMin += minuten;
 		}
 		if (ueberStd >= 0) {
 			reduzierteZeit = gcnew TimeSpan(ueberStd, ueberMin, 1);
 		}
 		//2. Fall: Die Wochen-Arbeitszeit wurde durch den Zeitabzug doch nicht mehr erreicht
 		else {
+			System::Windows::Forms::MessageBox::Show("Überstunden wurden bereits eingerechnet UND NICHT ERREICHT", "Test", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Information);
 			arbeitsStd = -ueberStd - 1; //-1, weil die Arbeitsstunden von 00:00 auf 1:01 springen. Mit -1 ist das korrigiert.
 			arbeitsMin = (ueberMin == 0) ? 0 : 60 - ueberMin;
 			reduzierteZeit = gcnew TimeSpan(arbeitsStd, arbeitsMin, 0);
@@ -605,6 +607,7 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 	}
 	//3. Fall: Es wurden noch keine Überstunden gezählt (also Wochen-Arbeitszeit noch nicht erreicht)
 	else {
+		System::Windows::Forms::MessageBox::Show("Überstunden wurden noch nicht eingerechnet", "Test", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Information);
 		arbeitsStd -= stunden;
 		if (arbeitsMin - minuten < 0) {
 			arbeitsStd--;
@@ -622,6 +625,7 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 		}
 		//Fall: Die Wochen-Arbeitszeit wurde durch den Zeitabzug erreicht
 		else {
+			System::Windows::Forms::MessageBox::Show("Überstunden wurden noch nicht eingerechnet UND ERREICHT.", "Test", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Information);
 			ueberStd = -arbeitsStd - 1; //-1, weil die Arbeitsstunden von 00:00 auf 1:01 springen. Mit -1 ist das korrigiert.
 			ueberMin = (arbeitsMin == 0) ? 0 : 60 - arbeitsMin;
 			reduzierteZeit = gcnew TimeSpan(ueberStd, ueberMin, 1);
