@@ -27,7 +27,6 @@ Angestellter::Angestellter(String ^ vorname, String ^ nachname, Abteilung ^ abte
 	this->kalender = gcnew Kalender();
 	this->jahresurlaub = urlaubstage;
 	this->vergleichen = gcnew FreierTagComparer;
-	this->aenderungVorgenommen = false;
 }
 
 Angestellter::Angestellter(Vorgesetzter^ vorgesetzterAlt)
@@ -55,7 +54,6 @@ Angestellter::Angestellter(Vorgesetzter^ vorgesetzterAlt)
 	this->kalender = gcnew Kalender();
 	this->jahresurlaub = vorgesetzterAlt->getJahresurlaub();
 	this->vergleichen = gcnew FreierTagComparer;
-	this->aenderungVorgenommen = vorgesetzterAlt->getAenderungVorgenommen();
 }
 
 Angestellter::Angestellter(Mitarbeiter^ mitarbeiterAlt)
@@ -83,15 +81,6 @@ Angestellter::Angestellter(Mitarbeiter^ mitarbeiterAlt)
 	this->kalender = gcnew Kalender();
 	this->jahresurlaub = mitarbeiterAlt->getJahresurlaub();
 	this->vergleichen = gcnew FreierTagComparer;
-	this->aenderungVorgenommen = mitarbeiterAlt->getAenderungVorgenommen();
-}
-
-//Setzt den Boolean Wochenzeiterreicht nur, wenn keine Aenderung vorgenommen wurde.
-void Angestellter::setWochenZeitErreicht(Boolean erreicht)
-{ 
-	if (!aenderungVorgenommen) {
-		this->wochenZeitErreicht = erreicht;
-	}
 }
 
 //Gibt den restlichen Jahresurlaub zurück, den der Angestellte noch nicht eingereicht hat.
@@ -357,7 +346,6 @@ void Angestellter::speichereArbeitszeit()
 	Int32 arbeitsAnfangHeute = getArbeitsAnfangIndexNachArbeitstag();
 	TimeSpan^ arbeitsZeitHeute = berechneArbeitsstunden(arbeitsAnfangHeute);
 	zieheZeitAb(arbeitsZeitHeute->Hours, arbeitsZeitHeute->Minutes);
-	aenderungVorgenommen = false;
 }
 
 void Angestellter::setUeberstundenGesamt(Int32 stunden, Int32 minuten) 
@@ -593,7 +581,7 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 
 	/*1. Fall: Es wurden bereits Überstunden gezählt (also Wochen-Arbeitszeit war schon erreicht). Die übergebenen Stunden und Minuten 
 	werden von den Überstunden subtrahiert.*/
-	if (wochenZeitErreicht && (ueberMinuten > 0 || ueberMinuten > 0)) {
+	if (wochenZeitErreicht && (ueberStd > 0 || ueberMin > 0)) {
 		ueberStd += stunden;
 		if (ueberMin + minuten > 59) {
 			ueberStd++;

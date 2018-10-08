@@ -626,6 +626,7 @@ namespace Zeiterfassungssystem {
 	Die Pause wird gestartet oder beendet, je nachdem, ob schon eine Pause läuft. Dafür werden die Timer entsprechend gestartet bzw. beendet.
 	Außerdem wird ein PAUSE-START oder ein PAUSE_ENDE Ereignis erstellt und es werden die Farben der Darstellung geändert.*/
 	private: System::Void pauseCbox_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+		
 		//Wenn der Arbeitstag schon läuft
 		if (angestellterAkt->getArbeitsAnfang() != nullptr) {
 			//Soundeffekt wird abgespielt
@@ -882,6 +883,7 @@ namespace Zeiterfassungssystem {
 
 	//WÄHREND SEITE LÄDT
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {
+	
 		//Spiele Musik
 		try {
 			sound->SoundLocation = "Sounds/start.wav";
@@ -948,8 +950,6 @@ namespace Zeiterfassungssystem {
 
 	//SEITE WIRD GESCHLOSSEN
 	private: System::Void StartseiteVorgesetzte_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
-		//Es wird gespeichert, ob die Wochen-Arbeitszeit bereits erreicht wurde.
-		angestellterAkt->setWochenZeitErreicht(wochenZeitErreicht);
 		//Unternehmen wird gespeichert
 		unternehmen->speichern(); 
 		Application::Exit();

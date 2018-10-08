@@ -46,7 +46,6 @@ private:
 	DateTime letzterLogin;
 	Kalender^ kalender;
 	FreierTagComparer^ vergleichen;
-	Boolean aenderungVorgenommen;
 
 public:
 	Angestellter(String^ vorname, String^ nachname, Abteilung^ abteilung, String^ personalnummer, array<Byte>^ passwort, Int32 wochenstunden, Int32 urlaubstage);
@@ -79,7 +78,7 @@ public:
 	inline Ereignis^ getEreignis(Int32 index) { return listeEreignisse[index]; }
 	inline Int32 getAnzahlEreignisse() { return listeEreignisse->Count; }
 	inline String^ getStatus() { return status; }
-	inline Boolean getAenderungVorgenommen() { return aenderungVorgenommen; }
+
 
 	Int32 getRestUrlaub();
 
@@ -99,9 +98,7 @@ public:
 	inline void setGesamtstunden(Double gesamtstunden) { this->listegesamtstunden->Add(gesamtstunden); }
 	inline void setLetzterLogin(DateTime jetzt) { this->letzterLogin = jetzt; }
 	inline void setAktuellenStatus(String^ status) { this->status = status; }
-	inline void setAenderungVorgenommen(Boolean wurdeVorgenommen) { this->aenderungVorgenommen = wurdeVorgenommen; }
 
-	void setWochenZeitErreicht(Boolean erreicht);
 	void setUeberstundenGesamt(Int32 stunden, Int32 minuten);
 
 	virtual bool istVorgesetzter() = 0;
