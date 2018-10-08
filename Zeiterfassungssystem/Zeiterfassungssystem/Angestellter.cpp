@@ -823,7 +823,6 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 	catch (System::NullReferenceException ^e) {
 		anzFreieTage = 0;
 	}
-	System::Windows::Forms::MessageBox::Show(Convert::ToString(ueberStundenGesamt), "Gesamte Überstunden6", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Information);
 	//Stunden und Minuten berechnen, die in dieser Woche durch die freien Tage weniger gearbeitet werden müssen
 	abzugArbeitszeit = tagesArbeitszeit * anzFreieTage;
 	wenigerStunden = (Int32)abzugArbeitszeit;
@@ -832,7 +831,6 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 	if (anzFreieTage > 0) {
 		setUeberstundenGesamt(wenigerStunden, wenigerMinuten);
 	}
-	System::Windows::Forms::MessageBox::Show(Convert::ToString(ueberStundenGesamt), "Gesamte Überstunden7", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Information);
 }
 
 /*Entfernt Urlaubstage in einem bestimten Zeitraum (Datum von - Datum bis) aus der Liste der Urlaubstage und erstellt eine Nachricht
