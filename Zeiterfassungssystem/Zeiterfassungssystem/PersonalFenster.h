@@ -47,6 +47,7 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::ColumnHeader^  clm_Vorname;
 	private: System::Windows::Forms::ColumnHeader^  clm_Personalnummer;
 	private: System::Windows::Forms::ColumnHeader^  clm_Abteilung;
+	private: System::Windows::Forms::ColumnHeader^  clm_Rolle;
 	private: System::Windows::Forms::ColumnHeader^  clm_Urlaubstage;
 	private: System::Windows::Forms::ColumnHeader^  clm_Resturlaub;
 	private: System::Windows::Forms::ColumnHeader^  clm_WochenstundenGesamt;
@@ -74,6 +75,7 @@ namespace Zeiterfassungssystem {
 			this->clm_Vorname = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_Personalnummer = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_Abteilung = (gcnew System::Windows::Forms::ColumnHeader());
+			this->clm_Rolle = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_Urlaubstage = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_Resturlaub = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_WochenstundenGesamt = (gcnew System::Windows::Forms::ColumnHeader());
@@ -84,10 +86,10 @@ namespace Zeiterfassungssystem {
 			// 
 			// listView1
 			// 
-			this->listView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(11) {
+			this->listView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(12) {
 				this->clm_Status, this->clm_Name,
-					this->clm_Vorname, this->clm_Personalnummer, this->clm_Abteilung, this->clm_Urlaubstage, this->clm_Resturlaub, this->clm_WochenstundenGesamt,
-					this->clm_WochenstundenRest, this->clm_UeberstundenWoche, this->clm_UeberstundenGesamt
+					this->clm_Vorname, this->clm_Personalnummer, this->clm_Abteilung, this->clm_Rolle, this->clm_Urlaubstage, this->clm_Resturlaub,
+					this->clm_WochenstundenGesamt, this->clm_WochenstundenRest, this->clm_UeberstundenWoche, this->clm_UeberstundenGesamt
 			});
 			this->listView1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->listView1->FullRowSelect = true;
@@ -95,7 +97,7 @@ namespace Zeiterfassungssystem {
 			this->listView1->Location = System::Drawing::Point(0, 0);
 			this->listView1->Margin = System::Windows::Forms::Padding(2);
 			this->listView1->Name = L"listView1";
-			this->listView1->Size = System::Drawing::Size(1265, 607);
+			this->listView1->Size = System::Drawing::Size(1352, 607);
 			this->listView1->Sorting = System::Windows::Forms::SortOrder::Ascending;
 			this->listView1->TabIndex = 0;
 			this->listView1->UseCompatibleStateImageBehavior = false;
@@ -125,7 +127,12 @@ namespace Zeiterfassungssystem {
 			// clm_Abteilung
 			// 
 			this->clm_Abteilung->Text = L"Abteilung";
-			this->clm_Abteilung->Width = 91;
+			this->clm_Abteilung->Width = 90;
+			// 
+			// clm_Rolle
+			// 
+			this->clm_Rolle->Text = L"Rolle";
+			this->clm_Rolle->Width = 90;
 			// 
 			// clm_Urlaubstage
 			// 
@@ -162,7 +169,7 @@ namespace Zeiterfassungssystem {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoSize = true;
-			this->ClientSize = System::Drawing::Size(1265, 607);
+			this->ClientSize = System::Drawing::Size(1352, 607);
 			this->Controls->Add(this->listView1);
 			this->DoubleBuffered = true;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
@@ -231,10 +238,13 @@ namespace Zeiterfassungssystem {
 						ueberMinutenString = "0" + Convert::ToString(angestellte[i]->getUeberMinuten());
 					}
 
+					String^ rolle = angestellte[i]->istVorgesetzter() ? "Vorgesetzter" : "Mitarbeiter";
+
 					item->SubItems->Add(angestellte[i]->getNachname());
 					item->SubItems->Add(angestellte[i]->getVorname());
 					item->SubItems->Add(angestellte[i]->getPersonalnummer());
 					item->SubItems->Add(angestellte[i]->getAbteilung()->getAbteilungsnummer());
+					item->SubItems->Add(rolle);
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getUrlaubstage()));
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getRestUrlaub()));
 					item->SubItems->Add(Convert::ToString(angestellte[i]->getWochensstunden()));
