@@ -635,7 +635,7 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 		}
 		//Fall: Die Wochen-Arbeitszeit wurde durch den Zeitabzug erreicht
 		else {
-			ueberStd = -arbeitsStd - 1; //-1, weil die Arbeitsstunden von 00:00 auf 1:01 springen. Mit -1 ist das korrigiert.
+			ueberStd = (arbeitsMin == 0) ? -arbeitsStd : -arbeitsStd - 1; //-1, weil die Arbeitsstunden von 00:00 auf 1:01 springen. Mit -1 ist das korrigiert.
 			ueberMin = (arbeitsMin == 0) ? 0 : 60 - arbeitsMin;
 			reduzierteZeit = gcnew TimeSpan(ueberStd, ueberMin, 1);
 		}
