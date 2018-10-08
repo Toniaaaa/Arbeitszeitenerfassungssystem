@@ -334,7 +334,7 @@ namespace Zeiterfassungssystem {
 		this->DialogResult = System::Windows::Forms::DialogResult::Cancel;
 	}
 
-	//Waehrend Fenster laed
+	//Während Fenster lädt
 	private: System::Void UrlaubsFenster_Load(System::Object^  sender, System::EventArgs^  e)
 	{
 		//Setze Werte für Anzeige und Berechnung

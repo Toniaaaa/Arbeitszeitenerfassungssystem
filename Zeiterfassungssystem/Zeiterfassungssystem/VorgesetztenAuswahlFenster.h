@@ -146,7 +146,7 @@ namespace Zeiterfassungssystem {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Bitte waehlen Sie einen Mitarbeiter aus!", "Kein Mitarbeiter ausgewählt", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
-		//Wenn neuer Vorgesetzter ausgewaehlt
+		//Wenn neuer Vorgesetzter ausgewählt
 		else {
 			//Den ausgewaehlten MA und die Abteilung, deren Vorgesetzter er werden soll, setzen
 			ausgewaehlterMA = (Mitarbeiter^)angestelltenAuswahl[auswahlCBox->SelectedIndex];
@@ -172,7 +172,7 @@ namespace Zeiterfassungssystem {
 					neuerMA->addAntragsInfo("Änderung im Unternehmen:\n\nSie wurden als Vorgesetzter Ihrer Abteilung abgelöst und nehmen nun die Rolle eines Mitarbeiters ein!");
 					abteilung->fuegeMitarbeiterHinzu(neuerMA);
 				}
-				//Neuen Vorgsetzten in der Abteilung setzen
+				//Neuen Vorgesetzten in der Abteilung setzen
 				abteilung->setVorgesetzter(vorgesetzterNeu);
 
 				//Den neuen Vorgesetzten aus seiner alten Abteilung entfernen
@@ -181,7 +181,7 @@ namespace Zeiterfassungssystem {
 						abteilungMA->removeMitarbeiter(i);
 					}
 				}
-				//MessageBoxen mit unterschiedlichen Texten für das Behalten oder Löschen des alten Vorgesetzten ausgeben
+				//Texte für MessageBoxen mit unterschiedlichem Inhalt für das Behalten oder Löschen des alten Vorgesetzten ausgeben
 				String^ infoText = nullptr;
 				if (behalten) {
 					infoText = "Sie haben erfolgreich " + vorgesetzterNeu->getVorname() + " " + vorgesetzterNeu->getNachname() + " zum Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer()

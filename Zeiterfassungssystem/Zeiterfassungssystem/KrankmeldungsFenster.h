@@ -263,8 +263,8 @@ namespace Zeiterfassungssystem {
 			this->angestellter = angestellterUebergabe;
 		}
 
-		//Beim Klick auf "Einreichen" wird das Fenster geschlossen und OK gesendet, falls:
-		//Der Beginn nicht nach dem Ende liegt und der Beginn nicht in der Vergangenheit liegt.
+	//Beim Klick auf "Einreichen" wird das Fenster geschlossen und OK gesendet, falls:
+	//Der Beginn nicht nach dem Ende liegt und der Beginn nicht in der Vergangenheit liegt.
 	private: System::Void Einreichen_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 
@@ -290,7 +290,7 @@ namespace Zeiterfassungssystem {
 		this->DialogResult = System::Windows::Forms::DialogResult::Cancel;
 	}
 
-	//Waehrend Fenster laed
+	//Während Fenster lädt
 	private: System::Void KrankmeldungsFenster_Load(System::Object^  sender, System::EventArgs^  e)
 	{
 		anzahlKrankheitstage = 1;
