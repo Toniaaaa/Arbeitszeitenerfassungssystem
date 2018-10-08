@@ -832,7 +832,7 @@ namespace Zeiterfassungssystem {
 		urlaubLoeschenFenster->setAdminRechte(angestellterAkt->getIstAdmin());
 		feiertagsfenster->setUnternehmen(unternehmen);
 		abteilungFenster->setUnternehmen(unternehmen);
-		abteilungFenster->setAdminrechte(angestellterAkt->getIstAdmin());
+		abteilungFenster->setUser(angestellterAkt);
 		auswahlfenster->setAdminRechte(angestellterAkt->getIstAdmin());
 		auswahlfenster->setUrlaubLoeschenfenster(urlaubLoeschenFenster);
 		auswahlfenster->setFeiertagsfenster(feiertagsfenster);;

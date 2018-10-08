@@ -28,6 +28,7 @@ namespace Zeiterfassungssystem {
 		Boolean behalten;
 		Mitarbeiter^ neuerMA;
 		Boolean istAdmin;
+		Vorgesetzter^ user;
 
 	private: System::Windows::Forms::Button^  abbrechenBtn;
 
@@ -162,6 +163,12 @@ namespace Zeiterfassungssystem {
 				"Keine Abteilung ausgewählt", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 
+		//Fall: Der User will die eigene Abteilung löschen -> Meldung, Löschen nicht möglich
+		else if (user->getAbteilung()->Equals(abteilungen[auswahlCBox->SelectedIndex])) {
+			this->DialogResult = System::Windows::Forms::DialogResult::Cancel;
+			MessageBox::Show("Sie können Ihre eigene Abteilung nicht löschen!", "Eigene Abteilung löschen", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+
 		//Wenn alles OK:
 		else {
 			ausgewaehlteAbteilung = abteilungen[auswahlCBox->SelectedIndex];
@@ -245,8 +252,9 @@ namespace Zeiterfassungssystem {
 	}
 
 	//Setter für die Admin-Rechte des Nutzers
-	public: void setAdminrechte(Boolean istAdmin) {
-		this->istAdmin = istAdmin;
+	public: void setUser(Vorgesetzter^ user) {
+		this->user = user;
+		this->istAdmin = user->getIstAdmin();
 	}
 
 	//Wenn in der ComboBox etwas ausgewaehlt wurde
