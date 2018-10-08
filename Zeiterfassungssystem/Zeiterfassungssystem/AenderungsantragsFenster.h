@@ -451,6 +451,10 @@ namespace Zeiterfassungssystem {
 			MessageBox::Show("Bitte geben Sie eine Zahl von 0 - 59 ein.", "Minuten gegangen",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+		else if (p_Ankunft > p_Gehen) {
+			MessageBox::Show("Ihr neuer Gehen-Zeitpunkt liegt vor Ihrem Ankunft-Zeitpunkt.\nBitte korrigieren Sie Ihre Eingaben!", "Absenden nicht möglich!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 		else if (!ausgewaehlt) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Bitte waehlen Sie einen Grund für Ihren Antrag aus!", "Absenden nicht möglich!",
