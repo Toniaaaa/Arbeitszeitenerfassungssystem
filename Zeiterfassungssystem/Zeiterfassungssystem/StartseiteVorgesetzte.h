@@ -882,7 +882,6 @@ namespace Zeiterfassungssystem {
 
 	//WÄHREND SEITE LÄDT
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {
-
 		//Spiele Musik
 		try {
 			sound->SoundLocation = "Sounds/start.wav";

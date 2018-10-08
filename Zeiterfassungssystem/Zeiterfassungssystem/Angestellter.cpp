@@ -759,7 +759,7 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 			this->addFeiertag(unternehmen->getFeiertage()[i]->getDatum());
 		}
 	}
-
+	
 	//Exception-Handling, weil evtl. eine Null-Reference-Exception auftreten kann.
 	try {
 		//Solangen der Tag in der aktuellen Woche liegt, wird gepürft.
@@ -787,13 +787,13 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 	catch (System::NullReferenceException ^e) {
 		anzFreieTage = 0;
 	}
-
+	
 	//Stunden und Minuten berechnen, die in dieser Woche durch die freien Tage weniger gearbeitet werden müssen
 	Double tagesArbeitszeit = (Double) wochenstunden / 5;
 	Double abzugArbeitszeit = tagesArbeitszeit * anzFreieTage;
 	Int32 wenigerStunden = (Int32)abzugArbeitszeit;
 	Int32 wenigerMinuten = (abzugArbeitszeit - wenigerStunden) * 60;
-
+	
 	//Diese Zeit von den ArbeitsStunden und Minuten dieser Woche abziehen
 	if (anzFreieTage > 0) {
 		this->zieheZeitAb(wenigerStunden, wenigerMinuten);
@@ -808,14 +808,6 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 	try {
 		//Solangen der Tag nicht länger als 6 Wochen zurückliegt, wird geprüft.
 		while (kWDynamisch >= kWHeute - 6) {
-			//Prüfe: Ist der Tag ein Urlaubstag
-			if (this->istUrlaubstag(*tagDynamisch)) {
-				Int32 index = this->indexVonUrlaubstag(*tagDynamisch);
-				if (!listeUrlaubstage[index]->getEingerechnet()) {
-					anzFreieTage++;
-					listeUrlaubstage[index]->setEingerechnet(true);
-				}
-			}
 			//Prüfe: Ist der Tag ein Krankheitstag
 			if (this->istKrankheitstag(*tagDynamisch)) {
 				Int32 index = this->indexVonKrankheitstag(*tagDynamisch);
@@ -831,7 +823,7 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 	catch (System::NullReferenceException ^e) {
 		anzFreieTage = 0;
 	}
-
+	System::Windows::Forms::MessageBox::Show(Convert::ToString(ueberStundenGesamt), "Gesamte Überstunden6", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Information);
 	//Stunden und Minuten berechnen, die in dieser Woche durch die freien Tage weniger gearbeitet werden müssen
 	abzugArbeitszeit = tagesArbeitszeit * anzFreieTage;
 	wenigerStunden = (Int32)abzugArbeitszeit;
@@ -840,6 +832,7 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 	if (anzFreieTage > 0) {
 		setUeberstundenGesamt(wenigerStunden, wenigerMinuten);
 	}
+	System::Windows::Forms::MessageBox::Show(Convert::ToString(ueberStundenGesamt), "Gesamte Überstunden7", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Information);
 }
 
 /*Entfernt Urlaubstage in einem bestimten Zeitraum (Datum von - Datum bis) aus der Liste der Urlaubstage und erstellt eine Nachricht
