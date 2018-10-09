@@ -301,6 +301,7 @@ namespace Zeiterfassungssystem {
 				return this->urlaubEndeDTP->Value.Date;
 			}
 		}
+
 		property Angestellter^ p_Angestellter
 		{
 			Angestellter^ get() {
@@ -360,7 +361,7 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 		//Fall: Keine Art von freien Tagen ausgewählt
-		else if (artAusgewaehlt == nullptr || (!artAusgewaehlt->Equals("Urlaub") && !artAusgewaehlt->Equals("Krankmeldung"))) {
+		else if (artAusgewaehlt == nullptr || (!p_Art->Equals("Urlaub") && !p_Art->Equals("Krankmeldung"))) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Bitte wählen Sie eine zulässige Art von freien Tagen, die gelöscht werden sollen, aus!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
