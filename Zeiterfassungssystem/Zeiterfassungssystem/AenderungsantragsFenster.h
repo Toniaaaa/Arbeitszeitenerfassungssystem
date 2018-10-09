@@ -1,7 +1,6 @@
 #pragma once
 #include "Angestellter.h"
 #include "Mitarbeiter.h"
-//#include "StundenStatistikFenster.h"
 #include "Ereignis.h"
 #include "AenderungsbearbeitungsFenster.h"
 #include "Vorgesetzter.h"
@@ -459,7 +458,7 @@ namespace Zeiterfassungssystem {
 		}
 		else if (!ausgewaehlt) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			MessageBox::Show("Bitte waehlen Sie einen Grund für Ihren Antrag aus!", "Absenden nicht möglich!",
+			MessageBox::Show("Bitte wählen Sie einen Grund für Ihren Antrag aus!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 		else {
