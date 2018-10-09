@@ -128,6 +128,7 @@ namespace Zeiterfassungssystem {
 			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"AuswahlFenster";
 			this->Text = L"Bearbeiten";
+			this->Load += gcnew System::EventHandler(this, &AuswahlFenster::AuswahlFenster_Load);
 			this->ResumeLayout(false);
 
 		}
@@ -163,15 +164,10 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void btn_feiertag_Click(System::Object^  sender, System::EventArgs^  e) {
-		if (adminRechte) {
-			System::Windows::Forms::DialogResult result = feiertagsfenster->ShowDialog(this);
-			feiertagsfenster->clear();
-			if (result == System::Windows::Forms::DialogResult::OK) {
-				this->Close();
-			}
-		}
-		else {
-			MessageBox::Show("Sie haben leider keine Administratorrechte.\nNur Administratoren dürfen Feiertage bearbeiten.", "Nicht möglich", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		System::Windows::Forms::DialogResult result = feiertagsfenster->ShowDialog(this);
+		feiertagsfenster->clear();
+		if (result == System::Windows::Forms::DialogResult::OK) {
+			this->Close();
 		}
 	}
 
@@ -198,14 +194,17 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void abteilungBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		if (adminRechte) {
-			System::Windows::Forms::DialogResult result = abteilungFenster->ShowDialog(this);
-			if (result == System::Windows::Forms::DialogResult::OK) {
-				this->Close();
-			}
+		System::Windows::Forms::DialogResult result = abteilungFenster->ShowDialog(this);
+		if (result == System::Windows::Forms::DialogResult::OK) {
+			this->Close();
 		}
-		else {
-			MessageBox::Show("Sie haben leider keine Administratorrechte.\nNur Administratoren dürfen Abteilungen löschen.", "Nicht möglich", MessageBoxButtons::OK, MessageBoxIcon::Error);
+	}
+
+	private: System::Void AuswahlFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+		//Wenn der User keine Admin-Rechte hat, kann er bestimmte Buttons nicht nutzen
+		if (!adminRechte) {
+			abteilungBtn->Enabled = false;
+			btn_feiertag->Enabled = false;
 		}
 	}
 };

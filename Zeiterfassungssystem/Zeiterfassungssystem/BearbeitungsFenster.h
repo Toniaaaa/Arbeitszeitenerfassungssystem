@@ -567,9 +567,10 @@ namespace Zeiterfassungssystem {
 			txt_Rolle->Text = "";
 		}
 		//Der letzte Admin darf nicht in die Rolle einen Mitarbeiters wechseln und dadurch seine Admin-Rechte verlieren
-		else if (anzAdmins < 2 && this->txt_Rolle->Text->Equals("Mitarbeiter") && istLetzterAdmin) {
+		else if (this->txt_Rolle->Text->Equals("Mitarbeiter") && istLetzterAdmin) {
 			MessageBox::Show("Es gibt nur noch einen Administrator!\nDem letzten Administrator können die Rechte nicht entzogen werden!", "Nicht möglich", MessageBoxButtons::OK,
 				MessageBoxIcon::Error);
+			adminCBox->Checked = true;
 		}
 		else {
 			//Werte aus den Textfeldern werden in Angestelltenobjekt geschrieben
@@ -753,6 +754,7 @@ namespace Zeiterfassungssystem {
 
 			//Falls ein Vorgesetzter zum Mitarbieter wird
 			else if (txt_Rolle->Text->Equals("Mitarbeiter") && rolle->Equals("Vorgesetzter")) {
+
 				//Sicherheitsabfrage
 				String^ abfrage = "Wollen Sie den Vorgesetzten " + txt_vorname->Text + " " + txt_name->Text + " wirklich als Mitarbeiter setzen?";
 				if (MessageBox::Show(abfrage, "Wirklich degradieren?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
@@ -824,35 +826,54 @@ namespace Zeiterfassungssystem {
 
 	//Eventhandler für den Löschen-Button
 	private: System::Void btn_loeschen_Click(System::Object^  sender, System::EventArgs^  e) {
-		//Sicherheitsabfrage
-		String^ abfrage = "Wollen Sie den Angestellten " + txt_vorname->Text + " " + txt_name->Text + " wirklich löschen?";
-		if (MessageBox::Show(abfrage, "Wirklich löschen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-			//Falls Angestellter kein Vorgesetzter ist wird der passende Mitarbeiter aus der Abteilung gelöscht
-			if (!angestellter->istVorgesetzter()) {
-				abteilung = angestellter->getAbteilung();
-				for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
-					if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
-						abteilung->removeMitarbeiter(i);
-					}
-				}
-			} 
-			//Falls der Angestellte ein Vorgesetzter ist wird erst ein neuer Vorgesetzter ausgewählt (über VorgesetzenFenster)
-			else {
-				Vorgesetzter^ vorgesetzterAlt = nullptr;
-				for (int i = 0; i < unternehmen->getAlleAngestellte()->Count; i++) {
-					if (unternehmen->getAlleAngestellte()[i]->getPersonalnummer()->Equals(txt_personalnummer->Text)) {
-						vorgesetzterAlt = (Vorgesetzter^) unternehmen->getAlleAngestellte()[i];
-						break;
-					}
-				}
-				//Daten an VorgesetztenFenster übergeben und das Fenster zur Auswahl des neuen Vorgesetzten aufrufen
-				vorgesetztenFenster->setUnternehmen(unternehmen);
-				vorgesetztenFenster->setVorgesetzterAlt(vorgesetzterAlt);
-				vorgesetztenFenster->setVorgesetztenAltBehalten(false);
-				vorgesetztenFenster->ShowDialog(this);
+
+		Boolean istLetzterAdmin = false;
+
+		//Es wird geprüft, ob der Angestellte der letzte Admin des Unternehmens ist
+		if (angestellter->istVorgesetzter()) {
+			Vorgesetzter^ v = (Vorgesetzter^)angestellter;
+			if (v->getIstAdmin() && anzAdmins < 2) {
+				istLetzterAdmin = true;
 			}
-			this->DialogResult = System::Windows::Forms::DialogResult::OK;
-			this->Close();
+		}
+
+		//Der letzte Admin darf nicht gelöscht werden!
+		if (istLetzterAdmin) {
+		MessageBox::Show("Es gibt nur noch einen Administrator!\nDem letzten Administrator können die Rechte nicht entzogen werden!", "Nicht möglich", MessageBoxButtons::OK,
+			MessageBoxIcon::Error);
+		adminCBox->Checked = true;
+		}
+		else {
+			//Sicherheitsabfrage
+			String^ abfrage = "Wollen Sie den Angestellten " + txt_vorname->Text + " " + txt_name->Text + " wirklich löschen?";
+			if (MessageBox::Show(abfrage, "Wirklich löschen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+				//Falls Angestellter kein Vorgesetzter ist wird der passende Mitarbeiter aus der Abteilung gelöscht
+				if (!angestellter->istVorgesetzter()) {
+					abteilung = angestellter->getAbteilung();
+					for (int i = 0; i < abteilung->getAnzahlMitarbeiter(); i++) {
+						if (angestellter->getPersonalnummer()->Equals(abteilung->getMitarbeiter(i)->getPersonalnummer())) {
+							abteilung->removeMitarbeiter(i);
+						}
+					}
+				}
+				//Falls der Angestellte ein Vorgesetzter ist wird erst ein neuer Vorgesetzter ausgewählt (über VorgesetzenFenster)
+				else {
+					Vorgesetzter^ vorgesetzterAlt = nullptr;
+					for (int i = 0; i < unternehmen->getAlleAngestellte()->Count; i++) {
+						if (unternehmen->getAlleAngestellte()[i]->getPersonalnummer()->Equals(txt_personalnummer->Text)) {
+							vorgesetzterAlt = (Vorgesetzter^)unternehmen->getAlleAngestellte()[i];
+							break;
+						}
+					}
+					//Daten an VorgesetztenFenster übergeben und das Fenster zur Auswahl des neuen Vorgesetzten aufrufen
+					vorgesetztenFenster->setUnternehmen(unternehmen);
+					vorgesetztenFenster->setVorgesetzterAlt(vorgesetzterAlt);
+					vorgesetztenFenster->setVorgesetztenAltBehalten(false);
+					vorgesetztenFenster->ShowDialog(this);
+				}
+				this->DialogResult = System::Windows::Forms::DialogResult::OK;
+				this->Close();
+			}
 		}
 	}
 
