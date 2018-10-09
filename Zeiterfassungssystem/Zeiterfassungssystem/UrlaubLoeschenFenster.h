@@ -407,7 +407,7 @@ namespace Zeiterfassungssystem {
 		if (angestellter != nullptr) {
 			//Alle Urlaubstage der ausgewählten Person OHNE Feiertage anzeigen
 			String^ urlaubstageString = angestellter->freieTageAnzeigen(false);
-			MessageBox::Show(urlaubstageString, "Ihre freien Tage", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			MessageBox::Show(urlaubstageString, "Urlaubstage", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 		//Fall: KEIN Angestellter ausgewählt
 		else {
@@ -437,9 +437,9 @@ namespace Zeiterfassungssystem {
 	private: System::Void krankheitstageAnzeigenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
 		//Fall: Angestellter ausgewählt
 		if (angestellter != nullptr) {
-			//Alle Urlaubstage der ausgewählten Person OHNE Feiertage anzeigen
+			//Alle Krankheitstage der ausgewählten Person OHNE Feiertage anzeigen
 			String^ urlaubstageString = angestellter->krankheitstageAnzeigen();
-			MessageBox::Show(urlaubstageString, "Ihre Krankheitstage", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			MessageBox::Show(urlaubstageString, "Krankheitstage", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 		//Fall: KEIN Angestellter ausgewählt
 		else {
