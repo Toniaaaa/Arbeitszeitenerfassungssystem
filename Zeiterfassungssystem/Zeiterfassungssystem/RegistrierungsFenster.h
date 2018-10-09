@@ -490,37 +490,36 @@ namespace Zeiterfassungssystem {
 			}
 			else {
 				txt_abteilung->Text = "";
+				txt_abteilung->SelectedIndex = -1;
 			}
 		}
-		else {
-			if (this->txt_Rolle->Text->Equals("Mitarbeiter")) {
-				Abteilung^ abteilung = nullptr;
-				//Abteilung im Unternehmen wird ausgerufen wenn passender Abteilungsname ausgewählt
-				for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
-					if (txt_abteilung->SelectedItem->ToString()->Equals(unternehmen->getAbteilung(i)->getAbteilungsnummer())) {
-						abteilung = unternehmen->getAbteilung(i);
-					}
-				}
-				Vorgesetzter^ vorgesetzter = abteilung->getVorgesetzter();
-				//da Rolle Mitarbeiter ausgewählt wird ein neuer Mitarbeiter mit eingegebenen Daten erstellt und zur Abteilung und Unternehmen hinzugefügt
-				Mitarbeiter^ mitarbeiter = gcnew Mitarbeiter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, verschluesselung->ComputeHash(passwortInBytes), Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), vorgesetzter);
-				mitarbeiter->setAbteilung(abteilung);
-				abteilung->fuegeMitarbeiterHinzu(mitarbeiter);
-				this->DialogResult = System::Windows::Forms::DialogResult::OK;
-			}
-			else {
-				if (System::Windows::Forms::MessageBox::Show("Sie wollen eine neue Abteilung " + txt_abteilung->Text + " mit " + txt_vorname->Text + " " + txt_name->Text 
-					+ " als Vorgesetzten erstellen.\nIst das korrekt?", "Neue Abteilung?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-					//Wenn Rolle Vorgesetzter gewählt wird neuer Vorgesetzter mit passender Abteilung erstellt
-					Abteilung^ abteilung = gcnew Abteilung(txt_abteilung->Text, nullptr);
-					neuerMitarbeiter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, verschluesselung->ComputeHash(passwortInBytes), Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), this->adminCBox->Checked);
-					abteilung->setVorgesetzter(neuerMitarbeiter);
-					unternehmen->addAbteilung(abteilung);
-					this->DialogResult = System::Windows::Forms::DialogResult::OK;
+		else if (this->txt_Rolle->Text->Equals("Mitarbeiter")) {
+			Abteilung^ abteilung = nullptr;
+			//Abteilung im Unternehmen wird ausgerufen wenn passender Abteilungsname ausgewählt
+			for (int i = 0; i < unternehmen->getAnzahlAbteilungen(); i++) {
+				if (txt_abteilung->SelectedItem->ToString()->Equals(unternehmen->getAbteilung(i)->getAbteilungsnummer())) {
+					abteilung = unternehmen->getAbteilung(i);
 				}
 			}
+			Vorgesetzter^ vorgesetzter = abteilung->getVorgesetzter();
+			//da Rolle Mitarbeiter ausgewählt wird ein neuer Mitarbeiter mit eingegebenen Daten erstellt und zur Abteilung und Unternehmen hinzugefügt
+			Mitarbeiter^ mitarbeiter = gcnew Mitarbeiter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, verschluesselung->ComputeHash(passwortInBytes), Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), vorgesetzter);
+			mitarbeiter->setAbteilung(abteilung);
+			abteilung->fuegeMitarbeiterHinzu(mitarbeiter);
+			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			MessageBox::Show("Sie haben erfolgreich einen Angestellten hinzugefügt", "Hinzufügen erfolgreich", MessageBoxButtons::OK, MessageBoxIcon::Information);
-			this->Close();
+		}
+		else if (!abteilungExistiert && getRolle()->Equals("Vorgesetzter")) {
+			if (System::Windows::Forms::MessageBox::Show("Sie wollen eine neue Abteilung " + txt_abteilung->Text + " mit " + txt_vorname->Text + " " + txt_name->Text 
+				+ " als Vorgesetzten erstellen.\nIst das korrekt?", "Neue Abteilung?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+				//Wenn Rolle Vorgesetzter gewählt wird neuer Vorgesetzter mit passender Abteilung erstellt
+				Abteilung^ abteilung = gcnew Abteilung(txt_abteilung->Text, nullptr);
+				neuerMitarbeiter = gcnew Vorgesetzter(txt_vorname->Text, txt_name->Text, abteilung, txt_personalnummer->Text, verschluesselung->ComputeHash(passwortInBytes), Int32::Parse(txt_arbeitsstunden->Text), Int32::Parse(txt_urlaubstage->Text), this->adminCBox->Checked);
+				abteilung->setVorgesetzter(neuerMitarbeiter);
+				unternehmen->addAbteilung(abteilung);
+				this->DialogResult = System::Windows::Forms::DialogResult::OK;
+				MessageBox::Show("Sie haben erfolgreich einen Angestellten hinzugefügt", "Hinzufügen erfolgreich", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			}
 		}
 	}
 
