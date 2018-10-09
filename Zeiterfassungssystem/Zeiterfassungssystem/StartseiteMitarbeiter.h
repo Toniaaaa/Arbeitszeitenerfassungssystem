@@ -543,7 +543,6 @@ namespace Zeiterfassungssystem {
 #pragma endregion
 
 	//Setter für die Personen / Unternehmen:
-
 	public: void setUnternehmen(Unternehmen^ unternehmen)
 	{
 		this->unternehmen = unternehmen;

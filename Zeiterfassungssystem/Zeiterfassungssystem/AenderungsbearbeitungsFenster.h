@@ -373,7 +373,10 @@ namespace Zeiterfassungssystem {
 		}
 
 	public: System::Void AenderungsbearbeitungsFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+		//Der Antrag ist aktuell geoeffnet
 		istOffen = true;
+
+		//Daten welche im Antrag zu sehen
 		p_Tag = antrag->getNewStart()->Date;
 		p_AnkunftAlt = antrag->getOldStart();
 		p_Ankunft = antrag->getNewStart();
@@ -522,6 +525,7 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void AenderungsbearbeitungsFenster_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {
+		//Der Antrag wird aktuell geschlossen
 		istOffen = false;
 	}
 };

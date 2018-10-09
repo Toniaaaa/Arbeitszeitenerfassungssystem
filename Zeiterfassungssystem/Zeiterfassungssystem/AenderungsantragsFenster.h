@@ -22,7 +22,7 @@ namespace Zeiterfassungssystem {
 
 	private:
 
-	Angestellter ^ antragsteller;
+	Angestellter^ antragsteller;
 	StundenStatistikFenster^ stundenstatistik;
 	Int32 ereignisIndex;
 	Ereignis^ ereignis;
@@ -320,7 +320,7 @@ namespace Zeiterfassungssystem {
 		}
 #pragma endregion
 	private:
-		AenderungsbearbeitungsFenster ^ aenderungsbearbeitung;
+		AenderungsbearbeitungsFenster^ aenderungsbearbeitung;
 	public:
 
 		//Angestellter wird gesetzt:
@@ -464,9 +464,10 @@ namespace Zeiterfassungssystem {
 		else {
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			
-			//DateTime^ dateTag = p_Ankunft;
+			
 			DateTime datum = p_Ankunft.Date;
 			Vorgesetzter^ vorgesetzter = antragsteller->getAbteilung()->getVorgesetzter();
+
 			//Der Aenderungsantrag als String
 			String^ aenderungString = "Sie wollen folgende Änderung beantragen:\n\nTag der Änderung: " + datum.ToString("dddd, dd. MMMM yyyy") + "\nNeuer Beginn: "
 				+ p_Ankunft.ToString("HH:mm") + "\nNeues Ende: " + p_Gehen.ToString("HH:mm") + "\nGrund: " + p_Grund
@@ -484,8 +485,10 @@ namespace Zeiterfassungssystem {
 					MessageBoxButtons::OK, MessageBoxIcon::Error);
 			}
 
-			this->clear(); //Textfelder wieder leeren
-			this->Close(); //Fenster wird nur geschlossen, wenn alle Angaben gemacht wurden und OK sind.
+			//Textfelder wieder leeren
+			this->clear();
+			//Fenster wird nur geschlossen, wenn alle Angaben gemacht wurden und OK sind.
+			this->Close(); 
 		}
 		
 	}
@@ -504,10 +507,12 @@ namespace Zeiterfassungssystem {
 			Int32 minute = ereignis->getTimestamp()->Minute;
 			Int32 stunde = ereignis->getTimestamp()->Hour;
 			DateTime datum = ereignis->getTimestamp()->Date;
+
 			//das Datum wird ins Label geschrieben 
 			label2->Text = datum.ToString("dddd, dd. MMMM yyyy");
 			ankunftStdTxt->Text = Convert::ToString(stunde);
 			ankunftMinuteTxt->Text = Convert::ToString(minute);
+
 			//Laufe weiter bis zum passenden Arbeitsende und befülle End Textboxen passend, dann stopp
 			for (int i = ereignisIndex; i < antragsteller->getAnzahlEreignisse(); i++) {
 				if (antragsteller->getEreignis(i)->getTyp() == ARBEIT_ENDE) {
@@ -539,6 +544,7 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void gruendeAuswahl_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+		//Wenn ein Item ausgewaehlt
 		ausgewaehlt = true;
 	}
 };

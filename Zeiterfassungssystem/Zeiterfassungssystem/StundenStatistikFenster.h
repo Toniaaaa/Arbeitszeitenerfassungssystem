@@ -179,7 +179,7 @@ namespace Zeiterfassungssystem {
 		}
 #pragma endregion
 	private:
-		Angestellter ^ angestellter;
+		Angestellter^ angestellter;
 		Vorgesetzter^ vorgesetzter;
 		Kalender^ kalender = gcnew Kalender;
 

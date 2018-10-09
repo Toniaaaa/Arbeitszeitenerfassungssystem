@@ -123,7 +123,7 @@ namespace Zeiterfassungssystem {
 		}
 #pragma endregion
 	private:
-		Unternehmen ^ unternehmenAkt;
+		Unternehmen^ unternehmenAkt;
 
 	public: void setUnternehmen(Unternehmen^ unternehmen) {
 		this->unternehmenAkt = unternehmen;

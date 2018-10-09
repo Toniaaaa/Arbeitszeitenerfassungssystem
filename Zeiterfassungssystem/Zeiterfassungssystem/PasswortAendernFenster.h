@@ -18,7 +18,7 @@ namespace Zeiterfassungssystem {
 	public ref class PasswortAendernFenster : public System::Windows::Forms::Form
 	{
 	private:
-		Unternehmen ^ unternehmen;
+		Unternehmen^ unternehmen;
 		SHA512^ hash; //ZUM HASHEN
 	public:
 		PasswortAendernFenster(void)
@@ -212,7 +212,7 @@ namespace Zeiterfassungssystem {
 		}
 #pragma endregion
 	public:
-		String ^ getBenutzername() {
+		String^ getBenutzername() {
 			return this->txt_benutzername->Text;
 		}
 

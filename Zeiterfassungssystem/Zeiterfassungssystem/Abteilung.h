@@ -12,7 +12,7 @@ ref class Mitarbeiter;
 ref class Abteilung
 {
 private:
-	String ^ abteilungsNummer;
+	String^ abteilungsNummer;
 	Vorgesetzter^ vorgesetzter;
 	List<Mitarbeiter^>^ mitarbeiter;
 
