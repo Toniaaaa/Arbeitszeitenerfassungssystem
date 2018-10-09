@@ -227,6 +227,7 @@ namespace Zeiterfassungssystem {
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"UrlaubsFenster";
 			this->Text = L"Urlaubsantrag";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &UrlaubsFenster::UrlaubsFenster_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &UrlaubsFenster::UrlaubsFenster_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -388,6 +389,9 @@ namespace Zeiterfassungssystem {
 		MessageBox::Show(urlaubstageString, "Ihre freien Tage", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
 
+	private: System::Void UrlaubsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+		sound->Stop();
+	}
 };
 }
 
