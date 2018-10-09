@@ -397,16 +397,8 @@ Int32 Angestellter::berechneArbeitstage(DateTime beginn, DateTime ende)
 	Int32 anzArbeitstage = 0;
 
 	while (beginn <= ende) {
-		//Prüfe, ob dieser Tag bereits ein genommener Urlaubstag ist
-		Boolean istFeiertag = false;
-		for (int i = 0; i < listeUrlaubstage->Count; i++) {
-			if (beginn == listeUrlaubstage[i]->getDatum() && listeUrlaubstage[i]->getIstFeiertag()) {
-				istFeiertag = true;
-				break;
-			}
-		}
-		//Prüfe, ob dieser Tag ein Samstag oder Sonntag ist
-		if (!istFeiertag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
+		//Prüfe, ob dieser Tag ein Feiertag, Samstag oder Sonntag ist
+		if (!istFeiertag(beginn) && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
 			//Tag wird der Liste hinzugefügt und ein Tag den genommenen Urlaubstagen hinzugefügt.
 			anzArbeitstage++;
 		}
@@ -422,16 +414,8 @@ Int32 Angestellter::berechneUrlaubstage(DateTime beginn, DateTime ende)
 	Int32 anzUrlaubstage = 0;
 
 	while (beginn <= ende) {
-		//Prüfe, ob dieser Tag bereits ein genommener Urlaubstag ist
-		Boolean istUrlaubstag = false;
-		for (int i = 0; i < listeUrlaubstage->Count; i++) {
-			if (beginn == listeUrlaubstage[i]->getDatum()) {
-				istUrlaubstag = true;
-				break;
-			}
-		}
 		//Prüfe, ob dieser Tag ein Samstag oder Sonntag ist
-		if (!istUrlaubstag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
+		if (!istUrlaubstag(beginn) && !istKrankheitstag(beginn) && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
 			//Tag wird der Liste hinzugefügt und ein Tag den genommenen Urlaubstagen hinzugefügt.
 			anzUrlaubstage++;
 		}
