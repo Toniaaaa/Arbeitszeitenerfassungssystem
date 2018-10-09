@@ -222,7 +222,7 @@ namespace Zeiterfassungssystem {
 							item->ForeColor = System::Drawing::Color::Red;
 						}
 					}
-					catch (NullReferenceException ^e) {
+					catch (NullReferenceException ^) {
 						item->Text = "nicht anwesend..";
 						item->ForeColor = System::Drawing::Color::Red;
 					}

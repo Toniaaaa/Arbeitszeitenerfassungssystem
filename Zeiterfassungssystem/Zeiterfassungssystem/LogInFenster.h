@@ -305,7 +305,7 @@ namespace Zeiterfassungssystem {
 			Diagnostics::ProcessStartInfo^ startInfo = gcnew Diagnostics::ProcessStartInfo("BenutzerhandbuchTimeUp.pdf");
 			Diagnostics::Process::Start(startInfo);
 		}
-		catch (System::ComponentModel::Win32Exception ^e) {
+		catch (System::ComponentModel::Win32Exception ^) {
 			MessageBox::Show("Das Benutzerhandbuch konnte leider nicht gefunden werden.\nBitte wenden Sie sich an Ihren Administrator!", "Datei nicht gefunden",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}

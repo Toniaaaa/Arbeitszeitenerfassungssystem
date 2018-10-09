@@ -326,9 +326,9 @@ namespace Zeiterfassungssystem {
 
 		//Angestellter wird gesetzt:
 		void setAntragssteller(Angestellter^ antragstellerUebergabe)
-			{
-				antragsteller = antragstellerUebergabe;
-			}
+		{
+			antragsteller = antragstellerUebergabe;
+		}
 
 		void setStatistikFenster(StundenStatistikFenster^ stundenstatistik) {
 			this->stundenstatistik = stundenstatistik;
@@ -382,9 +382,11 @@ namespace Zeiterfassungssystem {
 		property String^ p_Grund
 		{
 			String^ get() {
+				String^ result = nullptr;
 				if (ausgewaehlt) {
-					return this->gruendeAuswahl->Text;
+					result =  this->gruendeAuswahl->Text;
 				}
+				return result;
 			}
 		}
 
@@ -525,7 +527,7 @@ namespace Zeiterfassungssystem {
 			gruendeAuswahl->Items->Add("Computer-Absturz");
 			gruendeAuswahl->Items->Add("Sonstiges (siehe Kommentar)");
 			}
-		catch (ArgumentOutOfRangeException ^e) {
+		catch (ArgumentOutOfRangeException ^) {
 			this->Close();
 			this->clear();
 			MessageBox::Show("Bitte wählen Sie einen Tag aus, den sie gerne ändern möchten!", "Kein Tag ausgewählt", MessageBoxButtons::OK, MessageBoxIcon::Warning);

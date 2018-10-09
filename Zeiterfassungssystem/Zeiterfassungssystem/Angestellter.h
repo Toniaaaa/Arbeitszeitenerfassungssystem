@@ -19,7 +19,7 @@ ref class Vorgesetzter;
 ref class Mitarbeiter;
 
 [Serializable]
-ref class Angestellter 
+ref class Angestellter abstract
 {
 private:
 	String^ vorname;

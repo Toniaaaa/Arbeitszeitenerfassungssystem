@@ -251,12 +251,12 @@ TimeSpan^ Angestellter::genugPause()
 	//berechnet heutige Pausen
 	TimeSpan^ pausen = getPausezeit(true);
 	//Fall: Es wurden mehr als 9 Stunden gearbeitet
-	if (*arbeit > *(gcnew TimeSpan(9, 0, 0))) {
-		fehlendePause = TimeSpan::operator-(*(gcnew TimeSpan(0, 45, 0)), *pausen);
+	if (*arbeit > TimeSpan(9, 0, 0)) {
+		fehlendePause = TimeSpan::operator-(TimeSpan(0, 45, 0), *pausen);
 	}
 	//Fall: Es wurden zwichen 6 und 9 Stunden gearbeitet
 	else if (*arbeit > *(gcnew TimeSpan(6, 0, 0))) {
-		fehlendePause = TimeSpan::operator-(*(gcnew TimeSpan(0, 30, 0)), *pausen);
+		fehlendePause = TimeSpan::operator-(TimeSpan(0, 30, 0), *pausen);
 	} 
 	return fehlendePause;
 }
@@ -756,7 +756,7 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 			kWDynamisch = kalender->berechneKW(*tagDynamisch);
 		}
 	}
-	catch (System::NullReferenceException ^e) {
+	catch (System::NullReferenceException ^) {
 		anzFreieTage = 0;
 	}
 	
@@ -764,7 +764,7 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 	Double tagesArbeitszeit = (Double) wochenstunden / 5;
 	Double abzugArbeitszeit = tagesArbeitszeit * anzFreieTage;
 	Int32 wenigerStunden = (Int32)abzugArbeitszeit;
-	Int32 wenigerMinuten = (abzugArbeitszeit - wenigerStunden) * 60;
+	Int32 wenigerMinuten = (Int32) (abzugArbeitszeit - wenigerStunden) * 60;
 	
 	//Diese Zeit von den ArbeitsStunden und Minuten dieser Woche abziehen
 	if (anzFreieTage > 0) {
@@ -792,13 +792,13 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 			kWDynamisch = kalender->berechneKW(*tagDynamisch);
 		}
 	}
-	catch (System::NullReferenceException ^e) {
+	catch (System::NullReferenceException ^) {
 		anzFreieTage = 0;
 	}
 	//Stunden und Minuten berechnen, die in dieser Woche durch die freien Tage weniger gearbeitet werden müssen
 	abzugArbeitszeit = tagesArbeitszeit * anzFreieTage;
 	wenigerStunden = (Int32)abzugArbeitszeit;
-	wenigerMinuten = (abzugArbeitszeit - wenigerStunden) * 60;
+	wenigerMinuten = (Int32) (abzugArbeitszeit - wenigerStunden) * 60;
 
 	if (anzFreieTage > 0) {
 		setUeberstundenGesamt(wenigerStunden, wenigerMinuten);

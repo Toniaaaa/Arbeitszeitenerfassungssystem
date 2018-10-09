@@ -10,5 +10,5 @@ ref class FreierTagComparer : System::Collections::Generic::IComparer<FreierTag^
 {
 public:
 	FreierTagComparer();
-	int Compare(FreierTag^ x, FreierTag^ y) override;
+	int virtual Compare(FreierTag^ x, FreierTag^ y);
 };

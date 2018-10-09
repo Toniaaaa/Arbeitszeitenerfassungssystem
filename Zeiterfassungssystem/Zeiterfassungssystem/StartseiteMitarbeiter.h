@@ -562,7 +562,7 @@ namespace Zeiterfassungssystem {
 				sound->Load();
 				sound->Play();
 			}
-			catch (FileNotFoundException ^e) {
+			catch (FileNotFoundException ^) {
 				//Kein Sound, wenn die Datei nicht existiert
 			}
 			Ereignis^ arbeitsanfang = gcnew Ereignis(ARBEIT_START, DateTime::Now);
@@ -589,7 +589,7 @@ namespace Zeiterfassungssystem {
 				sound->Load();
 				sound->Play();
 			}
-			catch (FileNotFoundException ^e) {
+			catch (FileNotFoundException ^) {
 				//Kein Sound, wenn die Datei nicht existiert
 			}
 			//Wenn schon eine Pause läuft
@@ -607,7 +607,7 @@ namespace Zeiterfassungssystem {
 						this->pauseCbox->Text = "";
 						this->pauseCbox->Image = Image::FromFile("Images/pauseIcon2.jpg");
 					}
-					catch (FileNotFoundException ^e) {
+					catch (FileNotFoundException ^) {
 						this->pauseCbox->Image = nullptr;
 						this->pauseCbox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 							static_cast<System::Byte>(0)));
@@ -636,7 +636,7 @@ namespace Zeiterfassungssystem {
 					this->pauseCbox->Text = "";
 					this->pauseCbox->Image = Image::FromFile("Images/pauseIcon.jpg");
 				}
-				catch (FileNotFoundException ^e) {
+				catch (FileNotFoundException ^) {
 					this->pauseCbox->Image = nullptr;
 					this->pauseCbox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 						static_cast<System::Byte>(0)));
@@ -682,7 +682,7 @@ namespace Zeiterfassungssystem {
 					sound->Load();
 					sound->Play();
 				}
-				catch (FileNotFoundException ^e) {
+				catch (FileNotFoundException ^) {
 					//Kein Sound, wenn die Datei nicht existiert
 				}
 				//Timer stoppen
@@ -800,7 +800,7 @@ namespace Zeiterfassungssystem {
 			Diagnostics::ProcessStartInfo^ startInfo = gcnew Diagnostics::ProcessStartInfo("BenutzerhandbuchTimeUp.pdf");
 			Diagnostics::Process::Start(startInfo);
 		}
-		catch (System::ComponentModel::Win32Exception ^e) {
+		catch (System::ComponentModel::Win32Exception ^) {
 			MessageBox::Show("Das Benutzerhandbuch konnte leider nicht gefunden werden.\nBitte wenden Sie sich an Ihren Administrator!", "Datei nicht gefunden",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
@@ -815,7 +815,7 @@ namespace Zeiterfassungssystem {
 			sound->Load();
 			sound->Play();
 		}
-		catch (FileNotFoundException ^e) {
+		catch (FileNotFoundException ^) {
 			//Kein Sound, wenn die Datei nicht existiert
 		}
 		//Es wird geprüft, ob ein neues Jahr oder eine neue Woche angefangen hat
@@ -938,7 +938,7 @@ namespace Zeiterfassungssystem {
 					this->pauseCbox->Text = "";
 					this->pauseCbox->Image = Image::FromFile("Images/pauseIcon.jpg");
 				}
-				catch (FileNotFoundException ^e) {
+				catch (FileNotFoundException ^) {
 					this->pauseCbox->Image = nullptr;
 					this->pauseCbox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 						static_cast<System::Byte>(0)));
@@ -1154,7 +1154,7 @@ namespace Zeiterfassungssystem {
 				this->pauseCbox->Text = "";
 				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon2.jpg");
 			}
-			catch (FileNotFoundException ^e) {
+			catch (FileNotFoundException ^) {
 				this->pauseCbox->Image = nullptr;
 				this->pauseCbox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));

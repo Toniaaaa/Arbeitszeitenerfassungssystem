@@ -219,13 +219,14 @@ namespace Zeiterfassungssystem {
 	}
 
 	//Setter für das Unternehmen
-	public: void setUnternehmen(Unternehmen^ unternehmen) {
+	public:void setUnternehmen(Unternehmen^ unternehmen) {
 		this->unternehmen = unternehmen;
 	}
 
 	//Setter für den alten Vorgesetzten
-	public: void setVorgesetzterAlt(Vorgesetzter^ vorgesetzterAlt) {
-		this->vorgesetzterAlt = vorgesetzterAlt;
+	public:void setVorgesetzterAlt(Vorgesetzter^ vorgesetzterAlt) {
+			this->vorgesetzterAlt = vorgesetzterAlt;
+
 	}
 
 	//Setter für den Boolean, ob der Vorgesetzte gespeichert bleiben soll
