@@ -358,7 +358,7 @@ public:
 			MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 			//Neuer Antworttext wird erstellt
 			antrag->setKommentarVorgesetzter(p_Kommentar);
-			textZumAntrag = "Ihr Urlaubsantrag über " + antrag->getTage() + " Tage\nvom " + lbl_anfang->Text + "\nbis " + lbl_ende->Text + "\nwurde bestätigt.\nViel Spaß in Ihrem Urlaub.";
+			textZumAntrag = "Ihr Urlaubsantrag über " + antrag->getTage() + " Tage\nvom " + lbl_anfang->Text + "\nbis " + lbl_ende->Text + "\nwurde von Ihrem Vorgesetzten bestätigt.\nViel Spaß in Ihrem Urlaub.";
 			if (p_Kommentar->Length > 0) {
 				textZumAntrag += "\n\nKommentar:\n" + p_Kommentar;
 			}
