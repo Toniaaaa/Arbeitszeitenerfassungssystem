@@ -315,6 +315,8 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="Sounds\beenden.wav" />
+    <Media Include="Sounds\Klack.wav" />
+    <Media Include="Sounds\lacucarachaKurz.wav" />
     <Media Include="Sounds\start.wav" />
     <Media Include="Sounds\zeitBeenden.wav" />
     <Media Include="Sounds\zeitStarten.wav" />

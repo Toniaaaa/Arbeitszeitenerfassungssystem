@@ -280,6 +280,9 @@
     <EmbeddedResource Include="PasswortAendernFenster.resx">
       <Filter>Ressourcendateien</Filter>
     </EmbeddedResource>
+    <EmbeddedResource Include="KrankmeldungsFenster.resx">
+      <Filter>Ressourcendateien</Filter>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LogInFenster.resx">
@@ -297,6 +300,12 @@
       <Filter>Quelldateien\Sounds</Filter>
     </Media>
     <Media Include="Sounds\zeitStarten.wav">
+      <Filter>Quelldateien\Sounds</Filter>
+    </Media>
+    <Media Include="Sounds\lacucarachaKurz.wav">
+      <Filter>Quelldateien\Sounds</Filter>
+    </Media>
+    <Media Include="Sounds\Klack.wav">
       <Filter>Quelldateien\Sounds</Filter>
     </Media>
   </ItemGroup>
