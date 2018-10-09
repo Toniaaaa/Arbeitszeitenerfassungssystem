@@ -358,16 +358,8 @@ in die Liste der Urlaubstage ein.*/
 void Angestellter::nehmeUrlaub(DateTime beginn, DateTime ende)
 {
 	while (beginn <= ende) {
-		//Prüfe, ob dieser Tag bereits ein genommener Urlaubstag ist
-		Boolean istUrlaubstag = false;
-		for (int i = 0; i < listeUrlaubstage->Count; i++) {
-			if (beginn == listeUrlaubstage[i]->getDatum()) {
-				istUrlaubstag = true;
-				break;
-			}
-		}
-		//Prüfe, ob dieser Tag ein Samstag oder Sonntag ist
-		if (!istUrlaubstag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
+		//Prüfe, ob dieser Tag ein Urlaubstag, Krankheitstag, Samstag oder Sonntag ist
+		if (!istUrlaubstag(beginn) && !istKrankheitstag(beginn) && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
 			//Tag wird der Liste hinzugefügt und ein Tag den genommenen Urlaubstagen hinzugefügt.
 			this->addUrlaubstag(beginn);
 			if (urlaubstageGespart > 0) {
