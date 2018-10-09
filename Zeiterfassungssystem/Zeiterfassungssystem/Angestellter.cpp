@@ -497,7 +497,7 @@ Boolean Angestellter::istUrlaubstag(DateTime tag)
 }
 
 //Prüft, ob das Datum eines Eintrag in der Liste der Urlaubstage mit der übergebenen DateTime übereinstimmt und ob es ein Feiertag ist. 
-Boolean Angestellter::istUrlaubstag(DateTime tag)
+Boolean Angestellter::istFeiertag(DateTime tag)
 {
 	Boolean istFeiertag = false;
 	for (int i = listeUrlaubstage->Count - 1; i >= 0; i--) {
