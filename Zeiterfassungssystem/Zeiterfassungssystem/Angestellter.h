@@ -128,6 +128,7 @@ public:
 	Int32 indexVonUrlaubstag(DateTime tag); //Gibt den Index eines Tages in der listeUrlaubstage zurück
 	Int32 indexVonKrankheitstag(DateTime tag); //Gibt den Index eines Tages in der Liste der Krankheitstage zurück
 	Boolean istUrlaubstag(DateTime tag); //Gibt zurück, ob der Paramter ein Urlaubstag ist oder nicht
+	Boolean istFeiertag(DateTime tag); //Gibt zurück, ob der Paramter ein Feiertag ist oder nicht
 	Boolean istKrankheitstag(DateTime tag); //Gibt zurück, ob der Paramter ein Krankheitstag ist oder nicht
 	void zieheZeitAb(Int32 stunden, Int32 minuten); //Zieht Zeit von der Noch-Arbeitszeit ab bzw. addiert Überstunden, wenn die Wochen-Arbeitszeit erreicht ist
 	TimeSpan getReduzierteZeit(Int32 stunden, Int32 minuten); //Gibt die Noch-Arbeitszeit um die übergebene Zeit reduziert zurück, ohne sie zu ändern

@@ -384,19 +384,14 @@ void Angestellter::krankMelden(DateTime beginn, DateTime ende)
 	//Alle Tage von Beginn bis Ende werden durchlaufen
 	while (beginn <= ende) {
 		//Prüfen: Ist der Tag ein Feiertag oder ein Urlaubstag ist (also in der Urlaubstage-Liste und evtl. istFeiertag = true)
-		Boolean istEinFeiertag = false;
 		if (Int32 index = indexVonUrlaubstag(beginn) != -1) {
-			//Wenn der Tag ein Feiertag ist, wird der Boolean auf true gesetzt
-			if (listeUrlaubstage[index]->getIstFeiertag()) {
-				istEinFeiertag = true;
-			}
 			//Wenn der Tag ein normaler Urlaubstag ist, wird er aus der Urlaubstage-Liste entfernt.
-			else {
+			if (!istFeiertag(beginn)) {
 				loescheUrlaubstage(beginn, beginn, "Ist jetzt ein Krankheitstag.");
 			}
 		}
 		//Prüfe, ob dieser Tag bereits ein gespeicherter Krankheitstag, ein Feiertag, Samstag oder Sonntag ist
-		if (!istKrankheitstag(beginn) && !istEinFeiertag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
+		if (!istKrankheitstag(beginn) && !istFeiertag(beginn) && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
 			//Wenn er das alles nicht ist, wird er der Liste der Krankheitstag hinzugefügt.
 			this->addKrankheitstag(beginn);
 		}
@@ -499,6 +494,19 @@ Boolean Angestellter::istUrlaubstag(DateTime tag)
 		}
 	}
 	return istUrlaubstag;
+}
+
+//Prüft, ob das Datum eines Eintrag in der Liste der Urlaubstage mit der übergebenen DateTime übereinstimmt und ob es ein Feiertag ist. 
+Boolean Angestellter::istUrlaubstag(DateTime tag)
+{
+	Boolean istFeiertag = false;
+	for (int i = listeUrlaubstage->Count - 1; i >= 0; i--) {
+		if (listeUrlaubstage[i]->getDatum() == tag && listeUrlaubstage[i]->getIstFeiertag()) {
+			istFeiertag = true;
+			break;
+		}
+	}
+	return istFeiertag;
 }
 
 //Prüft, ob das Datum eines Eintrag in der Liste der Krankheitstag mit der übergebenen DateTime übereinstimmt. 
