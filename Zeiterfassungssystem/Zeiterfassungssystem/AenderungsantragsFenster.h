@@ -383,7 +383,7 @@ namespace Zeiterfassungssystem {
 		{
 			String^ get() {
 				if (ausgewaehlt) {
-					return this->gruendeAuswahl->SelectedItem->ToString();
+					return this->gruendeAuswahl->Text;
 				}
 			}
 		}
