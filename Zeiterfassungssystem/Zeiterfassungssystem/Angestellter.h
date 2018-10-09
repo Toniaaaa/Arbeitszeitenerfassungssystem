@@ -111,11 +111,13 @@ public:
 	void addUrlaubstag(DateTime tag);
 	void addFeiertag(DateTime tag);
 	void removeUrlaubstag(DateTime tag);
+
 	//Löscht alle Urlaubstage innerhalb des übergebenen Zeitraums
-	void loescheUrlaubstage(DateTime von, DateTime bis, String^ kommentar); 
+	String^ loescheUrlaubstage(DateTime von, DateTime bis, String^ kommentar); 
 
 	//Löscht alle Krankheitstage innerhalb des übergebenen Zeitraums
-	void loescheKrankheitstage(DateTime von, DateTime bis, String^ kommentar); 
+	String^ loescheKrankheitstage(DateTime von, DateTime bis, String^ kommentar); 
+
 	void addKrankheitstag(DateTime tag);
 	void removeKrankheitstag(DateTime tag);
 
@@ -185,21 +187,21 @@ public:
 	//Gibt den Arbeitsanfang eines gerade beendeten Arbeitstages zurück
 	Int32 getArbeitsAnfangIndexNachArbeitstag(); 
 
-	// Ereignislisteauswertungsmethodensammlung
+	//Ereignislisteauswertungsmethodensammlung
 
-	//gibt den aktuellen Arbeitsanfang zurueck wenn arbeitszeit nicht laeuft dann null
+	//Gibt den aktuellen Arbeitsanfang zurueck wenn arbeitszeit nicht laeuft dann null
 	DateTime^ getArbeitsAnfang(); 
 
-	//gibt den aktuellen Pausenanfang zurueck wenn arbeitszeit nicht laeuft dann null
+	//Gibt den aktuellen Pausenanfang zurueck wenn arbeitszeit nicht laeuft dann null
 	DateTime^ getPauseAnfang(); 
 
-	//gibt zum Aufrufzeitpunkt die aktuelle Arbeitszeit zurück wobei Pausen "live" herausgerechnet werden
+	//Gibt zum Aufrufzeitpunkt die aktuelle Arbeitszeit zurück wobei Pausen "live" herausgerechnet werden
 	TimeSpan^ getAktuelleArbeitszeit(); 
 
-	// liefert die aktuelle Zeit der laufenden Pause
+	//Liefert die aktuelle Zeit der laufenden Pause
 	TimeSpan^ getAktuellePausenzeit();
 
-	// liefert die Zeit der bisherigen Pausen seit letztem Arbeitsbeginn
+	//Liefert die Zeit der bisherigen Pausen seit letztem Arbeitsbeginn
 	TimeSpan^ getPausezeit(Boolean tagBeendet); 
 
 	//Berechnet die Arbeitszeit eines Arbeitstages ab dem übergebenen Index in der Ereignisliste Pausen werden abgezogen

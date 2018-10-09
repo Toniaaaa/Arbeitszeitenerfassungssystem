@@ -807,11 +807,14 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 
 /*Entfernt Urlaubstage in einem bestimten Zeitraum (Datum von - Datum bis) aus der Liste der Urlaubstage und erstellt eine Nachricht
 für den Betroffenen Angestellten, die alle Urlaubstage enthält, die entfernt wurden.*/
-void Angestellter::loescheUrlaubstage(DateTime von, DateTime bis, String^ kommentar)
+String^ Angestellter::loescheUrlaubstage(DateTime von, DateTime bis, String^ kommentar)
 {
+	//String für eine Information an den Angestellten wird erstellt
 	String^ urlaubEntferntString = "Ihre Urlaubstage\n\n";
 	Int32 anzGeloeschteTageDieseWoche = 0;
 	Int32 anzGeloeschteTageVergangenheit = 0;
+	Int32 geloeschteTageGesamt = 0;
+
 	//Alle Tage im Zeitraum von - bis werden durchlaufen
 	while (von <= bis) {
 		for (int i = 0; i < listeUrlaubstage->Count; i++) {
@@ -826,6 +829,7 @@ void Angestellter::loescheUrlaubstage(DateTime von, DateTime bis, String^ kommen
 					anzGeloeschteTageVergangenheit++;
 				}
 				removeUrlaubstag(von);
+				geloeschteTageGesamt++;
 				urlaubEntferntString += von.ToString("dddd, dd. MMMM yyyy") + "\n";
 			}
 		}
@@ -833,7 +837,17 @@ void Angestellter::loescheUrlaubstage(DateTime von, DateTime bis, String^ kommen
 	}
 	urlaubEntferntString += "\nmussten leider gestrichen werden.\n\nKommentar: " + kommentar 
 		+ "\n\nBei Fragen wenden Sie sich bitte an Ihren Vorgesetzten.";
-	antragsInfos->Add(urlaubEntferntString);
+
+	//String soll zurückgeben, ob wirklich Tage gelöscht wurden
+	String^ wirklichGeloescht = nullptr;
+
+	//Nur, wenn auch wirklich Urlaubstage entfernt wurden, wird eine Information an den Angestellten gesendet
+	if (geloeschteTageGesamt > 0) {
+		antragsInfos->Add(urlaubEntferntString);
+	}
+	else {
+		wirklichGeloescht = "Es wurden keine Urlaubstage gelöscht, da der ausgewählte Angestellte in diesem Zeitraum keinen Urlaub genommen hatte.";
+	}
 
 	//Wochenzeit wieder draufrechnen
 	Int32 gesamtminuten = anzGeloeschteTageDieseWoche * (wochenstunden * 60 / 5);
@@ -846,13 +860,18 @@ void Angestellter::loescheUrlaubstage(DateTime von, DateTime bis, String^ kommen
 	gesamtstunden = gesamtminuten / 60;
 	gesamtminuten -= gesamtstunden * 60;
 	this->setUeberstundenGesamt(-gesamtstunden, -gesamtminuten);
+
+	return wirklichGeloescht;
 }
 
-void Angestellter::loescheKrankheitstage(DateTime von, DateTime bis, String^ kommentar)
+String^ Angestellter::loescheKrankheitstage(DateTime von, DateTime bis, String^ kommentar)
 {
+	//String für eine Information an den Angestellten wird erstellt.
 	String^ krankheitstageEntferntString = "Ihre Krankheitstage\n\n";
 	Int32 anzGeloeschteTageDieseWoche = 0;
 	Int32 anzGeloeschteTageVergangenheit = 0;
+	Int32 geloeschteTageGesamt = 0;
+
 	//Alle Tage im Zeitraum von - bis werden durchlaufen
 	while (von <= bis) {
 		for (int i = 0; i < krankheitsTage->Count; i++) {
@@ -867,6 +886,7 @@ void Angestellter::loescheKrankheitstage(DateTime von, DateTime bis, String^ kom
 					anzGeloeschteTageVergangenheit++;
 				}
 				removeKrankheitstag(von);
+				geloeschteTageGesamt++;
 				krankheitstageEntferntString += von.ToString("dddd, dd. MMMM yyyy") + "\n";
 			}
 		}
@@ -874,7 +894,17 @@ void Angestellter::loescheKrankheitstage(DateTime von, DateTime bis, String^ kom
 	}
 	krankheitstageEntferntString += "\nmussten leider gestrichen werden.\n\nKommentar: " + kommentar
 		+ "\n\nBei Fragen wenden Sie sich bitte an Ihren Vorgesetzten.";
-	antragsInfos->Add(krankheitstageEntferntString);
+
+	//String soll zurückgeben, ob wirklich Tage gelöscht wurden
+	String^ wirklichGeloescht = nullptr;
+
+	//Nur, wenn auch wirklich Krankheitstage entfernt wurden, wird eine Information an den Angestellten gesendet
+	if (anzGeloeschteTageDieseWoche + anzGeloeschteTageVergangenheit > 0) {
+		antragsInfos->Add(krankheitstageEntferntString);
+	}
+	else {
+		wirklichGeloescht = "Es wurden keine Krankheitstage gelöscht, da der ausgewählte Angestellte in diesem Zeitraum keine Krankmeldungen eingereicht hatte.";
+	}
 
 	//Wochenzeit wieder draufrechnen
 	Int32 gesamtminuten = anzGeloeschteTageDieseWoche * (wochenstunden * 60 / 5);
@@ -887,6 +917,8 @@ void Angestellter::loescheKrankheitstage(DateTime von, DateTime bis, String^ kom
 	gesamtstunden = gesamtminuten / 60;
 	gesamtminuten -= gesamtstunden * 60;
 	this->setUeberstundenGesamt(-gesamtstunden, -gesamtminuten);
+
+	return wirklichGeloescht;
 }
 
 /*Gibt einen String^ zurück, der das Datum mit Wochentag aller Urlaubstage eines Angestellten und (falls true übergeben wird) aller Feiertage dieses Jahr getrennt 
