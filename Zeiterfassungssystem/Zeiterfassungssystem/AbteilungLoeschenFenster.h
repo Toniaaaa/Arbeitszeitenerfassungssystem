@@ -79,9 +79,10 @@ namespace Zeiterfassungssystem {
 			// 
 			this->bestaetigenBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->bestaetigenBtn->Location = System::Drawing::Point(40, 153);
+			this->bestaetigenBtn->Location = System::Drawing::Point(60, 235);
+			this->bestaetigenBtn->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->bestaetigenBtn->Name = L"bestaetigenBtn";
-			this->bestaetigenBtn->Size = System::Drawing::Size(150, 50);
+			this->bestaetigenBtn->Size = System::Drawing::Size(225, 77);
 			this->bestaetigenBtn->TabIndex = 1;
 			this->bestaetigenBtn->Text = L"Auflösen";
 			this->bestaetigenBtn->UseVisualStyleBackColor = true;
@@ -89,10 +90,12 @@ namespace Zeiterfassungssystem {
 			// 
 			// auswahlCBox
 			// 
+			this->auswahlCBox->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->auswahlCBox->FormattingEnabled = true;
-			this->auswahlCBox->Location = System::Drawing::Point(16, 97);
+			this->auswahlCBox->Location = System::Drawing::Point(24, 149);
+			this->auswahlCBox->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->auswahlCBox->Name = L"auswahlCBox";
-			this->auswahlCBox->Size = System::Drawing::Size(432, 21);
+			this->auswahlCBox->Size = System::Drawing::Size(646, 28);
 			this->auswahlCBox->TabIndex = 0;
 			this->auswahlCBox->SelectedIndexChanged += gcnew System::EventHandler(this, &AbteilungLoeschenFenster::auswahlCBox_SelectedIndexChanged);
 			// 
@@ -101,9 +104,10 @@ namespace Zeiterfassungssystem {
 			this->label1->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(12, 32);
+			this->label1->Location = System::Drawing::Point(18, 49);
+			this->label1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(436, 41);
+			this->label1->Size = System::Drawing::Size(654, 63);
 			this->label1->TabIndex = 2;
 			this->label1->Text = L"Welche Abteilung möchten Sie auflösen\?";
 			this->label1->TextAlign = System::Drawing::ContentAlignment::TopCenter;
@@ -112,9 +116,10 @@ namespace Zeiterfassungssystem {
 			// 
 			this->abbrechenBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->abbrechenBtn->Location = System::Drawing::Point(266, 153);
+			this->abbrechenBtn->Location = System::Drawing::Point(399, 235);
+			this->abbrechenBtn->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->abbrechenBtn->Name = L"abbrechenBtn";
-			this->abbrechenBtn->Size = System::Drawing::Size(150, 50);
+			this->abbrechenBtn->Size = System::Drawing::Size(225, 77);
 			this->abbrechenBtn->TabIndex = 2;
 			this->abbrechenBtn->Text = L"Abbrechen";
 			this->abbrechenBtn->UseVisualStyleBackColor = true;
@@ -122,15 +127,16 @@ namespace Zeiterfassungssystem {
 			// 
 			// AbteilungLoeschenFenster
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ControlLightLight;
-			this->ClientSize = System::Drawing::Size(460, 228);
+			this->ClientSize = System::Drawing::Size(690, 351);
 			this->Controls->Add(this->abbrechenBtn);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->auswahlCBox);
 			this->Controls->Add(this->bestaetigenBtn);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
+			this->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->Name = L"AbteilungLoeschenFenster";
 			this->Text = L"Abteilung löschen";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &AbteilungLoeschenFenster::AbteilungLoeschenFenster_FormClosing);

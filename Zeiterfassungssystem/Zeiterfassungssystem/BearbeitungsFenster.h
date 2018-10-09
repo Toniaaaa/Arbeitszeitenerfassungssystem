@@ -108,72 +108,65 @@ namespace Zeiterfassungssystem {
 			// 
 			// txt_vorname
 			// 
-			this->txt_vorname->Location = System::Drawing::Point(121, 168);
-			this->txt_vorname->Margin = System::Windows::Forms::Padding(2);
+			this->txt_vorname->Location = System::Drawing::Point(182, 258);
 			this->txt_vorname->Name = L"txt_vorname";
-			this->txt_vorname->Size = System::Drawing::Size(264, 20);
+			this->txt_vorname->Size = System::Drawing::Size(394, 26);
 			this->txt_vorname->TabIndex = 2;
 			// 
 			// txt_personalnummer
 			// 
-			this->txt_personalnummer->Location = System::Drawing::Point(121, 119);
-			this->txt_personalnummer->Margin = System::Windows::Forms::Padding(2);
+			this->txt_personalnummer->Location = System::Drawing::Point(182, 183);
 			this->txt_personalnummer->Name = L"txt_personalnummer";
-			this->txt_personalnummer->Size = System::Drawing::Size(264, 20);
+			this->txt_personalnummer->Size = System::Drawing::Size(394, 26);
 			this->txt_personalnummer->TabIndex = 0;
 			this->txt_personalnummer->TextChanged += gcnew System::EventHandler(this, &BearbeitungsFenster::txt_personalnummer_TextChanged);
 			// 
 			// txt_passwort
 			// 
-			this->txt_passwort->Location = System::Drawing::Point(121, 217);
-			this->txt_passwort->Margin = System::Windows::Forms::Padding(2);
+			this->txt_passwort->Location = System::Drawing::Point(182, 334);
 			this->txt_passwort->Name = L"txt_passwort";
 			this->txt_passwort->PasswordChar = '*';
-			this->txt_passwort->Size = System::Drawing::Size(264, 20);
+			this->txt_passwort->Size = System::Drawing::Size(394, 26);
 			this->txt_passwort->TabIndex = 4;
 			// 
 			// txt_abteilung
 			// 
 			this->txt_abteilung->FormattingEnabled = true;
-			this->txt_abteilung->Location = System::Drawing::Point(121, 192);
-			this->txt_abteilung->Margin = System::Windows::Forms::Padding(2);
+			this->txt_abteilung->Location = System::Drawing::Point(182, 295);
 			this->txt_abteilung->Name = L"txt_abteilung";
-			this->txt_abteilung->Size = System::Drawing::Size(264, 21);
+			this->txt_abteilung->Size = System::Drawing::Size(394, 28);
 			this->txt_abteilung->TabIndex = 3;
 			// 
 			// txt_arbeitsstunden
 			// 
-			this->txt_arbeitsstunden->Location = System::Drawing::Point(121, 241);
-			this->txt_arbeitsstunden->Margin = System::Windows::Forms::Padding(2);
+			this->txt_arbeitsstunden->Location = System::Drawing::Point(182, 371);
 			this->txt_arbeitsstunden->Name = L"txt_arbeitsstunden";
-			this->txt_arbeitsstunden->Size = System::Drawing::Size(264, 20);
+			this->txt_arbeitsstunden->Size = System::Drawing::Size(394, 26);
 			this->txt_arbeitsstunden->TabIndex = 5;
 			// 
 			// txt_urlaubstage
 			// 
-			this->txt_urlaubstage->Location = System::Drawing::Point(121, 266);
-			this->txt_urlaubstage->Margin = System::Windows::Forms::Padding(2);
+			this->txt_urlaubstage->Location = System::Drawing::Point(182, 409);
 			this->txt_urlaubstage->Name = L"txt_urlaubstage";
-			this->txt_urlaubstage->Size = System::Drawing::Size(264, 20);
+			this->txt_urlaubstage->Size = System::Drawing::Size(394, 26);
 			this->txt_urlaubstage->TabIndex = 6;
 			// 
 			// txt_Rolle
 			// 
+			this->txt_Rolle->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->txt_Rolle->FormattingEnabled = true;
 			this->txt_Rolle->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Mitarbeiter", L"Vorgesetzter" });
-			this->txt_Rolle->Location = System::Drawing::Point(122, 313);
-			this->txt_Rolle->Margin = System::Windows::Forms::Padding(2);
+			this->txt_Rolle->Location = System::Drawing::Point(183, 482);
 			this->txt_Rolle->Name = L"txt_Rolle";
-			this->txt_Rolle->Size = System::Drawing::Size(263, 21);
+			this->txt_Rolle->Size = System::Drawing::Size(392, 28);
 			this->txt_Rolle->TabIndex = 8;
 			this->txt_Rolle->SelectedIndexChanged += gcnew System::EventHandler(this, &BearbeitungsFenster::txt_Rolle_SelectedIndexChanged);
 			// 
 			// btn_mitarbeiter_hinzufuegen
 			// 
-			this->btn_mitarbeiter_hinzufuegen->Location = System::Drawing::Point(121, 358);
-			this->btn_mitarbeiter_hinzufuegen->Margin = System::Windows::Forms::Padding(2);
+			this->btn_mitarbeiter_hinzufuegen->Location = System::Drawing::Point(182, 551);
 			this->btn_mitarbeiter_hinzufuegen->Name = L"btn_mitarbeiter_hinzufuegen";
-			this->btn_mitarbeiter_hinzufuegen->Size = System::Drawing::Size(128, 28);
+			this->btn_mitarbeiter_hinzufuegen->Size = System::Drawing::Size(192, 43);
 			this->btn_mitarbeiter_hinzufuegen->TabIndex = 9;
 			this->btn_mitarbeiter_hinzufuegen->Text = L"Ändern";
 			this->btn_mitarbeiter_hinzufuegen->UseVisualStyleBackColor = true;
@@ -182,80 +175,72 @@ namespace Zeiterfassungssystem {
 			// lbl_name
 			// 
 			this->lbl_name->AutoSize = true;
-			this->lbl_name->Location = System::Drawing::Point(8, 145);
-			this->lbl_name->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->lbl_name->Location = System::Drawing::Point(12, 223);
 			this->lbl_name->Name = L"lbl_name";
-			this->lbl_name->Size = System::Drawing::Size(35, 13);
+			this->lbl_name->Size = System::Drawing::Size(51, 20);
 			this->lbl_name->TabIndex = 8;
 			this->lbl_name->Text = L"Name";
 			// 
 			// lbl_vorname
 			// 
 			this->lbl_vorname->AutoSize = true;
-			this->lbl_vorname->Location = System::Drawing::Point(8, 171);
-			this->lbl_vorname->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->lbl_vorname->Location = System::Drawing::Point(12, 263);
 			this->lbl_vorname->Name = L"lbl_vorname";
-			this->lbl_vorname->Size = System::Drawing::Size(49, 13);
+			this->lbl_vorname->Size = System::Drawing::Size(74, 20);
 			this->lbl_vorname->TabIndex = 9;
 			this->lbl_vorname->Text = L"Vorname";
 			// 
 			// lbl_abteilung
 			// 
 			this->lbl_abteilung->AutoSize = true;
-			this->lbl_abteilung->Location = System::Drawing::Point(8, 195);
-			this->lbl_abteilung->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->lbl_abteilung->Location = System::Drawing::Point(12, 300);
 			this->lbl_abteilung->Name = L"lbl_abteilung";
-			this->lbl_abteilung->Size = System::Drawing::Size(51, 13);
+			this->lbl_abteilung->Size = System::Drawing::Size(76, 20);
 			this->lbl_abteilung->TabIndex = 13;
 			this->lbl_abteilung->Text = L"Abteilung";
 			// 
 			// lbl_personalnummer
 			// 
 			this->lbl_personalnummer->AutoSize = true;
-			this->lbl_personalnummer->Location = System::Drawing::Point(8, 122);
-			this->lbl_personalnummer->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->lbl_personalnummer->Location = System::Drawing::Point(12, 188);
 			this->lbl_personalnummer->Name = L"lbl_personalnummer";
-			this->lbl_personalnummer->Size = System::Drawing::Size(85, 13);
+			this->lbl_personalnummer->Size = System::Drawing::Size(129, 20);
 			this->lbl_personalnummer->TabIndex = 14;
 			this->lbl_personalnummer->Text = L"Personalnummer";
 			// 
 			// lbl_passwort
 			// 
 			this->lbl_passwort->AutoSize = true;
-			this->lbl_passwort->Location = System::Drawing::Point(8, 220);
-			this->lbl_passwort->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->lbl_passwort->Location = System::Drawing::Point(12, 338);
 			this->lbl_passwort->Name = L"lbl_passwort";
-			this->lbl_passwort->Size = System::Drawing::Size(50, 13);
+			this->lbl_passwort->Size = System::Drawing::Size(74, 20);
 			this->lbl_passwort->TabIndex = 17;
 			this->lbl_passwort->Text = L"Passwort";
 			// 
 			// lbl_arbeitsstunden
 			// 
 			this->lbl_arbeitsstunden->AutoSize = true;
-			this->lbl_arbeitsstunden->Location = System::Drawing::Point(8, 244);
-			this->lbl_arbeitsstunden->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->lbl_arbeitsstunden->Location = System::Drawing::Point(12, 375);
 			this->lbl_arbeitsstunden->Name = L"lbl_arbeitsstunden";
-			this->lbl_arbeitsstunden->Size = System::Drawing::Size(77, 13);
+			this->lbl_arbeitsstunden->Size = System::Drawing::Size(117, 20);
 			this->lbl_arbeitsstunden->TabIndex = 20;
 			this->lbl_arbeitsstunden->Text = L"Arbeitsstunden";
 			// 
 			// lbl_urlaubstage
 			// 
 			this->lbl_urlaubstage->AutoSize = true;
-			this->lbl_urlaubstage->Location = System::Drawing::Point(8, 269);
-			this->lbl_urlaubstage->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->lbl_urlaubstage->Location = System::Drawing::Point(12, 414);
 			this->lbl_urlaubstage->Name = L"lbl_urlaubstage";
-			this->lbl_urlaubstage->Size = System::Drawing::Size(64, 13);
+			this->lbl_urlaubstage->Size = System::Drawing::Size(96, 20);
 			this->lbl_urlaubstage->TabIndex = 21;
 			this->lbl_urlaubstage->Text = L"Urlaubstage";
 			// 
 			// lbl_rolle
 			// 
 			this->lbl_rolle->AutoSize = true;
-			this->lbl_rolle->Location = System::Drawing::Point(8, 316);
-			this->lbl_rolle->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->lbl_rolle->Location = System::Drawing::Point(12, 486);
 			this->lbl_rolle->Name = L"lbl_rolle";
-			this->lbl_rolle->Size = System::Drawing::Size(31, 13);
+			this->lbl_rolle->Size = System::Drawing::Size(45, 20);
 			this->lbl_rolle->TabIndex = 32;
 			this->lbl_rolle->Text = L"Rolle";
 			// 
@@ -264,27 +249,24 @@ namespace Zeiterfassungssystem {
 			this->lbl_bearbeitung->AutoSize = true;
 			this->lbl_bearbeitung->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 22.2F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lbl_bearbeitung->Location = System::Drawing::Point(115, 34);
-			this->lbl_bearbeitung->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->lbl_bearbeitung->Location = System::Drawing::Point(172, 52);
 			this->lbl_bearbeitung->Name = L"lbl_bearbeitung";
-			this->lbl_bearbeitung->Size = System::Drawing::Size(187, 36);
+			this->lbl_bearbeitung->Size = System::Drawing::Size(277, 52);
 			this->lbl_bearbeitung->TabIndex = 34;
 			this->lbl_bearbeitung->Text = L"Bearbeitung";
 			// 
 			// txt_name
 			// 
-			this->txt_name->Location = System::Drawing::Point(121, 145);
-			this->txt_name->Margin = System::Windows::Forms::Padding(2);
+			this->txt_name->Location = System::Drawing::Point(182, 223);
 			this->txt_name->Name = L"txt_name";
-			this->txt_name->Size = System::Drawing::Size(264, 20);
+			this->txt_name->Size = System::Drawing::Size(394, 26);
 			this->txt_name->TabIndex = 1;
 			// 
 			// btn_loeschen
 			// 
-			this->btn_loeschen->Location = System::Drawing::Point(257, 358);
-			this->btn_loeschen->Margin = System::Windows::Forms::Padding(2);
+			this->btn_loeschen->Location = System::Drawing::Point(386, 551);
 			this->btn_loeschen->Name = L"btn_loeschen";
-			this->btn_loeschen->Size = System::Drawing::Size(128, 28);
+			this->btn_loeschen->Size = System::Drawing::Size(192, 43);
 			this->btn_loeschen->TabIndex = 10;
 			this->btn_loeschen->Text = L"Löschen";
 			this->btn_loeschen->UseVisualStyleBackColor = true;
@@ -293,10 +275,9 @@ namespace Zeiterfassungssystem {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(8, 293);
-			this->label1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label1->Location = System::Drawing::Point(12, 451);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(105, 13);
+			this->label1->Size = System::Drawing::Size(160, 20);
 			this->label1->TabIndex = 36;
 			this->label1->Text = L"Administrator-Rechte";
 			// 
@@ -304,18 +285,19 @@ namespace Zeiterfassungssystem {
 			// 
 			this->adminCBox->AutoSize = true;
 			this->adminCBox->Enabled = false;
-			this->adminCBox->Location = System::Drawing::Point(121, 294);
+			this->adminCBox->Location = System::Drawing::Point(182, 452);
+			this->adminCBox->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->adminCBox->Name = L"adminCBox";
-			this->adminCBox->Size = System::Drawing::Size(15, 14);
+			this->adminCBox->Size = System::Drawing::Size(22, 21);
 			this->adminCBox->TabIndex = 7;
 			this->adminCBox->UseVisualStyleBackColor = true;
 			// 
 			// BearbeitungsFenster
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
-			this->ClientSize = System::Drawing::Size(393, 397);
+			this->ClientSize = System::Drawing::Size(590, 611);
 			this->Controls->Add(this->adminCBox);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->btn_loeschen);
@@ -338,7 +320,6 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->txt_personalnummer);
 			this->Controls->Add(this->txt_vorname);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
-			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"BearbeitungsFenster";
 			this->Text = L"Angestellte bearbeiten";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &BearbeitungsFenster::BearbeitungsFenster_FormClosing);

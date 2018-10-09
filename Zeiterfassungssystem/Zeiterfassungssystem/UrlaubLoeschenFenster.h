@@ -191,6 +191,7 @@ namespace Zeiterfassungssystem {
 			// 
 			// angestellterCBox
 			// 
+			this->angestellterCBox->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->angestellterCBox->FormattingEnabled = true;
 			this->angestellterCBox->Location = System::Drawing::Point(314, 215);
 			this->angestellterCBox->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
@@ -198,7 +199,6 @@ namespace Zeiterfassungssystem {
 			this->angestellterCBox->Size = System::Drawing::Size(300, 28);
 			this->angestellterCBox->TabIndex = 1;
 			this->angestellterCBox->SelectedIndexChanged += gcnew System::EventHandler(this, &UrlaubLoeschenFenster::angestellterCBox_SelectedIndexChanged);
-			this->angestellterCBox->TextChanged += gcnew System::EventHandler(this, &UrlaubLoeschenFenster::angestellterCBox_TextChanged);
 			// 
 			// label4
 			// 
@@ -234,6 +234,7 @@ namespace Zeiterfassungssystem {
 			// 
 			// artCBox
 			// 
+			this->artCBox->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->artCBox->FormattingEnabled = true;
 			this->artCBox->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Urlaub", L"Krankmeldung" });
 			this->artCBox->Location = System::Drawing::Point(314, 155);
@@ -331,7 +332,7 @@ namespace Zeiterfassungssystem {
 			this->urlaubEndeDTP->Value = DateTime::Today.Date;
 			this->angestellterCBox->SelectedIndex = -1;
 			this->angestellterCBox->Items->Clear();
-			this->angestellterCBox->UpdateStyles = "";
+			this->angestellterCBox->Text = "";
 			this->kommentarTxt->Text = "";
 			this->artCBox->SelectedIndex = -1;
 			this->artCBox->Text = "";
@@ -364,7 +365,7 @@ namespace Zeiterfassungssystem {
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 		//Fall: Keine Art von freien Tagen ausgewählt
-		else if (artAusgewaehlt == nullptr || (!p_Art->Equals("Urlaub") && !p_Art->Equals("Krankmeldung"))) {
+		else if (artAusgewaehlt == nullptr) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Bitte wählen Sie eine zulässige Art von freien Tagen, die gelöscht werden sollen, aus!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
@@ -447,12 +448,6 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
-	private: System::Void angestellterCBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-		/*if ()
-		else {
-			angestellter = unternehmen->getAlleAngestellte()[angestellterCBox->SelectedIndex];
-		}*/
-	}
 };
 }
 
