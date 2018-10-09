@@ -16,7 +16,7 @@ namespace Zeiterfassungssystem {
 	using namespace System::Drawing;
 	using namespace System::Text::RegularExpressions;
 	using namespace System::Security::Cryptography; //ZUM HASHEN
-	//ref class StartseiteVorgesetzte;
+	
 	/// <summary>
 	/// Zusammenfassung für RegistrierungsFenster
 	/// </summary>

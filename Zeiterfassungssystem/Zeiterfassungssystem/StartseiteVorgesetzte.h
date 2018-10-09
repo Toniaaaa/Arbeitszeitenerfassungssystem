@@ -37,7 +37,7 @@ namespace Zeiterfassungssystem {
 	{
 	private:
 		//Beteiligte Personen/Unternehmen:
-		Unternehmen ^ unternehmen;
+		Unternehmen^ unternehmen;
 		Vorgesetzter^ angestellterAkt;
 
 		//Für die Soundeffekte
@@ -588,7 +588,6 @@ namespace Zeiterfassungssystem {
 #pragma endregion
 
 		//Setter für die Personen / Unternehmen:
-
 		public: void setUnternehmen(Unternehmen^ unternehmen)
 		{
 			this->unternehmen = unternehmen;

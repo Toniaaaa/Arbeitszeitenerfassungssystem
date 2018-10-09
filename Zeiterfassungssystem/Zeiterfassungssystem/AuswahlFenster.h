@@ -171,6 +171,7 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
+	//Ueberpruefungen
 	private: System::Void btn_urlaub_Click(System::Object^  sender, System::EventArgs^  e) {
 		String^ wirklichGeloescht = nullptr;
 		System::Windows::Forms::DialogResult result = urlaubLoeschenfenster->ShowDialog(this);
