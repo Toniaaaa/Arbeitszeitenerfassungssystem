@@ -291,7 +291,7 @@ namespace Zeiterfassungssystem {
 		else {
 			//OK senden und Fenster schließen
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
-			this->Close(); //Fenster wird nur geschlossen, wenn alle Angaben gemacht wurden und OK sind.
+			this->Close();
 		}
 
 	}

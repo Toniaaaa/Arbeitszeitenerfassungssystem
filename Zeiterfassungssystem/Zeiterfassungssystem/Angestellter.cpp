@@ -371,15 +371,20 @@ void Angestellter::nehmeUrlaub(DateTime beginn, DateTime ende)
 }
 
 /*Trägt alle Tage innerhalb der Zeitspanne, die kein Wochenende oder Feiertage sind, in die Liste der Krankheitstage ein. Urlaubstage in diesem Zeitraum werden entfernt.*/
-void Angestellter::krankMelden(DateTime beginn, DateTime ende)
+String^ Angestellter::krankMelden(DateTime beginn, DateTime ende)
 {
+	String^ entfernteUrlaubstage = "Folgende Ihrer Urlaubstage wurden in Krankheitstage umgewandelt:\n\n";
+	Int32 anzEntfernteUrlaubstage = 0;
+
 	//Alle Tage von Beginn bis Ende werden durchlaufen
 	while (beginn <= ende) {
 		//Prüfen: Ist der Tag ein Feiertag oder ein Urlaubstag ist (also in der Urlaubstage-Liste und evtl. istFeiertag = true)
 		if (Int32 index = indexVonUrlaubstag(beginn) != -1) {
 			//Wenn der Tag ein normaler Urlaubstag ist, wird er aus der Urlaubstage-Liste entfernt.
 			if (!istFeiertag(beginn)) {
-				loescheUrlaubstage(beginn, beginn, "Ist jetzt ein Krankheitstag.");
+				removeUrlaubstag(beginn);
+				anzEntfernteUrlaubstage++;
+				entfernteUrlaubstage += beginn.ToString("dddd, dd. MMMM yyyy") + "\n";
 			}
 		}
 		//Prüfe, ob dieser Tag bereits ein gespeicherter Krankheitstag, ein Feiertag, Samstag oder Sonntag ist
@@ -389,6 +394,13 @@ void Angestellter::krankMelden(DateTime beginn, DateTime ende)
 		}
 		beginn = beginn.AddDays(1.0);
 	}
+
+	//Falls keine Urlaubstage entfernt wurden, wird der String als nullptr gesetzt
+	if (anzEntfernteUrlaubstage == 0) {
+		entfernteUrlaubstage = nullptr;
+	}
+
+	return entfernteUrlaubstage;
 }
 
 //Berechnet die Anzahl der Tage in einem Intervall ohne Wochenenden und Feiertage

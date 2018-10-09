@@ -308,24 +308,21 @@ namespace Zeiterfassungssystem {
 				+ krankmeldungsfenster->p_Ende.ToString("dddd, dd. MMMM yyyy") + " einreichen?";
 			if (MessageBox::Show(text, "Krankmeldung", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 				DateTime beginn = krankmeldungsfenster->p_Anfang;
-				if (beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
-					//Krankheitstage hinzufügen
-					angestellter->krankMelden(krankmeldungsfenster->p_Anfang, krankmeldungsfenster->p_Ende);
-
-					//Bestätigung per MessageBox:
-					MessageBox::Show("Ihre Krankmeldung wurde erfolgreich gespeichert!", "Einreichen erfolgreich", MessageBoxButtons::OK, MessageBoxIcon::Information);
-
-					//Information an Vorgesetzten
-					String^ infoAnVorgesetzten = angestellter->getVorname() + " " + angestellter->getNachname() + " hat eine Krankmeldung\nvom " + krankmeldungsfenster->p_Anfang.ToString("dddd, dd. MMMM yyyy")
-						+ "\nbis " + krankmeldungsfenster->p_Ende.ToString("dddd, dd. MMMM yyyy") + "\nüber insgesamt " + krankmeldungsfenster->p_Tage + " Tage eingereicht.";
-					vorgesetzter->addAntragsInfo(infoAnVorgesetzten);
-
-				} 
-				else {
-					MessageBox::Show("Für Samstags und Sonntags wird keine Krankmeldung benötigt!", "Nicht erfordert!", MessageBoxButtons::OK, MessageBoxIcon::Information);
-
+				//Krankheitstage hinzufügen
+				String^ geloeschteUrlaubstage = angestellter->krankMelden(krankmeldungsfenster->p_Anfang, krankmeldungsfenster->p_Ende);
+				if (geloeschteUrlaubstage != nullptr) {
+					angestellter->addAntragsInfo(geloeschteUrlaubstage);
 				}
-			}
+
+				//Bestätigung per MessageBox:
+				MessageBox::Show("Ihre Krankmeldung wurde erfolgreich gespeichert!", "Einreichen erfolgreich", MessageBoxButtons::OK, MessageBoxIcon::Information);
+
+				//Information an Vorgesetzten
+				String^ infoAnVorgesetzten = angestellter->getVorname() + " " + angestellter->getNachname() + " hat eine Krankmeldung\nvom " + krankmeldungsfenster->p_Anfang.ToString("dddd, dd. MMMM yyyy")
+					+ "\nbis " + krankmeldungsfenster->p_Ende.ToString("dddd, dd. MMMM yyyy") + "\nüber insgesamt " + krankmeldungsfenster->p_Tage + " Tage eingereicht.";
+				vorgesetzter->addAntragsInfo(infoAnVorgesetzten);
+
+			} 
 		}
 		krankmeldungsfenster->clear();
 	}

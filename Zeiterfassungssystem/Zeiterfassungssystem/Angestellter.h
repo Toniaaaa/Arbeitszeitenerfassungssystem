@@ -137,7 +137,7 @@ public:
 	void nehmeUrlaub(DateTime beginn, DateTime ende); 
 
 	//Fügt die Tage innerhalb des Zeitraums zu den Krankheitstagen hinzu, solange die keine Feiertage oder Wochenenden sind und entfernt sie aus den Urlaubstagen
-	void krankMelden(DateTime beginn, DateTime ende); 
+	String^ krankMelden(DateTime beginn, DateTime ende); 
 
 	//Berechnet die Anzahl der Urlaubstage innerhalb eines Zeitraums ohne Wochenenden und Feiertage
 	Int32 berechneUrlaubstage(DateTime beginn, DateTime ende); 
