@@ -51,7 +51,7 @@ Int32 Unternehmen::getAnzahlAbteilungen()
 	try {
 		anzAbt = abteilungen->Count;
 	}
-	catch (NullReferenceException ^e) {
+	catch (NullReferenceException ^) {
 		anzAbt = 0;
 	}
 	return anzAbt;
@@ -128,7 +128,7 @@ List<Abteilung^>^ Unternehmen::getAbteilungen()
 	try {
 		abteilungRueckgabe = abteilungen;
 	}
-	catch (NullReferenceException ^e) {
+	catch (NullReferenceException ^) {
 		abteilungRueckgabe = nullptr;
 	}
 	return abteilungRueckgabe;

@@ -153,7 +153,7 @@ namespace Zeiterfassungssystem {
 			Diagnostics::ProcessStartInfo^ startInfo = gcnew Diagnostics::ProcessStartInfo("BenutzerhandbuchTimeUp.pdf");
 			Diagnostics::Process::Start(startInfo);
 		}
-		catch (System::IO::FileNotFoundException ^e) {
+		catch (System::IO::FileNotFoundException ^) {
 			MessageBox::Show("Das Benutzerhandbuch konnte leider nicht gefunden werden.\nBitte wenden Sie sich an Ihren Administrator!", "Datei nicht gefunden",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}

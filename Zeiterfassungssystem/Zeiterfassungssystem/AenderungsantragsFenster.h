@@ -1,7 +1,6 @@
 #pragma once
 #include "Angestellter.h"
 #include "Mitarbeiter.h"
-//#include "StundenStatistikFenster.h"
 #include "Ereignis.h"
 #include "AenderungsbearbeitungsFenster.h"
 #include "Vorgesetzter.h"
@@ -23,7 +22,7 @@ namespace Zeiterfassungssystem {
 
 	private:
 
-	Angestellter ^ antragsteller;
+	Angestellter^ antragsteller;
 	StundenStatistikFenster^ stundenstatistik;
 	Int32 ereignisIndex;
 	Ereignis^ ereignis;
@@ -321,14 +320,14 @@ namespace Zeiterfassungssystem {
 		}
 #pragma endregion
 	private:
-		AenderungsbearbeitungsFenster ^ aenderungsbearbeitung;
+		AenderungsbearbeitungsFenster^ aenderungsbearbeitung;
 	public:
 
 		//Angestellter wird gesetzt:
 		void setAntragssteller(Angestellter^ antragstellerUebergabe)
-			{
-				antragsteller = antragstellerUebergabe;
-			}
+		{
+			antragsteller = antragstellerUebergabe;
+		}
 
 		void setStatistikFenster(StundenStatistikFenster^ stundenstatistik) {
 			this->stundenstatistik = stundenstatistik;
@@ -382,9 +381,11 @@ namespace Zeiterfassungssystem {
 		property String^ p_Grund
 		{
 			String^ get() {
+				String^ result = nullptr;
 				if (ausgewaehlt) {
-					return this->gruendeAuswahl->SelectedItem->ToString();
+					result =  this->gruendeAuswahl->Text;
 				}
+				return result;
 			}
 		}
 
@@ -403,6 +404,7 @@ namespace Zeiterfassungssystem {
 			this->gehenMinuteTxt->Text = "";
 			this->kommentarTxt->Text = "";
 			this->gruendeAuswahl->Items->Clear();
+			this->gruendeAuswahl->Text = "";
 		}
 		
 	//Beim Klick auf "Einreichen" wird das Fenster geschlossen und OK gesendet, falls: Die Tage eingetragen wurden und die Zahl positiv ist,
@@ -450,17 +452,22 @@ namespace Zeiterfassungssystem {
 			MessageBox::Show("Bitte geben Sie eine Zahl von 0 - 59 ein.", "Minuten gegangen",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+		else if (p_Ankunft > p_Gehen) {
+			MessageBox::Show("Ihr neuer Gehen-Zeitpunkt liegt vor Ihrem Ankunft-Zeitpunkt.\nBitte korrigieren Sie Ihre Eingaben!", "Absenden nicht möglich!",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 		else if (!ausgewaehlt) {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
-			MessageBox::Show("Bitte waehlen Sie einen Grund für Ihren Antrag aus!", "Absenden nicht möglich!",
+			MessageBox::Show("Bitte wählen Sie einen Grund für Ihren Antrag aus!", "Absenden nicht möglich!",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 		else {
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
 			
-			//DateTime^ dateTag = p_Ankunft;
+			
 			DateTime datum = p_Ankunft.Date;
 			Vorgesetzter^ vorgesetzter = antragsteller->getAbteilung()->getVorgesetzter();
+
 			//Der Aenderungsantrag als String
 			String^ aenderungString = "Sie wollen folgende Änderung beantragen:\n\nTag der Änderung: " + datum.ToString("dddd, dd. MMMM yyyy") + "\nNeuer Beginn: "
 				+ p_Ankunft.ToString("HH:mm") + "\nNeues Ende: " + p_Gehen.ToString("HH:mm") + "\nGrund: " + p_Grund
@@ -478,8 +485,10 @@ namespace Zeiterfassungssystem {
 					MessageBoxButtons::OK, MessageBoxIcon::Error);
 			}
 
-			this->clear(); //Textfelder wieder leeren
-			this->Close(); //Fenster wird nur geschlossen, wenn alle Angaben gemacht wurden und OK sind.
+			//Textfelder wieder leeren
+			this->clear();
+			//Fenster wird nur geschlossen, wenn alle Angaben gemacht wurden und OK sind.
+			this->Close(); 
 		}
 		
 	}
@@ -498,10 +507,12 @@ namespace Zeiterfassungssystem {
 			Int32 minute = ereignis->getTimestamp()->Minute;
 			Int32 stunde = ereignis->getTimestamp()->Hour;
 			DateTime datum = ereignis->getTimestamp()->Date;
+
 			//das Datum wird ins Label geschrieben 
 			label2->Text = datum.ToString("dddd, dd. MMMM yyyy");
 			ankunftStdTxt->Text = Convert::ToString(stunde);
 			ankunftMinuteTxt->Text = Convert::ToString(minute);
+
 			//Laufe weiter bis zum passenden Arbeitsende und befülle End Textboxen passend, dann stopp
 			for (int i = ereignisIndex; i < antragsteller->getAnzahlEreignisse(); i++) {
 				if (antragsteller->getEreignis(i)->getTyp() == ARBEIT_ENDE) {
@@ -520,7 +531,7 @@ namespace Zeiterfassungssystem {
 			gruendeAuswahl->Items->Add("Computer-Absturz");
 			gruendeAuswahl->Items->Add("Sonstiges (siehe Kommentar)");
 			}
-		catch (ArgumentOutOfRangeException ^e) {
+		catch (ArgumentOutOfRangeException ^) {
 			this->Close();
 			this->clear();
 			MessageBox::Show("Bitte wählen Sie einen Tag aus, den sie gerne ändern möchten!", "Kein Tag ausgewählt", MessageBoxButtons::OK, MessageBoxIcon::Warning);
@@ -529,10 +540,11 @@ namespace Zeiterfassungssystem {
 			
 	private: System::Void AenderungsantragsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
 		//Items werden bereinigt damit sie nicht immer wieder dahinter gehängt werden
-		gruendeAuswahl->Items->Clear();
+		this->clear();
 	}
 
 	private: System::Void gruendeAuswahl_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+		//Wenn ein Item ausgewaehlt
 		ausgewaehlt = true;
 	}
 };

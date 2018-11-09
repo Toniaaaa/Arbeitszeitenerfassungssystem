@@ -22,6 +22,7 @@ namespace Zeiterfassungssystem {
 
 	private: System::Windows::Forms::Label^  kommentarLbl;
 	private: System::Windows::Forms::TextBox^  kommentarTxt;
+	private: System::Windows::Forms::Button^  anzeigenBtn;
 	private: System::Windows::Forms::Label^  krankheitstageLbl;
 
 	public:
@@ -75,6 +76,7 @@ namespace Zeiterfassungssystem {
 			this->kommentarLbl = (gcnew System::Windows::Forms::Label());
 			this->kommentarTxt = (gcnew System::Windows::Forms::TextBox());
 			this->krankheitstageLbl = (gcnew System::Windows::Forms::Label());
+			this->anzeigenBtn = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// krankheitBeginnDTP
@@ -100,7 +102,7 @@ namespace Zeiterfassungssystem {
 			// 
 			this->einreichenBtn->Location = System::Drawing::Point(26, 332);
 			this->einreichenBtn->Name = L"einreichenBtn";
-			this->einreichenBtn->Size = System::Drawing::Size(130, 37);
+			this->einreichenBtn->Size = System::Drawing::Size(115, 37);
 			this->einreichenBtn->TabIndex = 3;
 			this->einreichenBtn->Text = L"Einreichen";
 			this->einreichenBtn->UseVisualStyleBackColor = true;
@@ -127,9 +129,9 @@ namespace Zeiterfassungssystem {
 			// 
 			// abbrechenBtn
 			// 
-			this->abbrechenBtn->Location = System::Drawing::Point(272, 332);
+			this->abbrechenBtn->Location = System::Drawing::Point(288, 332);
 			this->abbrechenBtn->Name = L"abbrechenBtn";
-			this->abbrechenBtn->Size = System::Drawing::Size(130, 37);
+			this->abbrechenBtn->Size = System::Drawing::Size(115, 37);
 			this->abbrechenBtn->TabIndex = 4;
 			this->abbrechenBtn->Text = L"Abbrechen";
 			this->abbrechenBtn->UseVisualStyleBackColor = true;
@@ -187,12 +189,23 @@ namespace Zeiterfassungssystem {
 			this->krankheitstageLbl->TabIndex = 16;
 			this->krankheitstageLbl->Text = L"0 Tage";
 			// 
+			// anzeigenBtn
+			// 
+			this->anzeigenBtn->Location = System::Drawing::Point(156, 332);
+			this->anzeigenBtn->Name = L"anzeigenBtn";
+			this->anzeigenBtn->Size = System::Drawing::Size(115, 37);
+			this->anzeigenBtn->TabIndex = 17;
+			this->anzeigenBtn->Text = L"Krankmeldungen anzeigen";
+			this->anzeigenBtn->UseVisualStyleBackColor = true;
+			this->anzeigenBtn->Click += gcnew System::EventHandler(this, &KrankmeldungsFenster::anzeigenBtn_Click);
+			// 
 			// KrankmeldungsFenster
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
 			this->ClientSize = System::Drawing::Size(433, 381);
+			this->Controls->Add(this->anzeigenBtn);
 			this->Controls->Add(this->krankheitstageLbl);
 			this->Controls->Add(this->kommentarTxt);
 			this->Controls->Add(this->kommentarLbl);
@@ -263,8 +276,8 @@ namespace Zeiterfassungssystem {
 			this->angestellter = angestellterUebergabe;
 		}
 
-		//Beim Klick auf "Einreichen" wird das Fenster geschlossen und OK gesendet, falls:
-		//Der Beginn nicht nach dem Ende liegt und der Beginn nicht in der Vergangenheit liegt.
+	//Beim Klick auf "Einreichen" wird das Fenster geschlossen und OK gesendet, falls:
+	//Der Beginn nicht nach dem Ende liegt und der Beginn nicht in der Vergangenheit liegt.
 	private: System::Void Einreichen_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 
@@ -278,7 +291,7 @@ namespace Zeiterfassungssystem {
 		else {
 			//OK senden und Fenster schließen
 			this->DialogResult = System::Windows::Forms::DialogResult::OK;
-			this->Close(); //Fenster wird nur geschlossen, wenn alle Angaben gemacht wurden und OK sind.
+			this->Close();
 		}
 
 	}
@@ -290,7 +303,7 @@ namespace Zeiterfassungssystem {
 		this->DialogResult = System::Windows::Forms::DialogResult::Cancel;
 	}
 
-	//Waehrend Fenster laed
+	//Während Fenster lädt
 	private: System::Void KrankmeldungsFenster_Load(System::Object^  sender, System::EventArgs^  e)
 	{
 		anzahlKrankheitstage = 1;
@@ -323,6 +336,12 @@ namespace Zeiterfassungssystem {
 		}
 	}
 
-	};
+	//Klick auf den Anzeigen-Button
+	private: System::Void anzeigenBtn_Click(System::Object^  sender, System::EventArgs^  e) {
+		//Alle Krankheitstage der Person anzeigen
+		String^ urlaubstageString = angestellter->krankheitstageAnzeigen();
+		MessageBox::Show(urlaubstageString, "Ihre Krankheitstage", MessageBoxButtons::OK, MessageBoxIcon::Information);
+	}
+};
 }
 

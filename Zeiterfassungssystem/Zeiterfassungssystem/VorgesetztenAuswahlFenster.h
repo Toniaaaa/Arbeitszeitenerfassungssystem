@@ -78,9 +78,10 @@ namespace Zeiterfassungssystem {
 			// 
 			this->bestaetigenBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->bestaetigenBtn->Location = System::Drawing::Point(40, 153);
+			this->bestaetigenBtn->Location = System::Drawing::Point(60, 235);
+			this->bestaetigenBtn->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->bestaetigenBtn->Name = L"bestaetigenBtn";
-			this->bestaetigenBtn->Size = System::Drawing::Size(150, 50);
+			this->bestaetigenBtn->Size = System::Drawing::Size(225, 77);
 			this->bestaetigenBtn->TabIndex = 1;
 			this->bestaetigenBtn->Text = L"Bestätigen";
 			this->bestaetigenBtn->UseVisualStyleBackColor = true;
@@ -88,10 +89,12 @@ namespace Zeiterfassungssystem {
 			// 
 			// auswahlCBox
 			// 
+			this->auswahlCBox->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->auswahlCBox->FormattingEnabled = true;
-			this->auswahlCBox->Location = System::Drawing::Point(16, 102);
+			this->auswahlCBox->Location = System::Drawing::Point(24, 157);
+			this->auswahlCBox->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->auswahlCBox->Name = L"auswahlCBox";
-			this->auswahlCBox->Size = System::Drawing::Size(432, 21);
+			this->auswahlCBox->Size = System::Drawing::Size(646, 28);
 			this->auswahlCBox->TabIndex = 0;
 			this->auswahlCBox->SelectedIndexChanged += gcnew System::EventHandler(this, &VorgesetztenAuswahlFenster::auswahlCBox_SelectedIndexChanged);
 			// 
@@ -100,9 +103,10 @@ namespace Zeiterfassungssystem {
 			this->label1->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(12, 20);
+			this->label1->Location = System::Drawing::Point(18, 31);
+			this->label1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(436, 56);
+			this->label1->Size = System::Drawing::Size(654, 86);
 			this->label1->TabIndex = 2;
 			this->label1->Text = L"Bitte wählen Sie einen neuen Vorgesetzten für diese Abteilung aus!";
 			this->label1->TextAlign = System::Drawing::ContentAlignment::TopCenter;
@@ -111,9 +115,10 @@ namespace Zeiterfassungssystem {
 			// 
 			this->abbrechenBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->abbrechenBtn->Location = System::Drawing::Point(266, 153);
+			this->abbrechenBtn->Location = System::Drawing::Point(399, 235);
+			this->abbrechenBtn->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->abbrechenBtn->Name = L"abbrechenBtn";
-			this->abbrechenBtn->Size = System::Drawing::Size(150, 50);
+			this->abbrechenBtn->Size = System::Drawing::Size(225, 77);
 			this->abbrechenBtn->TabIndex = 2;
 			this->abbrechenBtn->Text = L"Abbrechen";
 			this->abbrechenBtn->UseVisualStyleBackColor = true;
@@ -121,15 +126,16 @@ namespace Zeiterfassungssystem {
 			// 
 			// VorgesetztenAuswahlFenster
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ControlLightLight;
-			this->ClientSize = System::Drawing::Size(460, 228);
+			this->ClientSize = System::Drawing::Size(690, 351);
 			this->Controls->Add(this->abbrechenBtn);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->auswahlCBox);
 			this->Controls->Add(this->bestaetigenBtn);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
+			this->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->Name = L"VorgesetztenAuswahlFenster";
 			this->Text = L"Neuer Vorgesetzter";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &VorgesetztenAuswahlFenster::VorgesetztenAuswahlFenster_FormClosing);
@@ -146,7 +152,7 @@ namespace Zeiterfassungssystem {
 			this->DialogResult = System::Windows::Forms::DialogResult::None;
 			MessageBox::Show("Bitte waehlen Sie einen Mitarbeiter aus!", "Kein Mitarbeiter ausgewählt", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
-		//Wenn neuer Vorgesetzter ausgewaehlt
+		//Wenn neuer Vorgesetzter ausgewählt
 		else {
 			//Den ausgewaehlten MA und die Abteilung, deren Vorgesetzter er werden soll, setzen
 			ausgewaehlterMA = (Mitarbeiter^)angestelltenAuswahl[auswahlCBox->SelectedIndex];
@@ -172,7 +178,7 @@ namespace Zeiterfassungssystem {
 					neuerMA->addAntragsInfo("Änderung im Unternehmen:\n\nSie wurden als Vorgesetzter Ihrer Abteilung abgelöst und nehmen nun die Rolle eines Mitarbeiters ein!");
 					abteilung->fuegeMitarbeiterHinzu(neuerMA);
 				}
-				//Neuen Vorgsetzten in der Abteilung setzen
+				//Neuen Vorgesetzten in der Abteilung setzen
 				abteilung->setVorgesetzter(vorgesetzterNeu);
 
 				//Den neuen Vorgesetzten aus seiner alten Abteilung entfernen
@@ -181,7 +187,7 @@ namespace Zeiterfassungssystem {
 						abteilungMA->removeMitarbeiter(i);
 					}
 				}
-				//MessageBoxen mit unterschiedlichen Texten für das Behalten oder Löschen des alten Vorgesetzten ausgeben
+				//Texte für MessageBoxen mit unterschiedlichem Inhalt für das Behalten oder Löschen des alten Vorgesetzten ausgeben
 				String^ infoText = nullptr;
 				if (behalten) {
 					infoText = "Sie haben erfolgreich " + vorgesetzterNeu->getVorname() + " " + vorgesetzterNeu->getNachname() + " zum Vorgesetzten der Abteilung " + abteilung->getAbteilungsnummer()
@@ -213,13 +219,14 @@ namespace Zeiterfassungssystem {
 	}
 
 	//Setter für das Unternehmen
-	public: void setUnternehmen(Unternehmen^ unternehmen) {
+	public:void setUnternehmen(Unternehmen^ unternehmen) {
 		this->unternehmen = unternehmen;
 	}
 
 	//Setter für den alten Vorgesetzten
-	public: void setVorgesetzterAlt(Vorgesetzter^ vorgesetzterAlt) {
-		this->vorgesetzterAlt = vorgesetzterAlt;
+	public:void setVorgesetzterAlt(Vorgesetzter^ vorgesetzterAlt) {
+			this->vorgesetzterAlt = vorgesetzterAlt;
+
 	}
 
 	//Setter für den Boolean, ob der Vorgesetzte gespeichert bleiben soll

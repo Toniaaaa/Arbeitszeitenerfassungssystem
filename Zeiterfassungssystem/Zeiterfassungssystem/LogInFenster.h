@@ -33,7 +33,7 @@ namespace Zeiterfassungssystem {
 		PasswortAendernFenster^ passwortaendernseite;
 		PersonalFenster^ personalfenster;
 		Angestellter^ angestellter;
-		SHA512^ verschluesselung;
+		SHA512^ hash;
 		bool loginGedrueckt = false;
 		BegruessungsFenster^ begruessung;
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
@@ -54,7 +54,7 @@ namespace Zeiterfassungssystem {
 			startseitevorgesetzte = gcnew StartseiteVorgesetzte();
 			passwortaendernseite = gcnew PasswortAendernFenster();
 			begruessung = gcnew BegruessungsFenster();
-			this->verschluesselung = gcnew SHA512Managed(); //ZUM HASHEN
+			this->hash = gcnew SHA512Managed(); //ZUM HASHEN
 		}
 
 	protected:
@@ -240,7 +240,7 @@ namespace Zeiterfassungssystem {
 		}
 #pragma endregion
 	public:
-		String ^ getBenutzername() {
+		String^ getBenutzername() {
 			return this->txt_Benutzername->Text;
 		}
 
@@ -255,12 +255,12 @@ namespace Zeiterfassungssystem {
 
 	private: System::Void logInButton_Click(System::Object^  sender, System::EventArgs^  e) {
 		array<Byte>^ passwort = System::Text::Encoding::UTF8->GetBytes(getKennwort()); //ZUM HASHEN
-		array<Byte>^ passwortVerschluesselt = verschluesselung->ComputeHash(passwort); //ZUM HASHEN
+		array<Byte>^ passwortGehashed = hash->ComputeHash(passwort); //ZUM HASHEN
 		/*LogIndaten werden überprüft, ebenfalls die rolle des Angestellten damit sich passendes Fenster öffnet
 		* Unternehmen wird uebergeben
 		*/
 		String^ personalnummer = getBenutzername();
-	    angestellter = unternehmen->loginaccept(personalnummer, passwortVerschluesselt);
+	    angestellter = unternehmen->loginaccept(personalnummer, passwortGehashed);
 		if (angestellter != nullptr && angestellter->istVorgesetzter() == false) {
 			loginGedrueckt = true;
 			startseitemitarbeiter->setAngemeldeterAngestellter((Mitarbeiter^) angestellter);
@@ -305,7 +305,7 @@ namespace Zeiterfassungssystem {
 			Diagnostics::ProcessStartInfo^ startInfo = gcnew Diagnostics::ProcessStartInfo("BenutzerhandbuchTimeUp.pdf");
 			Diagnostics::Process::Start(startInfo);
 		}
-		catch (System::ComponentModel::Win32Exception ^e) {
+		catch (System::ComponentModel::Win32Exception ^) {
 			MessageBox::Show("Das Benutzerhandbuch konnte leider nicht gefunden werden.\nBitte wenden Sie sich an Ihren Administrator!", "Datei nicht gefunden",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}

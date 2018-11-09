@@ -37,7 +37,7 @@ namespace Zeiterfassungssystem {
 	{
 	private:
 		//Beteiligte Personen/Unternehmen:
-		Unternehmen ^ unternehmen;
+		Unternehmen^ unternehmen;
 		Vorgesetzter^ angestellterAkt;
 
 		//Für die Soundeffekte
@@ -213,6 +213,7 @@ namespace Zeiterfassungssystem {
 			this->halloLbl->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->halloLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
+			this->halloLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->halloLbl->Location = System::Drawing::Point(373, 24);
 			this->halloLbl->Name = L"halloLbl";
 			this->halloLbl->Size = System::Drawing::Size(81, 31);
@@ -468,6 +469,7 @@ namespace Zeiterfassungssystem {
 			this->nameLbl->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->nameLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 30, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
+			this->nameLbl->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->nameLbl->Location = System::Drawing::Point(0, 58);
 			this->nameLbl->Name = L"nameLbl";
 			this->nameLbl->Size = System::Drawing::Size(830, 46);
@@ -480,7 +482,7 @@ namespace Zeiterfassungssystem {
 			this->lbl_Status->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->lbl_Status->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lbl_Status->ForeColor = System::Drawing::SystemColors::InfoText;
+			this->lbl_Status->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->lbl_Status->Location = System::Drawing::Point(1, 108);
 			this->lbl_Status->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_Status->Name = L"lbl_Status";
@@ -543,7 +545,6 @@ namespace Zeiterfassungssystem {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoScroll = true;
-			this->AutoSize = true;
 			this->BackColor = System::Drawing::SystemColors::MenuHighlight;
 			this->ClientSize = System::Drawing::Size(831, 799);
 			this->Controls->Add(this->IntroductionBtn);
@@ -574,6 +575,7 @@ namespace Zeiterfassungssystem {
 			this->Controls->Add(this->kommenBtn);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"StartseiteVorgesetzte";
+			this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Show;
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Zeiterfassung TimeUp Vorgesetzte";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &StartseiteVorgesetzte::StartseiteVorgesetzte_FormClosing);
@@ -581,13 +583,11 @@ namespace Zeiterfassungssystem {
 			this->Shown += gcnew System::EventHandler(this, &StartseiteVorgesetzte::StartseiteVorgesetzte_Shown);
 			this->ResumeLayout(false);
 			this->PerformLayout();
-
 		}
 	
 #pragma endregion
 
 		//Setter für die Personen / Unternehmen:
-
 		public: void setUnternehmen(Unternehmen^ unternehmen)
 		{
 			this->unternehmen = unternehmen;
@@ -607,7 +607,7 @@ namespace Zeiterfassungssystem {
 				sound->Load();
 				sound->Play();
 			}
-			catch (FileNotFoundException ^e) {
+			catch (FileNotFoundException ^) {
 				//Kein Sound, wenn die Datei nicht existiert
 			}
 			Ereignis^ arbeitsanfang = gcnew Ereignis(ARBEIT_START, DateTime::Now);
@@ -626,6 +626,7 @@ namespace Zeiterfassungssystem {
 	Die Pause wird gestartet oder beendet, je nachdem, ob schon eine Pause läuft. Dafür werden die Timer entsprechend gestartet bzw. beendet.
 	Außerdem wird ein PAUSE-START oder ein PAUSE_ENDE Ereignis erstellt und es werden die Farben der Darstellung geändert.*/
 	private: System::Void pauseCbox_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+		
 		//Wenn der Arbeitstag schon läuft
 		if (angestellterAkt->getArbeitsAnfang() != nullptr) {
 			//Soundeffekt wird abgespielt
@@ -634,7 +635,7 @@ namespace Zeiterfassungssystem {
 				sound->Load();
 				sound->Play();
 			}
-			catch (FileNotFoundException ^e) {
+			catch (FileNotFoundException ^) {
 				//Kein Sound, wenn die Datei nicht existiert
 			}
 			//Wenn schon eine Pause läuft
@@ -652,7 +653,7 @@ namespace Zeiterfassungssystem {
 						this->pauseCbox->Text = "";
 						this->pauseCbox->Image = Image::FromFile("Images/pauseIcon2.jpg");
 					}
-					catch (FileNotFoundException ^e) {
+					catch (FileNotFoundException ^) {
 						this->pauseCbox->Image = nullptr;
 						this->pauseCbox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 							static_cast<System::Byte>(0)));
@@ -681,7 +682,7 @@ namespace Zeiterfassungssystem {
 					this->pauseCbox->Text = "";
 					this->pauseCbox->Image = Image::FromFile("Images/pauseIcon.jpg");
 				}
-				catch (FileNotFoundException ^e) {
+				catch (FileNotFoundException ^) {
 					this->pauseCbox->Image = nullptr;
 					this->pauseCbox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 						static_cast<System::Byte>(0)));
@@ -727,7 +728,7 @@ namespace Zeiterfassungssystem {
 					sound->Load();
 					sound->Play();
 				}
-				catch (FileNotFoundException ^e) {
+				catch (FileNotFoundException ^) {
 					//Kein Sound, wenn die Datei nicht existiert
 				}
 				//Timer stoppen
@@ -832,7 +833,7 @@ namespace Zeiterfassungssystem {
 		urlaubLoeschenFenster->setAdminRechte(angestellterAkt->getIstAdmin());
 		feiertagsfenster->setUnternehmen(unternehmen);
 		abteilungFenster->setUnternehmen(unternehmen);
-		abteilungFenster->setAdminrechte(angestellterAkt->getIstAdmin());
+		abteilungFenster->setUser(angestellterAkt);
 		auswahlfenster->setAdminRechte(angestellterAkt->getIstAdmin());
 		auswahlfenster->setUrlaubLoeschenfenster(urlaubLoeschenFenster);
 		auswahlfenster->setFeiertagsfenster(feiertagsfenster);;
@@ -874,27 +875,26 @@ namespace Zeiterfassungssystem {
 			Diagnostics::ProcessStartInfo^ startInfo = gcnew Diagnostics::ProcessStartInfo("BenutzerhandbuchTimeUp.pdf");
 			Diagnostics::Process::Start(startInfo);
 		}
-		catch (System::ComponentModel::Win32Exception ^e) {
+		catch (System::ComponentModel::Win32Exception ^) {
 			MessageBox::Show("Das Benutzerhandbuch konnte leider nicht gefunden werden.\nBitte wenden Sie sich an Ihren Administrator!", "Datei nicht gefunden",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
 
-	//WÄHREND SEITE LÄD
+	//WÄHREND SEITE LÄDT
 	private: System::Void StartseiteVorgesetzte_Load(System::Object^  sender, System::EventArgs^  e) {
-
+	
 		//Spiele Musik
 		try {
 			sound->SoundLocation = "Sounds/start.wav";
 			sound->Load();
 			sound->Play();
 		}
-		catch (FileNotFoundException ^e) {
+		catch (FileNotFoundException ^) {
 			//Kein Sound, wenn die Datei nicht existiert
 		}
 		//Es wird geprüft, ob ein neues Jahr oder eine neue Woche angefangen hat
 		this->neuesJahr();
-		angestellterAkt->neueWoche();
 		//Falls in dieser Woche freie Tage vorhanden sind (Urlaub, Feiertage) wird die Arbeitszeit dieser Woche entsprechend angepasst.
 		angestellterAkt->freieTagePruefen(unternehmen);
 		//Wurde die Wochen-Arbeitszeit bereits erreicht
@@ -904,7 +904,6 @@ namespace Zeiterfassungssystem {
 
 		//Fall: Wenn der Arbeitstag noch läuft, gibt es KEINEN Arbeitsanfang, der noch nicht beendet wurde.
 		if (angestellterAkt->getArbeitsAnfang() == nullptr) {
-
 			//Timer-Zeiten werden auf 0 gesetzt
 			sekunde = 0;
 			minute = 0;
@@ -951,8 +950,6 @@ namespace Zeiterfassungssystem {
 
 	//SEITE WIRD GESCHLOSSEN
 	private: System::Void StartseiteVorgesetzte_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
-		//Es wird gespeichert, ob die Wochen-Arbeitszeit bereits erreicht wurde.
-		angestellterAkt->setWochenZeitErreicht(wochenZeitErreicht); 
 		//Unternehmen wird gespeichert
 		unternehmen->speichern(); 
 		Application::Exit();
@@ -1016,7 +1013,7 @@ namespace Zeiterfassungssystem {
 					this->pauseCbox->Text = "";
 					this->pauseCbox->Image = Image::FromFile("Images/pauseIcon.jpg");
 				}
-				catch (FileNotFoundException ^e) {
+				catch (FileNotFoundException ^) {
 					this->pauseCbox->Image = nullptr;
 					this->pauseCbox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 						static_cast<System::Byte>(0)));
@@ -1272,7 +1269,7 @@ namespace Zeiterfassungssystem {
 				this->pauseCbox->Text = "";
 				this->pauseCbox->Image = Image::FromFile("Images/pauseIcon2.jpg");
 			}
-			catch (FileNotFoundException ^e) {
+			catch (FileNotFoundException ^) {
 				this->pauseCbox->Image = nullptr;
 				this->pauseCbox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));

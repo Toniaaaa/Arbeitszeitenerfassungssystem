@@ -4,9 +4,9 @@
 
 using namespace System;
 
+//Ueber die Typen koennen spaeter passende Abfragen stattfinden und 
+//die passenden Zeitstempel gefunden werden
 enum EreignisTyp {
-	// NICHTN ÄNDERN
-	// viele Teile der Logik basieren darauf, dass es nur diese vier Arten an Ereignissen gibt
 	ARBEIT_START,
 	ARBEIT_ENDE,
 	PAUSE_START,

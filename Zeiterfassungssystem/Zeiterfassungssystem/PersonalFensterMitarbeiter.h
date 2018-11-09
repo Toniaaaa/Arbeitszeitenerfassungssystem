@@ -21,9 +21,6 @@ namespace Zeiterfassungssystem {
 		PersonalFensterMitarbeiter(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Konstruktorcode hier hinzufügen.
-			//
 		}
 
 	protected:
@@ -43,6 +40,7 @@ namespace Zeiterfassungssystem {
 	private: System::Windows::Forms::ColumnHeader^  clm_nachname;
 	private: System::Windows::Forms::ColumnHeader^  clm_Vorname;
 	private: System::Windows::Forms::ColumnHeader^  clm_Abteilung;
+	private: System::Windows::Forms::ColumnHeader^  clm_Rolle;
 
 	private:
 		/// <summary>
@@ -63,13 +61,14 @@ namespace Zeiterfassungssystem {
 			this->clm_nachname = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_Vorname = (gcnew System::Windows::Forms::ColumnHeader());
 			this->clm_Abteilung = (gcnew System::Windows::Forms::ColumnHeader());
+			this->clm_Rolle = (gcnew System::Windows::Forms::ColumnHeader());
 			this->SuspendLayout();
 			// 
 			// listView1
 			// 
-			this->listView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(4) {
+			this->listView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(5) {
 				this->clm_Status, this->clm_nachname,
-					this->clm_Vorname, this->clm_Abteilung
+					this->clm_Vorname, this->clm_Abteilung, this->clm_Rolle
 			});
 			this->listView1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->listView1->FullRowSelect = true;
@@ -77,7 +76,7 @@ namespace Zeiterfassungssystem {
 			this->listView1->Location = System::Drawing::Point(0, 0);
 			this->listView1->Margin = System::Windows::Forms::Padding(2);
 			this->listView1->Name = L"listView1";
-			this->listView1->Size = System::Drawing::Size(620, 274);
+			this->listView1->Size = System::Drawing::Size(689, 274);
 			this->listView1->TabIndex = 0;
 			this->listView1->UseCompatibleStateImageBehavior = false;
 			this->listView1->View = System::Windows::Forms::View::Details;
@@ -100,13 +99,18 @@ namespace Zeiterfassungssystem {
 			// clm_Abteilung
 			// 
 			this->clm_Abteilung->Text = L"Abteilung";
-			this->clm_Abteilung->Width = 152;
+			this->clm_Abteilung->Width = 120;
+			// 
+			// clm_Rolle
+			// 
+			this->clm_Rolle->Text = L"Rolle";
+			this->clm_Rolle->Width = 100;
 			// 
 			// PersonalFensterMitarbeiter
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(620, 274);
+			this->ClientSize = System::Drawing::Size(689, 274);
 			this->Controls->Add(this->listView1);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Margin = System::Windows::Forms::Padding(2);
@@ -119,7 +123,7 @@ namespace Zeiterfassungssystem {
 		}
 #pragma endregion
 	private:
-		Unternehmen ^ unternehmenAkt;
+		Unternehmen^ unternehmenAkt;
 
 	public: void setUnternehmen(Unternehmen^ unternehmen) {
 		this->unternehmenAkt = unternehmen;
@@ -155,15 +159,18 @@ namespace Zeiterfassungssystem {
 						item->ForeColor = System::Drawing::Color::Red;
 					}
 				}
-				catch (NullReferenceException ^e) {
+				catch (NullReferenceException ^) {
 					item->Text = "nicht anwesend..";
 					item->ForeColor = System::Drawing::Color::Red;
 				}
+
+				String^ rolle = angestellte[i]->istVorgesetzter() ? "Vorgesetzter" : "Mitarbeiter";
 
 				//Auch der Name, Vorname und Abteilung wird befüllt
 				item->SubItems->Add(angestellte[i]->getNachname());
 				item->SubItems->Add(angestellte[i]->getVorname());
 				item->SubItems->Add(angestellte[i]->getAbteilung()->getAbteilungsnummer());
+				item->SubItems->Add(rolle);
 				listView1->Items->Add(item);
 			}
 		}

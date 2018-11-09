@@ -10,6 +10,7 @@ namespace Zeiterfassungssystem {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Media;
 
 	/// <summary>
 	/// Zusammenfassung für UrlaubsFenster
@@ -22,6 +23,7 @@ namespace Zeiterfassungssystem {
 		Int32 restUrlaub;
 		Unternehmen^ unternehmen;
 		Int32 anzahlUrlaubstage;
+		SoundPlayer^ sound;
 
 	private: System::Windows::Forms::Label^  label4;
 	private: System::Windows::Forms::TextBox^  kommentarTxt;
@@ -31,6 +33,7 @@ namespace Zeiterfassungssystem {
 	public:
 		UrlaubsFenster(void)
 		{
+			sound = gcnew SoundPlayer();
 			InitializeComponent();
 		}
 
@@ -224,6 +227,7 @@ namespace Zeiterfassungssystem {
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"UrlaubsFenster";
 			this->Text = L"Urlaubsantrag";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &UrlaubsFenster::UrlaubsFenster_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &UrlaubsFenster::UrlaubsFenster_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -334,9 +338,18 @@ namespace Zeiterfassungssystem {
 		this->DialogResult = System::Windows::Forms::DialogResult::Cancel;
 	}
 
-	//Waehrend Fenster laed
+	//Während Fenster lädt
 	private: System::Void UrlaubsFenster_Load(System::Object^  sender, System::EventArgs^  e)
 	{
+		//Spielt Musik
+		try {
+			sound->SoundLocation = "Sounds/lacucarachaKurz.wav";
+			sound->Load();
+			sound->Play();
+		}
+		catch (System::IO::FileNotFoundException ^) {
+			//Kein Sound, wenn die Datei nicht existiert
+		}
 		//Setze Werte für Anzeige und Berechnung
 		restUrlaub = angestellter->getRestUrlaub();
 		anzahlUrlaubstage = 1;
@@ -376,6 +389,9 @@ namespace Zeiterfassungssystem {
 		MessageBox::Show(urlaubstageString, "Ihre freien Tage", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
 
+	private: System::Void UrlaubsFenster_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+		sound->Stop();
+	}
 };
 }
 

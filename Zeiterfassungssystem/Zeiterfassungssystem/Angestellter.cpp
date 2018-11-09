@@ -251,12 +251,12 @@ TimeSpan^ Angestellter::genugPause()
 	//berechnet heutige Pausen
 	TimeSpan^ pausen = getPausezeit(true);
 	//Fall: Es wurden mehr als 9 Stunden gearbeitet
-	if (*arbeit > *(gcnew TimeSpan(9, 0, 0))) {
-		fehlendePause = TimeSpan::operator-(*(gcnew TimeSpan(0, 45, 0)), *pausen);
+	if (*arbeit > TimeSpan(9, 0, 0)) {
+		fehlendePause = TimeSpan::operator-(TimeSpan(0, 45, 0), *pausen);
 	}
 	//Fall: Es wurden zwichen 6 und 9 Stunden gearbeitet
 	else if (*arbeit > *(gcnew TimeSpan(6, 0, 0))) {
-		fehlendePause = TimeSpan::operator-(*(gcnew TimeSpan(0, 30, 0)), *pausen);
+		fehlendePause = TimeSpan::operator-(TimeSpan(0, 30, 0), *pausen);
 	} 
 	return fehlendePause;
 }
@@ -358,16 +358,8 @@ in die Liste der Urlaubstage ein.*/
 void Angestellter::nehmeUrlaub(DateTime beginn, DateTime ende)
 {
 	while (beginn <= ende) {
-		//Prüfe, ob dieser Tag bereits ein genommener Urlaubstag ist
-		Boolean istUrlaubstag = false;
-		for (int i = 0; i < listeUrlaubstage->Count; i++) {
-			if (beginn == listeUrlaubstage[i]->getDatum()) {
-				istUrlaubstag = true;
-				break;
-			}
-		}
-		//Prüfe, ob dieser Tag ein Samstag oder Sonntag ist
-		if (!istUrlaubstag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
+		//Prüfe, ob dieser Tag ein Urlaubstag, Krankheitstag, Samstag oder Sonntag ist
+		if (!istUrlaubstag(beginn) && !istKrankheitstag(beginn) && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
 			//Tag wird der Liste hinzugefügt und ein Tag den genommenen Urlaubstagen hinzugefügt.
 			this->addUrlaubstag(beginn);
 			if (urlaubstageGespart > 0) {
@@ -379,29 +371,36 @@ void Angestellter::nehmeUrlaub(DateTime beginn, DateTime ende)
 }
 
 /*Trägt alle Tage innerhalb der Zeitspanne, die kein Wochenende oder Feiertage sind, in die Liste der Krankheitstage ein. Urlaubstage in diesem Zeitraum werden entfernt.*/
-void Angestellter::krankMelden(DateTime beginn, DateTime ende)
+String^ Angestellter::krankMelden(DateTime beginn, DateTime ende)
 {
+	String^ entfernteUrlaubstage = "Folgende Ihrer Urlaubstage wurden in Krankheitstage umgewandelt:\n\n";
+	Int32 anzEntfernteUrlaubstage = 0;
+
 	//Alle Tage von Beginn bis Ende werden durchlaufen
 	while (beginn <= ende) {
 		//Prüfen: Ist der Tag ein Feiertag oder ein Urlaubstag ist (also in der Urlaubstage-Liste und evtl. istFeiertag = true)
-		Boolean istEinFeiertag = false;
 		if (Int32 index = indexVonUrlaubstag(beginn) != -1) {
-			//Wenn der Tag ein Feiertag ist, wird der Boolean auf true gesetzt
-			if (listeUrlaubstage[index]->getIstFeiertag()) {
-				istEinFeiertag = true;
-			}
 			//Wenn der Tag ein normaler Urlaubstag ist, wird er aus der Urlaubstage-Liste entfernt.
-			else {
-				loescheUrlaubstage(beginn, beginn, "Ist jetzt ein Krankheitstag.");
+			if (!istFeiertag(beginn)) {
+				removeUrlaubstag(beginn);
+				anzEntfernteUrlaubstage++;
+				entfernteUrlaubstage += beginn.ToString("dddd, dd. MMMM yyyy") + "\n";
 			}
 		}
 		//Prüfe, ob dieser Tag bereits ein gespeicherter Krankheitstag, ein Feiertag, Samstag oder Sonntag ist
-		if (!istKrankheitstag(beginn) && !istEinFeiertag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
+		if (!istKrankheitstag(beginn) && !istFeiertag(beginn) && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
 			//Wenn er das alles nicht ist, wird er der Liste der Krankheitstag hinzugefügt.
 			this->addKrankheitstag(beginn);
 		}
 		beginn = beginn.AddDays(1.0);
 	}
+
+	//Falls keine Urlaubstage entfernt wurden, wird der String als nullptr gesetzt
+	if (anzEntfernteUrlaubstage == 0) {
+		entfernteUrlaubstage = nullptr;
+	}
+
+	return entfernteUrlaubstage;
 }
 
 //Berechnet die Anzahl der Tage in einem Intervall ohne Wochenenden und Feiertage
@@ -410,16 +409,8 @@ Int32 Angestellter::berechneArbeitstage(DateTime beginn, DateTime ende)
 	Int32 anzArbeitstage = 0;
 
 	while (beginn <= ende) {
-		//Prüfe, ob dieser Tag bereits ein genommener Urlaubstag ist
-		Boolean istFeiertag = false;
-		for (int i = 0; i < listeUrlaubstage->Count; i++) {
-			if (beginn == listeUrlaubstage[i]->getDatum() && listeUrlaubstage[i]->getIstFeiertag()) {
-				istFeiertag = true;
-				break;
-			}
-		}
-		//Prüfe, ob dieser Tag ein Samstag oder Sonntag ist
-		if (!istFeiertag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
+		//Prüfe, ob dieser Tag ein Feiertag, Samstag oder Sonntag ist
+		if (!istFeiertag(beginn) && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
 			//Tag wird der Liste hinzugefügt und ein Tag den genommenen Urlaubstagen hinzugefügt.
 			anzArbeitstage++;
 		}
@@ -435,16 +426,8 @@ Int32 Angestellter::berechneUrlaubstage(DateTime beginn, DateTime ende)
 	Int32 anzUrlaubstage = 0;
 
 	while (beginn <= ende) {
-		//Prüfe, ob dieser Tag bereits ein genommener Urlaubstag ist
-		Boolean istUrlaubstag = false;
-		for (int i = 0; i < listeUrlaubstage->Count; i++) {
-			if (beginn == listeUrlaubstage[i]->getDatum()) {
-				istUrlaubstag = true;
-				break;
-			}
-		}
 		//Prüfe, ob dieser Tag ein Samstag oder Sonntag ist
-		if (!istUrlaubstag && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
+		if (!istUrlaubstag(beginn) && !istKrankheitstag(beginn) && beginn.DayOfWeek != DayOfWeek::Saturday && beginn.DayOfWeek != DayOfWeek::Sunday) {
 			//Tag wird der Liste hinzugefügt und ein Tag den genommenen Urlaubstagen hinzugefügt.
 			anzUrlaubstage++;
 		}
@@ -469,7 +452,8 @@ void Angestellter::addFeiertag(DateTime tag)
 	//Fügt einen neuen Urlaubstag mit dem übergebenen Datum hinzu... 
 	listeUrlaubstage->Add(gcnew FreierTag(tag, true));
 	//Wenn es sich nicht um einen der 5 Standard-Feiertage handelt, wird der Angestellte über das Hinzufügen eines neuen Feiertags informiert
-	if (!(tag.Day == 1 && tag.Month == 1) && !(tag.Day == 1 && tag.Month == 5) && !(tag.Day == 3 && tag.Month == 10) && !(tag.Day == 25 && tag.Month == 12) && !(tag.Day == 26 && tag.Month == 12)) {
+	if (!(tag.Day == 1 && tag.Month == 1) && !(tag.Day == 1 && tag.Month == 5) && !(tag.Day == 3 && tag.Month == 10) && !(tag.Day == 25 && tag.Month == 12) && 
+		!(tag.Day == 26 && tag.Month == 12)) {
 		this->addAntragsInfo(tag.ToString("dddd, dd. MMMM yyyy") + " wurde als neuer Feiertag zu Ihrem Urlaub hinzugefügt!");
 	}
 	//...und sortiert die Liste der Urlaubstage nach dem Datum der Urlaubstage
@@ -498,6 +482,19 @@ Boolean Angestellter::istUrlaubstag(DateTime tag)
 		}
 	}
 	return istUrlaubstag;
+}
+
+//Prüft, ob das Datum eines Eintrag in der Liste der Urlaubstage mit der übergebenen DateTime übereinstimmt und ob es ein Feiertag ist. 
+Boolean Angestellter::istFeiertag(DateTime tag)
+{
+	Boolean istFeiertag = false;
+	for (int i = listeUrlaubstage->Count - 1; i >= 0; i--) {
+		if (listeUrlaubstage[i]->getDatum() == tag && listeUrlaubstage[i]->getIstFeiertag()) {
+			istFeiertag = true;
+			break;
+		}
+	}
+	return istFeiertag;
 }
 
 //Prüft, ob das Datum eines Eintrag in der Liste der Krankheitstag mit der übergebenen DateTime übereinstimmt. 
@@ -563,6 +560,8 @@ void Angestellter::zieheZeitAb(Int32 stunden, Int32 minuten) {
 	else {
 		arbeitsMinuten = zeit.Minutes;
 		arbeitsStunden = zeit.Hours + 24 * zeit.Days;
+		ueberStunden = 0;
+		ueberMinuten = 0;
 	}
 }
 
@@ -578,21 +577,25 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 
 	/*1. Fall: Es wurden bereits Überstunden gezählt (also Wochen-Arbeitszeit war schon erreicht). Die übergebenen Stunden und Minuten 
 	werden von den Überstunden subtrahiert.*/
-	if (wochenZeitErreicht) {
-		ueberStd -= stunden;
-		if (ueberMin - minuten < 0) {
+	if (wochenZeitErreicht && (ueberStd > 0 || ueberMin > 0)) {
+		ueberStd += stunden;
+		if (ueberMin + minuten > 59) {
+			ueberStd++;
+			ueberMin = ueberMin + minuten - 60;
+		}
+		else if (ueberMin + minuten < 0) {
 			ueberStd--;
-			ueberMin = ueberMin - minuten + 60;
+			ueberMin = ueberMin + minuten + 60;
 		}
 		else {
-			ueberMin -= minuten;
+			ueberMin += minuten;
 		}
 		if (ueberStd >= 0) {
-			reduzierteZeit = reduzierteZeit = gcnew TimeSpan(ueberStd, ueberMin, 1);
+			reduzierteZeit = gcnew TimeSpan(ueberStd, ueberMin, 1);
 		}
 		//2. Fall: Die Wochen-Arbeitszeit wurde durch den Zeitabzug doch nicht mehr erreicht
 		else {
-			arbeitsStd = -ueberStd - 1; //-1, weil die Arbeitsstunden von 00:00 auf 1:01 springen. Mit -1 ist das korrigiert.
+			arbeitsStd = (ueberMin == 0) ? -ueberStd : -ueberStd - 1; //-1, weil die Arbeitsstunden von 00:00 auf 1:01 springen. Mit -1 ist das korrigiert.
 			arbeitsMin = (ueberMin == 0) ? 0 : 60 - ueberMin;
 			reduzierteZeit = gcnew TimeSpan(arbeitsStd, arbeitsMin, 0);
 		}
@@ -604,6 +607,10 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 			arbeitsStd--;
 			arbeitsMin = arbeitsMin - minuten + 60;
 		}
+		else if (arbeitsMin - minuten > 59) {
+			arbeitsStd++;
+			arbeitsMin = arbeitsMin - minuten - 60;
+		}
 		else {
 			arbeitsMin -= minuten;
 		}
@@ -612,12 +619,11 @@ TimeSpan Angestellter::getReduzierteZeit(Int32 stunden, Int32 minuten) {
 		}
 		//Fall: Die Wochen-Arbeitszeit wurde durch den Zeitabzug erreicht
 		else {
-			ueberStd = -arbeitsStd - 1; //-1, weil die Arbeitsstunden von 00:00 auf 1:01 springen. Mit -1 ist das korrigiert.
+			ueberStd = (arbeitsMin == 0) ? -arbeitsStd : -arbeitsStd - 1; //-1, weil die Arbeitsstunden von 00:00 auf 1:01 springen. Mit -1 ist das korrigiert.
 			ueberMin = (arbeitsMin == 0) ? 0 : 60 - arbeitsMin;
 			reduzierteZeit = gcnew TimeSpan(ueberStd, ueberMin, 1);
 		}
 	}
-
 	return *reduzierteZeit;
 }
 
@@ -737,7 +743,7 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 			this->addFeiertag(unternehmen->getFeiertage()[i]->getDatum());
 		}
 	}
-
+	
 	//Exception-Handling, weil evtl. eine Null-Reference-Exception auftreten kann.
 	try {
 		//Solangen der Tag in der aktuellen Woche liegt, wird gepürft.
@@ -762,18 +768,20 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 			kWDynamisch = kalender->berechneKW(*tagDynamisch);
 		}
 	}
-	catch (System::NullReferenceException ^e) {
+	catch (System::NullReferenceException ^) {
 		anzFreieTage = 0;
 	}
-
+	
 	//Stunden und Minuten berechnen, die in dieser Woche durch die freien Tage weniger gearbeitet werden müssen
 	Double tagesArbeitszeit = (Double) wochenstunden / 5;
 	Double abzugArbeitszeit = tagesArbeitszeit * anzFreieTage;
 	Int32 wenigerStunden = (Int32)abzugArbeitszeit;
-	Int32 wenigerMinuten = (abzugArbeitszeit - wenigerStunden) * 60;
-
+	Int32 wenigerMinuten = (Int32) (abzugArbeitszeit - wenigerStunden) * 60;
+	
 	//Diese Zeit von den ArbeitsStunden und Minuten dieser Woche abziehen
-	this->zieheZeitAb(wenigerStunden, wenigerMinuten);
+	if (anzFreieTage > 0) {
+		this->zieheZeitAb(wenigerStunden, wenigerMinuten);
+	}
 
 	//Jetzt werden die Krankmeldungen geprüft, die weiter zurückliegen als nur diese Woche (max 6 Wochen zurückliegend wird geprüft).
 	//Exception-Handling, weil evtl. eine Null-Reference-Exception auftreten kann.
@@ -784,14 +792,6 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 	try {
 		//Solangen der Tag nicht länger als 6 Wochen zurückliegt, wird geprüft.
 		while (kWDynamisch >= kWHeute - 6) {
-			//Prüfe: Ist der Tag ein Urlaubstag
-			if (this->istUrlaubstag(*tagDynamisch)) {
-				Int32 index = this->indexVonUrlaubstag(*tagDynamisch);
-				if (!listeUrlaubstage[index]->getEingerechnet()) {
-					anzFreieTage++;
-					listeUrlaubstage[index]->setEingerechnet(true);
-				}
-			}
 			//Prüfe: Ist der Tag ein Krankheitstag
 			if (this->istKrankheitstag(*tagDynamisch)) {
 				Int32 index = this->indexVonKrankheitstag(*tagDynamisch);
@@ -804,25 +804,29 @@ void Angestellter::freieTagePruefen(Unternehmen^ unternehmen)
 			kWDynamisch = kalender->berechneKW(*tagDynamisch);
 		}
 	}
-	catch (System::NullReferenceException ^e) {
+	catch (System::NullReferenceException ^) {
 		anzFreieTage = 0;
 	}
-
 	//Stunden und Minuten berechnen, die in dieser Woche durch die freien Tage weniger gearbeitet werden müssen
 	abzugArbeitszeit = tagesArbeitszeit * anzFreieTage;
 	wenigerStunden = (Int32)abzugArbeitszeit;
-	wenigerMinuten = (abzugArbeitszeit - wenigerStunden) * 60;
+	wenigerMinuten = (Int32) (abzugArbeitszeit - wenigerStunden) * 60;
 
-	setUeberstundenGesamt(wenigerStunden, wenigerMinuten);
+	if (anzFreieTage > 0) {
+		setUeberstundenGesamt(wenigerStunden, wenigerMinuten);
+	}
 }
 
 /*Entfernt Urlaubstage in einem bestimten Zeitraum (Datum von - Datum bis) aus der Liste der Urlaubstage und erstellt eine Nachricht
 für den Betroffenen Angestellten, die alle Urlaubstage enthält, die entfernt wurden.*/
-void Angestellter::loescheUrlaubstage(DateTime von, DateTime bis, String^ kommentar)
+String^ Angestellter::loescheUrlaubstage(DateTime von, DateTime bis, String^ kommentar)
 {
+	//String für eine Information an den Angestellten wird erstellt
 	String^ urlaubEntferntString = "Ihre Urlaubstage\n\n";
 	Int32 anzGeloeschteTageDieseWoche = 0;
 	Int32 anzGeloeschteTageVergangenheit = 0;
+	Int32 geloeschteTageGesamt = 0;
+
 	//Alle Tage im Zeitraum von - bis werden durchlaufen
 	while (von <= bis) {
 		for (int i = 0; i < listeUrlaubstage->Count; i++) {
@@ -837,6 +841,7 @@ void Angestellter::loescheUrlaubstage(DateTime von, DateTime bis, String^ kommen
 					anzGeloeschteTageVergangenheit++;
 				}
 				removeUrlaubstag(von);
+				geloeschteTageGesamt++;
 				urlaubEntferntString += von.ToString("dddd, dd. MMMM yyyy") + "\n";
 			}
 		}
@@ -844,7 +849,17 @@ void Angestellter::loescheUrlaubstage(DateTime von, DateTime bis, String^ kommen
 	}
 	urlaubEntferntString += "\nmussten leider gestrichen werden.\n\nKommentar: " + kommentar 
 		+ "\n\nBei Fragen wenden Sie sich bitte an Ihren Vorgesetzten.";
-	antragsInfos->Add(urlaubEntferntString);
+
+	//String soll zurückgeben, ob wirklich Tage gelöscht wurden
+	String^ wirklichGeloescht = nullptr;
+
+	//Nur, wenn auch wirklich Urlaubstage entfernt wurden, wird eine Information an den Angestellten gesendet
+	if (geloeschteTageGesamt > 0) {
+		antragsInfos->Add(urlaubEntferntString);
+	}
+	else {
+		wirklichGeloescht = "Es wurden keine Urlaubstage gelöscht, da der ausgewählte Angestellte in diesem Zeitraum keinen Urlaub genommen hatte.";
+	}
 
 	//Wochenzeit wieder draufrechnen
 	Int32 gesamtminuten = anzGeloeschteTageDieseWoche * (wochenstunden * 60 / 5);
@@ -857,13 +872,18 @@ void Angestellter::loescheUrlaubstage(DateTime von, DateTime bis, String^ kommen
 	gesamtstunden = gesamtminuten / 60;
 	gesamtminuten -= gesamtstunden * 60;
 	this->setUeberstundenGesamt(-gesamtstunden, -gesamtminuten);
+
+	return wirklichGeloescht;
 }
 
-void Angestellter::loescheKrankheitstage(DateTime von, DateTime bis, String^ kommentar)
+String^ Angestellter::loescheKrankheitstage(DateTime von, DateTime bis, String^ kommentar)
 {
+	//String für eine Information an den Angestellten wird erstellt.
 	String^ krankheitstageEntferntString = "Ihre Krankheitstage\n\n";
 	Int32 anzGeloeschteTageDieseWoche = 0;
 	Int32 anzGeloeschteTageVergangenheit = 0;
+	Int32 geloeschteTageGesamt = 0;
+
 	//Alle Tage im Zeitraum von - bis werden durchlaufen
 	while (von <= bis) {
 		for (int i = 0; i < krankheitsTage->Count; i++) {
@@ -878,6 +898,7 @@ void Angestellter::loescheKrankheitstage(DateTime von, DateTime bis, String^ kom
 					anzGeloeschteTageVergangenheit++;
 				}
 				removeKrankheitstag(von);
+				geloeschteTageGesamt++;
 				krankheitstageEntferntString += von.ToString("dddd, dd. MMMM yyyy") + "\n";
 			}
 		}
@@ -885,7 +906,17 @@ void Angestellter::loescheKrankheitstage(DateTime von, DateTime bis, String^ kom
 	}
 	krankheitstageEntferntString += "\nmussten leider gestrichen werden.\n\nKommentar: " + kommentar
 		+ "\n\nBei Fragen wenden Sie sich bitte an Ihren Vorgesetzten.";
-	antragsInfos->Add(krankheitstageEntferntString);
+
+	//String soll zurückgeben, ob wirklich Tage gelöscht wurden
+	String^ wirklichGeloescht = nullptr;
+
+	//Nur, wenn auch wirklich Krankheitstage entfernt wurden, wird eine Information an den Angestellten gesendet
+	if (anzGeloeschteTageDieseWoche + anzGeloeschteTageVergangenheit > 0) {
+		antragsInfos->Add(krankheitstageEntferntString);
+	}
+	else {
+		wirklichGeloescht = "Es wurden keine Krankheitstage gelöscht, da der ausgewählte Angestellte in diesem Zeitraum keine Krankmeldungen eingereicht hatte.";
+	}
 
 	//Wochenzeit wieder draufrechnen
 	Int32 gesamtminuten = anzGeloeschteTageDieseWoche * (wochenstunden * 60 / 5);
@@ -898,6 +929,8 @@ void Angestellter::loescheKrankheitstage(DateTime von, DateTime bis, String^ kom
 	gesamtstunden = gesamtminuten / 60;
 	gesamtminuten -= gesamtstunden * 60;
 	this->setUeberstundenGesamt(-gesamtstunden, -gesamtminuten);
+
+	return wirklichGeloescht;
 }
 
 /*Gibt einen String^ zurück, der das Datum mit Wochentag aller Urlaubstage eines Angestellten und (falls true übergeben wird) aller Feiertage dieses Jahr getrennt 

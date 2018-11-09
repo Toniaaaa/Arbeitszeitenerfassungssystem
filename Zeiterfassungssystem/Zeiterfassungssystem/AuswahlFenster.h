@@ -128,6 +128,7 @@ namespace Zeiterfassungssystem {
 			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"AuswahlFenster";
 			this->Text = L"Bearbeiten";
+			this->Load += gcnew System::EventHandler(this, &AuswahlFenster::AuswahlFenster_Load);
 			this->ResumeLayout(false);
 
 		}
@@ -163,26 +164,26 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void btn_feiertag_Click(System::Object^  sender, System::EventArgs^  e) {
-		if (adminRechte) {
-			System::Windows::Forms::DialogResult result = feiertagsfenster->ShowDialog(this);
-			feiertagsfenster->clear();
-			if (result == System::Windows::Forms::DialogResult::OK) {
-				this->Close();
-			}
-		}
-		else {
-			MessageBox::Show("Sie haben leider keine Administratorrechte.\nNur Administratoren dürfen Feiertage bearbeiten.", "Nicht möglich", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		System::Windows::Forms::DialogResult result = feiertagsfenster->ShowDialog(this);
+		feiertagsfenster->clear();
+		if (result == System::Windows::Forms::DialogResult::OK) {
+			this->Close();
 		}
 	}
 
+	//Ueberpruefungen
 	private: System::Void btn_urlaub_Click(System::Object^  sender, System::EventArgs^  e) {
+		String^ wirklichGeloescht = nullptr;
 		System::Windows::Forms::DialogResult result = urlaubLoeschenfenster->ShowDialog(this);
 		if (result == System::Windows::Forms::DialogResult::OK && urlaubLoeschenfenster->p_Art->Equals("Urlaub")) {
 			String^ urlaubLoeschenString = "Wollen Sie " + urlaubLoeschenfenster->p_Angestellter->getVorname() + " " + urlaubLoeschenfenster->p_Angestellter->getNachname() +
 				" wirklich alle Urlaubstage\n\nvon: " + urlaubLoeschenfenster->p_Anfang.ToString("dddd, dd. MMMM yyyy") + "\nbis: " + urlaubLoeschenfenster->p_Ende.ToString("dddd, dd. MMMM yyyy")
 				+ "\n\nentfernen?";
 			if (MessageBox::Show(urlaubLoeschenString, "Wirklich entfernen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-				urlaubLoeschenfenster->p_Angestellter->loescheUrlaubstage(urlaubLoeschenfenster->p_Anfang, urlaubLoeschenfenster->p_Ende, urlaubLoeschenfenster->p_Kommentar);
+				String^ wirklichGeloescht = urlaubLoeschenfenster->p_Angestellter->loescheUrlaubstage(urlaubLoeschenfenster->p_Anfang, urlaubLoeschenfenster->p_Ende, urlaubLoeschenfenster->p_Kommentar);
+				if (wirklichGeloescht != nullptr) {
+					MessageBox::Show(wirklichGeloescht, "Keine Tage gelöscht", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				}
 			}
 		}
 		else if (result == System::Windows::Forms::DialogResult::OK && urlaubLoeschenfenster->p_Art->Equals("Krankmeldung")) {
@@ -190,7 +191,10 @@ namespace Zeiterfassungssystem {
 				" wirklich alle Krankheitstage\n\nvon: " + urlaubLoeschenfenster->p_Anfang.ToString("dddd, dd. MMMM yyyy") + "\nbis: " + urlaubLoeschenfenster->p_Ende.ToString("dddd, dd. MMMM yyyy")
 				+ "\n\nentfernen?";
 			if (MessageBox::Show(urlaubLoeschenString, "Wirklich entfernen?", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
-				urlaubLoeschenfenster->p_Angestellter->loescheKrankheitstage(urlaubLoeschenfenster->p_Anfang, urlaubLoeschenfenster->p_Ende, urlaubLoeschenfenster->p_Kommentar);
+				String^ wirklichGeloescht = urlaubLoeschenfenster->p_Angestellter->loescheKrankheitstage(urlaubLoeschenfenster->p_Anfang, urlaubLoeschenfenster->p_Ende, urlaubLoeschenfenster->p_Kommentar);
+				if (wirklichGeloescht != nullptr) {
+					MessageBox::Show(wirklichGeloescht, "Keine Tage gelöscht", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				}
 			}
 		}
 		urlaubLoeschenfenster->clear();
@@ -198,14 +202,17 @@ namespace Zeiterfassungssystem {
 	}
 
 	private: System::Void abteilungBtn_Click(System::Object^  sender, System::EventArgs^  e) {
-		if (adminRechte) {
-			System::Windows::Forms::DialogResult result = abteilungFenster->ShowDialog(this);
-			if (result == System::Windows::Forms::DialogResult::OK) {
-				this->Close();
-			}
+		System::Windows::Forms::DialogResult result = abteilungFenster->ShowDialog(this);
+		if (result == System::Windows::Forms::DialogResult::OK) {
+			this->Close();
 		}
-		else {
-			MessageBox::Show("Sie haben leider keine Administratorrechte.\nNur Administratoren dürfen Abteilungen löschen.", "Nicht möglich", MessageBoxButtons::OK, MessageBoxIcon::Error);
+	}
+
+	private: System::Void AuswahlFenster_Load(System::Object^  sender, System::EventArgs^  e) {
+		//Wenn der User keine Admin-Rechte hat, kann er bestimmte Buttons nicht nutzen
+		if (!adminRechte) {
+			abteilungBtn->Enabled = false;
+			btn_feiertag->Enabled = false;
 		}
 	}
 };
