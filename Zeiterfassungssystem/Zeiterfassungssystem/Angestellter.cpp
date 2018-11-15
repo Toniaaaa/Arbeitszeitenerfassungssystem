@@ -255,7 +255,7 @@ TimeSpan^ Angestellter::genugPause()
 		fehlendePause = TimeSpan::operator-(TimeSpan(0, 45, 0), *pausen);
 	}
 	//Fall: Es wurden zwichen 6 und 9 Stunden gearbeitet
-	else if (*arbeit > *(gcnew TimeSpan(6, 0, 0))) {
+	else if (*arbeit > TimeSpan(6, 0, 0)) {
 		fehlendePause = TimeSpan::operator-(TimeSpan(0, 30, 0), *pausen);
 	} 
 	return fehlendePause;
@@ -634,7 +634,7 @@ void Angestellter::stelleUraubstageZurueck(Int32 jahre)
 	DateTime^ heute = DateTime::Today;
 
 	//Wenn seit dem letzten Arbeitstag ein neues Jahr angefangen hat
-	if (letzterLogin.Year > heute->Year) {
+	if (letzterLogin.Year < heute->Year) {
 		//Urlaubstage verfallen nach 3 Monaten
 		urlaubstageGespart = this->getRestUrlaub();
 		urlaubstage = jahresurlaub + urlaubstageGespart;
